@@ -1,0 +1,17 @@
+//
+//  MyDedicatedWeatherAppApp.swift
+//  MyDedicatedWeatherApp
+//
+//  Created by 윤형석 on 2023/04/30.
+//
+
+import SwiftUI
+
+@main
+struct MyDedicatedWeatherAppApp: App {
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
+        }
+    }
+}
