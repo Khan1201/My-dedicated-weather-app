@@ -10,6 +10,7 @@ import Foundation
 final class HomeViewModel: ObservableObject {
     
     @Published var threeToTenDaysTemperature: [temperatureMinMax] = []
+    @Published var 
     @Published var errorMessage: String = ""
     
     func requestMidTermForecastItems() async {

@@ -28,7 +28,11 @@ struct Util {
         
         let currentDate0600ToString = dateFormatter0600.string(from: currentDate)
         let currentDate1800ToString = dateFormatter1800.string(from: currentDate)
-        let yesterdayDate1800ToString = dateToStringByAddingDay(currentDate: currentDate, day: -1)
+        let yesterdayDate1800ToString = dateToStringByAddingDay(
+            currentDate: currentDate,
+            day: -1,
+            dateFormat: "yyyyMMddHHmm"
+        )
         let currentDateToString = dateFormatterCurrent.string(from: currentDate)
         
         
@@ -47,11 +51,11 @@ struct Util {
         return result
     }
     
-    func dateToStringByAddingDay(currentDate: Date, day: Int) -> String {
+    func dateToStringByAddingDay(currentDate: Date, day: Int, dateFormat: String) -> String {
         
         let calender: Calendar = Calendar.current
         let dateFormatter: DateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyyMMddHHmm"
+        dateFormatter.dateFormat = dateFormat
         
         let dateComponent: DateComponents = DateComponents(day: day)
         
@@ -62,15 +66,15 @@ struct Util {
     
     // MARK: - For Very Short or Short Term Forecast.. (초 단기 예보, 단기 예보)
     
-    func veryShortTermForecastCategoryValue(category: VeryShortTermForecastCategory, value: String) -> String {
+    func veryShortTermForecastCategoryValue(category: VeryShortTermForecastCategory, value: String) -> (String, String) {
         
         switch category {
             
         case .T1H: // 기온
-            return "\(value)°"
+            return ("\(value)°", "")
             
         case .RN1: // 1시간 강수량
-            return remakeOneHourPrecipitationValue(value: value)
+            return (remakeOneHourPrecipitationValue(value: value), "")
             
         case .PTY: // 강수 형태
             return remakePrecipitaionTypeValue(value: value)
@@ -79,43 +83,43 @@ struct Util {
             return remakeSkyStateValue(value: value)
             
         case .REH: // 습도
-            return "\(value)%"
+            return ("\(value)%", "")
             
         case .WSD: // 풍속
-            return remakeWindSpeedValue(value: value)
+            return (remakeWindSpeedValue(value: value), "")
         }
     }
     
-    func shortTermForecastCategoryValue(category: ShortTermForecastCategory, value: String) -> String {
+    func shortTermForecastCategoryValue(category: ShortTermForecastCategory, value: String) -> (String, String) {
         
         switch category {
             
         case .POP: // 강수 확률
-            return "\(value)%"
+            return ("\(value)%", "")
             
         case .PTY: // 강수 형태
             return remakePrecipitaionTypeValue(value: value)
             
         case .PCP: // 1시간 강수량
-            return remakeOneHourPrecipitationValue(value: value)
+            return (remakeOneHourPrecipitationValue(value: value), "")
             
         case .REH: // 습도
-            return "\(value)%"
+            return ("\(value)%", "")
             
         case .SKY: // 하늘 상태
             return remakeSkyStateValue(value: value)
             
         case .TMP: // 1시간 기온
-            return "\(value)°"
+            return ("\(value)°", "")
             
         case .TMN: // 일 최저기온
-            return "\(value)°"
+            return ("\(value)°", "")
             
         case .TMX: // 일 최고기온
-            return "\(value)°"
+            return ("\(value)°", "")
             
         case .WSD: // 풍속
-            return remakeWindSpeedValue(value: value)
+            return (remakeWindSpeedValue(value: value), "")
         }
     }
     
@@ -144,38 +148,38 @@ struct Util {
         }
     }
     
-    func remakePrecipitaionTypeValue(value: String) -> String {
+    func remakePrecipitaionTypeValue(value: String) -> (String, String) {
         
         switch value {
             
         case "0":
-            return "없음"
+            return ("없음", "")
         case "1":
-            return "비"
+            return ("비", "weather_rain")
         case "2":
-            return "비/눈"
+            return ("비/눈", "weather_rain_snow")
         case "3":
-            return "눈"
+            return ("눈", "weather_snow")
         case "5":
-            return "빗방울"
+            return ("빗방울", "weather_rain_small")
         case "6":
-            return "빗방울 / 눈날림"
+            return ("빗방울 / 눈날림", "")
         default:
-            return "알 수 없음"
+            return ("알 수 없음", "")
         }
     }
     
-    func remakeSkyStateValue(value: String) -> String {
+    func remakeSkyStateValue(value: String) -> (String, String) {
         
         switch value {
         case "1":
-            return "맑음"
+            return ("맑음", "weather_sunny")
         case "3":
-            return "구름많음"
+            return ("구름많음", "weather_cloud_many")
         case "4":
-            return "흐림"
+            return ("흐림", "weather_blur")
         default:
-            return "알 수 없음"
+            return ("알 수 없음", "")
         }
     }
     
@@ -192,6 +196,46 @@ struct Util {
             return "강한 바람"
         case _ where stringToDouble > 13.9:
             return "매우 강한 바람"
+            
+        default:
+            return "알 수 없음"
+        }
+    }
+    
+    func shortTermForecastBaseTime() -> String {
+                
+        let dateFormatterYearMonthDay = DateFormatter()
+        dateFormatterYearMonthDay.dateFormat = "yyyyMMdd"
+        
+        let dateFormatterHourMinute = DateFormatter()
+        dateFormatterHourMinute.dateFormat = "HHmm"
+        
+        let todayDate: Date = Date()
+        
+        let yesterdayYearMonthDay: String = dateToStringByAddingDay(currentDate: todayDate, day: -1, dateFormat: "yyyyMMdd")
+        let currentYearMonthDay: String = dateFormatterYearMonthDay.string(from: todayDate)
+        let currentHourMinute: Int = Int(dateFormatterHourMinute.string(from: todayDate)) ?? 0
+        
+        switch currentHourMinute {
+            
+        case 0000...0159:
+            return yesterdayYearMonthDay + "2300"
+        case 0200...0459:
+            return currentYearMonthDay + "0200"
+        case 0500...0759:
+            return currentYearMonthDay + "0500"
+        case 0800...1059:
+            return currentYearMonthDay + "0800"
+        case 1100...1359:
+            return currentYearMonthDay + "1100"
+        case 1400...1659:
+            return currentYearMonthDay + "1400"
+        case 1700...1959:
+            return currentYearMonthDay + "1700"
+        case 2000...2259:
+            return currentYearMonthDay + "2000"
+        case 2300...2359:
+            return currentYearMonthDay + "2300"
             
         default:
             return "알 수 없음"
