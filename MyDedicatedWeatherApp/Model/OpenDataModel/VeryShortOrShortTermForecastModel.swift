@@ -76,7 +76,11 @@ enum VeryShortTermForecastCategory: String, Codable {
     PTY, // 강수 형태
     SKY, // 하늘 상태
     REH, // 습도
-    WSD // 풍속
+    WSD,// 풍속
+    UUU, // 동서 바람 성분 (사용 x)
+    VVV, // 남북 바람 성분 (사용 x),
+    LGT, // 낙뢰 (사용 x)
+    VEC // 풍향 (사용 x)
 }
 
 enum ShortTermForecastCategory: String, Codable {

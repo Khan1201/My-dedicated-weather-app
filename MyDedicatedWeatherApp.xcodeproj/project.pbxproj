@@ -24,6 +24,7 @@
 		BCA30FA729FE73D70078D0B1 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30FA629FE73D70078D0B1 /* HomeViewModel.swift */; };
 		BCA30FAA29FFDC580078D0B1 /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30FA929FFDC580078D0B1 /* Dummy.swift */; };
 		BCA30FAD29FFE3850078D0B1 /* HomeViewMinMaxTemperatureVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30FAC29FFE3850078D0B1 /* HomeViewMinMaxTemperatureVC.swift */; };
+		BCCD80682A07A59800501BEA /* LocationDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCCD80672A07A59800501BEA /* LocationDataManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,6 +46,7 @@
 		BCA30FA829FE7D780078D0B1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		BCA30FA929FFDC580078D0B1 /* Dummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummy.swift; sourceTree = "<group>"; };
 		BCA30FAC29FFE3850078D0B1 /* HomeViewMinMaxTemperatureVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewMinMaxTemperatureVC.swift; sourceTree = "<group>"; };
+		BCCD80672A07A59800501BEA /* LocationDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDataManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,6 +135,7 @@
 				BCA30F9629FE3A190078D0B1 /* Util.swift */,
 				BCA30F9F29FE6D690078D0B1 /* ErrorType.swift */,
 				BCA30FA929FFDC580078D0B1 /* Dummy.swift */,
+				BCCD80672A07A59800501BEA /* LocationDataManager.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -243,6 +246,7 @@
 				BCA30F9A29FE49FE0078D0B1 /* OpenDataRes.swift in Sources */,
 				BCA30F7C29FE203A0078D0B1 /* ContentView.swift in Sources */,
 				BCA30F9529FE39BC0078D0B1 /* Env.swift in Sources */,
+				BCCD80682A07A59800501BEA /* LocationDataManager.swift in Sources */,
 				BCA30FA529FE73C90078D0B1 /* HomeView.swift in Sources */,
 				BCA30F9729FE3A190078D0B1 /* Util.swift in Sources */,
 				BCA30FA729FE73D70078D0B1 /* HomeViewModel.swift in Sources */,
@@ -385,6 +389,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MyDedicatedWeatherApp/Info.plist;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "내 위치 확인를 위해 권한이 필요합니다.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "내 위치 확인을 위해 권한이 필요합니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -416,6 +422,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MyDedicatedWeatherApp/Info.plist;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "내 위치 확인를 위해 권한이 필요합니다.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "내 위치 확인을 위해 권한이 필요합니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

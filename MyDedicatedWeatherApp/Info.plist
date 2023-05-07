@@ -7,5 +7,7 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>Privacy — Location When In Use Usage Description</key>
+	<string>날씨 데이터를 가져오기 위해 위치 정보 권한이 필요합니다.</string>
 </dict>
 </plist>

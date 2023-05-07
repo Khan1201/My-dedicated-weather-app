@@ -10,7 +10,6 @@ import Foundation
 final class HomeViewModel: ObservableObject {
     
     @Published var threeToTenDaysTemperature: [temperatureMinMax] = []
-    @Published var 
     @Published var errorMessage: String = ""
     
     func requestMidTermForecastItems() async {
@@ -22,7 +21,7 @@ final class HomeViewModel: ObservableObject {
         )
         do {
             let result = try await JsonRequest().newRequest(
-                url: Route.GET_WHEATER_MID_TERM_FORECAST.val,
+                url: Route.GET_WEATHER_MID_TERM_FORECAST.val,
                 method: .get,
                 parameters: parameters,
                 headers: nil,
@@ -31,6 +30,40 @@ final class HomeViewModel: ObservableObject {
             DispatchQueue.main.async {
                 self.setMidTermForecastItemToArray(item: result.item.first ?? Dummy().midTermForecastModel())
             }
+        } catch APIError.transportError {
+            
+            DispatchQueue.main.async {
+                self.errorMessage = "API 통신 에러"
+            }
+        } catch {
+            DispatchQueue.main.async {
+                self.errorMessage = "알 수 없는 오류"
+            }
+        }
+    }
+    
+    func requestVeryShortForecastItems(x: String, y: String) async {
+        
+        let parameters: VeryShortOrShortTermForecastReq = VeryShortOrShortTermForecastReq(
+            serviceKey: Env().midTermForecastApiResponseKey,
+            baseDate: Util().currentYYYYMMdd(),
+            baseTime: Util().veryShortTermForecastBaseTime(),
+            nx: x,
+            ny: y
+        )
+        
+        do {
+            let result = try await JsonRequest().newRequest(
+                url: Route.GET_WEATHER_VERY_SHORT_TERM_FORECAST.val,
+                method: .get,
+                parameters: parameters,
+                headers: nil,
+                resultType: OpenDataRes<VeryShortOrShortTermForecastModel<VeryShortTermForecastCategory>>.self
+            )
+            DispatchQueue.main.async {
+                print(result.item)
+            }
+            
         } catch APIError.transportError {
             
             DispatchQueue.main.async {
