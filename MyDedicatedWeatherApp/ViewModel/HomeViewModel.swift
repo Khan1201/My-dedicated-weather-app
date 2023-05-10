@@ -6,11 +6,18 @@
 //
 
 import Foundation
+import CoreLocation
 
 final class HomeViewModel: ObservableObject {
     
     @Published var threeToTenDaysTemperature: [temperatureMinMax] = []
     @Published var errorMessage: String = ""
+    @Published var currentWeatherTuple: (String, String) = ("","") // (description, imageName)
+    @Published var currentTemperature: String = ""
+    @Published var todayWeathers: [TodayWeatherModel] = []
+    @Published var currentPlace: String = ""
+    
+    private let util = Util()
     
     func requestMidTermForecastItems() async {
         
@@ -44,10 +51,12 @@ final class HomeViewModel: ObservableObject {
     
     func requestVeryShortForecastItems(x: String, y: String) async {
         
+        let baseTime = Util().veryShortTermForecastBaseTime()
+        
         let parameters: VeryShortOrShortTermForecastReq = VeryShortOrShortTermForecastReq(
             serviceKey: Env().midTermForecastApiResponseKey,
-            baseDate: Util().currentYYYYMMdd(),
-            baseTime: Util().veryShortTermForecastBaseTime(),
+            baseDate: util.veryShortTermForecastBaseDate(baseTime: baseTime),
+            baseTime: baseTime,
             nx: x,
             ny: y
         )
@@ -61,7 +70,9 @@ final class HomeViewModel: ObservableObject {
                 resultType: OpenDataRes<VeryShortOrShortTermForecastModel<VeryShortTermForecastCategory>>.self
             )
             DispatchQueue.main.async {
-                print(result.item)
+                self.setCurrentTemperature(items: result.item)
+                self.setCurrentWeatherTuple(items: result.item)
+                self.setTodayWeathers(items: result.item)
             }
             
         } catch APIError.transportError {
@@ -74,6 +85,84 @@ final class HomeViewModel: ObservableObject {
                 self.errorMessage = "알 수 없는 오류"
             }
         }
+    }
+    
+    func setCurrentWeatherTuple(items: [VeryShortOrShortTermForecastModel<VeryShortTermForecastCategory>]) {
+        
+        let firstPTYItem = items.first { item in // 강수 형태
+            item.category == .PTY
+        }
+        
+        let firstSKYItem = items.first { item in // 하늘 상태
+            item.category == .SKY
+        }
+        
+        guard let firstPTYItem = firstPTYItem else { return print("firstPTYItem == null..") }
+        guard let firstSKYItem = firstSKYItem else { return print("firstSKYITEM == null..") }
+        
+        currentWeatherTuple = util.veryShortTermForecastWeatherTuple(
+            ptyValue: firstPTYItem.fcstValue,
+            skyValue: firstSKYItem.fcstValue
+        )
+    }
+    
+    func setCurrentTemperature(items: [VeryShortOrShortTermForecastModel<VeryShortTermForecastCategory>]) {
+        
+        let currenTemperatureItem = items.first { item in
+            item.category == .T1H
+        }
+        
+        if let currenTemperatureItem = currenTemperatureItem {
+            currentTemperature = currenTemperatureItem.fcstValue
+        } else {
+            print ("currenTemperatureItem == null..")
+        }
+    }
+    
+    func setCurrentLocation(latitude: CGFloat, longitude: CGFloat) {
+        let findLocation: CLLocation = CLLocation(latitude: latitude, longitude: longitude)
+        let geoCoder: CLGeocoder = CLGeocoder()
+        let local: Locale = Locale(identifier: "Ko-kr") // Korea
+        
+        geoCoder.reverseGeocodeLocation(findLocation, preferredLocale: local) { place, error in
+            if let address: [CLPlacemark] = place {
+                self.currentPlace = (address.last?.administrativeArea ?? "") + (address.last?.locality ?? "")
+            }
+        }
+    }
+    
+    func setTodayWeathers(items: [VeryShortOrShortTermForecastModel<VeryShortTermForecastCategory>]) {
+        
+       let filteredTemperatureItems = items.filter { item in
+            item.category == .T1H
+        }
+        
+        let filteredPrecipitationItems = items.filter { item in
+            item.category == .PTY
+        }
+        
+        let filteredSkyStateItems = items.filter { item in
+            item.category == .SKY
+        }
+        
+        for index in filteredTemperatureItems.indices {
+            
+            let weatherTuple = util.veryShortTermForecastWeatherTuple(
+                ptyValue: filteredPrecipitationItems[index].fcstValue,
+                skyValue: filteredSkyStateItems[index].fcstValue
+            )
+                
+            let todayWeather = TodayWeatherModel(
+                weatherImage: weatherTuple.1,
+                time: util.convertHHmmToHHColonmm(
+                    HHmm: filteredTemperatureItems[index].fcstTime
+                ),
+                temperature: filteredTemperatureItems[index].fcstValue
+            )
+            
+            todayWeathers.append(todayWeather)
+        }
+        print(todayWeathers)
     }
     
     

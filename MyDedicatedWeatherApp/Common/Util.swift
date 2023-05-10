@@ -9,6 +9,37 @@ import Foundation
 
 struct Util {
     
+    
+    //MARK: - Common..
+    
+    func dateToStringByAddingDay(currentDate: Date, day: Int, dateFormat: String) -> String {
+        
+        let calender: Calendar = Calendar.current
+        let dateFormatter: DateFormatter = DateFormatter()
+        dateFormatter.dateFormat = dateFormat
+        
+        let dateComponent: DateComponents = DateComponents(day: day)
+        
+        let yesterdayDate: Date = calender.date(byAdding: dateComponent, to: currentDate) ?? Date()
+        let yesterdayDateToString = dateFormatter.string(from: yesterdayDate)
+        return yesterdayDateToString
+    }
+    
+    func convertHHmmToHHColonmm(HHmm: String) -> String {
+        
+        let lastIndex = HHmm.index(before: HHmm.endIndex)
+        
+        let hourIndex = HHmm.index(HHmm.startIndex, offsetBy: 1)
+        let hour = HHmm[HHmm.startIndex...hourIndex]
+        print(hour)
+        
+        let minuteIndex = HHmm.index(HHmm.startIndex, offsetBy: 2)
+        let minute = HHmm[minuteIndex...lastIndex]
+        print(minute)
+        
+        return hour + ":" + minute
+    }
+    
     //MARK: - For Mid Term Forecast.. (중기 예보)
     
     func midTermForecastRequestDate() -> String {
@@ -49,19 +80,6 @@ struct Util {
         }
         
         return result
-    }
-    
-    func dateToStringByAddingDay(currentDate: Date, day: Int, dateFormat: String) -> String {
-        
-        let calender: Calendar = Calendar.current
-        let dateFormatter: DateFormatter = DateFormatter()
-        dateFormatter.dateFormat = dateFormat
-        
-        let dateComponent: DateComponents = DateComponents(day: day)
-        
-        let yesterdayDate: Date = calender.date(byAdding: dateComponent, to: currentDate) ?? Date()
-        let yesterdayDateToString = dateFormatter.string(from: yesterdayDate)
-        return yesterdayDateToString
     }
     
     // MARK: - For Very Short or Short Term Forecast.. (초 단기 예보, 단기 예보)
@@ -282,12 +300,23 @@ struct Util {
         }
     }
     
-    func currentYYYYMMdd() -> String {
+    func veryShortTermForecastBaseDate(baseTime: String) -> String {
         
-        let dateFormatterYearMonthDay: DateFormatter = DateFormatter()
-        dateFormatterYearMonthDay.dateFormat = "yyyyMMdd"
+        return dateToStringByAddingDay(
+            currentDate: Date(),
+            day: baseTime == "2330" ? -1 : 0,
+            dateFormat: "yyyyMMdd"
+        )
+    }
+    
+    func veryShortTermForecastWeatherTuple(ptyValue: String, skyValue: String) -> (String, String) { // (weatherDescription, weatherImageName)
         
-        return dateFormatterYearMonthDay.string(from: Date())
+        if ptyValue != "0" {
+            return remakePrecipitaionTypeValue(value: ptyValue)
+            
+        } else {
+            return remakeSkyStateValue(value: skyValue)
+        }
     }
     
     //////////////// GPS -> GRID ///////////////
@@ -388,8 +417,6 @@ struct Util {
         case toXY
         case toGPS
     }
-    
-    //MARK: -
 }
 
 

@@ -94,6 +94,11 @@ enum ShortTermForecastCategory: String, Codable {
     TMN, // 일 최저기온
     TMX, // 일 최고기온
     WSD // 픙속
+}
+
+struct TodayWeatherModel {
     
-    
+    let weatherImage: String
+    let time: String
+    let temperature: String
 }

@@ -12,6 +12,7 @@ final class LocationDataManager: NSObject, ObservableObject, CLLocationManagerDe
     
     var locationManager = CLLocationManager()
     @Published var authorizationStatus: CLAuthorizationStatus?
+    @Published var currentLocation: String = ""
     
     override init() {
         super.init()
@@ -25,6 +26,7 @@ final class LocationDataManager: NSObject, ObservableObject, CLLocationManagerDe
             
             authorizationStatus = .authorizedWhenInUse
             locationManager.requestLocation()
+  
         case .restricted:
             authorizationStatus = .restricted
         case .denied:
@@ -38,7 +40,19 @@ final class LocationDataManager: NSObject, ObservableObject, CLLocationManagerDe
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        print(locations)
+        
+        let findLocation: CLLocation = CLLocation(
+            latitude: locationManager.location?.coordinate.latitude ?? 0,
+            longitude: locationManager.location?.coordinate.longitude ?? 0
+        )
+        let geoCoder: CLGeocoder = CLGeocoder()
+        let local: Locale = Locale(identifier: "Ko-kr") // Korea
+        
+        geoCoder.reverseGeocodeLocation(findLocation, preferredLocale: local) { place, error in
+            if let address: [CLPlacemark] = place {
+                self.currentLocation = (address.last?.administrativeArea ?? "") + (address.last?.locality ?? "")
+            }
+        }
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {

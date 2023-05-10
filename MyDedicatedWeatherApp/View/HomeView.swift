@@ -30,28 +30,43 @@ struct HomeView: View {
                 
             case .authorizedAlways, .authorizedWhenInUse:
                 
-                VStack(alignment: .leading, spacing: 0) {
+                VStack(alignment: .leading, spacing: 5) {
+                    Text("현재 위치")
+                    Text("현재 날짜")
+                    //                    Text(locationDataManager.currentLocation)
+                    Image(homeViewModel.currentWeatherTuple.1)
+                    Text(homeViewModel.currentTemperature)
                     
-                    Text("위치 정보 권한 얻음")
-                        .onTapGesture {
-                            locationDataManager.locationManager.requestLocation()
-                        }
-                    Text("버튼")
-                        .onTapGesture {
-                            
-                            let XY: Util.LatXLngY = Util().convertGPS2XY(
-                                mode: .toGPS,
-                                lat_X: locationDataManager.locationManager.location?.coordinate.latitude ?? 0,
-                                lng_Y: locationDataManager.locationManager.location?.coordinate.longitude ?? 0
-                            )
-                            
-                            Task {
-                                
-                                await homeViewModel.requestVeryShortForecastItems(
-                                    x: String(XY.x),
-                                    y: String(XY.y))
+                    Divider()
+                        .padding(.vertical, 10)
+                    Text("Today")
+                        .font(.system(size: 20, weight: .bold))
+                    
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(alignment: .center, spacing: 5) {
+                            ForEach(homeViewModel.todayWeathers, id: \.time) {
+                                TodayWeatherVC(
+                                    imageString: $0.weatherImage,
+                                    time: $0.time,
+                                    temperature: $0.temperature
+                                )
                             }
                         }
+                    }
+                    .padding(.top, 20)
+
+                }
+                .task {
+                    let XY: Util.LatXLngY = Util().convertGPS2XY(
+                        mode: .toGPS,
+                        lat_X: locationDataManager.locationManager.location?.coordinate.latitude ?? 0,
+                        lng_Y: locationDataManager.locationManager.location?.coordinate.longitude ?? 0
+                    )
+                    await homeViewModel.requestVeryShortForecastItems(
+                        x: String(XY.x),
+                        y: String(XY.y)
+                    )
+                    locationDataManager.locationManager.requestLocation()
                 }
                 
             case .restricted:
