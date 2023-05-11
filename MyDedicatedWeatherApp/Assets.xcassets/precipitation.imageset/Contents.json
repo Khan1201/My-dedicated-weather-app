@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "wind-turbine.png",
+      "filename" : "drop.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "wind-turbine 1.png",
+      "filename" : "drop 1.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "wind-turbine 2.png",
+      "filename" : "drop 2.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

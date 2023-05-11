@@ -96,9 +96,18 @@ enum ShortTermForecastCategory: String, Codable {
     WSD // 픙속
 }
 
-struct TodayWeatherModel {
+struct TodayWeatherInformationModel {
     
     let weatherImage: String
     let time: String
     let temperature: String
+}
+
+struct CurrentWeatherInformationModel {
+    
+    let temperature: String
+    let windSpeed: String
+    let wetPercent: String
+    let oneHourPrecipitation: String
+    let weatherImage: String
 }

@@ -31,4 +31,15 @@ struct Dummy {
             taMax10: 0
         )
     }
+    
+    func currentWeatherInformation() -> CurrentWeatherInformationModel {
+        
+        return CurrentWeatherInformationModel(
+            temperature: "",
+            windSpeed: "",
+            wetPercent: "",
+            oneHourPrecipitation: "",
+            weatherImage: ""
+        )
+    }
 }

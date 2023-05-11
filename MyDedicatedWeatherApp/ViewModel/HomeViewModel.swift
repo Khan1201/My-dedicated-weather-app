@@ -14,7 +14,8 @@ final class HomeViewModel: ObservableObject {
     @Published var errorMessage: String = ""
     @Published var currentWeatherTuple: (String, String) = ("","") // (description, imageName)
     @Published var currentTemperature: String = ""
-    @Published var todayWeathers: [TodayWeatherModel] = []
+    @Published var currentWeatherInformation: CurrentWeatherInformationModel = Dummy().currentWeatherInformation()
+    @Published var todayWeatherInformations: [TodayWeatherInformationModel] = []
     @Published var currentPlace: String = ""
     
     private let util = Util()
@@ -71,7 +72,7 @@ final class HomeViewModel: ObservableObject {
             )
             DispatchQueue.main.async {
                 self.setCurrentTemperature(items: result.item)
-                self.setCurrentWeatherTuple(items: result.item)
+                self.setCurrentWeatherInformations(items: result.item)
                 self.setTodayWeathers(items: result.item)
             }
             
@@ -87,7 +88,7 @@ final class HomeViewModel: ObservableObject {
         }
     }
     
-    func setCurrentWeatherTuple(items: [VeryShortOrShortTermForecastModel<VeryShortTermForecastCategory>]) {
+    func currentWeatherTuple(items: [VeryShortOrShortTermForecastModel<VeryShortTermForecastCategory>]) -> (String, String) {
         
         let firstPTYItem = items.first { item in // 강수 형태
             item.category == .PTY
@@ -97,12 +98,9 @@ final class HomeViewModel: ObservableObject {
             item.category == .SKY
         }
         
-        guard let firstPTYItem = firstPTYItem else { return print("firstPTYItem == null..") }
-        guard let firstSKYItem = firstSKYItem else { return print("firstSKYITEM == null..") }
-        
-        currentWeatherTuple = util.veryShortTermForecastWeatherTuple(
-            ptyValue: firstPTYItem.fcstValue,
-            skyValue: firstSKYItem.fcstValue
+        return util.veryShortTermForecastWeatherTuple(
+            ptyValue: firstPTYItem?.fcstValue ?? "",
+            skyValue: firstSKYItem?.fcstValue ?? ""
         )
     }
     
@@ -131,6 +129,37 @@ final class HomeViewModel: ObservableObject {
         }
     }
     
+    func setCurrentWeatherInformations(items: [VeryShortOrShortTermForecastModel<VeryShortTermForecastCategory>]) {
+        
+        let currentTemperature = items.first { item in
+            item.category == .T1H
+        }
+        
+        let currentWindSpeed = items.first { item in
+            item.category == .WSD
+        }
+        
+        let currentWetPercent = items.first { item in
+            item.category == .REH
+        }
+        
+        let currentOneHourPrecipitation = items.first { item in
+            item.category == .RN1
+        }
+        
+        let currentWeatherTuple = currentWeatherTuple(items: items)
+        
+        currentWeatherInformation = CurrentWeatherInformationModel(
+            temperature: currentTemperature?.fcstValue ?? "",
+            windSpeed: util.remakeWindSpeedValue(value: currentWindSpeed?.fcstValue ?? ""),
+            wetPercent: currentWetPercent?.fcstValue ?? "",
+            oneHourPrecipitation: util.remakeOneHourPrecipitationValue(
+                value: currentOneHourPrecipitation?.fcstValue ?? ""),
+            weatherImage: currentWeatherTuple.1
+        )
+        
+    }
+    
     func setTodayWeathers(items: [VeryShortOrShortTermForecastModel<VeryShortTermForecastCategory>]) {
         
        let filteredTemperatureItems = items.filter { item in
@@ -152,7 +181,7 @@ final class HomeViewModel: ObservableObject {
                 skyValue: filteredSkyStateItems[index].fcstValue
             )
                 
-            let todayWeather = TodayWeatherModel(
+            let todayWeather = TodayWeatherInformationModel(
                 weatherImage: weatherTuple.1,
                 time: util.convertHHmmToHHColonmm(
                     HHmm: filteredTemperatureItems[index].fcstTime
@@ -160,9 +189,8 @@ final class HomeViewModel: ObservableObject {
                 temperature: filteredTemperatureItems[index].fcstValue
             )
             
-            todayWeathers.append(todayWeather)
+            todayWeatherInformations.append(todayWeather)
         }
-        print(todayWeathers)
     }
     
     

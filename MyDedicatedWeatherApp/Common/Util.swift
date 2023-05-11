@@ -40,6 +40,15 @@ struct Util {
         return hour + ":" + minute
     }
     
+    func currntDateByCustomFormatter(dateFormat: String) -> String {
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = dateFormat
+        
+        return formatter.string(from: Date())
+    }
+    
+    
     //MARK: - For Mid Term Forecast.. (중기 예보)
     
     func midTermForecastRequestDate() -> String {
@@ -196,7 +205,7 @@ struct Util {
         case "6":
             return ("빗방울 / 눈날림", "")
         default:
-            return ("알 수 없음", "")
+            return ("알 수 없음", "load_fail")
         }
     }
     
@@ -210,7 +219,7 @@ struct Util {
         case "4":
             return ("흐림", "weather_blur")
         default:
-            return ("알 수 없음", "")
+            return ("알 수 없음", "load_fail")
         }
     }
     
@@ -284,19 +293,19 @@ struct Util {
         
         let currentDay: Date = Date()
         
-        let currentHour: Int = Int(dateFormatterHour.string(from: currentDay)) ?? 0
+        let currentHour: String = dateFormatterHour.string(from: currentDay)
         let currentMinute: Int = Int(dateFormatterMinute.string(from: currentDay)) ?? 0
         
         if currentMinute < 30 {
-            if currentHour == 00 {
+            if currentHour == "00" {
                return "2330"
                 
             } else {
-                return String(currentHour - 1) + "30"
+                return String((Int(currentHour) ?? 0) - 1) + "30"
             }
             
         } else { // currentMinute >= 30
-            return String(currentHour) + "30"
+            return currentHour + "30"
         }
     }
     
