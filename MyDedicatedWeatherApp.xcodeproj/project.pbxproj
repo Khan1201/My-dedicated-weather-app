@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		BC65D50F2A0BDF1C00EFADD4 /* TodayWeatherVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC65D50E2A0BDF1C00EFADD4 /* TodayWeatherVC.swift */; };
+		BC6EF8BD2A10AAB30072A2DE /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6EF8BC2A10AAB30072A2DE /* Extension.swift */; };
+		BC6EF8BF2A10C0DC0072A2DE /* RealTimeFindDustForecastModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6EF8BE2A10C0DC0072A2DE /* RealTimeFindDustForecastModel.swift */; };
 		BC85A94E2A02570E00C4CC48 /* VeryShortOrShortTermForecastModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC85A94D2A02570E00C4CC48 /* VeryShortOrShortTermForecastModel.swift */; };
 		BCA30F7A29FE203A0078D0B1 /* MyDedicatedWeatherAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30F7929FE203A0078D0B1 /* MyDedicatedWeatherAppApp.swift */; };
 		BCA30F7C29FE203A0078D0B1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30F7B29FE203A0078D0B1 /* ContentView.swift */; };
@@ -30,6 +32,8 @@
 
 /* Begin PBXFileReference section */
 		BC65D50E2A0BDF1C00EFADD4 /* TodayWeatherVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayWeatherVC.swift; sourceTree = "<group>"; };
+		BC6EF8BC2A10AAB30072A2DE /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
+		BC6EF8BE2A10C0DC0072A2DE /* RealTimeFindDustForecastModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealTimeFindDustForecastModel.swift; sourceTree = "<group>"; };
 		BC85A94D2A02570E00C4CC48 /* VeryShortOrShortTermForecastModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VeryShortOrShortTermForecastModel.swift; sourceTree = "<group>"; };
 		BCA30F7629FE20390078D0B1 /* MyDedicatedWeatherApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyDedicatedWeatherApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCA30F7929FE203A0078D0B1 /* MyDedicatedWeatherAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDedicatedWeatherAppApp.swift; sourceTree = "<group>"; };
@@ -138,6 +142,7 @@
 				BCA30F9F29FE6D690078D0B1 /* ErrorType.swift */,
 				BCA30FA929FFDC580078D0B1 /* Dummy.swift */,
 				BCCD80672A07A59800501BEA /* LocationDataManager.swift */,
+				BC6EF8BC2A10AAB30072A2DE /* Extension.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -148,6 +153,7 @@
 				BCA30F9229FE28F20078D0B1 /* MidTermForecastModel.swift */,
 				BC85A94D2A02570E00C4CC48 /* VeryShortOrShortTermForecastModel.swift */,
 				BCA30F9929FE49FE0078D0B1 /* OpenDataRes.swift */,
+				BC6EF8BE2A10C0DC0072A2DE /* RealTimeFindDustForecastModel.swift */,
 			);
 			path = OpenDataModel;
 			sourceTree = "<group>";
@@ -255,8 +261,10 @@
 				BCA30FA729FE73D70078D0B1 /* HomeViewModel.swift in Sources */,
 				BCA30FAD29FFE3850078D0B1 /* HomeViewMinMaxTemperatureVC.swift in Sources */,
 				BC65D50F2A0BDF1C00EFADD4 /* TodayWeatherVC.swift in Sources */,
+				BC6EF8BD2A10AAB30072A2DE /* Extension.swift in Sources */,
 				BCA30FA029FE6D690078D0B1 /* ErrorType.swift in Sources */,
 				BCA30FA229FE6FC30078D0B1 /* JsonRequest.swift in Sources */,
+				BC6EF8BF2A10C0DC0072A2DE /* RealTimeFindDustForecastModel.swift in Sources */,
 				BC85A94E2A02570E00C4CC48 /* VeryShortOrShortTermForecastModel.swift in Sources */,
 				BCA30F7A29FE203A0078D0B1 /* MyDedicatedWeatherAppApp.swift in Sources */,
 				BCA30FAA29FFDC580078D0B1 /* Dummy.swift in Sources */,

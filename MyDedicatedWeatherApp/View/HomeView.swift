@@ -29,108 +29,142 @@ struct HomeView: View {
         //        .task {
         //            await homeViewModel.requestMidTermForecastItems()
         //        }
-        
-        switch locationDataManager.locationManager.authorizationStatus {
+        VStack(alignment: .leading, spacing: 5) {
             
-        case .authorizedAlways, .authorizedWhenInUse:
-            
-            VStack(alignment: .leading, spacing: 5) {
+            VStack(alignment: .center, spacing: 8) {
                 
-                VStack(alignment: .center, spacing: 8) {
-                    Text("서울특별시")
+                HStack(alignment: .center, spacing: 5) {
+                    Text(locationDataManager.currentLocation)
                         .font(.system(size: 24, weight: .medium))
-                    
-                    Text(Util().currntDateByCustomFormatter(dateFormat: "yyyy, MM / dd"))
-                        .font(.system(size: 20))
-                        .foregroundColor(.gray.opacity(0.7))
-                    
-                    Image(homeViewModel.currentWeatherInformation.weatherImage)
-                        .resizable()
-                        .frame(width: 120, height: 120)
-                    
-                    Text(homeViewModel.currentWeatherInformation.temperature + "°")
-                        .font(.system(size: 26, weight: .medium))
-                        .foregroundColor(.gray)
-                    
-                    HStack(alignment: .top, spacing: 50) {
-                        VStack(alignment: .leading, spacing: 5) {
-                            Image("wind")
-                                .resizable()
-                                .frame(width: 30, height: 30)
-                            
-                            Text(homeViewModel.currentWeatherInformation.windSpeed)
-                                .font(.system(size: 26, weight: .medium))
-                                .foregroundColor(.gray)
-                        }
                         
-                        VStack(alignment: .leading, spacing: 15) {
-                            Image("precipitation")
-                                .resizable()
-                                .frame(width: 30, height: 30)
-                            
-                            Text(homeViewModel.currentWeatherInformation.oneHourPrecipitation)
-                                .font(.system(size: 26, weight: .medium))
-                                .foregroundColor(.gray)
-                        }
-                        
-                        VStack(alignment: .leading, spacing: 5) {
-                            
-                            Image("wet")
-                                .resizable()
-                                .frame(width: 30, height: 30)
-                            
-                            Text(homeViewModel.currentWeatherInformation.wetPercent)
-                                .font(.system(size: 26, weight: .medium))
-                                .foregroundColor(.gray)
-                        }
+                    if !locationDataManager.isLocationPermissionAllow {
+                        ProgressView()
                     }
                 }
-                .frame(maxWidth: .infinity, alignment: .center)
-                .padding(.bottom, 30)
                 
-                Divider()
-                    .padding(.vertical, 10)
-                Text("Today")
-                    .font(.system(size: 20, weight: .bold))
+                Text(Util().currntDateByCustomFormatter(
+                    dateFormat: "yyyy, MM / dd")
+                )
+                    .font(.system(size: 20))
+                    .foregroundColor(.gray.opacity(0.7))
                 
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(alignment: .center, spacing: 5) {
-                        ForEach(
-                            homeViewModel.todayWeatherInformations,
-                            id: \.time
-                        ) {
-                            TodayWeatherVC(
-                                imageString: $0.weatherImage,
-                                time: $0.time,
-                                temperature: $0.temperature
-                            )
-                        }
+                Image(homeViewModel.currentWeatherInformation.weatherImage)
+                    .resizable()
+                    .frame(width: 120, height: 120)
+                
+                Text(homeViewModel.currentWeatherInformation.temperature + "°")
+                    .font(.system(size: 26, weight: .medium))
+                    .foregroundColor(.gray)
+                
+                
+                HStack(alignment: .top, spacing: 60) {
+                    VStack(alignment: .center, spacing: 5) {
+                        Image("precipitation")
+                            .resizable()
+                            .frame(width: 25, height: 25)
+                        
+                        Text(homeViewModel.currentWeatherInformation.oneHourPrecipitation)
+                            .font(.system(size: 12, weight: .medium))
+                            .foregroundColor(.gray)
+                    }
+                    
+                    VStack(alignment: .center, spacing: 5) {
+                        Image("wind")
+                            .resizable()
+                            .frame(width: 25, height: 25)
+                            
+                        Text(homeViewModel.currentWeatherInformation.windSpeed)
+                            .font(.system(size: 12, weight: .medium))
+                            .foregroundColor(.gray)
+                    }
+                    
+                    VStack(alignment: .center, spacing: 5) {
+                        
+                        Image("wet")
+                            .resizable()
+                            .frame(width: 25, height: 25)
+                        
+                        Text(homeViewModel.currentWeatherInformation.wetPercent + "%")
+                            .font(.system(size: 12, weight: .medium))
+                            .foregroundColor(.gray)
                     }
                 }
-                .padding(.top, 20)
+                .padding(.top, 15)
+                
+                HStack(alignment: .center, spacing: 40) {
+                    
+                    VStack(alignment: .center, spacing: 5) {
+                        Text("미세먼지")
+                            .font(.system(size: 12))
+                        
+                        Text(homeViewModel.currentFineDustTuple.0)
+                            .font(.system(size: 12, weight: .bold))
+                            .foregroundColor(homeViewModel.currentFineDustTuple.1
+                                .opacity(0.7))
+                    }
+                    .padding(.vertical, 8)
+                    .padding(.horizontal, 12)
+                    .background {
+                        homeViewModel.currentFineDustTuple.1.opacity(0.2)
+                    }
+                    .cornerRadius(8)
+                    
+                    VStack(alignment: .center, spacing: 5) {
+                        Text("초미세먼지")
+                            .font(.system(size: 12))
+                        
+                        Text(homeViewModel.currentUltraFindDustTuple.0)
+                            .font(.system(size: 12, weight: .bold))
+                            .foregroundColor(homeViewModel.currentUltraFindDustTuple.1
+                                .opacity(0.7))
+                    }
+                    .padding(.vertical, 8)
+                    .padding(.horizontal, 12)
+                    .background {
+                        homeViewModel.currentUltraFindDustTuple.1.opacity(0.2)
+                    }
+                    .cornerRadius(8)
+                }
+                .padding(.top, 15)
             }
-            .task {
-                let XY: Util.LatXLngY = Util().convertGPS2XY(
-                    mode: .toGPS,
-                    lat_X: locationDataManager.locationManager.location?.coordinate.latitude ?? 0,
-                    lng_Y: locationDataManager.locationManager.location?.coordinate.longitude ?? 0
-                )
-                await homeViewModel.requestVeryShortForecastItems(
-                    x: String(XY.x),
-                    y: String(XY.y)
-                )
-                locationDataManager.locationManager.requestLocation()
+            .frame(maxWidth: .infinity, alignment: .center)
+            .padding(.bottom, 30)
+            
+            Divider()
+                .padding(.vertical, 10)
+            Text("Today")
+                .font(.system(size: 20, weight: .bold))
+            
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(alignment: .center, spacing: 5) {
+                    ForEach(
+                        homeViewModel.todayWeatherInformations,
+                        id: \.time
+                    ) {
+                        TodayWeatherVC(
+                            imageString: $0.weatherImage,
+                            time: $0.time,
+                            temperature: $0.temperature
+                        )
+                    }
+                }
             }
-            
-        case .restricted:
-            Text("위치 정보 제한됨")
-            
-        case .notDetermined:
-            Text("위치 정보 찾는중..")
-            ProgressView()
-            
-        default:
-            ProgressView()
+            .padding(.top, 20)
+        }
+        .task {
+            let XY: Util.LatXLngY = Util().convertGPS2XY(
+                mode: .toGPS,
+                lat_X: locationDataManager.locationManager.location?.coordinate.latitude ?? 0,
+                lng_Y: locationDataManager.locationManager.location?.coordinate.longitude ?? 0
+            )
+            await homeViewModel.requestVeryShortForecastItems(
+                x: String(XY.x),
+                y: String(XY.y)
+            )
+            locationDataManager.locationManager.requestLocation()
+            await homeViewModel.requestRealTimeFindDustForecastItems(
+                stationName: locationDataManager.currentLocationSubLocality
+            )
         }
     }
 }

@@ -34,7 +34,7 @@ struct TodayWeatherVC: View {
         .padding(.horizontal, 15)
         .overlay {
             RoundedRectangle(cornerRadius: 16)
-                .stroke(Color.gray)
+                .strokeBorder(Color.gray)
         }
     }
 }

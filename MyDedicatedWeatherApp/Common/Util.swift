@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 struct Util {
     
@@ -31,11 +32,9 @@ struct Util {
         
         let hourIndex = HHmm.index(HHmm.startIndex, offsetBy: 1)
         let hour = HHmm[HHmm.startIndex...hourIndex]
-        print(hour)
         
         let minuteIndex = HHmm.index(HHmm.startIndex, offsetBy: 2)
         let minute = HHmm[minuteIndex...lastIndex]
-        print(minute)
         
         return hour + ":" + minute
     }
@@ -426,8 +425,57 @@ struct Util {
         case toXY
         case toGPS
     }
+    
+    //MARK: - For realtime finddust forecast.. (실시간 미세먼지)
+
+    func remakeFindDustValue(value: String) -> (String, Color) { // 미세먼지
+        
+        let valueToInt: Int = Int(value) ?? 0
+        
+        switch valueToInt {
+            
+        case 0...30:
+            return ("좋음", .blue)
+        case 31...81:
+            return ("보통", .green)
+        case 81...150:
+            return ("나쁨", .orange)
+        case _ where valueToInt >= 151:
+            return ("매우 나쁨", .red)
+        default:
+            return ("알 수 없음", .clear)
+        }
+    }
+
+    func remakeUltraFindDustValue(value: String) -> (String, Color) { // 초 미세먼지
+        
+        let valueToInt: Int = Int(value) ?? 0
+        
+        switch valueToInt {
+            
+        case 0...15:
+            return ("좋음", .blue)
+        case 16...35:
+            return ("보통", .green)
+        case 36...75:
+            return ("나쁨", .orange)
+        case _ where valueToInt >= 76:
+            return ("매우 나쁨", .red)
+        default:
+            return ("알 수 없음", .clear)
+        }
+    }
 }
 
 
+
+//enum FineDustValueDescription: String {
+//
+//    case "좋음",
+//        "보통",
+//        "나쁨",
+//        "매우 나쁨",
+//        "알 수 없음"
+//}
 
 

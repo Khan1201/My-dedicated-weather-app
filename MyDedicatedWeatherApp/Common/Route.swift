@@ -9,7 +9,9 @@ import Foundation
 
 enum Route {
     
-    case GET_WEATHER_MID_TERM_FORECAST, GET_WEATHER_VERY_SHORT_TERM_FORECAST
+    case GET_WEATHER_MID_TERM_FORECAST,
+        GET_WEATHER_VERY_SHORT_TERM_FORECAST,
+        GET_REAL_TIME_FIND_DUST_FORECAST
     
     var val: String {
         
@@ -18,10 +20,11 @@ enum Route {
         case .GET_WEATHER_MID_TERM_FORECAST:
             return "http://apis.data.go.kr/1360000/MidFcstInfoService/getMidTa"
             
-            
         case .GET_WEATHER_VERY_SHORT_TERM_FORECAST:
             return "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst"
             
+        case .GET_REAL_TIME_FIND_DUST_FORECAST:
+            return "http://apis.data.go.kr/B552584/ArpltnInforInqireSvc/getMsrstnAcctoRltmMesureDnsty"
         }
     }
 }

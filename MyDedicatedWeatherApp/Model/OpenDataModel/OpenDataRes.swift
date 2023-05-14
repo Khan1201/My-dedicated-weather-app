@@ -9,7 +9,8 @@ import Foundation
 
 struct OpenDataRes<T>: Decodable where T: Decodable {
     
-    let item: [T]
+    var item: [T]?
+    var items: [T]?
     
     enum CodingKeys: String, CodingKey {
         
@@ -32,7 +33,16 @@ struct OpenDataRes<T>: Decodable where T: Decodable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let responseKeys = try container.nestedContainer(keyedBy: ResponseKeys.self, forKey: .response)
         let bodyKeys = try responseKeys.nestedContainer(keyedBy: BodyKeys.self, forKey: .body)
-        let itemsKeys = try bodyKeys.nestedContainer(keyedBy: ItemsKeys.self, forKey: .items)
-        self.item = try itemsKeys.decode([T].self, forKey: .item)
+        
+        self.item = nil
+        self.items = nil
+        
+        if T.Type.self == VeryShortOrShortTermForecastModel<VeryShortTermForecastCategory>.Type.self { // 초단기 or 단기 예보
+            let itemsKeys = try bodyKeys.nestedContainer(keyedBy: ItemsKeys.self, forKey: .items)
+            self.item = try itemsKeys.decodeIfPresent([T].self, forKey: .item)
+            
+        } else if T.Type.self == RealTimeFindDustForecastModel.Type.self { // 미세먼지 예보
+            self.items = try bodyKeys.decodeIfPresent([T].self, forKey: .items)
+        }
     }
 }

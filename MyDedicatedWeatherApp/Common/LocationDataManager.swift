@@ -11,8 +11,10 @@ import CoreLocation
 final class LocationDataManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     
     var locationManager = CLLocationManager()
-    @Published var authorizationStatus: CLAuthorizationStatus?
+//    @Published var authorizationStatus: CLAuthorizationStatus?
     @Published var currentLocation: String = ""
+    @Published var currentLocationSubLocality: String = ""
+    @Published var isLocationPermissionAllow: Bool = false
     
     override init() {
         super.init()
@@ -24,15 +26,18 @@ final class LocationDataManager: NSObject, ObservableObject, CLLocationManagerDe
             
         case .authorizedAlways, .authorizedWhenInUse:
             
-            authorizationStatus = .authorizedWhenInUse
             locationManager.requestLocation()
-  
+            isLocationPermissionAllow = true
         case .restricted:
-            authorizationStatus = .restricted
+            currentLocation = "위치정보 권한이 필요합니다."
+            isLocationPermissionAllow = false
+
         case .denied:
-            authorizationStatus = .denied
+            currentLocation = "위치정보 권한이 필요합니다."
+            isLocationPermissionAllow = false
         case .notDetermined:
-            authorizationStatus = .notDetermined
+            currentLocation = "위치정보 권한이 필요합니다."
+            isLocationPermissionAllow = false
             manager.requestWhenInUseAuthorization()
         default:
             ()
@@ -49,8 +54,9 @@ final class LocationDataManager: NSObject, ObservableObject, CLLocationManagerDe
         let local: Locale = Locale(identifier: "Ko-kr") // Korea
         
         geoCoder.reverseGeocodeLocation(findLocation, preferredLocale: local) { place, error in
-            if let address: [CLPlacemark] = place {
-                self.currentLocation = (address.last?.administrativeArea ?? "") + (address.last?.locality ?? "")
+            if let address: CLPlacemark = place?.last {
+                self.currentLocation = "\(address.administrativeArea ?? "")  \(address.subLocality ?? "")"
+                self.currentLocationSubLocality = address.subLocality ?? ""
             }
         }
     }

@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import CoreLocation
+import SwiftUI
 
 final class HomeViewModel: ObservableObject {
     
@@ -15,17 +15,23 @@ final class HomeViewModel: ObservableObject {
     @Published var currentWeatherTuple: (String, String) = ("","") // (description, imageName)
     @Published var currentTemperature: String = ""
     @Published var currentWeatherInformation: CurrentWeatherInformationModel = Dummy().currentWeatherInformation()
+    @Published var currentFineDustTuple: (String, Color) = ("", .clear)
+    @Published var currentUltraFindDustTuple: (String, Color) = ("", .clear)
     @Published var todayWeatherInformations: [TodayWeatherInformationModel] = []
     @Published var currentPlace: String = ""
     
     private let util = Util()
+    private let env = Env()
     
-    func requestMidTermForecastItems() async {
+    
+    // MARK: - Request..
+    
+    func requestMidTermForecastItems() async { // 중기예보
         
         let parameters: MidTermForecastReq = MidTermForecastReq(
-            serviceKey: Env().midTermForecastApiResponseKey,
+            serviceKey: env.openDataApiResponseKey,
             regId: MidTermLocationID.daegu.val,
-            tmFc: Util().midTermForecastRequestDate()
+            tmFc: util.midTermForecastRequestDate()
         )
         do {
             let result = try await JsonRequest().newRequest(
@@ -36,7 +42,10 @@ final class HomeViewModel: ObservableObject {
                 resultType: OpenDataRes<MidTermForecastModel>.self
             )
             DispatchQueue.main.async {
-                self.setMidTermForecastItemToArray(item: result.item.first ?? Dummy().midTermForecastModel())
+                if let item = result.item?.first {
+                    self.setMidTermForecastItemToArray(item: item)
+                }
+                
             }
         } catch APIError.transportError {
             
@@ -50,12 +59,12 @@ final class HomeViewModel: ObservableObject {
         }
     }
     
-    func requestVeryShortForecastItems(x: String, y: String) async {
+    func requestVeryShortForecastItems(x: String, y: String) async { // 초단기예보
         
-        let baseTime = Util().veryShortTermForecastBaseTime()
+        let baseTime = util.veryShortTermForecastBaseTime()
         
         let parameters: VeryShortOrShortTermForecastReq = VeryShortOrShortTermForecastReq(
-            serviceKey: Env().midTermForecastApiResponseKey,
+            serviceKey: env.openDataApiResponseKey,
             baseDate: util.veryShortTermForecastBaseDate(baseTime: baseTime),
             baseTime: baseTime,
             nx: x,
@@ -71,9 +80,12 @@ final class HomeViewModel: ObservableObject {
                 resultType: OpenDataRes<VeryShortOrShortTermForecastModel<VeryShortTermForecastCategory>>.self
             )
             DispatchQueue.main.async {
-                self.setCurrentTemperature(items: result.item)
-                self.setCurrentWeatherInformations(items: result.item)
-                self.setTodayWeathers(items: result.item)
+                
+                if let items = result.item {
+                    self.setCurrentTemperature(items: items)
+                    self.setCurrentWeatherInformations(items: items)
+                    self.setTodayWeathers(items: items)
+                }
             }
             
         } catch APIError.transportError {
@@ -87,6 +99,43 @@ final class HomeViewModel: ObservableObject {
             }
         }
     }
+    
+    func requestRealTimeFindDustForecastItems(stationName: String) async { // 실시간 미세먼지, 초미세먼지
+        
+        let parameters: RealTimeFindDustForecastReq = RealTimeFindDustForecastReq(
+            serviceKey: env.openDataApiResponseKey,
+            stationName: stationName
+        )
+        
+        do {
+            let result = try await JsonRequest().newRequest(
+                url: Route.GET_REAL_TIME_FIND_DUST_FORECAST.val,
+                method: .get,
+                parameters: parameters,
+                headers: nil,
+                resultType: OpenDataRes<RealTimeFindDustForecastModel>.self
+            )
+            
+            if let item = result.items?.first {
+                
+                DispatchQueue.main.async {
+                    self.currentFineDustTuple = self.util.remakeFindDustValue(value: item.pm10Value)
+                    self.currentUltraFindDustTuple = self.util.remakeUltraFindDustValue(value: item.pm25Value)
+                }
+            }
+            
+        } catch APIError.transportError {
+            
+            DispatchQueue.main.async {
+                self.errorMessage = "API 통신 에러"
+            }
+        } catch {
+            DispatchQueue.main.async {
+                self.errorMessage = "알 수 없는 오류"
+            }
+        }
+    }
+    
     
     func currentWeatherTuple(items: [VeryShortOrShortTermForecastModel<VeryShortTermForecastCategory>]) -> (String, String) {
         
@@ -114,18 +163,6 @@ final class HomeViewModel: ObservableObject {
             currentTemperature = currenTemperatureItem.fcstValue
         } else {
             print ("currenTemperatureItem == null..")
-        }
-    }
-    
-    func setCurrentLocation(latitude: CGFloat, longitude: CGFloat) {
-        let findLocation: CLLocation = CLLocation(latitude: latitude, longitude: longitude)
-        let geoCoder: CLGeocoder = CLGeocoder()
-        let local: Locale = Locale(identifier: "Ko-kr") // Korea
-        
-        geoCoder.reverseGeocodeLocation(findLocation, preferredLocale: local) { place, error in
-            if let address: [CLPlacemark] = place {
-                self.currentPlace = (address.last?.administrativeArea ?? "") + (address.last?.locality ?? "")
-            }
         }
     }
     
