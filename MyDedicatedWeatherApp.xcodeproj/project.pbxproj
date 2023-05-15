@@ -7,9 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BC137CA52A128221002D6667 /* Sunny.json in Resources */ = {isa = PBXBuildFile; fileRef = BC137CA42A128221002D6667 /* Sunny.json */; };
+		BC137CAD2A1284F6002D6667 /* SunnyNight.json in Resources */ = {isa = PBXBuildFile; fileRef = BC137CAC2A1284F6002D6667 /* SunnyNight.json */; };
+		BC137CAF2A128518002D6667 /* CloudMany.json in Resources */ = {isa = PBXBuildFile; fileRef = BC137CAE2A128518002D6667 /* CloudMany.json */; };
+		BC137CB12A128546002D6667 /* Cloudy.json in Resources */ = {isa = PBXBuildFile; fileRef = BC137CB02A128546002D6667 /* Cloudy.json */; };
+		BC137CB32A12885D002D6667 /* CloudManyNight.json in Resources */ = {isa = PBXBuildFile; fileRef = BC137CB22A12885D002D6667 /* CloudManyNight.json */; };
+		BC137CB52A1288F3002D6667 /* Rain.json in Resources */ = {isa = PBXBuildFile; fileRef = BC137CB42A1288F3002D6667 /* Rain.json */; };
+		BC137CB72A128913002D6667 /* RainNight.json in Resources */ = {isa = PBXBuildFile; fileRef = BC137CB62A128913002D6667 /* RainNight.json */; };
+		BC137CB92A128959002D6667 /* Snow.json in Resources */ = {isa = PBXBuildFile; fileRef = BC137CB82A128959002D6667 /* Snow.json */; };
+		BC137CBB2A128975002D6667 /* SnowNight.json in Resources */ = {isa = PBXBuildFile; fileRef = BC137CBA2A128975002D6667 /* SnowNight.json */; };
 		BC65D50F2A0BDF1C00EFADD4 /* TodayWeatherVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC65D50E2A0BDF1C00EFADD4 /* TodayWeatherVC.swift */; };
 		BC6EF8BD2A10AAB30072A2DE /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6EF8BC2A10AAB30072A2DE /* Extension.swift */; };
 		BC6EF8BF2A10C0DC0072A2DE /* RealTimeFindDustForecastModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6EF8BE2A10C0DC0072A2DE /* RealTimeFindDustForecastModel.swift */; };
+		BC7D33E22A12788E00B1012F /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = BC7D33E12A12788E00B1012F /* Lottie */; };
+		BC7D33E52A127ABB00B1012F /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC7D33E42A127ABB00B1012F /* LottieView.swift */; };
 		BC85A94E2A02570E00C4CC48 /* VeryShortOrShortTermForecastModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC85A94D2A02570E00C4CC48 /* VeryShortOrShortTermForecastModel.swift */; };
 		BCA30F7A29FE203A0078D0B1 /* MyDedicatedWeatherAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30F7929FE203A0078D0B1 /* MyDedicatedWeatherAppApp.swift */; };
 		BCA30F7C29FE203A0078D0B1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30F7B29FE203A0078D0B1 /* ContentView.swift */; };
@@ -31,9 +42,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		BC137CA42A128221002D6667 /* Sunny.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Sunny.json; path = ../../../Downloads/Sunny.json; sourceTree = "<group>"; };
+		BC137CA72A1282CD002D6667 /* Sunny.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Sunny.json; sourceTree = "<group>"; };
+		BC137CAC2A1284F6002D6667 /* SunnyNight.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = SunnyNight.json; path = ../../../../Downloads/SunnyNight.json; sourceTree = "<group>"; };
+		BC137CAE2A128518002D6667 /* CloudMany.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = CloudMany.json; path = ../../../../Downloads/CloudMany.json; sourceTree = "<group>"; };
+		BC137CB02A128546002D6667 /* Cloudy.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Cloudy.json; path = ../../../../Downloads/Cloudy.json; sourceTree = "<group>"; };
+		BC137CB22A12885D002D6667 /* CloudManyNight.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = CloudManyNight.json; path = ../../../../Downloads/CloudManyNight.json; sourceTree = "<group>"; };
+		BC137CB42A1288F3002D6667 /* Rain.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Rain.json; path = ../../../../Downloads/Rain.json; sourceTree = "<group>"; };
+		BC137CB62A128913002D6667 /* RainNight.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = RainNight.json; path = ../../../../Downloads/RainNight.json; sourceTree = "<group>"; };
+		BC137CB82A128959002D6667 /* Snow.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Snow.json; path = ../../../../Downloads/Snow.json; sourceTree = "<group>"; };
+		BC137CBA2A128975002D6667 /* SnowNight.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = SnowNight.json; path = ../../../../Downloads/SnowNight.json; sourceTree = "<group>"; };
 		BC65D50E2A0BDF1C00EFADD4 /* TodayWeatherVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayWeatherVC.swift; sourceTree = "<group>"; };
 		BC6EF8BC2A10AAB30072A2DE /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		BC6EF8BE2A10C0DC0072A2DE /* RealTimeFindDustForecastModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealTimeFindDustForecastModel.swift; sourceTree = "<group>"; };
+		BC7D33E42A127ABB00B1012F /* LottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
 		BC85A94D2A02570E00C4CC48 /* VeryShortOrShortTermForecastModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VeryShortOrShortTermForecastModel.swift; sourceTree = "<group>"; };
 		BCA30F7629FE20390078D0B1 /* MyDedicatedWeatherApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyDedicatedWeatherApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCA30F7929FE203A0078D0B1 /* MyDedicatedWeatherAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDedicatedWeatherAppApp.swift; sourceTree = "<group>"; };
@@ -61,12 +83,37 @@
 			buildActionMask = 2147483647;
 			files = (
 				BCA30F8C29FE25280078D0B1 /* Alamofire in Frameworks */,
+				BC7D33E22A12788E00B1012F /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BC137CA62A1282A9002D6667 /* LottieAnimation */ = {
+			isa = PBXGroup;
+			children = (
+				BC137CBA2A128975002D6667 /* SnowNight.json */,
+				BC137CB82A128959002D6667 /* Snow.json */,
+				BC137CB62A128913002D6667 /* RainNight.json */,
+				BC137CB42A1288F3002D6667 /* Rain.json */,
+				BC137CB02A128546002D6667 /* Cloudy.json */,
+				BC137CAE2A128518002D6667 /* CloudMany.json */,
+				BC137CB22A12885D002D6667 /* CloudManyNight.json */,
+				BC137CAC2A1284F6002D6667 /* SunnyNight.json */,
+				BC137CA72A1282CD002D6667 /* Sunny.json */,
+			);
+			path = LottieAnimation;
+			sourceTree = "<group>";
+		};
+		BC7D33E32A127A7300B1012F /* ViewRepresentable */ = {
+			isa = PBXGroup;
+			children = (
+				BC7D33E42A127ABB00B1012F /* LottieView.swift */,
+			);
+			path = ViewRepresentable;
+			sourceTree = "<group>";
+		};
 		BCA30F6D29FE20390078D0B1 = {
 			isa = PBXGroup;
 			children = (
@@ -95,8 +142,10 @@
 				BCA30F7929FE203A0078D0B1 /* MyDedicatedWeatherAppApp.swift */,
 				BCA30F7B29FE203A0078D0B1 /* ContentView.swift */,
 				BCA30F7D29FE203A0078D0B1 /* Assets.xcassets */,
+				BC137CA62A1282A9002D6667 /* LottieAnimation */,
 				BCA30F7F29FE203B0078D0B1 /* Preview Content */,
 				BCA30F9429FE39BC0078D0B1 /* Env.swift */,
+				BC137CA42A128221002D6667 /* Sunny.json */,
 			);
 			path = MyDedicatedWeatherApp;
 			sourceTree = "<group>";
@@ -112,6 +161,7 @@
 		BCA30F8729FE205D0078D0B1 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				BC7D33E32A127A7300B1012F /* ViewRepresentable */,
 				BCA30FAB29FFE35B0078D0B1 /* ViewComponent */,
 				BCA30FA429FE73C90078D0B1 /* HomeView.swift */,
 			);
@@ -193,6 +243,7 @@
 			name = MyDedicatedWeatherApp;
 			packageProductDependencies = (
 				BCA30F8B29FE25280078D0B1 /* Alamofire */,
+				BC7D33E12A12788E00B1012F /* Lottie */,
 			);
 			productName = MyDedicatedWeatherApp;
 			productReference = BCA30F7629FE20390078D0B1 /* MyDedicatedWeatherApp.app */;
@@ -224,6 +275,7 @@
 			mainGroup = BCA30F6D29FE20390078D0B1;
 			packageReferences = (
 				BCA30F8A29FE25280078D0B1 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				BC7D33E02A12788E00B1012F /* XCRemoteSwiftPackageReference "lottie-ios" */,
 			);
 			productRefGroup = BCA30F7729FE20390078D0B1 /* Products */;
 			projectDirPath = "";
@@ -239,8 +291,17 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BC137CAD2A1284F6002D6667 /* SunnyNight.json in Resources */,
+				BC137CB72A128913002D6667 /* RainNight.json in Resources */,
+				BC137CA52A128221002D6667 /* Sunny.json in Resources */,
+				BC137CBB2A128975002D6667 /* SnowNight.json in Resources */,
+				BC137CB32A12885D002D6667 /* CloudManyNight.json in Resources */,
+				BC137CB12A128546002D6667 /* Cloudy.json in Resources */,
+				BC137CB92A128959002D6667 /* Snow.json in Resources */,
 				BCA30F8129FE203B0078D0B1 /* Preview Assets.xcassets in Resources */,
 				BCA30F7E29FE203A0078D0B1 /* Assets.xcassets in Resources */,
+				BC137CAF2A128518002D6667 /* CloudMany.json in Resources */,
+				BC137CB52A1288F3002D6667 /* Rain.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -252,6 +313,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BCA30F9129FE265B0078D0B1 /* Route.swift in Sources */,
+				BC7D33E52A127ABB00B1012F /* LottieView.swift in Sources */,
 				BCA30F9A29FE49FE0078D0B1 /* OpenDataRes.swift in Sources */,
 				BCA30F7C29FE203A0078D0B1 /* ContentView.swift in Sources */,
 				BCA30F9529FE39BC0078D0B1 /* Env.swift in Sources */,
@@ -479,6 +541,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		BC7D33E02A12788E00B1012F /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.2.0;
+			};
+		};
 		BCA30F8A29FE25280078D0B1 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
@@ -490,6 +560,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		BC7D33E12A12788E00B1012F /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BC7D33E02A12788E00B1012F /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
+		};
 		BCA30F8B29FE25280078D0B1 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = BCA30F8A29FE25280078D0B1 /* XCRemoteSwiftPackageReference "Alamofire" */;

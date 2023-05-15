@@ -10,7 +10,6 @@ import SwiftUI
 struct HomeView: View {
     @StateObject var homeViewModel: HomeViewModel = HomeViewModel()
     @StateObject var locationDataManager = LocationDataManager()
-    @State var test: String = ""
     
     var body: some View {
         
@@ -42,15 +41,17 @@ struct HomeView: View {
                     }
                 }
                 
-                Text(Util().currntDateByCustomFormatter(
+                Text(Util().currentDateByCustomFormatter(
                     dateFormat: "yyyy, MM / dd")
                 )
                     .font(.system(size: 20))
                     .foregroundColor(.gray.opacity(0.7))
                 
-                Image(homeViewModel.currentWeatherInformation.weatherImage)
-                    .resizable()
-                    .frame(width: 120, height: 120)
+                LottieView(
+                    name: homeViewModel.currentWeatherTuple.1,
+                    loopMode: .loop
+                )
+                    .frame(width: 150, height: 150)
                 
                 Text(homeViewModel.currentWeatherInformation.temperature + "°")
                     .font(.system(size: 26, weight: .medium))

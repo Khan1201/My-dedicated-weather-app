@@ -39,12 +39,28 @@ struct Util {
         return hour + ":" + minute
     }
     
-    func currntDateByCustomFormatter(dateFormat: String) -> String {
+    func currentDateByCustomFormatter(dateFormat: String) -> String {
         
         let formatter = DateFormatter()
         formatter.dateFormat = dateFormat
         
         return formatter.string(from: Date())
+    }
+    
+    func decideAnimationWhetherDayOrNight(day: String, night: String) -> String {
+        
+        let currentHour: Int = Int(self.currentDateByCustomFormatter(dateFormat: "HH")) ?? 0
+        switch currentHour {
+        case 19...23:
+            return night
+            
+        case 00...04:
+            return night
+            
+        default:
+            return day
+        }
+        
     }
     
     
@@ -194,11 +210,13 @@ struct Util {
         case "0":
             return ("없음", "")
         case "1":
-            return ("비", "weather_rain")
+            let animationJson = self.decideAnimationWhetherDayOrNight(day: "Rain", night: "RainNight")
+            return ("비", animationJson)
         case "2":
             return ("비/눈", "weather_rain_snow")
         case "3":
-            return ("눈", "weather_snow")
+            let animationJson = self.decideAnimationWhetherDayOrNight(day: "Snow", night: "SnowNight")
+            return ("눈", animationJson)
         case "5":
             return ("빗방울", "weather_rain_small")
         case "6":
@@ -212,11 +230,14 @@ struct Util {
         
         switch value {
         case "1":
-            return ("맑음", "weather_sunny")
+            let animationJson = self.decideAnimationWhetherDayOrNight(day: "Sunny", night: "SunnyNight")
+            return ("맑음", animationJson)
+            
         case "3":
-            return ("구름많음", "weather_cloud_many")
+            let animationJson = self.decideAnimationWhetherDayOrNight(day: "CloudMany", night: "CloudManyNight")
+            return ("구름많음", animationJson)
         case "4":
-            return ("흐림", "weather_blur")
+            return ("흐림", "Cloudy")
         default:
             return ("알 수 없음", "load_fail")
         }
@@ -466,16 +487,4 @@ struct Util {
         }
     }
 }
-
-
-
-//enum FineDustValueDescription: String {
-//
-//    case "좋음",
-//        "보통",
-//        "나쁨",
-//        "매우 나쁨",
-//        "알 수 없음"
-//}
-
 
