@@ -13,6 +13,13 @@ struct Util {
     
     //MARK: - Common..
     
+    /**
+     Current date String by adding day
+
+     - parameter currentDate:current date,
+     - parameter day: for adding day,
+     - parameter dateFormat: for current date format type
+     */
     func dateToStringByAddingDay(currentDate: Date, day: Int, dateFormat: String) -> String {
         
         let calender: Calendar = Calendar.current
@@ -26,6 +33,12 @@ struct Util {
         return yesterdayDateToString
     }
     
+    /**
+     ex) 현재시각 AM 10시
+        1000 -> 10:00 변환
+
+     - parameter HHmm: hour minute (HHmm) String
+     */
     func convertHHmmToHHColonmm(HHmm: String) -> String {
         
         let lastIndex = HHmm.index(before: HHmm.endIndex)
@@ -39,6 +52,11 @@ struct Util {
         return hour + ":" + minute
     }
     
+    /**
+     현재 Date -> dateFormat 에 따른 Date
+
+     - parameter dateFormat: dateFormat String
+     */
     func currentDateByCustomFormatter(dateFormat: String) -> String {
         
         let formatter = DateFormatter()
@@ -47,25 +65,34 @@ struct Util {
         return formatter.string(from: Date())
     }
     
-    func decideAnimationWhetherDayOrNight(day: String, night: String) -> String {
+    /**
+     현재 시간에 따른  낮 or 밤 Image String
+
+     - parameter dayImageString: 05 ~ 18 시 image string
+     - parameter nightImageString: 19 ~ 04 시 image string
+     */
+    func decideAnimationWhetherDayOrNight(dayImageString: String, nightImgString: String) -> String {
         
         let currentHour: Int = Int(self.currentDateByCustomFormatter(dateFormat: "HH")) ?? 0
         switch currentHour {
         case 19...23:
-            return night
+            return nightImgString
             
         case 00...04:
-            return night
+            return nightImgString
             
         default:
-            return day
+            return dayImageString
         }
-        
     }
     
     
     //MARK: - For Mid Term Forecast.. (중기 예보)
     
+    /**
+     Return 현재시간 -> baseDate (중기예보 Requst 타입)
+
+     */
     func midTermForecastRequestDate() -> String {
         
         var result: String = ""
@@ -108,77 +135,105 @@ struct Util {
     
     // MARK: - For Very Short or Short Term Forecast.. (초 단기 예보, 단기 예보)
     
-    func veryShortTermForecastCategoryValue(category: VeryShortTermForecastCategory, value: String) -> (String, String) {
+    /**
+     초단기예보의 Category 타입에 따른 값 Remake
+     
+     - parameter category: 예보 조회 response category 타입
+     - parameter value: 예보 조회 response category 타입의 value
+     */
+    func veryShortTermForecastCategoryValue(category: VeryShortTermForecastCategory, value: String) -> Weather.DescriptionAndImageString {
         
         switch category {
             
         case .T1H: // 기온
-            return ("\(value)°", "")
+            return Weather.DescriptionAndImageString(description: "\(value)°", imageString: "")
             
         case .RN1: // 1시간 강수량
-            return (remakeOneHourPrecipitationValue(value: value), "")
+            return Weather.DescriptionAndImageString(
+                description: remakeOneHourPrecipitationValueByVeryShortTermOrShortTermForecast(value: value),
+                imageString: ""
+            )
             
         case .PTY: // 강수 형태
-            return remakePrecipitaionTypeValue(value: value)
+            return remakePrecipitaionTypeValueByVeryShortTermOrShortTermForecast(value: value)
             
         case .SKY: // 하늘 상태
-            return remakeSkyStateValue(value: value)
+            return remakeSkyStateValueByVeryShortTermOrShortTermForecast(value: value)
             
         case .REH: // 습도
-            return ("\(value)%", "")
+            return Weather.DescriptionAndImageString(description: "\(value)%", imageString: "")
             
         case .WSD: // 풍속
-            return (remakeWindSpeedValue(value: value), "")
+            return Weather.DescriptionAndImageString(
+                description: remakeWindSpeedValueByVeryShortTermOrShortTermForecast(value: value),
+                imageString: ""
+            )
             
         case .UUU: // 동서 바람 성분 (사용 x)
-            return ("","")
+            return Weather.DescriptionAndImageString(description: "", imageString: "")
             
         case .VVV: // 남북 바람 성분 (사용 x)
-            return ("","")
-            
+            return Weather.DescriptionAndImageString(description: "", imageString: "")
+
         case .LGT: // 낙뢰 (사용 x)
-            return ("","")
-            
+            return Weather.DescriptionAndImageString(description: "", imageString: "")
+
         case .VEC: // 풍향 (사용 x)
-            return ("","")
+            return Weather.DescriptionAndImageString(description: "", imageString: "")
 
         }
     }
-    
-    func shortTermForecastCategoryValue(category: ShortTermForecastCategory, value: String) -> (String, String) {
+    /**
+     단기예보의 Category 타입에 따른 값 Remake
+     
+     - parameter category: 예보 조회 response category 타입
+     - parameter value: 예보 조회 response category 타입의 value
+     */
+    func shortTermForecastCategoryValue(category: ShortTermForecastCategory, value: String) -> Weather.DescriptionAndImageString {
         
         switch category {
             
         case .POP: // 강수 확률
-            return ("\(value)%", "")
+            return Weather.DescriptionAndImageString(description: "\(value)%", imageString: "")
             
         case .PTY: // 강수 형태
-            return remakePrecipitaionTypeValue(value: value)
+            return remakePrecipitaionTypeValueByVeryShortTermOrShortTermForecast(value: value)
             
         case .PCP: // 1시간 강수량
-            return (remakeOneHourPrecipitationValue(value: value), "")
+            return Weather.DescriptionAndImageString(
+                description: remakeOneHourPrecipitationValueByVeryShortTermOrShortTermForecast(value: value),
+                imageString: ""
+            )
             
         case .REH: // 습도
-            return ("\(value)%", "")
-            
+            return Weather.DescriptionAndImageString(description: "\(value)%", imageString: "")
+
         case .SKY: // 하늘 상태
-            return remakeSkyStateValue(value: value)
+            return remakeSkyStateValueByVeryShortTermOrShortTermForecast(value: value)
             
         case .TMP: // 1시간 기온
-            return ("\(value)°", "")
+            return Weather.DescriptionAndImageString(description: "\(value)°", imageString: "")
             
         case .TMN: // 일 최저기온
-            return ("\(value)°", "")
-            
+            return Weather.DescriptionAndImageString(description: "\(value)°", imageString: "")
+
         case .TMX: // 일 최고기온
-            return ("\(value)°", "")
-            
+            return Weather.DescriptionAndImageString(description: "\(value)°", imageString: "")
+
         case .WSD: // 풍속
-            return (remakeWindSpeedValue(value: value), "")
+            return Weather.DescriptionAndImageString(
+                description: remakeWindSpeedValueByVeryShortTermOrShortTermForecast(value: value),
+                imageString: ""
+            )
         }
     }
     
-    func remakeOneHourPrecipitationValue(value: String) -> String {
+    /**
+    초단기예보 or 단기예보의 1시간 강수량 값 -> String
+     
+     - parameter value: 예보 조회 response 1시간 강수량 값
+     */
+    func remakeOneHourPrecipitationValueByVeryShortTermOrShortTermForecast(value: String) -> String {
         
         if value == "강수없음" {
             return "비 없음"
@@ -202,48 +257,82 @@ struct Util {
             }
         }
     }
-    
-    func remakePrecipitaionTypeValue(value: String) -> (String, String) {
+    /**
+    초단기예보 or 단기예보의 강수량 값 -> (강수량 String, 강수량 Img String)
+     
+     - parameter value: 예보 조회 response 바람속도 값
+     */
+    func remakePrecipitaionTypeValueByVeryShortTermOrShortTermForecast(value: String) -> Weather.DescriptionAndImageString {
         
         switch value {
             
         case "0":
-            return ("없음", "")
+            return Weather.DescriptionAndImageString(description: "없음", imageString: "")
+            
         case "1":
-            let animationJson = self.decideAnimationWhetherDayOrNight(day: "Rain", night: "RainNight")
-            return ("비", animationJson)
+            let animationJson = self.decideAnimationWhetherDayOrNight(
+                dayImageString: "Rain",
+                nightImgString: "RainNight"
+            )
+            return Weather.DescriptionAndImageString(description: "비", imageString: animationJson)
+            
         case "2":
-            return ("비/눈", "weather_rain_snow")
+            return Weather.DescriptionAndImageString(description: "비/눈", imageString: "weather_rain_snow")
+            
         case "3":
-            let animationJson = self.decideAnimationWhetherDayOrNight(day: "Snow", night: "SnowNight")
-            return ("눈", animationJson)
+            let animationJson = self.decideAnimationWhetherDayOrNight(
+                dayImageString: "Snow",
+                nightImgString: "SnowNight"
+            )
+            return Weather.DescriptionAndImageString(description: "눈", imageString: animationJson)
+            
         case "5":
-            return ("빗방울", "weather_rain_small")
+            return Weather.DescriptionAndImageString(description: "빗방울", imageString: "weather_rain_small")
+            
         case "6":
-            return ("빗방울 / 눈날림", "")
+            return Weather.DescriptionAndImageString(description: "빗방울 / 눈날림", imageString: "")
+            
         default:
-            return ("알 수 없음", "load_fail")
+            return Weather.DescriptionAndImageString(description: "알 수 없음", imageString: "load_fail")
         }
     }
     
-    func remakeSkyStateValue(value: String) -> (String, String) {
+    /**
+    초단기예보 or 단기예보의 하늘상태  값 -> (하늘상태 String, 하늘상태 Img String)
+     
+     - parameter value: 예보 조회 response 하늘상태 값
+     */
+    func remakeSkyStateValueByVeryShortTermOrShortTermForecast(value: String) -> Weather.DescriptionAndImageString {
         
         switch value {
         case "1":
-            let animationJson = self.decideAnimationWhetherDayOrNight(day: "Sunny", night: "SunnyNight")
-            return ("맑음", animationJson)
+            let animationJson = self.decideAnimationWhetherDayOrNight(
+                dayImageString: "Sunny",
+                nightImgString: "SunnyNight"
+            )
+            return Weather.DescriptionAndImageString(description: "맑음", imageString: animationJson)
             
         case "3":
-            let animationJson = self.decideAnimationWhetherDayOrNight(day: "CloudMany", night: "CloudManyNight")
-            return ("구름많음", animationJson)
+            let animationJson = self.decideAnimationWhetherDayOrNight(
+                dayImageString: "CloudMany",
+                nightImgString: "CloudManyNight"
+            )
+            return Weather.DescriptionAndImageString(description: "구름많음", imageString: animationJson)
+            
         case "4":
-            return ("흐림", "Cloudy")
+            return Weather.DescriptionAndImageString(description: "흐림", imageString: "Cloudy")
+            
         default:
-            return ("알 수 없음", "load_fail")
+            return Weather.DescriptionAndImageString(description: "알 수 없음", imageString: "load_fail")
         }
     }
     
-    func remakeWindSpeedValue(value: String) -> String {
+    /**
+    초단기예보 or 단기예보의 바람속도 값 -> String
+     
+     - parameter value: 예보 조회 response 바람속도 값
+     */
+    func remakeWindSpeedValueByVeryShortTermOrShortTermForecast(value: String) -> String {
         
         let stringToDouble = Double(value) ?? 0.0
         
@@ -262,6 +351,10 @@ struct Util {
         }
     }
     
+    /**
+     Return 현재시간 -> baseTime (단기예보 Requst 타입)
+     
+     */
     func shortTermForecastBaseTime() -> String {
                 
         let dateFormatterYearMonthDay = DateFormatter()
@@ -302,8 +395,11 @@ struct Util {
         }
     }
     
+    /**
+     Return 현재시간 -> baseTime (초단기예보 Requst 타입)
+     
+     */
     func veryShortTermForecastBaseTime() -> String {
-        
         
         let dateFormatterHour: DateFormatter = DateFormatter()
         dateFormatterHour.dateFormat = "HH"
@@ -329,6 +425,12 @@ struct Util {
         }
     }
     
+    
+    /**
+    초단기예보 Reqeust baseTime(시간)에 따른 baseDate(날짜) 설정
+     
+     - parameter baseTime: '단기예보 request 시간'
+     */
     func veryShortTermForecastBaseDate(baseTime: String) -> String {
         
         return dateToStringByAddingDay(
@@ -338,17 +440,28 @@ struct Util {
         )
     }
     
-    func veryShortTermForecastWeatherTuple(ptyValue: String, skyValue: String) -> (String, String) { // (weatherDescription, weatherImageName)
+    /**
+    단기예보 Reqeust baseTime(시간)에 따른 baseDate(날짜) 설정
+     
+     - parameter ptyValue: 강수량 값,
+     - parameter skyValue: 하늘상태 값
+     */
+    func veryShortTermForecastWeatherTuple(ptyValue: String, skyValue: String) -> Weather.DescriptionAndImageString { // (weatherDescription, weatherImageName)
         
         if ptyValue != "0" {
-            return remakePrecipitaionTypeValue(value: ptyValue)
+            return remakePrecipitaionTypeValueByVeryShortTermOrShortTermForecast(value: ptyValue)
             
         } else {
-            return remakeSkyStateValue(value: skyValue)
+            return remakeSkyStateValueByVeryShortTermOrShortTermForecast(value: skyValue)
         }
     }
     
-    //////////////// GPS -> GRID ///////////////
+    /**
+    Latitude(위도) ,Longitude(경도) -> nx, ny (단기예보, 초단기예보 전용 x, y 좌표 값)
+     
+     - parameter ptyValue: 강수량 값,
+     - parameter skyValue: 하늘상태 값
+     */
     func convertGPS2XY(mode: LocationConvertMode, lat_X: Double, lng_Y: Double) -> LatXLngY {
         
     let RE = 6371.00877 // 지구 반경(km)

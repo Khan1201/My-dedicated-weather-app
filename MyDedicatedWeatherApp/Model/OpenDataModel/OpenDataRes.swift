@@ -41,7 +41,7 @@ struct OpenDataRes<T>: Decodable where T: Decodable {
             let itemsKeys = try bodyKeys.nestedContainer(keyedBy: ItemsKeys.self, forKey: .items)
             self.item = try itemsKeys.decodeIfPresent([T].self, forKey: .item)
             
-        } else if T.Type.self == RealTimeFindDustForecastModel.Type.self { // 미세먼지 예보
+        } else { // 미세먼지 예보
             self.items = try bodyKeys.decodeIfPresent([T].self, forKey: .items)
         }
     }

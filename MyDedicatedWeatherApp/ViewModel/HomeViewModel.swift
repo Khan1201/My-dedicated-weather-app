@@ -10,19 +10,23 @@ import SwiftUI
 
 final class HomeViewModel: ObservableObject {
     
-    @Published var threeToTenDaysTemperature: [temperatureMinMax] = []
+    @Published var threeToTenDaysTemperature: [temperatureMinMax] = [] // day 3 ~ 10 temperature
     @Published var errorMessage: String = ""
-    @Published var currentWeatherTuple: (String, String) = ("","") // (description, imageName)
+    @Published var currentWeatherWithDescriptionAndImgString: Weather.DescriptionAndImageString = .init(description: "", imageString: "")
     @Published var currentTemperature: String = ""
     @Published var currentWeatherInformation: CurrentWeatherInformationModel = Dummy().currentWeatherInformation()
     @Published var currentFineDustTuple: (String, Color) = ("", .clear)
     @Published var currentUltraFindDustTuple: (String, Color) = ("", .clear)
     @Published var todayWeatherInformations: [TodayWeatherInformationModel] = []
-    @Published var currentPlace: String = ""
+    
+    private enum ForDustStationRequest {
+        static var tmXAndtmY: (String, String) = ("","")
+        static var stationName: String = ""
+    }
     
     private let util = Util()
     private let env = Env()
-    
+    private let jsonRequest = JsonRequest()
     
     // MARK: - Request..
     
@@ -34,7 +38,7 @@ final class HomeViewModel: ObservableObject {
             tmFc: util.midTermForecastRequestDate()
         )
         do {
-            let result = try await JsonRequest().newRequest(
+            let result = try await jsonRequest.newRequest(
                 url: Route.GET_WEATHER_MID_TERM_FORECAST.val,
                 method: .get,
                 parameters: parameters,
@@ -59,7 +63,7 @@ final class HomeViewModel: ObservableObject {
         }
     }
     
-    func requestVeryShortForecastItems(x: String, y: String) async { // 초단기예보
+    func requestVeryShortForecastItems(xy: Util.LatXLngY) async { // 초단기예보
         
         let baseTime = util.veryShortTermForecastBaseTime()
         
@@ -67,12 +71,12 @@ final class HomeViewModel: ObservableObject {
             serviceKey: env.openDataApiResponseKey,
             baseDate: util.veryShortTermForecastBaseDate(baseTime: baseTime),
             baseTime: baseTime,
-            nx: x,
-            ny: y
+            nx: String(xy.x),
+            ny: String(xy.y)
         )
         
         do {
-            let result = try await JsonRequest().newRequest(
+            let result = try await jsonRequest.newRequest(
                 url: Route.GET_WEATHER_VERY_SHORT_TERM_FORECAST.val,
                 method: .get,
                 parameters: parameters,
@@ -100,15 +104,15 @@ final class HomeViewModel: ObservableObject {
         }
     }
     
-    func requestRealTimeFindDustForecastItems(stationName: String) async { // 실시간 미세먼지, 초미세먼지
+    func requestRealTimeFindDustForecastItems() async { // 실시간 미세먼지, 초미세먼지
         
         let parameters: RealTimeFindDustForecastReq = RealTimeFindDustForecastReq(
             serviceKey: env.openDataApiResponseKey,
-            stationName: stationName
+            stationName: ForDustStationRequest.stationName
         )
         
         do {
-            let result = try await JsonRequest().newRequest(
+            let result = try await jsonRequest.newRequest(
                 url: Route.GET_REAL_TIME_FIND_DUST_FORECAST.val,
                 method: .get,
                 parameters: parameters,
@@ -136,8 +140,77 @@ final class HomeViewModel: ObservableObject {
         }
     }
     
+    func requestDustForecastStationXY(umdName: String, locality: String) async {
+        
+        let param: DustForecastStationXYReq = DustForecastStationXYReq(
+            serviceKey: env.openDataApiResponseKey,
+            umdName: umdName
+        )
+        
+        do {
+            let result = try await jsonRequest.newRequest(
+                url: Route.GET_DUST_FORECAST_STATION_XY.val,
+                method: .get,
+                parameters: param,
+                headers: nil,
+                resultType: OpenDataRes<DustForecastStationXYModel>.self
+            )
+            
+            if let filteredResult = result.items?.first(where: { item in
+                item.sidoName == locality
+            }) {
+                DispatchQueue.main.async {
+                    ForDustStationRequest.tmXAndtmY = (filteredResult.tmX, filteredResult.tmY)
+                }
+            }
+            
+        } catch APIError.transportError {
+            
+            DispatchQueue.main.async {
+                self.errorMessage = "API 통신 에러"
+            }
+        } catch {
+            DispatchQueue.main.async {
+                self.errorMessage = "알 수 없는 오류"
+            }
+        }
+    }
     
-    func currentWeatherTuple(items: [VeryShortOrShortTermForecastModel<VeryShortTermForecastCategory>]) -> (String, String) {
+    func requestDustForecastStation() async {
+        
+        let param: DustForecastStationReq = DustForecastStationReq(
+            serviceKey: env.openDataApiResponseKey,
+            tmX: ForDustStationRequest.tmXAndtmY.0,
+            tmY: ForDustStationRequest.tmXAndtmY.1
+        )
+        
+        do {
+            let result = try await jsonRequest.newRequest(
+                url: Route.GET_DUST_FORECAST_STATION.val,
+                method: .get,
+                parameters: param,
+                headers: nil,
+                resultType: OpenDataRes<DustForecastStationModel>.self
+            )
+            
+            if let filteredResult = result.items?.first {
+                ForDustStationRequest.stationName = filteredResult.stationName
+            }
+            
+        } catch APIError.transportError {
+            
+            DispatchQueue.main.async {
+                self.errorMessage = "API 통신 에러"
+            }
+        } catch {
+            DispatchQueue.main.async {
+                self.errorMessage = "알 수 없는 오류"
+            }
+        }
+    }
+    
+    
+    func setCurrentWeatherWithDescriptionAndImgString(items: [VeryShortOrShortTermForecastModel<VeryShortTermForecastCategory>]) -> Weather.DescriptionAndImageString {
         
         let firstPTYItem = items.first { item in // 강수 형태
             item.category == .PTY
@@ -183,23 +256,24 @@ final class HomeViewModel: ObservableObject {
         let currentOneHourPrecipitation = items.first { item in
             item.category == .RN1
         }
-        
-        let currentWeatherTuple = currentWeatherTuple(items: items)
-        
+                
         currentWeatherInformation = CurrentWeatherInformationModel(
             temperature: currentTemperature?.fcstValue ?? "",
-            windSpeed: util.remakeWindSpeedValue(value: currentWindSpeed?.fcstValue ?? ""),
+            windSpeed: util.remakeWindSpeedValueByVeryShortTermOrShortTermForecast(
+                value: currentWindSpeed?.fcstValue ?? "")
+            ,
             wetPercent: currentWetPercent?.fcstValue ?? "",
-            oneHourPrecipitation: util.remakeOneHourPrecipitationValue(
-                value: currentOneHourPrecipitation?.fcstValue ?? ""),
-            weatherImage: currentWeatherTuple.1
+            oneHourPrecipitation: util.remakeOneHourPrecipitationValueByVeryShortTermOrShortTermForecast(
+                value: currentOneHourPrecipitation?.fcstValue ?? ""
+            ),
+            weatherImage: setCurrentWeatherWithDescriptionAndImgString(items: items).imageString
         )
         
     }
     
     func setTodayWeathers(items: [VeryShortOrShortTermForecastModel<VeryShortTermForecastCategory>]) {
         
-       let filteredTemperatureItems = items.filter { item in
+        let filteredTemperatureItems = items.filter { item in
             item.category == .T1H
         }
         
@@ -213,13 +287,13 @@ final class HomeViewModel: ObservableObject {
         
         for index in filteredTemperatureItems.indices {
             
-            let weatherTuple = util.veryShortTermForecastWeatherTuple(
+            let weather: Weather.DescriptionAndImageString = util.veryShortTermForecastWeatherTuple(
                 ptyValue: filteredPrecipitationItems[index].fcstValue,
                 skyValue: filteredSkyStateItems[index].fcstValue
             )
-                
+            
             let todayWeather = TodayWeatherInformationModel(
-                weatherImage: weatherTuple.1,
+                weatherImage: weather.imageString,
                 time: util.convertHHmmToHHColonmm(
                     HHmm: filteredTemperatureItems[index].fcstTime
                 ),
@@ -233,13 +307,22 @@ final class HomeViewModel: ObservableObject {
     
     func setMidTermForecastItemToArray(item: MidTermForecastModel) {
         
-        threeToTenDaysTemperature.append(temperatureMinMax.init(minMax:(item.taMin3, item.taMax3), day: 3))
-        threeToTenDaysTemperature.append(temperatureMinMax.init(minMax:(item.taMin4, item.taMax4), day: 4))
-        threeToTenDaysTemperature.append(temperatureMinMax.init(minMax:(item.taMin5, item.taMax5), day: 5))
-        threeToTenDaysTemperature.append(temperatureMinMax.init(minMax:(item.taMin6, item.taMax6), day: 6))
-        threeToTenDaysTemperature.append(temperatureMinMax.init(minMax:(item.taMin7, item.taMax7), day: 7))
-        threeToTenDaysTemperature.append(temperatureMinMax.init(minMax:(item.taMin8, item.taMax8), day: 8))
-        threeToTenDaysTemperature.append(temperatureMinMax.init(minMax:(item.taMin9, item.taMax9), day: 9))
-        threeToTenDaysTemperature.append(temperatureMinMax.init(minMax:(item.taMin10, item.taMax10), day: 10))
+        let minMaxItems: [(Int, Int)] = [
+            (item.taMin3, item.taMax3),
+            (item.taMin4, item.taMax4),
+            (item.taMin5, item.taMax5),
+            (item.taMin6, item.taMax6),
+            (item.taMin7, item.taMax7),
+            (item.taMin8, item.taMax8),
+            (item.taMin9, item.taMax9),
+            (item.taMin10, item.taMax10)
+        ]
+        
+        for index in 0...7 { // day 3 ~ 10
+            threeToTenDaysTemperature.append(temperatureMinMax.init(
+                minMax:(minMaxItems[index].0, minMaxItems[index].1),
+                day: index + 3)
+            )
+        }
     }
 }

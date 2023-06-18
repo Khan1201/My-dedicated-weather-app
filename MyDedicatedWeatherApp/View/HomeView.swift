@@ -9,8 +9,8 @@ import SwiftUI
 
 struct HomeView: View {
     @StateObject var homeViewModel: HomeViewModel = HomeViewModel()
-    @StateObject var locationDataManager = LocationDataManager()
-    
+    @StateObject var locationDataManagerVM = LocationDataManagerVM()
+
     var body: some View {
         
         //        ScrollView(.horizontal, showsIndicators: false) {
@@ -33,10 +33,11 @@ struct HomeView: View {
             VStack(alignment: .center, spacing: 8) {
                 
                 HStack(alignment: .center, spacing: 5) {
-                    Text(locationDataManager.currentLocation)
+                    Text(locationDataManagerVM.currentLocation)
                         .font(.system(size: 24, weight: .medium))
+                        .foregroundColor(.white)
                         
-                    if !locationDataManager.isLocationPermissionAllow {
+                    if !locationDataManagerVM.isLocationPermissionAllow {
                         ProgressView()
                     }
                 }
@@ -45,17 +46,17 @@ struct HomeView: View {
                     dateFormat: "yyyy, MM / dd")
                 )
                     .font(.system(size: 20))
-                    .foregroundColor(.gray.opacity(0.7))
+                    .foregroundColor(.white)
                 
                 LottieView(
-                    name: homeViewModel.currentWeatherTuple.1,
+                    jsonName: homeViewModel.currentWeatherWithDescriptionAndImgString.imageString,
                     loopMode: .loop
                 )
                     .frame(width: 150, height: 150)
                 
                 Text(homeViewModel.currentWeatherInformation.temperature + "°")
-                    .font(.system(size: 26, weight: .medium))
-                    .foregroundColor(.gray)
+                    .font(.system(size: 40, weight: .medium))
+                    .foregroundColor(.white)
                 
                 
                 HStack(alignment: .top, spacing: 60) {
@@ -66,7 +67,7 @@ struct HomeView: View {
                         
                         Text(homeViewModel.currentWeatherInformation.oneHourPrecipitation)
                             .font(.system(size: 12, weight: .medium))
-                            .foregroundColor(.gray)
+                            .foregroundColor(.white)
                     }
                     
                     VStack(alignment: .center, spacing: 5) {
@@ -76,7 +77,7 @@ struct HomeView: View {
                             
                         Text(homeViewModel.currentWeatherInformation.windSpeed)
                             .font(.system(size: 12, weight: .medium))
-                            .foregroundColor(.gray)
+                            .foregroundColor(.white)
                     }
                     
                     VStack(alignment: .center, spacing: 5) {
@@ -87,7 +88,7 @@ struct HomeView: View {
                         
                         Text(homeViewModel.currentWeatherInformation.wetPercent + "%")
                             .font(.system(size: 12, weight: .medium))
-                            .foregroundColor(.gray)
+                            .foregroundColor(.white)
                     }
                 }
                 .padding(.top, 15)
@@ -97,32 +98,34 @@ struct HomeView: View {
                     VStack(alignment: .center, spacing: 5) {
                         Text("미세먼지")
                             .font(.system(size: 12))
+                            .foregroundColor(.white)
                         
                         Text(homeViewModel.currentFineDustTuple.0)
                             .font(.system(size: 12, weight: .bold))
                             .foregroundColor(homeViewModel.currentFineDustTuple.1
-                                .opacity(0.7))
+                                .opacity(0.8))
                     }
                     .padding(.vertical, 8)
                     .padding(.horizontal, 12)
                     .background {
-                        homeViewModel.currentFineDustTuple.1.opacity(0.2)
+                        homeViewModel.currentFineDustTuple.1.opacity(0.4)
                     }
                     .cornerRadius(8)
                     
                     VStack(alignment: .center, spacing: 5) {
                         Text("초미세먼지")
                             .font(.system(size: 12))
+                            .foregroundColor(.white)
                         
                         Text(homeViewModel.currentUltraFindDustTuple.0)
                             .font(.system(size: 12, weight: .bold))
                             .foregroundColor(homeViewModel.currentUltraFindDustTuple.1
-                                .opacity(0.7))
+                                .opacity(0.8))
                     }
                     .padding(.vertical, 8)
                     .padding(.horizontal, 12)
                     .background {
-                        homeViewModel.currentUltraFindDustTuple.1.opacity(0.2)
+                        homeViewModel.currentUltraFindDustTuple.1.opacity(0.4)
                     }
                     .cornerRadius(8)
                 }
@@ -152,20 +155,24 @@ struct HomeView: View {
             }
             .padding(.top, 20)
         }
+        .background(content: {
+            Image("night_background")
+                .overlay {
+                    Color.black.opacity(0.5)
+                }
+                
+        })
         .task {
-            let XY: Util.LatXLngY = Util().convertGPS2XY(
-                mode: .toGPS,
-                lat_X: locationDataManager.locationManager.location?.coordinate.latitude ?? 0,
-                lng_Y: locationDataManager.locationManager.location?.coordinate.longitude ?? 0
-            )
+            await locationDataManagerVM.requestLocationManager()
             await homeViewModel.requestVeryShortForecastItems(
-                x: String(XY.x),
-                y: String(XY.y)
+                xy:locationDataManagerVM.convertLocationToXYForVeryShortForecast()
             )
-            locationDataManager.locationManager.requestLocation()
-            await homeViewModel.requestRealTimeFindDustForecastItems(
-                stationName: locationDataManager.currentLocationSubLocality
+            await homeViewModel.requestDustForecastStationXY(
+                umdName: locationDataManagerVM.currentLocationSubLocality,
+                locality: locationDataManagerVM.currentLocationLocality
             )
+            await homeViewModel.requestDustForecastStation()
+            await homeViewModel.requestRealTimeFindDustForecastItems()
         }
     }
 }

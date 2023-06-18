@@ -15,8 +15,8 @@ struct LottieView: UIViewRepresentable {
     private let jsonName: String
     private let loopMode: LottieLoopMode
     
-    init(name: String, loopMode: LottieLoopMode) {
-        self.jsonName = name
+    init(jsonName: String, loopMode: LottieLoopMode) {
+        self.jsonName = jsonName
         self.loopMode = loopMode
     }
     
