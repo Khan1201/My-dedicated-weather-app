@@ -560,43 +560,53 @@ struct Util {
         case toGPS
     }
     
-    //MARK: - For realtime finddust forecast.. (실시간 미세먼지)
+    //MARK: - For realtime find dust forecast.. (실시간 미세먼지)
 
-    func remakeFindDustValue(value: String) -> (String, Color) { // 미세먼지
+    /**
+        미세먼지 api response value 값 -> UI 보여질 값으로 remake
+     
+     - parameter value: 미세먼지 값
+     */
+    func remakeFindDustValue(value: String) -> Weather.DescriptionAndColor { // 미세먼지
         
         let valueToInt: Int = Int(value) ?? 0
         
         switch valueToInt {
             
         case 0...30:
-            return ("좋음", .blue)
+            return Weather.DescriptionAndColor(description: "좋음", color: .blue)
         case 31...81:
-            return ("보통", .green)
+            return Weather.DescriptionAndColor(description: "보통", color: .green)
         case 81...150:
-            return ("나쁨", .orange)
+            return Weather.DescriptionAndColor(description: "나쁨", color: .orange)
         case _ where valueToInt >= 151:
-            return ("매우 나쁨", .red)
+            return Weather.DescriptionAndColor(description: "매우 나쁨", color: .red)
         default:
-            return ("알 수 없음", .clear)
+            return Weather.DescriptionAndColor(description: "알 수 없음", color: .clear)
         }
     }
 
-    func remakeUltraFindDustValue(value: String) -> (String, Color) { // 초 미세먼지
+    /**
+        초 미세먼지 api response value 값 -> UI 보여질 값으로 remake
+     
+     - parameter value: 초미세먼지 값
+     */
+    func remakeUltraFindDustValue(value: String) -> Weather.DescriptionAndColor { // 초 미세먼지
         
         let valueToInt: Int = Int(value) ?? 0
         
         switch valueToInt {
             
         case 0...15:
-            return ("좋음", .blue)
+            return Weather.DescriptionAndColor(description: "좋음", color: .blue)
         case 16...35:
-            return ("보통", .green)
+            return Weather.DescriptionAndColor(description: "보통", color: .green)
         case 36...75:
-            return ("나쁨", .orange)
+            return Weather.DescriptionAndColor(description: "나쁨", color: .orange)
         case _ where valueToInt >= 76:
-            return ("매우 나쁨", .red)
+            return Weather.DescriptionAndColor(description: "매우 나쁨", color: .red)
         default:
-            return ("알 수 없음", .clear)
+            return Weather.DescriptionAndColor(description: "알 수 없음", color: .clear)
         }
     }
 }

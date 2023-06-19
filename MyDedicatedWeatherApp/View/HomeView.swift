@@ -100,15 +100,15 @@ struct HomeView: View {
                             .font(.system(size: 12))
                             .foregroundColor(.white)
                         
-                        Text(homeViewModel.currentFineDustTuple.0)
+                        Text(homeViewModel.currentFineDustTuple.description)
                             .font(.system(size: 12, weight: .bold))
-                            .foregroundColor(homeViewModel.currentFineDustTuple.1
+                            .foregroundColor(homeViewModel.currentFineDustTuple.color
                                 .opacity(0.8))
                     }
                     .padding(.vertical, 8)
                     .padding(.horizontal, 12)
                     .background {
-                        homeViewModel.currentFineDustTuple.1.opacity(0.4)
+                        homeViewModel.currentFineDustTuple.color.opacity(0.4)
                     }
                     .cornerRadius(8)
                     
@@ -117,15 +117,15 @@ struct HomeView: View {
                             .font(.system(size: 12))
                             .foregroundColor(.white)
                         
-                        Text(homeViewModel.currentUltraFindDustTuple.0)
+                        Text(homeViewModel.currentUltraFindDustTuple.description)
                             .font(.system(size: 12, weight: .bold))
-                            .foregroundColor(homeViewModel.currentUltraFindDustTuple.1
+                            .foregroundColor(homeViewModel.currentUltraFindDustTuple.color
                                 .opacity(0.8))
                     }
                     .padding(.vertical, 8)
                     .padding(.horizontal, 12)
                     .background {
-                        homeViewModel.currentUltraFindDustTuple.1.opacity(0.4)
+                        homeViewModel.currentUltraFindDustTuple.color.opacity(0.4)
                     }
                     .cornerRadius(8)
                 }

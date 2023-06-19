@@ -6,11 +6,17 @@
 //
 
 import Foundation
+import SwiftUI
 
 struct Weather {
     
     struct DescriptionAndImageString {
         let description: String
         let imageString: String
+    }
+    
+    struct DescriptionAndColor {
+        let description: String
+        let color: Color
     }
 }

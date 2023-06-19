@@ -15,8 +15,8 @@ final class HomeViewModel: ObservableObject {
     @Published var currentWeatherWithDescriptionAndImgString: Weather.DescriptionAndImageString = .init(description: "", imageString: "")
     @Published var currentTemperature: String = ""
     @Published var currentWeatherInformation: CurrentWeatherInformationModel = Dummy().currentWeatherInformation()
-    @Published var currentFineDustTuple: (String, Color) = ("", .clear)
-    @Published var currentUltraFindDustTuple: (String, Color) = ("", .clear)
+    @Published var currentFineDustTuple: Weather.DescriptionAndColor = .init(description: "", color: .clear)
+    @Published var currentUltraFindDustTuple: Weather.DescriptionAndColor = .init(description: "", color: .clear)
     @Published var todayWeatherInformations: [TodayWeatherInformationModel] = []
     
     private enum ForDustStationRequest {
@@ -30,7 +30,8 @@ final class HomeViewModel: ObservableObject {
     
     // MARK: - Request..
     
-    func requestMidTermForecastItems() async { // 중기예보
+    /// 중기예보 Items request
+    func requestMidTermForecastItems() async {
         
         let parameters: MidTermForecastReq = MidTermForecastReq(
             serviceKey: env.openDataApiResponseKey,
@@ -47,7 +48,7 @@ final class HomeViewModel: ObservableObject {
             )
             DispatchQueue.main.async {
                 if let item = result.item?.first {
-                    self.setMidTermForecastItemToArray(item: item)
+                    self.setThreeToTenDaysTemperature(item: item)
                 }
                 
             }
@@ -63,7 +64,8 @@ final class HomeViewModel: ObservableObject {
         }
     }
     
-    func requestVeryShortForecastItems(xy: Util.LatXLngY) async { // 초단기예보
+    /// 초 단기예보  Items request
+    func requestVeryShortForecastItems(xy: Util.LatXLngY) async {
         
         let baseTime = util.veryShortTermForecastBaseTime()
         
@@ -104,7 +106,8 @@ final class HomeViewModel: ObservableObject {
         }
     }
     
-    func requestRealTimeFindDustForecastItems() async { // 실시간 미세먼지, 초미세먼지
+    /// 실시간 미세먼지, 초미세먼지 Items request
+    func requestRealTimeFindDustForecastItems() async {
         
         let parameters: RealTimeFindDustForecastReq = RealTimeFindDustForecastReq(
             serviceKey: env.openDataApiResponseKey,
@@ -140,6 +143,7 @@ final class HomeViewModel: ObservableObject {
         }
     }
     
+    /// 미세먼지 주변 측정소 X, Y 좌표. request
     func requestDustForecastStationXY(umdName: String, locality: String) async {
         
         let param: DustForecastStationXYReq = DustForecastStationXYReq(
@@ -176,6 +180,7 @@ final class HomeViewModel: ObservableObject {
         }
     }
     
+    /// 미세먼지 주변 측정소 name request
     func requestDustForecastStation() async {
         
         let param: DustForecastStationReq = DustForecastStationReq(
@@ -209,7 +214,11 @@ final class HomeViewModel: ObservableObject {
         }
     }
     
-    
+    /**
+      초 단기예보 Items ->`currentWeatherWithDescriptionAndImgString`(날씨 String, 이미지 String)에 해당하는 값들 Extract
+     
+        - parameter items: [초단기예보 Model]
+     */
     func setCurrentWeatherWithDescriptionAndImgString(items: [VeryShortOrShortTermForecastModel<VeryShortTermForecastCategory>]) -> Weather.DescriptionAndImageString {
         
         let firstPTYItem = items.first { item in // 강수 형태
@@ -226,6 +235,11 @@ final class HomeViewModel: ObservableObject {
         )
     }
     
+    /**
+      초 단기예보 Items -> `currentTemperature` 추출
+     
+        - parameter items: [초단기예보 Model]
+     */
     func setCurrentTemperature(items: [VeryShortOrShortTermForecastModel<VeryShortTermForecastCategory>]) {
         
         let currenTemperatureItem = items.first { item in
@@ -239,6 +253,11 @@ final class HomeViewModel: ObservableObject {
         }
     }
     
+    /**
+     초 단기예보 Items -> `currentWeatherInformations`(온도 String, 바람속도 String, 습도 String, 1시간 강수량 String, 날씨 이미지 String)에 해당하는 값들 Extract
+
+        - parameter items: [초단기예보 Model]
+     */
     func setCurrentWeatherInformations(items: [VeryShortOrShortTermForecastModel<VeryShortTermForecastCategory>]) {
         
         let currentTemperature = items.first { item in
@@ -271,6 +290,11 @@ final class HomeViewModel: ObservableObject {
         
     }
     
+    /**
+     초 단기예보 Items ->` todayWeathers`(날씨 이미지 String, 시간 String, 온도 String)에 해당하는 값들 Extract
+
+        - parameter items: [초단기예보 Model]
+     */
     func setTodayWeathers(items: [VeryShortOrShortTermForecastModel<VeryShortTermForecastCategory>]) {
         
         let filteredTemperatureItems = items.filter { item in
@@ -304,8 +328,12 @@ final class HomeViewModel: ObservableObject {
         }
     }
     
-    
-    func setMidTermForecastItemToArray(item: MidTermForecastModel) {
+    /**
+     중기예보 Items->` threeToTenDaysTemperature`( (최저온도 String, 최고온도 String), day String )에 해당하는 값들 Extract
+
+        - parameter item: 중기예보 Model
+     */
+    func setThreeToTenDaysTemperature(item: MidTermForecastModel) {
         
         let minMaxItems: [(Int, Int)] = [
             (item.taMin3, item.taMax3),
