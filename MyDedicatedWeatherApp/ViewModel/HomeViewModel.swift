@@ -229,9 +229,10 @@ final class HomeViewModel: ObservableObject {
             item.category == .SKY
         }
         
-        return util.veryShortTermForecastWeatherTuple(
+        return util.veryShortTermForecastWeatherDescriptionWithImageString(
             ptyValue: firstPTYItem?.fcstValue ?? "",
-            skyValue: firstSKYItem?.fcstValue ?? ""
+            skyValue: firstSKYItem?.fcstValue ?? "",
+            isAnimationImage: true
         )
     }
     
@@ -311,9 +312,10 @@ final class HomeViewModel: ObservableObject {
         
         for index in filteredTemperatureItems.indices {
             
-            let weather: Weather.DescriptionAndImageString = util.veryShortTermForecastWeatherTuple(
+            let weather: Weather.DescriptionAndImageString = util.veryShortTermForecastWeatherDescriptionWithImageString(
                 ptyValue: filteredPrecipitationItems[index].fcstValue,
-                skyValue: filteredSkyStateItems[index].fcstValue
+                skyValue: filteredSkyStateItems[index].fcstValue,
+                isAnimationImage: false
             )
             
             let todayWeather = TodayWeatherInformationModel(
