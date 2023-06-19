@@ -10,7 +10,7 @@ import SwiftUI
 struct HomeView: View {
     @StateObject var homeViewModel: HomeViewModel = HomeViewModel()
     @StateObject var locationDataManagerVM = LocationDataManagerVM()
-
+    
     var body: some View {
         
         //        ScrollView(.horizontal, showsIndicators: false) {
@@ -36,7 +36,7 @@ struct HomeView: View {
                     Text(locationDataManagerVM.currentLocation)
                         .font(.system(size: 24, weight: .medium))
                         .foregroundColor(.white)
-                        
+                    
                     if !locationDataManagerVM.isLocationPermissionAllow {
                         ProgressView()
                     }
@@ -45,14 +45,14 @@ struct HomeView: View {
                 Text(Util().currentDateByCustomFormatter(
                     dateFormat: "yyyy, MM / dd")
                 )
-                    .font(.system(size: 20))
-                    .foregroundColor(.white)
+                .font(.system(size: 20))
+                .foregroundColor(.white)
                 
                 LottieView(
                     jsonName: homeViewModel.currentWeatherWithDescriptionAndImgString.imageString,
                     loopMode: .loop
                 )
-                    .frame(width: 150, height: 150)
+                .frame(width: 150, height: 150)
                 
                 Text(homeViewModel.currentWeatherInformation.temperature + "°")
                     .font(.system(size: 40, weight: .medium))
@@ -74,7 +74,7 @@ struct HomeView: View {
                         Image("wind")
                             .resizable()
                             .frame(width: 25, height: 25)
-                            
+                        
                         Text(homeViewModel.currentWeatherInformation.windSpeed)
                             .font(.system(size: 12, weight: .medium))
                             .foregroundColor(.white)
@@ -140,7 +140,7 @@ struct HomeView: View {
                 .font(.system(size: 20, weight: .bold))
             
             ScrollView(.horizontal, showsIndicators: false) {
-                HStack(alignment: .center, spacing: 5) {
+                HStack(alignment: .center, spacing: 10) {
                     ForEach(
                         homeViewModel.todayWeatherInformations,
                         id: \.time
@@ -156,11 +156,15 @@ struct HomeView: View {
             .padding(.top, 20)
         }
         .background(content: {
-            Image("night_background")
-                .overlay {
-                    Color.black.opacity(0.5)
-                }
-                
+            Image(
+                Util().decideImageWhetherDayOrNight(
+                    dayImageString: "sunny_background",
+                    nightImgString: "night_background"
+                )
+            )
+            .overlay {
+                Color.black.opacity(0.4)
+            }
         })
         .task {
             await locationDataManagerVM.requestLocationManager()
