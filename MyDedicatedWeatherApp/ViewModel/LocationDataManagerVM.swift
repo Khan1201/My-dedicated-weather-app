@@ -15,6 +15,7 @@ final class LocationDataManagerVM: NSObject, ObservableObject {
     @Published var currentLocationSubLocality: String = "" // 성수동 1가
     @Published var currentLocationLocality: String = "" // 서울특별시
     @Published var isLocationPermissionAllow: Bool = false
+    @Published var isLocationUpdated: Bool = false
     
     private let util: Util = Util()
     
@@ -23,7 +24,7 @@ final class LocationDataManagerVM: NSObject, ObservableObject {
         locationManager.delegate = self
     }
     
-    func requestLocationManager() async {
+    func requestLocationManager() {
         locationManager.requestLocation()
     }
     
@@ -75,6 +76,7 @@ extension LocationDataManagerVM: CLLocationManagerDelegate {
                 self?.currentLocation = "\(address.locality ?? "")  \(address.subLocality ?? "")"
                 self?.currentLocationSubLocality = address.subLocality ?? ""
                 self?.currentLocationLocality = address.administrativeArea ?? ""
+                self?.isLocationUpdated = true
             }
         }
     }

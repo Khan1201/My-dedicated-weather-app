@@ -167,16 +167,20 @@ struct HomeView: View {
             }
         })
         .task {
-            await locationDataManagerVM.requestLocationManager()
+            locationDataManagerVM.requestLocationManager()
             await homeViewModel.requestVeryShortForecastItems(
                 xy:locationDataManagerVM.convertLocationToXYForVeryShortForecast()
             )
-            await homeViewModel.requestDustForecastStationXY(
-                umdName: locationDataManagerVM.currentLocationSubLocality,
-                locality: locationDataManagerVM.currentLocationLocality
-            )
-            await homeViewModel.requestDustForecastStation()
-            await homeViewModel.requestRealTimeFindDustForecastItems()
+        }
+        .onChange(of: locationDataManagerVM.isLocationUpdated) { _ in
+            Task {
+                await homeViewModel.requestDustForecastStationXY(
+                    umdName: locationDataManagerVM.currentLocationSubLocality,
+                    locality: locationDataManagerVM.currentLocationLocality
+                )
+                await homeViewModel.requestDustForecastStation()
+                await homeViewModel.requestRealTimeFindDustForecastItems()
+            }
         }
     }
 }
