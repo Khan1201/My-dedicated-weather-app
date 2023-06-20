@@ -1,5 +1,5 @@
 //
-//  TodayWeatherVC.swift
+//  WeatherInformationsWithImgAndTimeAndTemperature.swift
 //  MyDedicatedWeatherApp
 //
 //  Created by 윤형석 on 2023/05/10.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct TodayWeatherVC: View {
+struct WeatherInformationsWithImgAndTimeAndTemperature: View {
     
     let imageString: String
     let time: String
@@ -41,7 +41,7 @@ struct TodayWeatherVC: View {
 
 struct TodayWeatherVC_Previews: PreviewProvider {
     static var previews: some View {
-        TodayWeatherVC(
+        WeatherInformationsWithImgAndTimeAndTemperature(
             imageString: "weather_blur",
             time: "13:00",
             temperature: "25"
