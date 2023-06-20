@@ -124,17 +124,17 @@ extension HomeViewController {
         return VStack(alignment: .center, spacing: 25) {
             HStack(alignment: .top, spacing: 60) {
                 
-                WeatherInforamtionWithImageAndDescriptionView(
+                WeatherInforamtionsWithImageAndDescriptionView(
                     imageString: "precipitation",
                     description: homeViewModel.currentWeatherInformation.oneHourPrecipitation
                 )
                 
-                WeatherInforamtionWithImageAndDescriptionView(
+                WeatherInforamtionsWithImageAndDescriptionView(
                     imageString: "wind",
                     description: homeViewModel.currentWeatherInformation.windSpeed
                 )
                 
-                WeatherInforamtionWithImageAndDescriptionView(
+                WeatherInforamtionsWithImageAndDescriptionView(
                     imageString: "wet",
                     description: homeViewModel.currentWeatherInformation.wetPercent + "%"
                 )
