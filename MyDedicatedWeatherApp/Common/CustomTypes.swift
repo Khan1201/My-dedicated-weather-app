@@ -20,3 +20,11 @@ struct Weather {
         let color: Color
     }
 }
+
+enum TabBarType: CaseIterable {
+    
+    case current,
+        forecast,
+        search,
+        setting
+}

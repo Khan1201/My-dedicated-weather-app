@@ -22,6 +22,9 @@
 		BC65D50F2A0BDF1C00EFADD4 /* WeatherInformationsWithImgAndTimeAndTemperature.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC65D50E2A0BDF1C00EFADD4 /* WeatherInformationsWithImgAndTimeAndTemperature.swift */; };
 		BC6EF8BD2A10AAB30072A2DE /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6EF8BC2A10AAB30072A2DE /* Extension.swift */; };
 		BC6EF8BF2A10C0DC0072A2DE /* RealTimeFindDustForecastModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6EF8BE2A10C0DC0072A2DE /* RealTimeFindDustForecastModel.swift */; };
+		BC7692372A431C69005F4D7B /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC7692362A431C69005F4D7B /* MainTabView.swift */; };
+		BC76923A2A431CC8005F4D7B /* CustomBottomTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC7692392A431CC8005F4D7B /* CustomBottomTabBarView.swift */; };
+		BC76923D2A4329DC005F4D7B /* CornerRadiusStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC76923C2A4329DC005F4D7B /* CornerRadiusStyle.swift */; };
 		BC7D33E22A12788E00B1012F /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = BC7D33E12A12788E00B1012F /* Lottie */; };
 		BC7D33E52A127ABB00B1012F /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC7D33E42A127ABB00B1012F /* LottieView.swift */; };
 		BC85A94E2A02570E00C4CC48 /* VeryShortOrShortTermForecastModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC85A94D2A02570E00C4CC48 /* VeryShortOrShortTermForecastModel.swift */; };
@@ -63,6 +66,9 @@
 		BC65D50E2A0BDF1C00EFADD4 /* WeatherInformationsWithImgAndTimeAndTemperature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherInformationsWithImgAndTimeAndTemperature.swift; sourceTree = "<group>"; };
 		BC6EF8BC2A10AAB30072A2DE /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		BC6EF8BE2A10C0DC0072A2DE /* RealTimeFindDustForecastModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealTimeFindDustForecastModel.swift; sourceTree = "<group>"; };
+		BC7692362A431C69005F4D7B /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
+		BC7692392A431CC8005F4D7B /* CustomBottomTabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBottomTabBarView.swift; sourceTree = "<group>"; };
+		BC76923C2A4329DC005F4D7B /* CornerRadiusStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CornerRadiusStyle.swift; sourceTree = "<group>"; };
 		BC7D33E42A127ABB00B1012F /* LottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
 		BC85A94D2A02570E00C4CC48 /* VeryShortOrShortTermForecastModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VeryShortOrShortTermForecastModel.swift; sourceTree = "<group>"; };
 		BC96646B2A41F2C900D2433C /* WeatherInforamtionsWithImageAndDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherInforamtionsWithImageAndDescriptionView.swift; sourceTree = "<group>"; };
@@ -114,6 +120,22 @@
 				BC137CA72A1282CD002D6667 /* Sunny.json */,
 			);
 			path = LottieAnimation;
+			sourceTree = "<group>";
+		};
+		BC7692382A431C94005F4D7B /* TabBar */ = {
+			isa = PBXGroup;
+			children = (
+				BC7692392A431CC8005F4D7B /* CustomBottomTabBarView.swift */,
+			);
+			path = TabBar;
+			sourceTree = "<group>";
+		};
+		BC76923B2A4329BF005F4D7B /* Modifier */ = {
+			isa = PBXGroup;
+			children = (
+				BC76923C2A4329DC005F4D7B /* CornerRadiusStyle.swift */,
+			);
+			path = Modifier;
 			sourceTree = "<group>";
 		};
 		BC7D33E32A127A7300B1012F /* ViewRepresentable */ = {
@@ -190,6 +212,7 @@
 		BCA30F8729FE205D0078D0B1 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				BC7692362A431C69005F4D7B /* MainTabView.swift */,
 				BC9664692A41EB4900D2433C /* ViewController */,
 				BC7D33E32A127A7300B1012F /* ViewRepresentable */,
 				BCA30FAB29FFE35B0078D0B1 /* ViewComponent */,
@@ -251,6 +274,8 @@
 		BCA30FAB29FFE35B0078D0B1 /* ViewComponent */ = {
 			isa = PBXGroup;
 			children = (
+				BC76923B2A4329BF005F4D7B /* Modifier */,
+				BC7692382A431C94005F4D7B /* TabBar */,
 				BC96646A2A41ED0600D2433C /* HomeView */,
 			);
 			path = ViewComponent;
@@ -351,6 +376,7 @@
 				BCCD80682A07A59800501BEA /* LocationDataManagerVM.swift in Sources */,
 				BCA30FA529FE73C90078D0B1 /* HomeViewController.swift in Sources */,
 				BCA30F9729FE3A190078D0B1 /* Util.swift in Sources */,
+				BC76923D2A4329DC005F4D7B /* CornerRadiusStyle.swift in Sources */,
 				BCA30FA729FE73D70078D0B1 /* HomeViewModel.swift in Sources */,
 				BCA30FAD29FFE3850078D0B1 /* HomeViewMinMaxTemperatureVC.swift in Sources */,
 				BC37A6042A3F094E00C16278 /* CustomTypes.swift in Sources */,
@@ -362,8 +388,10 @@
 				BCA30FA229FE6FC30078D0B1 /* JsonRequest.swift in Sources */,
 				BC6EF8BF2A10C0DC0072A2DE /* RealTimeFindDustForecastModel.swift in Sources */,
 				BC85A94E2A02570E00C4CC48 /* VeryShortOrShortTermForecastModel.swift in Sources */,
+				BC7692372A431C69005F4D7B /* MainTabView.swift in Sources */,
 				BC37A6002A3ED7BC00C16278 /* DustForecastStationModel.swift in Sources */,
 				BCA30F7A29FE203A0078D0B1 /* MyDedicatedWeatherAppApp.swift in Sources */,
+				BC76923A2A431CC8005F4D7B /* CustomBottomTabBarView.swift in Sources */,
 				BCA30FAA29FFDC580078D0B1 /* Dummy.swift in Sources */,
 				BCA30F9329FE28F20078D0B1 /* MidTermForecastModel.swift in Sources */,
 				BC37A6022A3ED7CD00C16278 /* DustForecastStationXYModel.swift in Sources */,
