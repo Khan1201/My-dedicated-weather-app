@@ -15,7 +15,7 @@ struct Weather {
         let imageString: String
     }
     
-    struct DescriptionAndColor {
+    struct DescriptionAndColor: Equatable {
         let description: String
         let color: Color
     }

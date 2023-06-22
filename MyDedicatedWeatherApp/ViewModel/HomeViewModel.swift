@@ -16,8 +16,10 @@ final class HomeViewModel: ObservableObject {
     @Published var currentTemperature: String = ""
     @Published var currentWeatherInformation: CurrentWeatherInformationModel = Dummy().currentWeatherInformation()
     @Published var currentFineDustTuple: Weather.DescriptionAndColor = .init(description: "", color: .clear)
-    @Published var currentUltraFindDustTuple: Weather.DescriptionAndColor = .init(description: "", color: .clear)
+    @Published var currentUltraFineDustTuple: Weather.DescriptionAndColor = .init(description: "", color: .clear)
     @Published var todayWeatherInformations: [TodayWeatherInformationModel] = []
+    
+    @Published var isFineDustLoadCompleted: Bool = false
     
     private enum ForDustStationRequest {
         static var tmXAndtmY: (String, String) = ("","")
@@ -127,7 +129,8 @@ final class HomeViewModel: ObservableObject {
                 
                 DispatchQueue.main.async {
                     self.currentFineDustTuple = self.util.remakeFindDustValue(value: item.pm10Value)
-                    self.currentUltraFindDustTuple = self.util.remakeUltraFindDustValue(value: item.pm25Value)
+                    self.currentUltraFineDustTuple = self.util.remakeUltraFindDustValue(value: item.pm25Value)
+                    self.isFineDustLoadCompleted = true
                 }
             }
             

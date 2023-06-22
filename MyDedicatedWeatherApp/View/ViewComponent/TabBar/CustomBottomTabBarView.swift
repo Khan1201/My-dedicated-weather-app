@@ -73,7 +73,9 @@ extension CustomBottomTabBarView {
         currentTab: Binding<TabBarType>,
         tabValue: TabBarType
     ) -> some View{
+        
         return VStack(alignment: .center, spacing: 5) {
+            
             Image(imageString)
                 .resizable()
                 .frame(width: 24, height: 24)
@@ -82,13 +84,13 @@ extension CustomBottomTabBarView {
                 .font(.system(size: 10, weight: .medium))
                 .foregroundColor(Color.black.opacity(0.6))
         }
-        .overlay(alignment: .top, content: {
+        .overlay(alignment: .top) {
             Image("check_blue")
                 .resizable()
                 .frame(width: 20, height: 20)
                 .opacity(currentTab.wrappedValue == tabValue ? 1 : 0)
                 .offset(y: -5)
-        })
+        }
         .onTapGesture {
             currentTab.wrappedValue = tabValue
         }

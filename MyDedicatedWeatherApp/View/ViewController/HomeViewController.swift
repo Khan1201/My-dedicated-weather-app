@@ -13,27 +13,10 @@ struct HomeViewController: View {
     
     var body: some View {
         
-        //        ScrollView(.horizontal, showsIndicators: false) {
-        //            HStack(alignment: .center, spacing: 10) {
-        //
-        //                ForEach(homeViewModel.threeToTenDaysTemperature, id: \.id) {
-        //                    HomeViewMinMaxTemperatureVC(
-        //                        day: $0.day,
-        //                        min: $0.minMax.0,
-        //                        max: $0.minMax.1
-        //                    )
-        //                }
-        //            }
-        //        }
-        //        .task {
-        //            await homeViewModel.requestMidTermForecastItems()
-        //        }
         VStack(alignment: .leading, spacing: 0) {
             
             VStack(alignment: .center, spacing: 15) {
-                
                 currentWeatherWithImageAndTemperatureView
-                
                 currentWeatherWithAdditionalInformationsView
             }
             .frame(maxWidth: .infinity, alignment: .center)
@@ -150,14 +133,16 @@ extension HomeViewController {
                         .opacity(0.8),
                     backgroundColor:  homeViewModel.currentFineDustTuple.color.opacity(0.4)
                 )
-                
+                .loadingProgress(isLoadCompleted: $homeViewModel.isFineDustLoadCompleted)
+
                 FineDustWithDescriptionAndBackgroundColorView(
                     title: "초미세먼지",
-                    description: homeViewModel.currentUltraFindDustTuple.description,
-                    descriptionFontColor: homeViewModel.currentUltraFindDustTuple.color
+                    description: homeViewModel.currentUltraFineDustTuple.description,
+                    descriptionFontColor: homeViewModel.currentUltraFineDustTuple.color
                         .opacity(0.8),
-                    backgroundColor:  homeViewModel.currentUltraFindDustTuple.color.opacity(0.4)
+                    backgroundColor:  homeViewModel.currentUltraFineDustTuple.color.opacity(0.4)
                 )
+                .loadingProgress(isLoadCompleted: $homeViewModel.isFineDustLoadCompleted)
             }
         }
     }
