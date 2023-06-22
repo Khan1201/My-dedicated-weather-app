@@ -39,7 +39,8 @@ struct HomeViewController: View {
             .frame(maxWidth: .infinity, alignment: .center)
             
             listAfterCurrentTimeView
-                .padding(.top, 15)
+                .padding(.top, 25)
+                .padding(.leading, 20)
             
             Spacer()
         }

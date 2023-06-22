@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MainTabView: View {
     
-    @State var currentTab: TabBarType = .forecast
+    @State var currentTab: TabBarType = .current
     
     var body: some View {
                 
@@ -17,23 +17,15 @@ struct MainTabView: View {
             TabView(selection: $currentTab) {
                 HomeViewController()
                     .tag(TabBarType.current)
-    //                .tag(TabBarType.current)
                 
                 Text("gdgd")
                     .tag(TabBarType.forecast)
-    //                .tag(TabBarType.forecast)
             }
             .overlay(alignment: .bottom) {
                 CustomBottomTabBarView(currentTab: $currentTab)
             }
-
         }
-        .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                currentTab = .forecast
-            }
-        }
-        
+        .ignoresSafeArea(.all)
     }
 }
 

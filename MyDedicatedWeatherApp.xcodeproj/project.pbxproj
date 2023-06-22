@@ -214,7 +214,6 @@
 			children = (
 				BC7692362A431C69005F4D7B /* MainTabView.swift */,
 				BC9664692A41EB4900D2433C /* ViewController */,
-				BC7D33E32A127A7300B1012F /* ViewRepresentable */,
 				BCA30FAB29FFE35B0078D0B1 /* ViewComponent */,
 			);
 			path = View;
@@ -274,6 +273,7 @@
 		BCA30FAB29FFE35B0078D0B1 /* ViewComponent */ = {
 			isa = PBXGroup;
 			children = (
+				BC7D33E32A127A7300B1012F /* ViewRepresentable */,
 				BC76923B2A4329BF005F4D7B /* Modifier */,
 				BC7692382A431C94005F4D7B /* TabBar */,
 				BC96646A2A41ED0600D2433C /* HomeView */,
