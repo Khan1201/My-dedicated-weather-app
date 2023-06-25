@@ -100,6 +100,7 @@ extension HomeViewController {
                 Text(locationDataManagerVM.currentLocation)
                     .font(.system(size: 24, weight: .medium))
                     .foregroundColor(.white)
+                    .loadingProgress(isLoadCompleted: $locationDataManagerVM.isLocationUpdated)
             }
             
             Text(Util().currentDateByCustomFormatter(
@@ -117,6 +118,7 @@ extension HomeViewController {
             Text(homeViewModel.currentWeatherInformation.temperature + "°")
                 .font(.system(size: 40, weight: .medium))
                 .foregroundColor(.white)
+                .loadingProgress(isLoadCompleted: $homeViewModel.isCurrentWeatherInformationLoadCompleted)
         }
     }
 }
@@ -132,16 +134,19 @@ extension HomeViewController {
                     imageString: "precipitation",
                     description: homeViewModel.currentWeatherInformation.oneHourPrecipitation
                 )
+                .loadingProgress(isLoadCompleted: $homeViewModel.isCurrentWeatherInformationLoadCompleted)
                 
                 WeatherInforamtionsWithImageAndDescriptionView(
                     imageString: "wind",
                     description: homeViewModel.currentWeatherInformation.windSpeed
                 )
+                .loadingProgress(isLoadCompleted: $homeViewModel.isCurrentWeatherInformationLoadCompleted)
                 
                 WeatherInforamtionsWithImageAndDescriptionView(
                     imageString: "wet",
                     description: homeViewModel.currentWeatherInformation.wetPercent + "%"
                 )
+                .loadingProgress(isLoadCompleted: $homeViewModel.isCurrentWeatherInformationLoadCompleted)
             }
             
             HStack(alignment: .center, spacing: 40) {

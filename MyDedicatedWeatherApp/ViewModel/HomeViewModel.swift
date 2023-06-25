@@ -19,6 +19,8 @@ final class HomeViewModel: ObservableObject {
     @Published var currentUltraFineDustTuple: Weather.DescriptionAndColor = .init(description: "", color: .clear)
     @Published var todayWeatherInformations: [TodayWeatherInformationModel] = []
     
+    /// Load Completed Variables..
+    @Published var isCurrentWeatherInformationLoadCompleted: Bool = false
     @Published var isFineDustLoadCompleted: Bool = false
     
     private enum ForDustStationRequest {
@@ -217,6 +219,8 @@ final class HomeViewModel: ObservableObject {
         }
     }
     
+    // MARK: - Set Actions..
+    
     /**
       초 단기예보 Items ->`currentWeatherWithDescriptionAndImgString`(날씨 String, 이미지 String)에 해당하는 값들 Extract
      
@@ -292,6 +296,7 @@ final class HomeViewModel: ObservableObject {
             weatherImage: setCurrentWeatherWithDescriptionAndImgString(items: items).imageString
         )
         
+        isCurrentWeatherInformationLoadCompleted = true
     }
     
     /**

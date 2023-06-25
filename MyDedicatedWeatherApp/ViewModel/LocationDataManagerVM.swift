@@ -16,6 +16,8 @@ final class LocationDataManagerVM: NSObject, ObservableObject {
     @Published var currentLocationSubLocality: String = "" // 성수동 1가
     @Published var currentLocationLocality: String = "" // 서울특별시
     @Published var locationPermissonType: PermissionType = .notAllow
+    
+    /// Load Completed Variables..
     @Published var isLocationUpdated: Bool = false
     
     private let util: Util = Util()
