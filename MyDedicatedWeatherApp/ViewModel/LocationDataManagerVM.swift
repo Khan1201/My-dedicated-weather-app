@@ -7,6 +7,7 @@
 
 import Foundation
 import CoreLocation
+import UIKit
 
 final class LocationDataManagerVM: NSObject, ObservableObject {
     
@@ -14,10 +15,16 @@ final class LocationDataManagerVM: NSObject, ObservableObject {
     @Published var currentLocation: String = "" // 서울특별시 성수동 1가
     @Published var currentLocationSubLocality: String = "" // 성수동 1가
     @Published var currentLocationLocality: String = "" // 서울특별시
-    @Published var isLocationPermissionAllow: Bool = false
+    @Published var locationPermissonType: PermissionType = .notAllow
     @Published var isLocationUpdated: Bool = false
     
     private let util: Util = Util()
+    
+    enum PermissionType {
+        
+        case allow
+        case notAllow
+    }
     
     override init() {
         super.init()
@@ -36,6 +43,15 @@ final class LocationDataManagerVM: NSObject, ObservableObject {
         )
         return XY
     }
+    
+    func openAppSetting() {
+        
+        guard let settingURL = URL(string: UIApplication.openSettingsURLString) else { return }
+        
+        if UIApplication.shared.canOpenURL(settingURL) {
+            UIApplication.shared.open(settingURL)
+        }
+    }
 }
 
 extension LocationDataManagerVM: CLLocationManagerDelegate {
@@ -43,19 +59,13 @@ extension LocationDataManagerVM: CLLocationManagerDelegate {
         switch manager.authorizationStatus {
             
         case .authorizedAlways, .authorizedWhenInUse:
-            
-            locationManager.requestLocation()
-            isLocationPermissionAllow = true
+            manager.requestLocation()
+            locationPermissonType = .allow
         case .restricted:
-            currentLocation = "위치정보 권한이 필요합니다."
-            isLocationPermissionAllow = false
-            
+            ()
         case .denied:
-            currentLocation = "위치정보 권한이 필요합니다."
-            isLocationPermissionAllow = false
+            ()
         case .notDetermined:
-            currentLocation = "위치정보 권한이 필요합니다."
-            isLocationPermissionAllow = false
             manager.requestWhenInUseAuthorization()
         default:
             ()

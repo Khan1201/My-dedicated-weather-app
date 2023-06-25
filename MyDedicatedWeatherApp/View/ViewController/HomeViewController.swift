@@ -13,46 +13,70 @@ struct HomeViewController: View {
     
     var body: some View {
         
-        VStack(alignment: .leading, spacing: 0) {
+        switch locationDataManagerVM.locationPermissonType {
             
-            VStack(alignment: .center, spacing: 15) {
-                currentWeatherWithImageAndTemperatureView
-                currentWeatherWithAdditionalInformationsView
+        case .allow:
+            VStack(alignment: .leading, spacing: 0) {
+                
+                VStack(alignment: .center, spacing: 15) {
+                    currentWeatherWithImageAndTemperatureView
+                    currentWeatherWithAdditionalInformationsView
+                }
+                .frame(maxWidth: .infinity, alignment: .center)
+                
+                listAfterCurrentTimeView
+                    .padding(.top, 25)
+                    .padding(.leading, 20)
+                
+                Spacer()
             }
-            .frame(maxWidth: .infinity, alignment: .center)
-            
-            listAfterCurrentTimeView
-                .padding(.top, 25)
-                .padding(.leading, 20)
-            
-            Spacer()
-        }
-        .padding(.top, 35)
-        .background {
-            Image(
-                Util().decideImageWhetherDayOrNight(
-                    dayImageString: "sunny_background",
-                    nightImgString: "night_background"
+            .padding(.top, 35)
+            .background {
+                Image(
+                    Util().decideImageWhetherDayOrNight(
+                        dayImageString: "sunny_background",
+                        nightImgString: "night_background"
+                    )
                 )
-            )
-            .overlay {
-                Color.black.opacity(0.4)
+                .overlay {
+                    Color.black.opacity(0.4)
+                }
             }
-        }
-        .task {
-            locationDataManagerVM.requestLocationManager()
-            await homeViewModel.requestVeryShortForecastItems(
-                xy:locationDataManagerVM.convertLocationToXYForVeryShortForecast()
-            )
-        }
-        .onChange(of: locationDataManagerVM.isLocationUpdated) { _ in
-            Task {
-                await homeViewModel.requestDustForecastStationXY(
-                    umdName: locationDataManagerVM.currentLocationSubLocality,
-                    locality: locationDataManagerVM.currentLocationLocality
+            .task {
+                await homeViewModel.requestVeryShortForecastItems(
+                    xy:locationDataManagerVM.convertLocationToXYForVeryShortForecast()
                 )
-                await homeViewModel.requestDustForecastStation()
-                await homeViewModel.requestRealTimeFindDustForecastItems()
+            }
+            .onChange(of: locationDataManagerVM.isLocationUpdated) { _ in
+                Task {
+                    await homeViewModel.requestDustForecastStationXY(
+                        umdName: locationDataManagerVM.currentLocationSubLocality,
+                        locality: locationDataManagerVM.currentLocationLocality
+                    )
+                    await homeViewModel.requestDustForecastStation()
+                    await homeViewModel.requestRealTimeFindDustForecastItems()
+                }
+            }
+            
+        case .notAllow:
+            
+            VStack(alignment: .center, spacing: 20) {
+
+                LottieView(jsonName: "Location", loopMode: .loop)
+                    .frame(width: 100, height: 100, alignment: .center)
+                
+                Text("위치정보 권한이 필요합니다.")
+                        .font(.system(size: 18, weight: .bold))
+                
+                Text("설정하기")
+                    .font(.system(size: 16, weight: .medium))
+                    .padding(.vertical, 6)
+                    .padding(.horizontal, 10)
+                    .background(Color.gray.opacity(0.3))
+                    .cornerRadius(12)
+                    .onTapGesture {
+                        locationDataManagerVM.openAppSetting()
+                    }
             }
         }
     }
@@ -76,10 +100,6 @@ extension HomeViewController {
                 Text(locationDataManagerVM.currentLocation)
                     .font(.system(size: 24, weight: .medium))
                     .foregroundColor(.white)
-                
-                if !locationDataManagerVM.isLocationPermissionAllow {
-                    ProgressView()
-                }
             }
             
             Text(Util().currentDateByCustomFormatter(

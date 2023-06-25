@@ -48,6 +48,7 @@
 		BCA30FA729FE73D70078D0B1 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30FA629FE73D70078D0B1 /* HomeViewModel.swift */; };
 		BCA30FAA29FFDC580078D0B1 /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30FA929FFDC580078D0B1 /* Dummy.swift */; };
 		BCA30FAD29FFE3850078D0B1 /* HomeViewMinMaxTemperatureVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30FAC29FFE3850078D0B1 /* HomeViewMinMaxTemperatureVC.swift */; };
+		BCB101532A482BFB00EE1EE8 /* Location.json in Resources */ = {isa = PBXBuildFile; fileRef = BCB101522A482BFB00EE1EE8 /* Location.json */; };
 		BCCD80682A07A59800501BEA /* LocationDataManagerVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCCD80672A07A59800501BEA /* LocationDataManagerVM.swift */; };
 /* End PBXBuildFile section */
 
@@ -94,6 +95,7 @@
 		BCA30FA829FE7D780078D0B1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		BCA30FA929FFDC580078D0B1 /* Dummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummy.swift; sourceTree = "<group>"; };
 		BCA30FAC29FFE3850078D0B1 /* HomeViewMinMaxTemperatureVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewMinMaxTemperatureVC.swift; sourceTree = "<group>"; };
+		BCB101522A482BFB00EE1EE8 /* Location.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Location.json; path = ../../../../Downloads/Location.json; sourceTree = "<group>"; };
 		BCCD80672A07A59800501BEA /* LocationDataManagerVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDataManagerVM.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -113,6 +115,7 @@
 		BC137CA62A1282A9002D6667 /* LottieAnimation */ = {
 			isa = PBXGroup;
 			children = (
+				BCB101522A482BFB00EE1EE8 /* Location.json */,
 				BC137CBA2A128975002D6667 /* SnowNight.json */,
 				BC137CB82A128959002D6667 /* Snow.json */,
 				BC137CB62A128913002D6667 /* RainNight.json */,
@@ -363,6 +366,7 @@
 			files = (
 				BC137CAD2A1284F6002D6667 /* SunnyNight.json in Resources */,
 				BC137CB72A128913002D6667 /* RainNight.json in Resources */,
+				BCB101532A482BFB00EE1EE8 /* Location.json in Resources */,
 				BC137CA52A128221002D6667 /* Sunny.json in Resources */,
 				BC137CBB2A128975002D6667 /* SnowNight.json in Resources */,
 				BC137CB32A12885D002D6667 /* CloudManyNight.json in Resources */,
