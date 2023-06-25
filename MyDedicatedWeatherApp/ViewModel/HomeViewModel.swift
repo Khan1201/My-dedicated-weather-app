@@ -168,9 +168,7 @@ final class HomeViewModel: ObservableObject {
             if let filteredResult = result.items?.first(where: { item in
                 item.sidoName == locality
             }) {
-                DispatchQueue.main.async {
-                    ForDustStationRequest.tmXAndtmY = (filteredResult.tmX, filteredResult.tmY)
-                }
+                ForDustStationRequest.tmXAndtmY = (filteredResult.tmX, filteredResult.tmY)
             }
             
         } catch APIError.transportError {
@@ -222,9 +220,9 @@ final class HomeViewModel: ObservableObject {
     // MARK: - Set Actions..
     
     /**
-      초 단기예보 Items ->`currentWeatherWithDescriptionAndImgString`(날씨 String, 이미지 String)에 해당하는 값들 Extract
+     초 단기예보 Items ->`currentWeatherWithDescriptionAndImgString`(날씨 String, 이미지 String)에 해당하는 값들 Extract
      
-        - parameter items: [초단기예보 Model]
+     - parameter items: [초단기예보 Model]
      */
     func setCurrentWeatherWithDescriptionAndImgString(items: [VeryShortOrShortTermForecastModel<VeryShortTermForecastCategory>]) -> Weather.DescriptionAndImageString {
         
@@ -244,9 +242,9 @@ final class HomeViewModel: ObservableObject {
     }
     
     /**
-      초 단기예보 Items -> `currentTemperature` 추출
+     초 단기예보 Items -> `currentTemperature` 추출
      
-        - parameter items: [초단기예보 Model]
+     - parameter items: [초단기예보 Model]
      */
     func setCurrentTemperature(items: [VeryShortOrShortTermForecastModel<VeryShortTermForecastCategory>]) {
         
@@ -263,8 +261,8 @@ final class HomeViewModel: ObservableObject {
     
     /**
      초 단기예보 Items -> `currentWeatherInformations`(온도 String, 바람속도 String, 습도 String, 1시간 강수량 String, 날씨 이미지 String)에 해당하는 값들 Extract
-
-        - parameter items: [초단기예보 Model]
+     
+     - parameter items: [초단기예보 Model]
      */
     func setCurrentWeatherInformations(items: [VeryShortOrShortTermForecastModel<VeryShortTermForecastCategory>]) {
         
@@ -283,7 +281,7 @@ final class HomeViewModel: ObservableObject {
         let currentOneHourPrecipitation = items.first { item in
             item.category == .RN1
         }
-                
+        
         currentWeatherInformation = CurrentWeatherInformationModel(
             temperature: currentTemperature?.fcstValue ?? "",
             windSpeed: util.remakeWindSpeedValueByVeryShortTermOrShortTermForecast(
@@ -301,8 +299,8 @@ final class HomeViewModel: ObservableObject {
     
     /**
      초 단기예보 Items ->` todayWeathers`(날씨 이미지 String, 시간 String, 온도 String)에 해당하는 값들 Extract
-
-        - parameter items: [초단기예보 Model]
+     
+     - parameter items: [초단기예보 Model]
      */
     func setTodayWeathers(items: [VeryShortOrShortTermForecastModel<VeryShortTermForecastCategory>]) {
         
@@ -340,8 +338,8 @@ final class HomeViewModel: ObservableObject {
     
     /**
      중기예보 Items->` threeToTenDaysTemperature`( (최저온도 String, 최고온도 String), day String )에 해당하는 값들 Extract
-
-        - parameter item: 중기예보 Model
+     
+     - parameter item: 중기예보 Model
      */
     func setThreeToTenDaysTemperature(item: MidTermForecastModel) {
         
@@ -362,5 +360,31 @@ final class HomeViewModel: ObservableObject {
                 day: index + 3)
             )
         }
+    }
+    
+    // MARK: - View On Appear, Task Actions..
+    
+    func HomeViewControllerTaskAction(xy: Util.LatXLngY) async {
+        await requestVeryShortForecastItems(xy: xy)
+    }
+    
+    func HomeViewControllerLocationUpdatedAction(umdName: String, locality: String) {
+        
+        Task {
+            
+            await requestDustForecastStationXY(
+                umdName: umdName,
+                locality: locality
+            )
+            await requestDustForecastStation()
+            await requestRealTimeFindDustForecastItems()
+        }
+        
+        //        await requestDustForecastStationXY(
+        //            umdName: umdName,
+        //            locality: locality
+        //        )
+        //        await requestDustForecastStation()
+        //        await requestRealTimeFindDustForecastItems()
     }
 }

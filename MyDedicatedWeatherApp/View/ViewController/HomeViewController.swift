@@ -48,25 +48,21 @@ struct HomeViewController: View {
                 )
             }
             .onChange(of: locationDataManagerVM.isLocationUpdated) { _ in
-                Task {
-                    await homeViewModel.requestDustForecastStationXY(
-                        umdName: locationDataManagerVM.currentLocationSubLocality,
-                        locality: locationDataManagerVM.currentLocationLocality
-                    )
-                    await homeViewModel.requestDustForecastStation()
-                    await homeViewModel.requestRealTimeFindDustForecastItems()
-                }
+                homeViewModel.HomeViewControllerLocationUpdatedAction(
+                    umdName: locationDataManagerVM.currentLocationSubLocality,
+                    locality: locationDataManagerVM.currentLocationLocality
+                )
             }
             
         case .notAllow:
             
             VStack(alignment: .center, spacing: 20) {
-
+                
                 LottieView(jsonName: "Location", loopMode: .loop)
                     .frame(width: 100, height: 100, alignment: .center)
                 
                 Text("위치정보 권한이 필요합니다.")
-                        .font(.system(size: 18, weight: .bold))
+                    .font(.system(size: 18, weight: .bold))
                 
                 Text("설정하기")
                     .font(.system(size: 16, weight: .medium))
@@ -159,7 +155,7 @@ extension HomeViewController {
                     backgroundColor:  homeViewModel.currentFineDustTuple.color.opacity(0.4)
                 )
                 .loadingProgress(isLoadCompleted: $homeViewModel.isFineDustLoadCompleted)
-
+                
                 FineDustWithDescriptionAndBackgroundColorView(
                     title: "초미세먼지",
                     description: homeViewModel.currentUltraFineDustTuple.description,
