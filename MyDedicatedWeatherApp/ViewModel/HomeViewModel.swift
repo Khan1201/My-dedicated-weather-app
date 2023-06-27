@@ -110,6 +110,42 @@ final class HomeViewModel: ObservableObject {
         }
     }
     
+    
+    /// 단기예보  Items request
+    func requestShortForecastItems(xy: Util.LatXLngY) async {
+                
+        let parameters = VeryShortOrShortTermForecastReq(
+            serviceKey: env.openDataApiResponseKey,
+            baseDate: util.shortTermForcastBaseDate(),
+            baseTime: util.shortTermForecastBaseTime(),
+            nx: String(xy.x),
+            ny: String(xy.y)
+        )
+        
+        do {
+            let result = try await jsonRequest.newRequest(
+                url: Route.GET_WEATHER_SHORT_TERM_FORECAST.val,
+                method: .get,
+                parameters: parameters,
+                headers: nil,
+                resultType: OpenDataRes<VeryShortOrShortTermForecastModel<ShortTermForecastCategory>>.self
+            )
+            
+            print("단기 예보 값은 \(result)")
+            
+        } catch APIError.transportError {
+            
+            DispatchQueue.main.async {
+                self.errorMessage = "API 통신 에러"
+            }
+            
+        } catch {
+            DispatchQueue.main.async {
+                self.errorMessage = "알 수 없는 오류"
+            }
+        }
+    }
+    
     /// 실시간 미세먼지, 초미세먼지 Items request
     func requestRealTimeFindDustForecastItems() async {
         
@@ -297,6 +333,24 @@ final class HomeViewModel: ObservableObject {
         isCurrentWeatherInformationLoadCompleted = true
     }
     
+    func setTodayWeathersTest(items: [VeryShortOrShortTermForecastModel<ShortTermForecastCategory>]) {
+        
+        
+        let filteredTodayTemperatures = items.filter { item in
+            item.category == .TMP
+        }
+        
+//        let filteredTodayTemperatures = items.filter { item in
+//            item.baseDate == util.currentDateByCustomFormatter(dateFormat: "yyyyMMdd") &&
+//            Int(item.baseTime) ?? 0 >= Int(util.currentDateByCustomFormatter(dateFormat: "HHmm")) ?? 0
+//        }
+//
+//        let filteredTomorrowTemperatures = items.filter { item in
+//            item.baseDate == util.dateToStringByAddingDay(currentDate: Date(), day: 1, dateFormat: "yyyyMMdd") &&
+//            Int(item.baseTime) ?? 0 <= Int(util.currentDateByCustomFormatter(dateFormat: "HHmm")) ?? 0
+//        }
+    }
+    
     /**
      초 단기예보 Items ->` todayWeathers`(날씨 이미지 String, 시간 String, 온도 String)에 해당하는 값들 Extract
      
@@ -366,6 +420,7 @@ final class HomeViewModel: ObservableObject {
     
     func HomeViewControllerTaskAction(xy: Util.LatXLngY) async {
         await requestVeryShortForecastItems(xy: xy)
+        await requestShortForecastItems(xy: xy)
     }
     
     func HomeViewControllerLocationUpdatedAction(umdName: String, locality: String) {
@@ -379,12 +434,5 @@ final class HomeViewModel: ObservableObject {
             await requestDustForecastStation()
             await requestRealTimeFindDustForecastItems()
         }
-        
-        //        await requestDustForecastStationXY(
-        //            umdName: umdName,
-        //            locality: locality
-        //        )
-        //        await requestDustForecastStation()
-        //        await requestRealTimeFindDustForecastItems()
     }
 }

@@ -43,9 +43,12 @@ struct HomeViewController: View {
                 }
             }
             .task {
-                await homeViewModel.requestVeryShortForecastItems(
-                    xy:locationDataManagerVM.convertLocationToXYForVeryShortForecast()
+                await homeViewModel.HomeViewControllerTaskAction(
+                    xy: locationDataManagerVM.convertLocationToXYForVeryShortForecast()
                 )
+//                await homeViewModel.requestVeryShortForecastItems(
+//                    xy:locationDataManagerVM.convertLocationToXYForVeryShortForecast()
+//                )
             }
             .onChange(of: locationDataManagerVM.isLocationUpdated) { _ in
                 homeViewModel.HomeViewControllerLocationUpdatedAction(

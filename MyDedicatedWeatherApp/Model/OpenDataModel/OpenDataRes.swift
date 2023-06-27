@@ -37,11 +37,14 @@ struct OpenDataRes<T>: Decodable where T: Decodable {
         self.item = nil
         self.items = nil
         
-        if T.Type.self == VeryShortOrShortTermForecastModel<VeryShortTermForecastCategory>.Type.self { // 초단기 or 단기 예보
+        // 초단기 or 단기 예보
+        if T.Type.self == VeryShortOrShortTermForecastModel<VeryShortTermForecastCategory>.Type.self ||
+            T.Type.self == VeryShortOrShortTermForecastModel<ShortTermForecastCategory>.Type.self
+        {
             let itemsKeys = try bodyKeys.nestedContainer(keyedBy: ItemsKeys.self, forKey: .items)
             self.item = try itemsKeys.decodeIfPresent([T].self, forKey: .item)
             
-        } else { // 미세먼지 예보
+        } else {
             self.items = try bodyKeys.decodeIfPresent([T].self, forKey: .items)
         }
     }

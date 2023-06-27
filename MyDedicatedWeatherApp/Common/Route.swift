@@ -10,6 +10,7 @@ import Foundation
 enum Route {
     
     case GET_WEATHER_MID_TERM_FORECAST,
+        GET_WEATHER_SHORT_TERM_FORECAST,
         GET_WEATHER_VERY_SHORT_TERM_FORECAST,
         GET_REAL_TIME_FIND_DUST_FORECAST,
         GET_DUST_FORECAST_STATION_XY,
@@ -18,7 +19,10 @@ enum Route {
     var val: String {
         
         switch self {
-            
+        
+        case .GET_WEATHER_SHORT_TERM_FORECAST:
+            return "https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst"
+        
         case .GET_WEATHER_MID_TERM_FORECAST:
             return "http://apis.data.go.kr/1360000/MidFcstInfoService/getMidTa"
             
