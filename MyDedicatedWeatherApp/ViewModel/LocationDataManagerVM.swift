@@ -17,6 +17,14 @@ final class LocationDataManagerVM: NSObject, ObservableObject {
     @Published var currentLocationLocality: String = "" // 서울특별시
     @Published var locationPermissonType: PermissionType = .notAllow
     
+    var longitudeAndLatitude: (String, String) {
+        
+        return (
+            String(locationManager.location?.coordinate.longitude ?? 0),
+            String(locationManager.location?.coordinate.latitude ?? 0)
+        )
+    }
+    
     /// Load Completed Variables..
     @Published var isLocationUpdated: Bool = false
     

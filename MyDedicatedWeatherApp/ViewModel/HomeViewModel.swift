@@ -48,7 +48,8 @@ final class HomeViewModel: ObservableObject {
                 method: .get,
                 parameters: parameters,
                 headers: nil,
-                resultType: OpenDataRes<MidTermForecastModel>.self
+                resultType: OpenDataRes<MidTermForecastModel>.self,
+                requestName: "requestMidTermForecastItems()"
             )
             DispatchQueue.main.async {
                 if let item = result.item?.first {
@@ -87,7 +88,8 @@ final class HomeViewModel: ObservableObject {
                 method: .get,
                 parameters: parameters,
                 headers: nil,
-                resultType: OpenDataRes<VeryShortOrShortTermForecastModel<VeryShortTermForecastCategory>>.self
+                resultType: OpenDataRes<VeryShortOrShortTermForecastModel<VeryShortTermForecastCategory>>.self,
+                requestName: "requestVeryShortForecastItems(xy:)"
             )
             DispatchQueue.main.async {
                 
@@ -128,7 +130,8 @@ final class HomeViewModel: ObservableObject {
                 method: .get,
                 parameters: parameters,
                 headers: nil,
-                resultType: OpenDataRes<VeryShortOrShortTermForecastModel<ShortTermForecastCategory>>.self
+                resultType: OpenDataRes<VeryShortOrShortTermForecastModel<ShortTermForecastCategory>>.self,
+                requestName: "requestShortForecastItems(xy:)"
             )
             
             print("단기 예보 값은 \(result)")
@@ -160,7 +163,8 @@ final class HomeViewModel: ObservableObject {
                 method: .get,
                 parameters: parameters,
                 headers: nil,
-                resultType: OpenDataRes<RealTimeFindDustForecastModel>.self
+                resultType: OpenDataRes<RealTimeFindDustForecastModel>.self,
+                requestName: "requestRealTimeFindDustForecastItems()"
             )
             
             if let item = result.items?.first {
@@ -198,11 +202,12 @@ final class HomeViewModel: ObservableObject {
                 method: .get,
                 parameters: param,
                 headers: nil,
-                resultType: OpenDataRes<DustForecastStationXYModel>.self
+                resultType: OpenDataRes<DustForecastStationXYModel>.self,
+                requestName: "requestDustForecastStationXY(umdName:, locality:)"
             )
             
             if let filteredResult = result.items?.first(where: { item in
-                item.sidoName == locality
+                item.sidoName.contains(locality)
             }) {
                 ForDustStationRequest.tmXAndtmY = (filteredResult.tmX, filteredResult.tmY)
             }
@@ -234,12 +239,42 @@ final class HomeViewModel: ObservableObject {
                 method: .get,
                 parameters: param,
                 headers: nil,
-                resultType: OpenDataRes<DustForecastStationModel>.self
+                resultType: OpenDataRes<DustForecastStationModel>.self,
+                requestName: "requestDustForecastStation()"
             )
             
             if let filteredResult = result.items?.first {
                 ForDustStationRequest.stationName = filteredResult.stationName
             }
+            
+        } catch APIError.transportError {
+            
+            DispatchQueue.main.async {
+                self.errorMessage = "API 통신 에러"
+            }
+        } catch {
+            DispatchQueue.main.async {
+                self.errorMessage = "알 수 없는 오류"
+            }
+        }
+    }
+    
+    func requestKaKaoAddressBy(x: String, y: String) async {
+        
+        let param = KakaoAddressBase.Req(x: x, y: y)
+        let header = Validate().kakaoHeader()
+        
+        do {
+            let result = try await jsonRequest.newRequest(
+                url: Route.GET_KAKAO_ADDRESS.val,
+                method: .get,
+                parameters: param,
+                headers: header,
+                resultType: KakaoAddressBase.DocumentsBase.self,
+                requestName: "requestKaKaoAddressBy(x:, y:)"
+            )
+            
+            print(result)
             
         } catch APIError.transportError {
             
@@ -418,9 +453,10 @@ final class HomeViewModel: ObservableObject {
     
     // MARK: - View On Appear, Task Actions..
     
-    func HomeViewControllerTaskAction(xy: Util.LatXLngY) async {
+    func HomeViewControllerTaskAction(xy: Util.LatXLngY, longLati: (String, String)) async {
         await requestVeryShortForecastItems(xy: xy)
         await requestShortForecastItems(xy: xy)
+        await requestKaKaoAddressBy(x: longLati.0, y: longLati.1)
     }
     
     func HomeViewControllerLocationUpdatedAction(umdName: String, locality: String) {

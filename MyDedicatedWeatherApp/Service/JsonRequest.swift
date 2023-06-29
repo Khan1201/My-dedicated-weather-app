@@ -15,7 +15,8 @@ struct JsonRequest {
         method: HTTPMethod,
         parameters: Parameters?,
         headers: HTTPHeaders?,
-        resultType: T.Type
+        resultType: T.Type,
+        requestName: String
     ) async throws -> T {
         
         let dataTask = AF.request(url, method: method, parameters: parameters, headers: headers).serializingDecodable(resultType)
@@ -27,7 +28,12 @@ struct JsonRequest {
             return res
             
         case .failure(let error):
-            print(String(describing: error))
+            print("""
+            ****************************
+            Function Name: \(requestName)
+             \(String(describing: error))
+            ****************************
+            """)
             throw APIError.transportError
         }
         

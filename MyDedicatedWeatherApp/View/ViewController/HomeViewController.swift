@@ -44,7 +44,8 @@ struct HomeViewController: View {
             }
             .task {
                 await homeViewModel.HomeViewControllerTaskAction(
-                    xy: locationDataManagerVM.convertLocationToXYForVeryShortForecast()
+                    xy: locationDataManagerVM.convertLocationToXYForVeryShortForecast(),
+                    longLati: locationDataManagerVM.longitudeAndLatitude
                 )
 //                await homeViewModel.requestVeryShortForecastItems(
 //                    xy:locationDataManagerVM.convertLocationToXYForVeryShortForecast()

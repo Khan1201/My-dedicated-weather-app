@@ -49,6 +49,8 @@
 		BCA30FAA29FFDC580078D0B1 /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30FA929FFDC580078D0B1 /* Dummy.swift */; };
 		BCA30FAD29FFE3850078D0B1 /* HomeViewMinMaxTemperatureVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30FAC29FFE3850078D0B1 /* HomeViewMinMaxTemperatureVC.swift */; };
 		BCB101532A482BFB00EE1EE8 /* Location.json in Resources */ = {isa = PBXBuildFile; fileRef = BCB101522A482BFB00EE1EE8 /* Location.json */; };
+		BCB16E2D2A4C717D00AACFF0 /* Validate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB16E2C2A4C717D00AACFF0 /* Validate.swift */; };
+		BCB16E302A4DC66300AACFF0 /* KakaoAddressBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB16E2F2A4DC66300AACFF0 /* KakaoAddressBase.swift */; };
 		BCCD80682A07A59800501BEA /* LocationDataManagerVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCCD80672A07A59800501BEA /* LocationDataManagerVM.swift */; };
 /* End PBXBuildFile section */
 
@@ -96,6 +98,8 @@
 		BCA30FA929FFDC580078D0B1 /* Dummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummy.swift; sourceTree = "<group>"; };
 		BCA30FAC29FFE3850078D0B1 /* HomeViewMinMaxTemperatureVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewMinMaxTemperatureVC.swift; sourceTree = "<group>"; };
 		BCB101522A482BFB00EE1EE8 /* Location.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Location.json; path = ../../../../Downloads/Location.json; sourceTree = "<group>"; };
+		BCB16E2C2A4C717D00AACFF0 /* Validate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validate.swift; sourceTree = "<group>"; };
+		BCB16E2F2A4DC66300AACFF0 /* KakaoAddressBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoAddressBase.swift; sourceTree = "<group>"; };
 		BCCD80672A07A59800501BEA /* LocationDataManagerVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDataManagerVM.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -237,7 +241,8 @@
 		BCA30F8829FE20790078D0B1 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				BCA30F9829FE49DA0078D0B1 /* OpenDataModel */,
+				BCB16E2E2A4DC64B00AACFF0 /* KaKao */,
+				BCA30F9829FE49DA0078D0B1 /* OpenData */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -260,11 +265,12 @@
 				BC6EF8BC2A10AAB30072A2DE /* Extension.swift */,
 				BC37A6032A3F094E00C16278 /* CustomTypes.swift */,
 				BC91FD502A44836D00D3E665 /* Extensions.swift */,
+				BCB16E2C2A4C717D00AACFF0 /* Validate.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
 		};
-		BCA30F9829FE49DA0078D0B1 /* OpenDataModel */ = {
+		BCA30F9829FE49DA0078D0B1 /* OpenData */ = {
 			isa = PBXGroup;
 			children = (
 				BCA30F9229FE28F20078D0B1 /* MidTermForecastModel.swift */,
@@ -274,7 +280,7 @@
 				BC37A5FF2A3ED7BC00C16278 /* DustForecastStationModel.swift */,
 				BC37A6012A3ED7CD00C16278 /* DustForecastStationXYModel.swift */,
 			);
-			path = OpenDataModel;
+			path = OpenData;
 			sourceTree = "<group>";
 		};
 		BCA30FA329FE72DF0078D0B1 /* ViewModel */ = {
@@ -296,6 +302,14 @@
 				BC96646A2A41ED0600D2433C /* HomeView */,
 			);
 			path = ViewComponent;
+			sourceTree = "<group>";
+		};
+		BCB16E2E2A4DC64B00AACFF0 /* KaKao */ = {
+			isa = PBXGroup;
+			children = (
+				BCB16E2F2A4DC66300AACFF0 /* KakaoAddressBase.swift */,
+			);
+			path = KaKao;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -389,7 +403,9 @@
 				BCA30F9129FE265B0078D0B1 /* Route.swift in Sources */,
 				BC7D33E52A127ABB00B1012F /* LottieView.swift in Sources */,
 				BCA30F9A29FE49FE0078D0B1 /* OpenDataRes.swift in Sources */,
+				BCB16E2D2A4C717D00AACFF0 /* Validate.swift in Sources */,
 				BCA30F7C29FE203A0078D0B1 /* ContentView.swift in Sources */,
+				BCB16E302A4DC66300AACFF0 /* KakaoAddressBase.swift in Sources */,
 				BCA30F9529FE39BC0078D0B1 /* Env.swift in Sources */,
 				BCCD80682A07A59800501BEA /* LocationDataManagerVM.swift in Sources */,
 				BCA30FA529FE73C90078D0B1 /* HomeViewController.swift in Sources */,
