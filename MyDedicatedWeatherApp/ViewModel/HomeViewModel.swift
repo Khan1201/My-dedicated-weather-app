@@ -19,9 +19,12 @@ final class HomeViewModel: ObservableObject {
     @Published var currentUltraFineDustTuple: Weather.DescriptionAndColor = .init(description: "", color: .clear)
     @Published var todayWeatherInformations: [TodayWeatherInformationModel] = []
     
+    @Published var subLocalityByKakaoAddress: String = ""
+    
     /// Load Completed Variables..
     @Published var isCurrentWeatherInformationLoadCompleted: Bool = false
     @Published var isFineDustLoadCompleted: Bool = false
+    @Published var isKakaoAddressLoadCompleted: Bool = false
     
     private enum ForDustStationRequest {
         static var tmXAndtmY: (String, String) = ("","")
@@ -189,11 +192,11 @@ final class HomeViewModel: ObservableObject {
     }
     
     /// 미세먼지 주변 측정소 X, Y 좌표. request
-    func requestDustForecastStationXY(umdName: String, locality: String) async {
+    func requestDustForecastStationXY(subLocality: String, locality: String) async {
         
         let param: DustForecastStationXYReq = DustForecastStationXYReq(
             serviceKey: env.openDataApiResponseKey,
-            umdName: umdName
+            umdName: subLocality
         )
         
         do {
@@ -259,9 +262,9 @@ final class HomeViewModel: ObservableObject {
         }
     }
     
-    func requestKaKaoAddressBy(x: String, y: String) async {
+    func requestKaKaoAddressBy(longitude: String, latitude: String) async {
         
-        let param = KakaoAddressBase.Req(x: x, y: y)
+        let param = KakaoAddressBase.Req(x: longitude, y: latitude)
         let header = Validate().kakaoHeader()
         
         do {
@@ -274,7 +277,10 @@ final class HomeViewModel: ObservableObject {
                 requestName: "requestKaKaoAddressBy(x:, y:)"
             )
             
-            print(result)
+            DispatchQueue.main.async {
+                self.subLocalityByKakaoAddress = result.documents[0].address.subLocality
+                self.isKakaoAddressLoadCompleted = true
+            }
             
         } catch APIError.transportError {
             
@@ -456,7 +462,7 @@ final class HomeViewModel: ObservableObject {
     func HomeViewControllerTaskAction(xy: Util.LatXLngY, longLati: (String, String)) async {
         await requestVeryShortForecastItems(xy: xy)
         await requestShortForecastItems(xy: xy)
-        await requestKaKaoAddressBy(x: longLati.0, y: longLati.1)
+        await requestKaKaoAddressBy(longitude: longLati.0, latitude: longLati.1)
     }
     
     func HomeViewControllerLocationUpdatedAction(umdName: String, locality: String) {
@@ -464,7 +470,7 @@ final class HomeViewModel: ObservableObject {
         Task {
             
             await requestDustForecastStationXY(
-                umdName: umdName,
+                subLocality: umdName,
                 locality: locality
             )
             await requestDustForecastStation()

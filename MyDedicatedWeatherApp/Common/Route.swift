@@ -25,13 +25,13 @@ enum Route {
             return "https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst"
         
         case .GET_WEATHER_MID_TERM_FORECAST:
-            return "http://apis.data.go.kr/1360000/MidFcstInfoService/getMidTa"
+            return "https://apis.data.go.kr/1360000/MidFcstInfoService/getMidTa"
             
         case .GET_WEATHER_VERY_SHORT_TERM_FORECAST:
-            return "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst"
+            return "https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst"
             
         case .GET_REAL_TIME_FIND_DUST_FORECAST:
-            return "http://apis.data.go.kr/B552584/ArpltnInforInqireSvc/getMsrstnAcctoRltmMesureDnsty"
+            return "https://apis.data.go.kr/B552584/ArpltnInforInqireSvc/getMsrstnAcctoRltmMesureDnsty"
             
         case .GET_DUST_FORECAST_STATION_XY:
             return "https://apis.data.go.kr/B552584/MsrstnInfoInqireSvc/getTMStdrCrdnt"

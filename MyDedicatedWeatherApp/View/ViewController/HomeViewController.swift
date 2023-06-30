@@ -51,9 +51,9 @@ struct HomeViewController: View {
 //                    xy:locationDataManagerVM.convertLocationToXYForVeryShortForecast()
 //                )
             }
-            .onChange(of: locationDataManagerVM.isLocationUpdated) { _ in
+            .onChange(of: locationDataManagerVM.isLocationUpdated && homeViewModel.isKakaoAddressLoadCompleted) { _ in
                 homeViewModel.HomeViewControllerLocationUpdatedAction(
-                    umdName: locationDataManagerVM.currentLocationSubLocality,
+                    umdName: homeViewModel.subLocalityByKakaoAddress,
                     locality: locationDataManagerVM.currentLocationLocality
                 )
             }
