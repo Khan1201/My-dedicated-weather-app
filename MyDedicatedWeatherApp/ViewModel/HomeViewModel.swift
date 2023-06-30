@@ -21,6 +21,8 @@ final class HomeViewModel: ObservableObject {
     
     @Published var subLocalityByKakaoAddress: String = ""
     
+    @Published var isNightMode: Bool = false
+    
     /// Load Completed Variables..
     @Published var isCurrentWeatherInformationLoadCompleted: Bool = false
     @Published var isFineDustLoadCompleted: Bool = false
@@ -262,6 +264,7 @@ final class HomeViewModel: ObservableObject {
         }
     }
     
+    // 'SubLocality'(성수동 1가) request by kakao address
     func requestKaKaoAddressBy(longitude: String, latitude: String) async {
         
         let param = KakaoAddressBase.Req(x: longitude, y: latitude)
@@ -460,6 +463,7 @@ final class HomeViewModel: ObservableObject {
     // MARK: - View On Appear, Task Actions..
     
     func HomeViewControllerTaskAction(xy: Util.LatXLngY, longLati: (String, String)) async {
+        isNightMode = true
         await requestVeryShortForecastItems(xy: xy)
         await requestShortForecastItems(xy: xy)
         await requestKaKaoAddressBy(longitude: longLati.0, latitude: longLati.1)

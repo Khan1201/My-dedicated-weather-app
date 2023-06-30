@@ -52,6 +52,30 @@
 		BCB16E2D2A4C717D00AACFF0 /* Validate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB16E2C2A4C717D00AACFF0 /* Validate.swift */; };
 		BCB16E302A4DC66300AACFF0 /* KakaoAddressBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB16E2F2A4DC66300AACFF0 /* KakaoAddressBase.swift */; };
 		BCCD80682A07A59800501BEA /* LocationDataManagerVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCCD80672A07A59800501BEA /* LocationDataManagerVM.swift */; };
+		BCE4899C2A4EA32400A18B2B /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = BCE489962A4EA32200A18B2B /* LICENSE */; };
+		BCE4899D2A4EA32400A18B2B /* SpoqaHanSansNeo-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = BCE489972A4EA32200A18B2B /* SpoqaHanSansNeo-Light.otf */; };
+		BCE4899E2A4EA32400A18B2B /* SpoqaHanSansNeo-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = BCE489982A4EA32300A18B2B /* SpoqaHanSansNeo-Bold.otf */; };
+		BCE4899F2A4EA32400A18B2B /* SpoqaHanSansNeo-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = BCE489992A4EA32300A18B2B /* SpoqaHanSansNeo-Medium.otf */; };
+		BCE489A02A4EA32400A18B2B /* SpoqaHanSansNeo-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = BCE4899A2A4EA32300A18B2B /* SpoqaHanSansNeo-Regular.otf */; };
+		BCE489A12A4EA32400A18B2B /* SpoqaHanSansNeo-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = BCE4899B2A4EA32400A18B2B /* SpoqaHanSansNeo-Thin.otf */; };
+		BCE489B72A4EA33400A18B2B /* SpoqaHanSansNeo-Regular.woff in Resources */ = {isa = PBXBuildFile; fileRef = BCE489A22A4EA33300A18B2B /* SpoqaHanSansNeo-Regular.woff */; };
+		BCE489B82A4EA33400A18B2B /* SpoqaHanSansNeo-Bold.eot in Resources */ = {isa = PBXBuildFile; fileRef = BCE489A32A4EA33300A18B2B /* SpoqaHanSansNeo-Bold.eot */; };
+		BCE489B92A4EA33400A18B2B /* SpoqaHanSansNeo-Bold.woff in Resources */ = {isa = PBXBuildFile; fileRef = BCE489A42A4EA33400A18B2B /* SpoqaHanSansNeo-Bold.woff */; };
+		BCE489BA2A4EA33400A18B2B /* SpoqaHanSansNeo-Light.woff2 in Resources */ = {isa = PBXBuildFile; fileRef = BCE489A52A4EA33400A18B2B /* SpoqaHanSansNeo-Light.woff2 */; };
+		BCE489BC2A4EA33400A18B2B /* SpoqaHanSansNeo-Thin.woff2 in Resources */ = {isa = PBXBuildFile; fileRef = BCE489A72A4EA33400A18B2B /* SpoqaHanSansNeo-Thin.woff2 */; };
+		BCE489BD2A4EA33400A18B2B /* SpoqaHanSansNeo-Regular.woff2 in Resources */ = {isa = PBXBuildFile; fileRef = BCE489A82A4EA33400A18B2B /* SpoqaHanSansNeo-Regular.woff2 */; };
+		BCE489BE2A4EA33400A18B2B /* SpoqaHanSansNeo-Bold.woff2 in Resources */ = {isa = PBXBuildFile; fileRef = BCE489A92A4EA33400A18B2B /* SpoqaHanSansNeo-Bold.woff2 */; };
+		BCE489BF2A4EA33400A18B2B /* SpoqaHanSansNeo-Medium.woff in Resources */ = {isa = PBXBuildFile; fileRef = BCE489AA2A4EA33400A18B2B /* SpoqaHanSansNeo-Medium.woff */; };
+		BCE489C12A4EA33400A18B2B /* SpoqaHanSansNeo-Thin.woff in Resources */ = {isa = PBXBuildFile; fileRef = BCE489AC2A4EA33400A18B2B /* SpoqaHanSansNeo-Thin.woff */; };
+		BCE489C22A4EA33400A18B2B /* SpoqaHanSansNeo-Light.woff in Resources */ = {isa = PBXBuildFile; fileRef = BCE489AD2A4EA33400A18B2B /* SpoqaHanSansNeo-Light.woff */; };
+		BCE489C42A4EA33400A18B2B /* SpoqaHanSansNeo-Regular.eot in Resources */ = {isa = PBXBuildFile; fileRef = BCE489AF2A4EA33400A18B2B /* SpoqaHanSansNeo-Regular.eot */; };
+		BCE489C62A4EA33400A18B2B /* SpoqaHanSansNeo-Light.eot in Resources */ = {isa = PBXBuildFile; fileRef = BCE489B12A4EA33400A18B2B /* SpoqaHanSansNeo-Light.eot */; };
+		BCE489C72A4EA33400A18B2B /* SpoqaHanSansNeo-Medium.woff2 in Resources */ = {isa = PBXBuildFile; fileRef = BCE489B22A4EA33400A18B2B /* SpoqaHanSansNeo-Medium.woff2 */; };
+		BCE489C82A4EA33400A18B2B /* SpoqaHanSansNeo-Thin.eot in Resources */ = {isa = PBXBuildFile; fileRef = BCE489B32A4EA33400A18B2B /* SpoqaHanSansNeo-Thin.eot */; };
+		BCE489C92A4EA33400A18B2B /* SpoqaHanSansNeo-Medium.eot in Resources */ = {isa = PBXBuildFile; fileRef = BCE489B42A4EA33400A18B2B /* SpoqaHanSansNeo-Medium.eot */; };
+		BCE489CD2A4EA4CE00A18B2B /* SpoqaHanSansNeoFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCE489CC2A4EA4CE00A18B2B /* SpoqaHanSansNeoFont.swift */; };
+		BCE489CF2A4EA78000A18B2B /* CustomColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCE489CE2A4EA78000A18B2B /* CustomColor.swift */; };
+		BCE489D12A4EAD5F00A18B2B /* CurrentWeatherInformationItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCE489D02A4EAD5F00A18B2B /* CurrentWeatherInformationItem.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -101,6 +125,36 @@
 		BCB16E2C2A4C717D00AACFF0 /* Validate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validate.swift; sourceTree = "<group>"; };
 		BCB16E2F2A4DC66300AACFF0 /* KakaoAddressBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoAddressBase.swift; sourceTree = "<group>"; };
 		BCCD80672A07A59800501BEA /* LocationDataManagerVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDataManagerVM.swift; sourceTree = "<group>"; };
+		BCE489962A4EA32200A18B2B /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		BCE489972A4EA32200A18B2B /* SpoqaHanSansNeo-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SpoqaHanSansNeo-Light.otf"; sourceTree = "<group>"; };
+		BCE489982A4EA32300A18B2B /* SpoqaHanSansNeo-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SpoqaHanSansNeo-Bold.otf"; sourceTree = "<group>"; };
+		BCE489992A4EA32300A18B2B /* SpoqaHanSansNeo-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SpoqaHanSansNeo-Medium.otf"; sourceTree = "<group>"; };
+		BCE4899A2A4EA32300A18B2B /* SpoqaHanSansNeo-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SpoqaHanSansNeo-Regular.otf"; sourceTree = "<group>"; };
+		BCE4899B2A4EA32400A18B2B /* SpoqaHanSansNeo-Thin.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SpoqaHanSansNeo-Thin.otf"; sourceTree = "<group>"; };
+		BCE489A22A4EA33300A18B2B /* SpoqaHanSansNeo-Regular.woff */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SpoqaHanSansNeo-Regular.woff"; sourceTree = "<group>"; };
+		BCE489A32A4EA33300A18B2B /* SpoqaHanSansNeo-Bold.eot */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SpoqaHanSansNeo-Bold.eot"; sourceTree = "<group>"; };
+		BCE489A42A4EA33400A18B2B /* SpoqaHanSansNeo-Bold.woff */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SpoqaHanSansNeo-Bold.woff"; sourceTree = "<group>"; };
+		BCE489A52A4EA33400A18B2B /* SpoqaHanSansNeo-Light.woff2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SpoqaHanSansNeo-Light.woff2"; sourceTree = "<group>"; };
+		BCE489A62A4EA33400A18B2B /* SpoqaHanSansNeo-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SpoqaHanSansNeo-Regular.otf"; path = "../../../../Downloads/SpoqaHanSansNeo_OTF_subset/SpoqaHanSansNeo-Regular.otf"; sourceTree = "<group>"; };
+		BCE489A72A4EA33400A18B2B /* SpoqaHanSansNeo-Thin.woff2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SpoqaHanSansNeo-Thin.woff2"; sourceTree = "<group>"; };
+		BCE489A82A4EA33400A18B2B /* SpoqaHanSansNeo-Regular.woff2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SpoqaHanSansNeo-Regular.woff2"; sourceTree = "<group>"; };
+		BCE489A92A4EA33400A18B2B /* SpoqaHanSansNeo-Bold.woff2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SpoqaHanSansNeo-Bold.woff2"; sourceTree = "<group>"; };
+		BCE489AA2A4EA33400A18B2B /* SpoqaHanSansNeo-Medium.woff */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SpoqaHanSansNeo-Medium.woff"; sourceTree = "<group>"; };
+		BCE489AB2A4EA33400A18B2B /* SpoqaHanSansNeo-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SpoqaHanSansNeo-Bold.otf"; path = "../../../../Downloads/SpoqaHanSansNeo_OTF_subset/SpoqaHanSansNeo-Bold.otf"; sourceTree = "<group>"; };
+		BCE489AC2A4EA33400A18B2B /* SpoqaHanSansNeo-Thin.woff */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SpoqaHanSansNeo-Thin.woff"; sourceTree = "<group>"; };
+		BCE489AD2A4EA33400A18B2B /* SpoqaHanSansNeo-Light.woff */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SpoqaHanSansNeo-Light.woff"; sourceTree = "<group>"; };
+		BCE489AE2A4EA33400A18B2B /* SpoqaHanSansNeo-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SpoqaHanSansNeo-Light.otf"; path = "../../../../Downloads/SpoqaHanSansNeo_OTF_subset/SpoqaHanSansNeo-Light.otf"; sourceTree = "<group>"; };
+		BCE489AF2A4EA33400A18B2B /* SpoqaHanSansNeo-Regular.eot */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SpoqaHanSansNeo-Regular.eot"; sourceTree = "<group>"; };
+		BCE489B02A4EA33400A18B2B /* SpoqaHanSansNeo-Thin.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SpoqaHanSansNeo-Thin.otf"; path = "../../../../Downloads/SpoqaHanSansNeo_OTF_subset/SpoqaHanSansNeo-Thin.otf"; sourceTree = "<group>"; };
+		BCE489B12A4EA33400A18B2B /* SpoqaHanSansNeo-Light.eot */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SpoqaHanSansNeo-Light.eot"; sourceTree = "<group>"; };
+		BCE489B22A4EA33400A18B2B /* SpoqaHanSansNeo-Medium.woff2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SpoqaHanSansNeo-Medium.woff2"; sourceTree = "<group>"; };
+		BCE489B32A4EA33400A18B2B /* SpoqaHanSansNeo-Thin.eot */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SpoqaHanSansNeo-Thin.eot"; sourceTree = "<group>"; };
+		BCE489B42A4EA33400A18B2B /* SpoqaHanSansNeo-Medium.eot */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SpoqaHanSansNeo-Medium.eot"; sourceTree = "<group>"; };
+		BCE489B52A4EA33400A18B2B /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = LICENSE; path = ../../../../Downloads/SpoqaHanSansNeo_OTF_subset/LICENSE; sourceTree = "<group>"; };
+		BCE489B62A4EA33400A18B2B /* SpoqaHanSansNeo-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SpoqaHanSansNeo-Medium.otf"; path = "../../../../Downloads/SpoqaHanSansNeo_OTF_subset/SpoqaHanSansNeo-Medium.otf"; sourceTree = "<group>"; };
+		BCE489CC2A4EA4CE00A18B2B /* SpoqaHanSansNeoFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpoqaHanSansNeoFont.swift; sourceTree = "<group>"; };
+		BCE489CE2A4EA78000A18B2B /* CustomColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomColor.swift; sourceTree = "<group>"; };
+		BCE489D02A4EAD5F00A18B2B /* CurrentWeatherInformationItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeatherInformationItem.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -161,6 +215,7 @@
 			isa = PBXGroup;
 			children = (
 				BC91FD532A4483CA00D3E665 /* LoadingProgress.swift */,
+				BCE489CC2A4EA4CE00A18B2B /* SpoqaHanSansNeoFont.swift */,
 			);
 			path = ViewModifier;
 			sourceTree = "<group>";
@@ -180,6 +235,7 @@
 				BC65D50E2A0BDF1C00EFADD4 /* WeatherInformationsWithImgAndTimeAndTemperature.swift */,
 				BC96646B2A41F2C900D2433C /* WeatherInforamtionsWithImageAndDescriptionView.swift */,
 				BC96646D2A41F58300D2433C /* FineDustWithDescriptionAndBackgroundColorView.swift */,
+				BCE489D02A4EAD5F00A18B2B /* CurrentWeatherInformationItem.swift */,
 			);
 			path = HomeView;
 			sourceTree = "<group>";
@@ -203,6 +259,7 @@
 		BCA30F7829FE203A0078D0B1 /* MyDedicatedWeatherApp */ = {
 			isa = PBXGroup;
 			children = (
+				BCE489952A4EA2F900A18B2B /* CustomFont */,
 				BCA30FA829FE7D780078D0B1 /* Info.plist */,
 				BCA30F8F29FE26500078D0B1 /* Common */,
 				BCA30F8929FE20800078D0B1 /* Service */,
@@ -266,6 +323,7 @@
 				BC37A6032A3F094E00C16278 /* CustomTypes.swift */,
 				BC91FD502A44836D00D3E665 /* Extensions.swift */,
 				BCB16E2C2A4C717D00AACFF0 /* Validate.swift */,
+				BCE489CE2A4EA78000A18B2B /* CustomColor.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -310,6 +368,40 @@
 				BCB16E2F2A4DC66300AACFF0 /* KakaoAddressBase.swift */,
 			);
 			path = KaKao;
+			sourceTree = "<group>";
+		};
+		BCE489952A4EA2F900A18B2B /* CustomFont */ = {
+			isa = PBXGroup;
+			children = (
+				BCE489B52A4EA33400A18B2B /* LICENSE */,
+				BCE489A32A4EA33300A18B2B /* SpoqaHanSansNeo-Bold.eot */,
+				BCE489AB2A4EA33400A18B2B /* SpoqaHanSansNeo-Bold.otf */,
+				BCE489A42A4EA33400A18B2B /* SpoqaHanSansNeo-Bold.woff */,
+				BCE489A92A4EA33400A18B2B /* SpoqaHanSansNeo-Bold.woff2 */,
+				BCE489B12A4EA33400A18B2B /* SpoqaHanSansNeo-Light.eot */,
+				BCE489AE2A4EA33400A18B2B /* SpoqaHanSansNeo-Light.otf */,
+				BCE489AD2A4EA33400A18B2B /* SpoqaHanSansNeo-Light.woff */,
+				BCE489A52A4EA33400A18B2B /* SpoqaHanSansNeo-Light.woff2 */,
+				BCE489B42A4EA33400A18B2B /* SpoqaHanSansNeo-Medium.eot */,
+				BCE489B62A4EA33400A18B2B /* SpoqaHanSansNeo-Medium.otf */,
+				BCE489AA2A4EA33400A18B2B /* SpoqaHanSansNeo-Medium.woff */,
+				BCE489B22A4EA33400A18B2B /* SpoqaHanSansNeo-Medium.woff2 */,
+				BCE489AF2A4EA33400A18B2B /* SpoqaHanSansNeo-Regular.eot */,
+				BCE489A62A4EA33400A18B2B /* SpoqaHanSansNeo-Regular.otf */,
+				BCE489A22A4EA33300A18B2B /* SpoqaHanSansNeo-Regular.woff */,
+				BCE489A82A4EA33400A18B2B /* SpoqaHanSansNeo-Regular.woff2 */,
+				BCE489B32A4EA33400A18B2B /* SpoqaHanSansNeo-Thin.eot */,
+				BCE489B02A4EA33400A18B2B /* SpoqaHanSansNeo-Thin.otf */,
+				BCE489AC2A4EA33400A18B2B /* SpoqaHanSansNeo-Thin.woff */,
+				BCE489A72A4EA33400A18B2B /* SpoqaHanSansNeo-Thin.woff2 */,
+				BCE489962A4EA32200A18B2B /* LICENSE */,
+				BCE489982A4EA32300A18B2B /* SpoqaHanSansNeo-Bold.otf */,
+				BCE489972A4EA32200A18B2B /* SpoqaHanSansNeo-Light.otf */,
+				BCE489992A4EA32300A18B2B /* SpoqaHanSansNeo-Medium.otf */,
+				BCE4899A2A4EA32300A18B2B /* SpoqaHanSansNeo-Regular.otf */,
+				BCE4899B2A4EA32400A18B2B /* SpoqaHanSansNeo-Thin.otf */,
+			);
+			path = CustomFont;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -379,17 +471,38 @@
 			buildActionMask = 2147483647;
 			files = (
 				BC137CAD2A1284F6002D6667 /* SunnyNight.json in Resources */,
+				BCE4899F2A4EA32400A18B2B /* SpoqaHanSansNeo-Medium.otf in Resources */,
+				BCE489C42A4EA33400A18B2B /* SpoqaHanSansNeo-Regular.eot in Resources */,
 				BC137CB72A128913002D6667 /* RainNight.json in Resources */,
+				BCE4899C2A4EA32400A18B2B /* LICENSE in Resources */,
+				BCE489B92A4EA33400A18B2B /* SpoqaHanSansNeo-Bold.woff in Resources */,
 				BCB101532A482BFB00EE1EE8 /* Location.json in Resources */,
+				BCE489C82A4EA33400A18B2B /* SpoqaHanSansNeo-Thin.eot in Resources */,
 				BC137CA52A128221002D6667 /* Sunny.json in Resources */,
+				BCE4899D2A4EA32400A18B2B /* SpoqaHanSansNeo-Light.otf in Resources */,
+				BCE4899E2A4EA32400A18B2B /* SpoqaHanSansNeo-Bold.otf in Resources */,
+				BCE489BF2A4EA33400A18B2B /* SpoqaHanSansNeo-Medium.woff in Resources */,
+				BCE489A02A4EA32400A18B2B /* SpoqaHanSansNeo-Regular.otf in Resources */,
 				BC137CBB2A128975002D6667 /* SnowNight.json in Resources */,
+				BCE489BD2A4EA33400A18B2B /* SpoqaHanSansNeo-Regular.woff2 in Resources */,
 				BC137CB32A12885D002D6667 /* CloudManyNight.json in Resources */,
+				BCE489C92A4EA33400A18B2B /* SpoqaHanSansNeo-Medium.eot in Resources */,
+				BCE489C12A4EA33400A18B2B /* SpoqaHanSansNeo-Thin.woff in Resources */,
+				BCE489C72A4EA33400A18B2B /* SpoqaHanSansNeo-Medium.woff2 in Resources */,
 				BC137CB12A128546002D6667 /* Cloudy.json in Resources */,
+				BCE489BC2A4EA33400A18B2B /* SpoqaHanSansNeo-Thin.woff2 in Resources */,
+				BCE489B72A4EA33400A18B2B /* SpoqaHanSansNeo-Regular.woff in Resources */,
 				BC137CB92A128959002D6667 /* Snow.json in Resources */,
+				BCE489B82A4EA33400A18B2B /* SpoqaHanSansNeo-Bold.eot in Resources */,
+				BCE489BA2A4EA33400A18B2B /* SpoqaHanSansNeo-Light.woff2 in Resources */,
+				BCE489BE2A4EA33400A18B2B /* SpoqaHanSansNeo-Bold.woff2 in Resources */,
 				BCA30F8129FE203B0078D0B1 /* Preview Assets.xcassets in Resources */,
 				BCA30F7E29FE203A0078D0B1 /* Assets.xcassets in Resources */,
 				BC137CAF2A128518002D6667 /* CloudMany.json in Resources */,
+				BCE489C62A4EA33400A18B2B /* SpoqaHanSansNeo-Light.eot in Resources */,
+				BCE489C22A4EA33400A18B2B /* SpoqaHanSansNeo-Light.woff in Resources */,
 				BC137CB52A1288F3002D6667 /* Rain.json in Resources */,
+				BCE489A12A4EA32400A18B2B /* SpoqaHanSansNeo-Thin.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -402,6 +515,7 @@
 			files = (
 				BCA30F9129FE265B0078D0B1 /* Route.swift in Sources */,
 				BC7D33E52A127ABB00B1012F /* LottieView.swift in Sources */,
+				BCE489CF2A4EA78000A18B2B /* CustomColor.swift in Sources */,
 				BCA30F9A29FE49FE0078D0B1 /* OpenDataRes.swift in Sources */,
 				BCB16E2D2A4C717D00AACFF0 /* Validate.swift in Sources */,
 				BCA30F7C29FE203A0078D0B1 /* ContentView.swift in Sources */,
@@ -429,7 +543,9 @@
 				BCA30FAA29FFDC580078D0B1 /* Dummy.swift in Sources */,
 				BCA30F9329FE28F20078D0B1 /* MidTermForecastModel.swift in Sources */,
 				BC91FD542A4483CA00D3E665 /* LoadingProgress.swift in Sources */,
+				BCE489CD2A4EA4CE00A18B2B /* SpoqaHanSansNeoFont.swift in Sources */,
 				BC37A6022A3ED7CD00C16278 /* DustForecastStationXYModel.swift in Sources */,
+				BCE489D12A4EAD5F00A18B2B /* CurrentWeatherInformationItem.swift in Sources */,
 				BC91FD512A44836D00D3E665 /* Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

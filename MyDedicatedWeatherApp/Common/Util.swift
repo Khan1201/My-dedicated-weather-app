@@ -60,6 +60,7 @@ struct Util {
         
         let formatter = DateFormatter()
         formatter.dateFormat = dateFormat
+        formatter.locale = Locale(identifier: "ko")
         
         return formatter.string(from: Date())
     }
