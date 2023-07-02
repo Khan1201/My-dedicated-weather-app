@@ -14,10 +14,10 @@ final class HomeViewModel: ObservableObject {
     @Published var errorMessage: String = ""
     @Published var currentWeatherWithDescriptionAndImgString: Weather.DescriptionAndImageString = .init(description: "", imageString: "")
     @Published var currentTemperature: String = ""
-    @Published var currentWeatherInformation: CurrentWeatherInformationModel = Dummy().currentWeatherInformation()
+    @Published var currentWeatherInformation: CurrentWeatherInformationBase = Dummy().currentWeatherInformation()
     @Published var currentFineDustTuple: Weather.DescriptionAndColor = .init(description: "", color: .clear)
     @Published var currentUltraFineDustTuple: Weather.DescriptionAndColor = .init(description: "", color: .clear)
-    @Published var todayWeatherInformations: [TodayWeatherInformationModel] = []
+    @Published var todayWeatherInformations: [TodayWeatherInformationBase] = []
     
     @Published var subLocalityByKakaoAddress: String = ""
     
@@ -53,7 +53,7 @@ final class HomeViewModel: ObservableObject {
                 method: .get,
                 parameters: parameters,
                 headers: nil,
-                resultType: OpenDataRes<MidTermForecastModel>.self,
+                resultType: OpenDataRes<MidTermForecastBase>.self,
                 requestName: "requestMidTermForecastItems()"
             )
             DispatchQueue.main.async {
@@ -93,7 +93,7 @@ final class HomeViewModel: ObservableObject {
                 method: .get,
                 parameters: parameters,
                 headers: nil,
-                resultType: OpenDataRes<VeryShortOrShortTermForecastModel<VeryShortTermForecastCategory>>.self,
+                resultType: OpenDataRes<VeryShortOrShortTermForecastBase<VeryShortTermForecastCategory>>.self,
                 requestName: "requestVeryShortForecastItems(xy:)"
             )
             DispatchQueue.main.async {
@@ -135,12 +135,10 @@ final class HomeViewModel: ObservableObject {
                 method: .get,
                 parameters: parameters,
                 headers: nil,
-                resultType: OpenDataRes<VeryShortOrShortTermForecastModel<ShortTermForecastCategory>>.self,
+                resultType: OpenDataRes<VeryShortOrShortTermForecastBase<ShortTermForecastCategory>>.self,
                 requestName: "requestShortForecastItems(xy:)"
             )
-            
-            print("단기 예보 값은 \(result)")
-            
+                        
         } catch APIError.transportError {
             
             DispatchQueue.main.async {
@@ -168,7 +166,7 @@ final class HomeViewModel: ObservableObject {
                 method: .get,
                 parameters: parameters,
                 headers: nil,
-                resultType: OpenDataRes<RealTimeFindDustForecastModel>.self,
+                resultType: OpenDataRes<RealTimeFindDustForecastBase>.self,
                 requestName: "requestRealTimeFindDustForecastItems()"
             )
             
@@ -207,7 +205,7 @@ final class HomeViewModel: ObservableObject {
                 method: .get,
                 parameters: param,
                 headers: nil,
-                resultType: OpenDataRes<DustForecastStationXYModel>.self,
+                resultType: OpenDataRes<DustForecastStationXYBase>.self,
                 requestName: "requestDustForecastStationXY(umdName:, locality:)"
             )
             
@@ -244,7 +242,7 @@ final class HomeViewModel: ObservableObject {
                 method: .get,
                 parameters: param,
                 headers: nil,
-                resultType: OpenDataRes<DustForecastStationModel>.self,
+                resultType: OpenDataRes<DustForecastStationBase>.self,
                 requestName: "requestDustForecastStation()"
             )
             
@@ -304,7 +302,7 @@ final class HomeViewModel: ObservableObject {
      
      - parameter items: [초단기예보 Model]
      */
-    func setCurrentWeatherWithDescriptionAndImgString(items: [VeryShortOrShortTermForecastModel<VeryShortTermForecastCategory>]) -> Weather.DescriptionAndImageString {
+    func setCurrentWeatherWithDescriptionAndImgString(items: [VeryShortOrShortTermForecastBase<VeryShortTermForecastCategory>]) -> Weather.DescriptionAndImageString {
         
         let firstPTYItem = items.first { item in // 강수 형태
             item.category == .PTY
@@ -326,7 +324,7 @@ final class HomeViewModel: ObservableObject {
      
      - parameter items: [초단기예보 Model]
      */
-    func setCurrentTemperature(items: [VeryShortOrShortTermForecastModel<VeryShortTermForecastCategory>]) {
+    func setCurrentTemperature(items: [VeryShortOrShortTermForecastBase<VeryShortTermForecastCategory>]) {
         
         let currenTemperatureItem = items.first { item in
             item.category == .T1H
@@ -344,7 +342,7 @@ final class HomeViewModel: ObservableObject {
      
      - parameter items: [초단기예보 Model]
      */
-    func setCurrentWeatherInformations(items: [VeryShortOrShortTermForecastModel<VeryShortTermForecastCategory>]) {
+    func setCurrentWeatherInformations(items: [VeryShortOrShortTermForecastBase<VeryShortTermForecastCategory>]) {
         
         let currentTemperature = items.first { item in
             item.category == .T1H
@@ -362,7 +360,7 @@ final class HomeViewModel: ObservableObject {
             item.category == .RN1
         }
         
-        currentWeatherInformation = CurrentWeatherInformationModel(
+        currentWeatherInformation = CurrentWeatherInformationBase(
             temperature: currentTemperature?.fcstValue ?? "",
             windSpeed: util.remakeWindSpeedValueByVeryShortTermOrShortTermForecast(
                 value: currentWindSpeed?.fcstValue ?? "")
@@ -377,7 +375,7 @@ final class HomeViewModel: ObservableObject {
         isCurrentWeatherInformationLoadCompleted = true
     }
     
-    func setTodayWeathersTest(items: [VeryShortOrShortTermForecastModel<ShortTermForecastCategory>]) {
+    func setTodayWeathersTest(items: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>]) {
         
         
         let filteredTodayTemperatures = items.filter { item in
@@ -400,7 +398,7 @@ final class HomeViewModel: ObservableObject {
      
      - parameter items: [초단기예보 Model]
      */
-    func setTodayWeathers(items: [VeryShortOrShortTermForecastModel<VeryShortTermForecastCategory>]) {
+    func setTodayWeathers(items: [VeryShortOrShortTermForecastBase<VeryShortTermForecastCategory>]) {
         
         let filteredTemperatureItems = items.filter { item in
             item.category == .T1H
@@ -422,7 +420,7 @@ final class HomeViewModel: ObservableObject {
                 isAnimationImage: false
             )
             
-            let todayWeather = TodayWeatherInformationModel(
+            let todayWeather = TodayWeatherInformationBase(
                 weatherImage: weather.imageString,
                 time: util.convertHHmmToHHColonmm(
                     HHmm: filteredTemperatureItems[index].fcstTime
@@ -439,7 +437,7 @@ final class HomeViewModel: ObservableObject {
      
      - parameter item: 중기예보 Model
      */
-    func setThreeToTenDaysTemperature(item: MidTermForecastModel) {
+    func setThreeToTenDaysTemperature(item: MidTermForecastBase) {
         
         let minMaxItems: [(Int, Int)] = [
             (item.taMin3, item.taMax3),

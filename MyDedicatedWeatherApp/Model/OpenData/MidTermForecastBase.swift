@@ -1,5 +1,5 @@
 //
-//  MidTermForecastModel.swift
+//  MidTermForecastBase.swift
 //  MyDedicatedWeatherApp
 //
 //  Created by 윤형석 on 2023/04/30.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct MidTermForecastModel {
+struct MidTermForecastBase {
     
     let regId: String
     let taMin3: Int
@@ -48,7 +48,7 @@ struct MidTermForecastModel {
     }
 }
 
-extension MidTermForecastModel: Decodable {
+extension MidTermForecastBase: Decodable {
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)

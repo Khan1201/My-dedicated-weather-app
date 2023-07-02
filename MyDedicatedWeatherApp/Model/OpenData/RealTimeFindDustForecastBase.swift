@@ -1,5 +1,5 @@
 //
-//  RealTimeFindDustForecastModel.swift
+//  RealTimeFindDustForecastBase.swift
 //  MyDedicatedWeatherApp
 //
 //  Created by 윤형석 on 2023/05/14.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct RealTimeFindDustForecastModel: Encodable {
+struct RealTimeFindDustForecastBase: Encodable {
     let pm10Value: String
     let pm25Value: String
     
@@ -24,7 +24,7 @@ struct RealTimeFindDustForecastModel: Encodable {
     }
 }
 
-extension RealTimeFindDustForecastModel: Decodable {
+extension RealTimeFindDustForecastBase: Decodable {
     
     init(from decoder: Decoder) throws {
         

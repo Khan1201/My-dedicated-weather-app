@@ -1,5 +1,5 @@
 //
-//  VeryShortOrShortTermForecastModel.swift
+//  VeryShortOrShortTermForecastBase.swift
 //  MyDedicatedWeatherApp
 //
 //  Created by 윤형석 on 2023/05/03.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct VeryShortOrShortTermForecastModel<T: Decodable>: Decodable {
+struct VeryShortOrShortTermForecastBase<T: Decodable>: Decodable {
     
     let baseDate: String
     let baseTime: String
@@ -23,7 +23,7 @@ struct VeryShortOrShortTermForecastModel<T: Decodable>: Decodable {
     }
 }
 
-extension VeryShortOrShortTermForecastModel {
+extension VeryShortOrShortTermForecastBase {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.baseDate = try container.decode(String.self, forKey: .baseDate)
@@ -102,14 +102,14 @@ enum ShortTermForecastCategory: String, Codable {
 
 }
 
-struct TodayWeatherInformationModel {
+struct TodayWeatherInformationBase {
     
     let weatherImage: String
     let time: String
     let temperature: String
 }
 
-struct CurrentWeatherInformationModel {
+struct CurrentWeatherInformationBase {
     
     let temperature: String
     let windSpeed: String

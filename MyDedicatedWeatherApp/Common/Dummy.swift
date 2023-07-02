@@ -9,9 +9,9 @@ import Foundation
 
 struct Dummy {
     
-    func midTermForecastModel() -> MidTermForecastModel {
+    func midTermForecastModel() -> MidTermForecastBase {
         
-        return MidTermForecastModel(
+        return MidTermForecastBase(
             regId: "",
             taMin3: 0,
             taMax3: 0,
@@ -32,9 +32,9 @@ struct Dummy {
         )
     }
     
-    func currentWeatherInformation() -> CurrentWeatherInformationModel {
+    func currentWeatherInformation() -> CurrentWeatherInformationBase {
         
-        return CurrentWeatherInformationModel(
+        return CurrentWeatherInformationBase(
             temperature: "",
             windSpeed: "",
             wetPercent: "",

@@ -38,8 +38,8 @@ struct OpenDataRes<T>: Decodable where T: Decodable {
         self.items = nil
         
         // 초단기 or 단기 예보
-        if T.Type.self == VeryShortOrShortTermForecastModel<VeryShortTermForecastCategory>.Type.self ||
-            T.Type.self == VeryShortOrShortTermForecastModel<ShortTermForecastCategory>.Type.self
+        if T.Type.self == VeryShortOrShortTermForecastBase<VeryShortTermForecastCategory>.Type.self ||
+            T.Type.self == VeryShortOrShortTermForecastBase<ShortTermForecastCategory>.Type.self
         {
             let itemsKeys = try bodyKeys.nestedContainer(keyedBy: ItemsKeys.self, forKey: .items)
             self.item = try itemsKeys.decodeIfPresent([T].self, forKey: .item)
