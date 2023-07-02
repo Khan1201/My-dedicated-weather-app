@@ -13,7 +13,7 @@ struct CurrentWeatherInformationItem: View {
     let imageColor: Color
     let title: String
     let value: String
-    let isNightMode: Bool
+    let isDayMode: Bool
     var backgroundColor: Color?
 
     var body: some View {
@@ -33,14 +33,14 @@ struct CurrentWeatherInformationItem: View {
             
             Text(title)
                 .fontSpoqaHanSansNeo(size: 14, weight: .regular)
-                .foregroundColor(isNightMode ? .white : CustomColor.black.toColor)
+                .foregroundColor(isDayMode ? CustomColor.black.toColor : .white)
                 .padding(.leading, 14)
             
             Spacer()
             
             Text(value)
                 .fontSpoqaHanSansNeo(size: 14, weight: .regular)
-                .foregroundColor(isNightMode ? .white : CustomColor.black.toColor)
+                .foregroundColor(isDayMode ? CustomColor.black.toColor : .white)
                 .padding(.trailing, 17)
         }
         .padding(.horizontal, 11)
@@ -55,6 +55,6 @@ struct CurrentWeatherInformationItem: View {
 
 struct CurrentWeatherInformationItem_Previews: PreviewProvider {
     static var previews: some View {
-        CurrentWeatherInformationItem(imageString: "fine_dust", imageColor: .red.opacity(0.7), title: "미세먼지", value: "나쁨", isNightMode: true)
+        CurrentWeatherInformationItem(imageString: "fine_dust", imageColor: .red.opacity(0.7), title: "미세먼지", value: "나쁨", isDayMode: true)
     }
 }

@@ -7,26 +7,28 @@
 
 import Foundation
 import SwiftUI
+import Combine
 
 final class HomeViewModel: ObservableObject {
     
-    @Published var threeToTenDaysTemperature: [temperatureMinMax] = [] // day 3 ~ 10 temperature
-    @Published var errorMessage: String = ""
-    @Published var currentWeatherWithDescriptionAndImgString: Weather.DescriptionAndImageString = .init(description: "", imageString: "")
-    @Published var currentTemperature: String = ""
-    @Published var currentWeatherInformation: CurrentWeatherInformationBase = Dummy().currentWeatherInformation()
-    @Published var currentFineDustTuple: Weather.DescriptionAndColor = .init(description: "", color: .clear)
-    @Published var currentUltraFineDustTuple: Weather.DescriptionAndColor = .init(description: "", color: .clear)
-    @Published var todayWeatherInformations: [TodayWeatherInformationBase] = []
+    @Published private(set) var threeToTenDaysTemperature: [temperatureMinMax] = [] // day 3 ~ 10 temperature
+    @Published private(set) var errorMessage: String = ""
+    @Published private(set) var currentWeatherWithDescriptionAndImgString: Weather.DescriptionAndImageString = .init(description: "", imageString: "")
+    @Published private(set) var currentTemperature: String = ""
+    @Published private(set) var currentWeatherInformation: CurrentWeatherInformationBase = Dummy().currentWeatherInformation()
+    @Published private(set) var currentFineDustTuple: Weather.DescriptionAndColor = .init(description: "", color: .clear)
+    @Published private(set) var currentUltraFineDustTuple: Weather.DescriptionAndColor = .init(description: "", color: .clear)
+    @Published private(set) var todayWeatherInformations: [TodayWeatherInformationBase] = []
+    @Published private(set) var sunAndMoonriseItem: SunAndMoonriseBase = .init()
     
     @Published var subLocalityByKakaoAddress: String = ""
     
-    @Published var isNightMode: Bool = false
+    @Published private(set) var isDayMode: Bool = false
     
     /// Load Completed Variables..
-    @Published var isCurrentWeatherInformationLoadCompleted: Bool = false
-    @Published var isFineDustLoadCompleted: Bool = false
-    @Published var isKakaoAddressLoadCompleted: Bool = false
+    @Published private(set) var isCurrentWeatherInformationLoadCompleted: Bool = false
+    @Published private(set) var isFineDustLoadCompleted: Bool = false
+    @Published private(set) var isKakaoAddressLoadCompleted: Bool = false
     
     private enum ForDustStationRequest {
         static var tmXAndtmY: (String, String) = ("","")
@@ -36,6 +38,7 @@ final class HomeViewModel: ObservableObject {
     private let util = Util()
     private let env = Env()
     private let jsonRequest = JsonRequest()
+    private var subscriptions: Set<AnyCancellable> = []
     
     // MARK: - Request..
     
@@ -120,7 +123,7 @@ final class HomeViewModel: ObservableObject {
     
     /// 단기예보  Items request
     func requestShortForecastItems(xy: Util.LatXLngY) async {
-                
+        
         let parameters = VeryShortOrShortTermForecastReq(
             serviceKey: env.openDataApiResponseKey,
             baseDate: util.shortTermForcastBaseDate(),
@@ -138,7 +141,7 @@ final class HomeViewModel: ObservableObject {
                 resultType: OpenDataRes<VeryShortOrShortTermForecastBase<ShortTermForecastCategory>>.self,
                 requestName: "requestShortForecastItems(xy:)"
             )
-                        
+            
         } catch APIError.transportError {
             
             DispatchQueue.main.async {
@@ -295,6 +298,30 @@ final class HomeViewModel: ObservableObject {
         }
     }
     
+    /**
+     Request 일출 및 일몰 시간 item by longitude(경도), latitude(위도)
+     !!! Must first called when location manager updated !!!
+     
+     - parameter long: longitude(경도),
+     - parameter lat: latitude(위도)
+     */
+    func requestSunAndMoonrise(long: String, lat: String) async {
+        
+        SunAndMoonRiseByXMLService(
+            queryItem: .init(
+                serviceKey: env.openDataApiResponseKey,
+                locdate: util.currentDateByCustomFormatter(dateFormat: "yyyyMMdd"),
+                longitude: long,
+                latitude: lat
+            )
+        ).result
+            .sink { [weak self] value in
+                self?.sunAndMoonriseItem = value
+                self?.setIsDayMode(riseItem: value)
+            }
+            .store(in: &subscriptions)
+    }
+    
     // MARK: - Set Actions..
     
     /**
@@ -382,15 +409,15 @@ final class HomeViewModel: ObservableObject {
             item.category == .TMP
         }
         
-//        let filteredTodayTemperatures = items.filter { item in
-//            item.baseDate == util.currentDateByCustomFormatter(dateFormat: "yyyyMMdd") &&
-//            Int(item.baseTime) ?? 0 >= Int(util.currentDateByCustomFormatter(dateFormat: "HHmm")) ?? 0
-//        }
-//
-//        let filteredTomorrowTemperatures = items.filter { item in
-//            item.baseDate == util.dateToStringByAddingDay(currentDate: Date(), day: 1, dateFormat: "yyyyMMdd") &&
-//            Int(item.baseTime) ?? 0 <= Int(util.currentDateByCustomFormatter(dateFormat: "HHmm")) ?? 0
-//        }
+        //        let filteredTodayTemperatures = items.filter { item in
+        //            item.baseDate == util.currentDateByCustomFormatter(dateFormat: "yyyyMMdd") &&
+        //            Int(item.baseTime) ?? 0 >= Int(util.currentDateByCustomFormatter(dateFormat: "HHmm")) ?? 0
+        //        }
+        //
+        //        let filteredTomorrowTemperatures = items.filter { item in
+        //            item.baseDate == util.dateToStringByAddingDay(currentDate: Date(), day: 1, dateFormat: "yyyyMMdd") &&
+        //            Int(item.baseTime) ?? 0 <= Int(util.currentDateByCustomFormatter(dateFormat: "HHmm")) ?? 0
+        //        }
     }
     
     /**
@@ -458,19 +485,27 @@ final class HomeViewModel: ObservableObject {
         }
     }
     
-    // MARK: - View On Appear, Task Actions..
-    
-    func HomeViewControllerTaskAction(xy: Util.LatXLngY, longLati: (String, String)) async {
-        isNightMode = true
-        await requestVeryShortForecastItems(xy: xy)
-        await requestShortForecastItems(xy: xy)
-        await requestKaKaoAddressBy(longitude: longLati.0, latitude: longLati.1)
+    func setIsDayMode(riseItem: SunAndMoonriseBase) {
+        util.setIsDayMode(sunrise: riseItem.sunrise, sunset: riseItem.sunset)
+        isDayMode = Util.isDayMode
     }
     
-    func HomeViewControllerLocationUpdatedAction(umdName: String, locality: String) {
-        
+    // MARK: - View On Appear, Task Actions..
+    
+    func HomeViewControllerLocationManagerUpdatedAction(
+        xy: Util.LatXLngY,
+        longLati: (String, String)
+    ) {
         Task {
-            
+            await requestSunAndMoonrise(long: longLati.0, lat: longLati.1) // Must first called
+            await requestVeryShortForecastItems(xy: xy)
+            await requestShortForecastItems(xy: xy)
+            await requestKaKaoAddressBy(longitude: longLati.0, latitude: longLati.1)
+        }
+    }
+    
+    func HomeViewControllerKakaoAddressUpdatedAction(umdName: String, locality: String) {
+        Task {
             await requestDustForecastStationXY(
                 subLocality: umdName,
                 locality: locality

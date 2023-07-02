@@ -9,7 +9,7 @@ import SwiftUI
 
 struct LoadingProgress: ViewModifier {
     
-    @Binding var isLoadCompleted: Bool
+    let isLoadCompleted: Bool
     
     func body(content: Content) -> some View {
         
@@ -24,7 +24,7 @@ struct LoadingProgress: ViewModifier {
 
 extension View {
     
-    func loadingProgress(isLoadCompleted: Binding<Bool>) -> some View {
+    func loadingProgress(isLoadCompleted: Bool) -> some View {
         modifier(LoadingProgress(isLoadCompleted: isLoadCompleted))
     }
 }

@@ -51,6 +51,8 @@
 		BCB101532A482BFB00EE1EE8 /* Location.json in Resources */ = {isa = PBXBuildFile; fileRef = BCB101522A482BFB00EE1EE8 /* Location.json */; };
 		BCB16E2D2A4C717D00AACFF0 /* Validate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB16E2C2A4C717D00AACFF0 /* Validate.swift */; };
 		BCB16E302A4DC66300AACFF0 /* KakaoAddressBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB16E2F2A4DC66300AACFF0 /* KakaoAddressBase.swift */; };
+		BCCA26272A514609005BB1B5 /* SunOrMoonRiseBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCCA26262A514609005BB1B5 /* SunOrMoonRiseBase.swift */; };
+		BCCA26292A51481B005BB1B5 /* SunOrMoonRiseServiceByXML.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCCA26282A51481B005BB1B5 /* SunOrMoonRiseServiceByXML.swift */; };
 		BCCD80682A07A59800501BEA /* LocationDataManagerVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCCD80672A07A59800501BEA /* LocationDataManagerVM.swift */; };
 		BCE4899C2A4EA32400A18B2B /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = BCE489962A4EA32200A18B2B /* LICENSE */; };
 		BCE4899D2A4EA32400A18B2B /* SpoqaHanSansNeo-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = BCE489972A4EA32200A18B2B /* SpoqaHanSansNeo-Light.otf */; };
@@ -124,6 +126,8 @@
 		BCB101522A482BFB00EE1EE8 /* Location.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Location.json; path = ../../../../Downloads/Location.json; sourceTree = "<group>"; };
 		BCB16E2C2A4C717D00AACFF0 /* Validate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validate.swift; sourceTree = "<group>"; };
 		BCB16E2F2A4DC66300AACFF0 /* KakaoAddressBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoAddressBase.swift; sourceTree = "<group>"; };
+		BCCA26262A514609005BB1B5 /* SunOrMoonRiseBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunOrMoonRiseBase.swift; sourceTree = "<group>"; };
+		BCCA26282A51481B005BB1B5 /* SunOrMoonRiseServiceByXML.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunOrMoonRiseServiceByXML.swift; sourceTree = "<group>"; };
 		BCCD80672A07A59800501BEA /* LocationDataManagerVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDataManagerVM.swift; sourceTree = "<group>"; };
 		BCE489962A4EA32200A18B2B /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		BCE489972A4EA32200A18B2B /* SpoqaHanSansNeo-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SpoqaHanSansNeo-Light.otf"; sourceTree = "<group>"; };
@@ -308,6 +312,7 @@
 			isa = PBXGroup;
 			children = (
 				BCA30FA129FE6FC30078D0B1 /* JsonRequest.swift */,
+				BCCA26282A51481B005BB1B5 /* SunOrMoonRiseServiceByXML.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -337,6 +342,7 @@
 				BC6EF8BE2A10C0DC0072A2DE /* RealTimeFindDustForecastBase.swift */,
 				BC37A5FF2A3ED7BC00C16278 /* DustForecastStationBase.swift */,
 				BC37A6012A3ED7CD00C16278 /* DustForecastStationXYBase.swift */,
+				BCCA26262A514609005BB1B5 /* SunOrMoonRiseBase.swift */,
 			);
 			path = OpenData;
 			sourceTree = "<group>";
@@ -527,6 +533,7 @@
 				BC76923D2A4329DC005F4D7B /* CornerRadiusStyle.swift in Sources */,
 				BCA30FA729FE73D70078D0B1 /* HomeViewModel.swift in Sources */,
 				BCA30FAD29FFE3850078D0B1 /* HomeViewMinMaxTemperatureVC.swift in Sources */,
+				BCCA26292A51481B005BB1B5 /* SunOrMoonRiseServiceByXML.swift in Sources */,
 				BC37A6042A3F094E00C16278 /* CustomTypes.swift in Sources */,
 				BC96646C2A41F2C900D2433C /* WeatherInforamtionsWithImageAndDescriptionView.swift in Sources */,
 				BC65D50F2A0BDF1C00EFADD4 /* WeatherInformationsWithImgAndTimeAndTemperature.swift in Sources */,
@@ -547,6 +554,7 @@
 				BC37A6022A3ED7CD00C16278 /* DustForecastStationXYBase.swift in Sources */,
 				BCE489D12A4EAD5F00A18B2B /* CurrentWeatherInformationItem.swift in Sources */,
 				BC91FD512A44836D00D3E665 /* Extensions.swift in Sources */,
+				BCCA26272A514609005BB1B5 /* SunOrMoonRiseBase.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

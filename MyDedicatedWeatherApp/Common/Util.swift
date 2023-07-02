@@ -10,6 +10,8 @@ import SwiftUI
 
 struct Util {
     
+    static var isDayMode: Bool = true
+    
     //MARK: - Common..
     
     /**
@@ -66,6 +68,28 @@ struct Util {
     }
     
     /**
+     set `isDayMode`by 일출 및 일몰 시간
+     
+     - parameter sunrise: 일출 시간
+     - parameter sunset: 일몰 시간
+     */
+    func setIsDayMode(sunrise: String, sunset: String) {
+        
+        let currentHHmm = currentDateByCustomFormatter(dateFormat: "HHmm")
+        
+        let currentHHmmToInt = Int(currentHHmm) ?? 0
+        let sunriseToInt = Int(sunrise) ?? 0
+        let sunsetToInt = Int(sunset) ?? 0
+        
+        if currentHHmmToInt > sunsetToInt && currentHHmmToInt < sunriseToInt {
+            Util.isDayMode = true
+            
+        } else  {
+            Util.isDayMode = false
+        }
+    }
+    
+    /**
      현재 시간에 따른  낮 or 밤 Json File Name
      
      - parameter dayJson: 05 ~ 18 시 json file name
@@ -73,16 +97,11 @@ struct Util {
      */
     func decideAnimationWhetherDayOrNight(dayJson: String, nightJson: String) -> String {
         
-        let currentHour: Int = Int(self.currentDateByCustomFormatter(dateFormat: "HH")) ?? 0
-        switch currentHour {
-        case 19...23:
-            return nightJson
-            
-        case 00...04:
-            return nightJson
-            
-        default:
+        if Util.isDayMode {
             return dayJson
+            
+        } else  {
+            return nightJson
         }
     }
     
@@ -94,16 +113,11 @@ struct Util {
      */
     func decideImageWhetherDayOrNight(dayImageString: String, nightImgString: String) -> String {
         
-        let currentHour: Int = Int(self.currentDateByCustomFormatter(dateFormat: "HH")) ?? 0
-        switch currentHour {
-        case 19...23:
-            return nightImgString
-            
-        case 00...04:
-            return nightImgString
-            
-        default:
+        if Util.isDayMode {
             return dayImageString
+            
+        } else {
+            return nightImgString
         }
     }
     
