@@ -104,8 +104,9 @@ enum ShortTermForecastCategory: String, Codable {
 
 struct TodayWeatherInformationBase {
     
-    let weatherImage: String
     let time: String
+    let weatherImage: String
+    let precipitation: String
     let temperature: String
 }
 

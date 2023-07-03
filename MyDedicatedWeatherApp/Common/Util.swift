@@ -126,24 +126,26 @@ struct Util {
      
      - parameter HH: Hour
      */
-    func convertAMOrPM(_ HH: Int) -> String {
+    func convertAMOrPM(_ HH: String) -> String {
         
-        if HH - 12 > 0 {
-            return "\(HH - 12)PM"
+        let hourToInt = Int(HH) ?? 0
+        
+        if hourToInt - 12 > 0 {
+            return "\(hourToInt - 12)PM"
             
-        } else if HH == 12 {
+        } else if hourToInt == 12 {
             return "12PM"
             
-        } else if HH == 00 {
+        } else if hourToInt == 00 {
             return "12AM"
             
         } else {
             
-            if HH < 10 { // 2 digit -> 1digit (remove 0)
-                return "\(String(HH).last ?? "0")AM"
+            if hourToInt < 10 { // 2 digit -> 1digit (remove 0)
+                return "\(String(hourToInt).last ?? "0")AM"
                 
             } else {
-                return "\(HH)AM"
+                return "\(hourToInt)AM"
             }
         }
     }
@@ -362,7 +364,7 @@ struct Util {
             return Weather.DescriptionAndImageString(description: "빗방울", imageString: "weather_rain_small")
             
         case "6":
-            return Weather.DescriptionAndImageString(description: "빗방울 / 눈날림", imageString: "")
+            return Weather.DescriptionAndImageString(description: "빗방울 / 눈날림", imageString: "weather_rain_snow")
             
         default:
             return Weather.DescriptionAndImageString(description: "알 수 없음", imageString: "load_fail")

@@ -23,9 +23,9 @@ struct HomeViewController: View {
                     currentWeatherWithAdditionalInformationsView
                 }
                 
-                //                listAfterCurrentTimeView
-                //                    .padding(.top, 25)
-                //                    .padding(.leading, 20)
+                                listAfterCurrentTimeView
+                                    .padding(.top, 25)
+                                    .padding(.leading, 20)
                 
                 Spacer()
             }
@@ -252,7 +252,7 @@ extension HomeViewController {
     
     var listAfterCurrentTimeView: some View {
         
-        return VStack(alignment: .leading, spacing: 20) {
+        return LazyVStack(alignment: .leading, spacing: 20) {
             Text("Today")
                 .font(.system(size: 20, weight: .bold))
             

@@ -104,7 +104,6 @@ final class HomeViewModel: ObservableObject {
                 if let items = result.item {
                     self.setCurrentTemperature(items: items)
                     self.setCurrentWeatherInformations(items: items)
-                    self.setTodayWeathers(items: items)
                 }
             }
             
@@ -126,7 +125,8 @@ final class HomeViewModel: ObservableObject {
         
         let parameters = VeryShortOrShortTermForecastReq(
             serviceKey: env.openDataApiResponseKey,
-            baseDate: util.shortTermForcastBaseDate(),
+//            baseDate: util.shortTermForcastBaseDate(),
+            baseDate: "20230703",
             baseTime: util.shortTermForecastBaseTime(),
             nx: String(xy.x),
             ny: String(xy.y)
@@ -141,6 +141,12 @@ final class HomeViewModel: ObservableObject {
                 resultType: OpenDataRes<VeryShortOrShortTermForecastBase<ShortTermForecastCategory>>.self,
                 requestName: "requestShortForecastItems(xy:)"
             )
+            
+            DispatchQueue.main.async {
+                if let items = result.item {
+                    self.setTodayWeathers(items: items)
+                }
+            }
             
         } catch APIError.transportError {
             
@@ -402,57 +408,78 @@ final class HomeViewModel: ObservableObject {
         isCurrentWeatherInformationLoadCompleted = true
     }
     
-    func setTodayWeathersTest(items: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>]) {
-        
-        
-        let filteredTodayTemperatures = items.filter { item in
-            item.category == .TMP
-        }
-        
-        //        let filteredTodayTemperatures = items.filter { item in
-        //            item.baseDate == util.currentDateByCustomFormatter(dateFormat: "yyyyMMdd") &&
-        //            Int(item.baseTime) ?? 0 >= Int(util.currentDateByCustomFormatter(dateFormat: "HHmm")) ?? 0
-        //        }
-        //
-        //        let filteredTomorrowTemperatures = items.filter { item in
-        //            item.baseDate == util.dateToStringByAddingDay(currentDate: Date(), day: 1, dateFormat: "yyyyMMdd") &&
-        //            Int(item.baseTime) ?? 0 <= Int(util.currentDateByCustomFormatter(dateFormat: "HHmm")) ?? 0
-        //        }
-    }
-    
     /**
-     초 단기예보 Items ->` todayWeathers`(날씨 이미지 String, 시간 String, 온도 String)에 해당하는 값들 Extract
+     단기예보 Items ->` todayWeathers`(시간 String, 날씨 이미지 String, 강수확률 String, 온도 String)에 해당하는 값들 Extract
      
      - parameter items: [초단기예보 Model]
      */
-    func setTodayWeathers(items: [VeryShortOrShortTermForecastBase<VeryShortTermForecastCategory>]) {
+    func setTodayWeathers(items: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>]) {
         
-        let filteredTemperatureItems = items.filter { item in
-            item.category == .T1H
+        let currentDate = util.currentDateByCustomFormatter(dateFormat: "yyyyMMdd")
+        let currentHour = util.currentDateByCustomFormatter(dateFormat: "HH")
+        
+        //
+        let temperatureItems = items.filter { item in
+            item.category == .TMP
         }
         
-        let filteredPrecipitationItems = items.filter { item in
+        let todayTemperatureStartIndex = temperatureItems.firstIndex { item in
+            let fcstTimeHHIndex = item.fcstTime.index(item.fcstTime.startIndex, offsetBy: 1)
+            return item.fcstDate == currentDate && item.fcstTime[...fcstTimeHHIndex] == currentHour
+        } ?? 0
+        
+        var todayTemperatureItems: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>] = []
+        
+        //
+        let precipitationItems = items.filter { item in
             item.category == .PTY
         }
         
-        let filteredSkyStateItems = items.filter { item in
+        let todayPrecipitationStartIndex = precipitationItems.firstIndex { item in
+            let fcstTimeHHIndex = item.fcstTime.index(item.fcstTime.startIndex, offsetBy: 1)
+            return item.fcstDate == currentDate && item.fcstTime[...fcstTimeHHIndex] == currentHour
+        } ?? 0
+        
+        var todayPrecipitationItems: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>] = []
+        
+        //
+        let skyStateItems = items.filter { item in
             item.category == .SKY
         }
         
-        for index in filteredTemperatureItems.indices {
+        let todaySkyStateStartIndex = skyStateItems.firstIndex { item in
+            let fcstTimeHHIndex = item.fcstTime.index(item.fcstTime.startIndex, offsetBy: 1)
+            return item.fcstDate == currentDate && item.fcstTime[...fcstTimeHHIndex] == currentHour
+        } ?? 0
+        
+        var todaySkyStateItems: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>] = []
+        
+        //
+        for i in 0...23 {
+            todayTemperatureItems.append(temperatureItems[todayTemperatureStartIndex + i])
+            todayPrecipitationItems.append(precipitationItems[todayPrecipitationStartIndex + i])
+            todaySkyStateItems.append(skyStateItems[todaySkyStateStartIndex + i])
+        }
+        
+        for index in todayTemperatureItems.indices {
             
             let weather: Weather.DescriptionAndImageString = util.veryShortTermForecastWeatherDescriptionWithImageString(
-                ptyValue: filteredPrecipitationItems[index].fcstValue,
-                skyValue: filteredSkyStateItems[index].fcstValue,
+                ptyValue: todayPrecipitationItems[index].fcstValue,
+                skyValue: todaySkyStateItems[index].fcstValue,
                 isAnimationImage: false
             )
             
+            let hourEndIndex = todayTemperatureItems[index].fcstTime.index(
+                todayTemperatureItems[index].fcstTime.startIndex, offsetBy: 1
+            )
+            
+            let hour = String(todayTemperatureItems[index].fcstTime[...hourEndIndex])
+            
             let todayWeather = TodayWeatherInformationBase(
+                time: util.convertAMOrPM(hour),
                 weatherImage: weather.imageString,
-                time: util.convertHHmmToHHColonmm(
-                    HHmm: filteredTemperatureItems[index].fcstTime
-                ),
-                temperature: filteredTemperatureItems[index].fcstValue
+                precipitation: todayPrecipitationItems[index].fcstValue,
+                temperature: todayTemperatureItems[index].fcstValue
             )
             
             todayWeatherInformations.append(todayWeather)

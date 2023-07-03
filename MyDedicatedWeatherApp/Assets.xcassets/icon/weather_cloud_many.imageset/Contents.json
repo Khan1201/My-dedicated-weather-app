@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "cloud.png",
+      "filename" : "WeatherIcon - 1-39.svg",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "cloud 1.png",
+      "filename" : "WeatherIcon - 1-39 1.svg",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "cloud 2.png",
+      "filename" : "WeatherIcon - 1-39 2.svg",
       "idiom" : "universal",
       "scale" : "3x"
     }
