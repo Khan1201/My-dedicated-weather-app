@@ -16,23 +16,46 @@ struct HomeViewController: View {
         switch locationDataManagerVM.locationPermissonType {
             
         case .allow:
+            
             VStack(alignment: .leading, spacing: 0) {
                 
                 VStack(alignment: .leading, spacing: 15) {
                     currentWeatherWithImageAndTemperatureView
                     currentWeatherWithAdditionalInformationsView
                 }
+                Rectangle()
+                    .frame(maxWidth: .infinity, maxHeight: 1)
+                    .foregroundColor(.white)
+                    .padding(.vertical, 25)
+                    .padding(.horizontal, 26)
                 
-                                listAfterCurrentTimeView
-                                    .padding(.top, 25)
-                                    .padding(.leading, 20)
-                
-                Spacer()
+                ScrollView(.horizontal, showsIndicators: true) {
+                    HStack(alignment: .center, spacing: 24) {
+                        ForEach(homeViewModel.todayWeatherInformations, id: \.time) { item in
+                            TodayWeatherItem(
+                                time: homeViewModel.todayWeatherInformations.first?.time == item.time ? "Now" : item.time,
+                                weatherImage: item.weatherImage,
+                                percent: item.precipitation,
+                                temperature: item.temperature,
+                                isDayMode: homeViewModel.isDayMode
+                            )
+                            .padding(.leading, homeViewModel.todayWeatherInformations.first?.time == item.time ? 15 : 0)
+                            .padding(.trailing, homeViewModel.todayWeatherInformations.last?.time == item.time ? 15 : 0)
+                        }
+                    }
+                    .padding(.vertical, 10)
+                }
+                .background {
+                    homeViewModel.isDayMode ? Color.black.opacity(0.03) : Color.white.opacity(0.03)
+                }
+                .cornerRadius(16)
+                .padding(.horizontal, 26)
             }
-            .padding(.top, 35)
+            .padding(.top, 25)
+            .frame(height: UIScreen.screenHeight, alignment: .center)
             .background {
                 
-                if Util.isDayMode {
+                if homeViewModel.isDayMode {
                     Image("background_sunny")
                         .overlay {
                             Color.black.opacity(0.15)
@@ -44,8 +67,8 @@ struct HomeViewController: View {
                             Gradient.Stop(color: Color(red: 0.07, green: 0.1, blue: 0.14), location: 0.00),
                             Gradient.Stop(color: Color(red: 0.17, green: 0.19, blue: 0.26), location: 1.00),
                         ],
-                        startPoint: UnitPoint(x: 0.5, y: 0),
-                        endPoint: UnitPoint(x: 0.5, y: 1)
+                        startPoint: UnitPoint(x: 0, y: 0),
+                        endPoint: UnitPoint(x: 1, y: 1)
                     )
                     .ignoresSafeArea()
                     .overlay {
@@ -154,9 +177,7 @@ extension HomeViewController {
             }
             .padding(.leading, 50)
             .padding(.trailing, 30)
-            
-            
-            
+                        
         }
     }
 }
@@ -187,19 +208,19 @@ extension HomeViewController {
                     isDayMode: homeViewModel.isDayMode
                 )
                 
-                CurrentWeatherInformationItem(
-                    imageString: "fine_dust", imageColor: Color.black.opacity(0.7),
-                    title: "미세먼지", value: homeViewModel.currentFineDustTuple.description,
-                    isDayMode: homeViewModel.isDayMode,
-                    backgroundColor: homeViewModel.currentFineDustTuple.color
-                )
-                
-                CurrentWeatherInformationItem(
-                    imageString: "fine_dust", imageColor: Color.red.opacity(0.7),
-                    title: "초미세먼지", value: homeViewModel.currentUltraFineDustTuple.description,
-                    isDayMode: homeViewModel.isDayMode,
-                    backgroundColor: homeViewModel.currentUltraFineDustTuple.color
-                )
+                //                CurrentWeatherInformationItem(
+                //                    imageString: "fine_dust", imageColor: Color.black.opacity(0.7),
+                //                    title: "미세먼지", value: homeViewModel.currentFineDustTuple.description,
+                //                    isDayMode: homeViewModel.isDayMode,
+                //                    backgroundColor: homeViewModel.currentFineDustTuple.color
+                //                )
+                //
+                //                CurrentWeatherInformationItem(
+                //                    imageString: "fine_dust", imageColor: Color.red.opacity(0.7),
+                //                    title: "초미세먼지", value: homeViewModel.currentUltraFineDustTuple.description,
+                //                    isDayMode: homeViewModel.isDayMode,
+                //                    backgroundColor: homeViewModel.currentUltraFineDustTuple.color
+                //                )
             }
             .padding(.horizontal, 26)
             
@@ -244,32 +265,6 @@ extension HomeViewController {
             //                )
             //                .loadingProgress(isLoadCompleted: $homeViewModel.isFineDustLoadCompleted)
             //            }
-        }
-    }
-}
-
-extension HomeViewController {
-    
-    var listAfterCurrentTimeView: some View {
-        
-        return LazyVStack(alignment: .leading, spacing: 20) {
-            Text("Today")
-                .font(.system(size: 20, weight: .bold))
-            
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(alignment: .center, spacing: 10) {
-                    ForEach(
-                        homeViewModel.todayWeatherInformations,
-                        id: \.time
-                    ) {
-                        WeatherInformationsWithImgAndTimeAndTemperature(
-                            imageString: $0.weatherImage,
-                            time: $0.time,
-                            temperature: $0.temperature
-                        )
-                    }
-                }
-            }
         }
     }
 }

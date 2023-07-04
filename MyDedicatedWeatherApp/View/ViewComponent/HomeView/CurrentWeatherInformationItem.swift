@@ -22,13 +22,13 @@ struct CurrentWeatherInformationItem: View {
             
             RoundedRectangle(cornerRadius: 14)
                 .fill(Color.white)
-                .frame(width: 38, height: 38)
+                .frame(width: 36, height: 36)
                 .overlay {
                     Image(imageString)
                         .resizable()
                         .renderingMode(.template)
                         .foregroundColor(imageColor)
-                        .frame(width: 24, height: 24, alignment: .center)
+                        .frame(width: 22, height: 22, alignment: .center)
                 }
             
             Text(title)
