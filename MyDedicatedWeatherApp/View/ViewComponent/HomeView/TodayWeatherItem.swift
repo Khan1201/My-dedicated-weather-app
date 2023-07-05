@@ -16,6 +16,10 @@ struct TodayWeatherItem: View {
     let isDayMode: Bool
     
     var body: some View {
+        
+        let imageWidth: CGFloat = UIScreen.screenWidth / 12.5
+        let imageHeight: CGFloat = UIScreen.screenHeight / 27.06
+        
         VStack(alignment: .center, spacing: 24) {
             Text(time)
                 .fontSpoqaHanSansNeo(size: 14, weight: .medium)
@@ -24,7 +28,7 @@ struct TodayWeatherItem: View {
             
             Image(weatherImage)
                 .resizable()
-                .frame(width: 30, height: 30)
+                .frame(width: imageWidth, height: imageHeight)
                 .if(percent != "0") { view in
                     view
                         .overlay(alignment: .bottom) {

@@ -18,17 +18,21 @@ struct CurrentWeatherInformationItem: View {
 
     var body: some View {
         
+        let imageWidth: CGFloat = UIScreen.screenWidth / 10.41
+        let imageHeight: CGFloat = UIScreen.screenHeight / 22.55
+        let iconWidthHeight: CGFloat = imageWidth / 1.63
+        
         HStack(alignment: .center, spacing: 0) {
             
             RoundedRectangle(cornerRadius: 14)
                 .fill(Color.white)
-                .frame(width: 36, height: 36)
+                .frame(width: imageWidth, height: imageHeight)
                 .overlay {
                     Image(imageString)
                         .resizable()
                         .renderingMode(.template)
                         .foregroundColor(imageColor)
-                        .frame(width: 22, height: 22, alignment: .center)
+                        .frame(width: iconWidthHeight, height: iconWidthHeight, alignment: .center)
                 }
             
             Text(title)

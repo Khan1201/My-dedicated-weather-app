@@ -25,8 +25,8 @@ struct HomeViewController: View {
                 }
                 Rectangle()
                     .frame(maxWidth: .infinity, maxHeight: 1)
-                    .foregroundColor(.white)
-                    .padding(.vertical, 25)
+                    .foregroundColor(.white.opacity(0.3))
+                    .padding(.vertical, 20)
                     .padding(.horizontal, 26)
                 
                 ScrollView(.horizontal, showsIndicators: true) {
@@ -132,6 +132,9 @@ extension HomeViewController {
     
     var currentWeatherWithImageAndTemperatureView: some View {
         
+        let animationWidth: CGFloat = UIScreen.screenWidth / 2.5
+        let animationHeight: CGFloat = UIScreen.screenHeight / 5.41
+        
         return VStack(alignment: .leading, spacing: 8) {
             
             
@@ -161,7 +164,7 @@ extension HomeViewController {
                     jsonName: homeViewModel.currentWeatherWithDescriptionAndImgString.imageString,
                     loopMode: .loop
                 )
-                .frame(width: 150, height: 150)
+                .frame(width: animationWidth, height: animationHeight)
                 
                 HStack(alignment: .top, spacing: 2) {
                     Text(homeViewModel.currentWeatherInformation.temperature)
@@ -177,7 +180,6 @@ extension HomeViewController {
             }
             .padding(.leading, 50)
             .padding(.trailing, 30)
-                        
         }
     }
 }

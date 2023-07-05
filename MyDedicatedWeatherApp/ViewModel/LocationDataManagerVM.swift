@@ -68,7 +68,7 @@ extension LocationDataManagerVM: CLLocationManagerDelegate {
         switch manager.authorizationStatus {
             
         case .authorizedAlways, .authorizedWhenInUse:
-            manager.requestLocation()
+            manager.startUpdatingLocation()
             locationPermissonType = .allow
         case .restricted:
             ()
@@ -80,21 +80,23 @@ extension LocationDataManagerVM: CLLocationManagerDelegate {
             ()
         }
     }
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
-        let findLocation: CLLocation = CLLocation(
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        self.locationManager.stopUpdatingLocation()
+
+        let location: CLLocation = CLLocation(
             latitude: locationManager.location?.coordinate.latitude ?? 0,
             longitude: locationManager.location?.coordinate.longitude ?? 0
         )
         let geoCoder: CLGeocoder = CLGeocoder()
-        let local: Locale = Locale(identifier: "Ko-kr") // Korea
+        let local: Locale = Locale(identifier: "Ko-KR") // Korea
         
-        geoCoder.reverseGeocodeLocation(findLocation, preferredLocale: local) { [weak self] place, error in
+        geoCoder.reverseGeocodeLocation(location, preferredLocale: local) { [weak self] place, error in
+            guard let self = self else { return }
             if let address: CLPlacemark = place?.last {
-                self?.currentLocation = "\(address.locality ?? "")"
-                self?.currentLocationLocality = address.administrativeArea ?? ""
-                self?.isLocationUpdated = true
+                self.currentLocation = "\(address.locality ?? "")"
+                self.currentLocationLocality = address.administrativeArea ?? ""
+                self.isLocationUpdated = true
             }
         }
     }

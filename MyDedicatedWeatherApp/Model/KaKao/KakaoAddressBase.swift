@@ -26,7 +26,7 @@ struct KakaoAddressBase: Encodable {
     }
     
     struct AddressBase: Decodable {
-        let road_address: String?
+        let road_address: KakaoAddressBase?
         let address: KakaoAddressBase
     }
     

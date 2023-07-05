@@ -19,11 +19,11 @@ final class HomeViewModel: ObservableObject {
     @Published private(set) var currentFineDustTuple: Weather.DescriptionAndColor = .init(description: "", color: .clear)
     @Published private(set) var currentUltraFineDustTuple: Weather.DescriptionAndColor = .init(description: "", color: .clear)
     @Published private(set) var todayWeatherInformations: [TodayWeatherInformationBase] = []
-    @Published private(set) var sunAndMoonriseItem: SunAndMoonriseBase = .init()
     
     @Published var subLocalityByKakaoAddress: String = ""
     
     @Published private(set) var isDayMode: Bool = false
+    @Published private(set) var sunRiseAndSetHHmm: (String, String) = ("","")
     
     /// Load Completed Variables..
     @Published private(set) var isCurrentWeatherInformationLoadCompleted: Bool = false
@@ -125,9 +125,10 @@ final class HomeViewModel: ObservableObject {
         
         let parameters = VeryShortOrShortTermForecastReq(
             serviceKey: env.openDataApiResponseKey,
-//            baseDate: util.shortTermForcastBaseDate(),
-            baseDate: "20230703",
+            baseDate: util.shortTermForcastBaseDate(),
+//            baseDate: "20230705",
             baseTime: util.shortTermForecastBaseTime(),
+//            baseTime: "0500",
             nx: String(xy.x),
             ny: String(xy.y)
         )
@@ -322,8 +323,9 @@ final class HomeViewModel: ObservableObject {
             )
         ).result
             .sink { [weak self] value in
-                self?.sunAndMoonriseItem = value
-                self?.setIsDayMode(riseItem: value)
+                guard let self = self else { return }
+                self.sunRiseAndSetHHmm = (value.sunrise, value.sunset)
+                self.setIsDayMode(riseItem: value)
             }
             .store(in: &subscriptions)
     }
@@ -345,9 +347,12 @@ final class HomeViewModel: ObservableObject {
             item.category == .SKY
         }
         
-        return util.veryShortTermForecastWeatherDescriptionWithImageString(
+        return util.veryShortOrShortTermForecastWeatherDescriptionWithImageString(
             ptyValue: firstPTYItem?.fcstValue ?? "",
             skyValue: firstSKYItem?.fcstValue ?? "",
+            hhMMForDayOrNightImage: firstPTYItem?.fcstTime ?? "",
+            sunrise: sunRiseAndSetHHmm.0,
+            sunset: sunRiseAndSetHHmm.1,
             isAnimationImage: true
         )
     }
@@ -416,7 +421,9 @@ final class HomeViewModel: ObservableObject {
     func setTodayWeathers(items: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>]) {
         
         let currentDate = util.currentDateByCustomFormatter(dateFormat: "yyyyMMdd")
-        let currentHour = util.currentDateByCustomFormatter(dateFormat: "HH")
+//        let currentHour = util.currentDateByCustomFormatter(dateFormat: "HH")
+        let currentHour = "05"
+
         
         //
         let temperatureItems = items.filter { item in
@@ -443,6 +450,18 @@ final class HomeViewModel: ObservableObject {
         var todayPrecipitationItems: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>] = []
         
         //
+        let precipitationPercentItems = items.filter { item in
+            item.category == .POP
+        }
+        
+        let todayPrecipitationPercentStartIndex = precipitationPercentItems.firstIndex { item in
+            let fcstTimeHHIndex = item.fcstTime.index(item.fcstTime.startIndex, offsetBy: 1)
+            return item.fcstDate == currentDate && item.fcstTime[...fcstTimeHHIndex] == currentHour
+        } ?? 0
+        
+        var todayPrecipitationPercentItems: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>] = []
+        
+        //
         let skyStateItems = items.filter { item in
             item.category == .SKY
         }
@@ -459,13 +478,17 @@ final class HomeViewModel: ObservableObject {
             todayTemperatureItems.append(temperatureItems[todayTemperatureStartIndex + i])
             todayPrecipitationItems.append(precipitationItems[todayPrecipitationStartIndex + i])
             todaySkyStateItems.append(skyStateItems[todaySkyStateStartIndex + i])
+            todayPrecipitationPercentItems.append(precipitationPercentItems[todayPrecipitationPercentStartIndex + i])
         }
         
         for index in todayTemperatureItems.indices {
             
-            let weather: Weather.DescriptionAndImageString = util.veryShortTermForecastWeatherDescriptionWithImageString(
+            let weather: Weather.DescriptionAndImageString = util.veryShortOrShortTermForecastWeatherDescriptionWithImageString(
                 ptyValue: todayPrecipitationItems[index].fcstValue,
                 skyValue: todaySkyStateItems[index].fcstValue,
+                hhMMForDayOrNightImage: todayTemperatureItems[index].fcstTime,
+                sunrise: self.sunRiseAndSetHHmm.0,
+                sunset: self.sunRiseAndSetHHmm.1,
                 isAnimationImage: false
             )
             
@@ -478,7 +501,7 @@ final class HomeViewModel: ObservableObject {
             let todayWeather = TodayWeatherInformationBase(
                 time: util.convertAMOrPM(hour),
                 weatherImage: weather.imageString,
-                precipitation: todayPrecipitationItems[index].fcstValue,
+                precipitation: todayPrecipitationPercentItems[index].fcstValue,
                 temperature: todayTemperatureItems[index].fcstValue
             )
             
@@ -513,8 +536,9 @@ final class HomeViewModel: ObservableObject {
     }
     
     func setIsDayMode(riseItem: SunAndMoonriseBase) {
-        util.setIsDayMode(sunrise: riseItem.sunrise, sunset: riseItem.sunset)
-        isDayMode = Util.isDayMode
+        
+        let currentHHmm = util.currentDateByCustomFormatter(dateFormat: "HHmm")
+        isDayMode = util.isDayMode(hhMM: currentHHmm, sunrise: riseItem.sunrise, sunset: riseItem.sunset)
     }
     
     // MARK: - View On Appear, Task Actions..
