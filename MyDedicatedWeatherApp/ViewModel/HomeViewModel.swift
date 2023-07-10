@@ -15,10 +15,10 @@ final class HomeViewModel: ObservableObject {
     @Published private(set) var errorMessage: String = ""
     @Published private(set) var currentWeatherWithDescriptionAndImgString: Weather.DescriptionAndImageString = .init(description: "", imageString: "")
     @Published private(set) var currentTemperature: String = ""
-    @Published private(set) var currentWeatherInformation: CurrentWeatherInformationBase = Dummy().currentWeatherInformation()
+    @Published private(set) var currentWeatherInformation: Weather.CurrentWeatherInformation = Dummy().currentWeatherInformation()
     @Published private(set) var currentFineDustTuple: Weather.DescriptionAndColor = .init(description: "", color: .clear)
     @Published private(set) var currentUltraFineDustTuple: Weather.DescriptionAndColor = .init(description: "", color: .clear)
-    @Published private(set) var todayWeatherInformations: [TodayWeatherInformationBase] = []
+    @Published private(set) var todayWeatherInformations: [Weather.TodayWeatherInformation] = []
     
     @Published var subLocalityByKakaoAddress: String = ""
     
@@ -398,12 +398,12 @@ final class HomeViewModel: ObservableObject {
             item.category == .RN1
         }
         
-        currentWeatherInformation = CurrentWeatherInformationBase(
+        currentWeatherInformation = Weather.CurrentWeatherInformation(
             temperature: currentTemperature?.fcstValue ?? "",
             windSpeed: util.remakeWindSpeedValueByVeryShortTermOrShortTermForecast(
-                value: currentWindSpeed?.fcstValue ?? "")
-            ,
-            wetPercent: currentWetPercent?.fcstValue ?? "",
+                value: currentWindSpeed?.fcstValue ?? ""
+            ),
+            wetPercent: ("\(currentWetPercent?.fcstValue ?? "")%", ""),
             oneHourPrecipitation: util.remakeOneHourPrecipitationValueByVeryShortTermOrShortTermForecast(
                 value: currentOneHourPrecipitation?.fcstValue ?? ""
             ),
@@ -498,7 +498,7 @@ final class HomeViewModel: ObservableObject {
             
             let hour = String(todayTemperatureItems[index].fcstTime[...hourEndIndex])
             
-            let todayWeather = TodayWeatherInformationBase(
+            let todayWeather = Weather.TodayWeatherInformation(
                 time: util.convertAMOrPM(hour),
                 weatherImage: weather.imageString,
                 precipitation: todayPrecipitationPercentItems[index].fcstValue,

@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		BC137CA52A128221002D6667 /* Sunny.json in Resources */ = {isa = PBXBuildFile; fileRef = BC137CA42A128221002D6667 /* Sunny.json */; };
 		BC137CAD2A1284F6002D6667 /* SunnyNight.json in Resources */ = {isa = PBXBuildFile; fileRef = BC137CAC2A1284F6002D6667 /* SunnyNight.json */; };
 		BC137CAF2A128518002D6667 /* CloudMany.json in Resources */ = {isa = PBXBuildFile; fileRef = BC137CAE2A128518002D6667 /* CloudMany.json */; };
 		BC137CB12A128546002D6667 /* Cloudy.json in Resources */ = {isa = PBXBuildFile; fileRef = BC137CB02A128546002D6667 /* Cloudy.json */; };
@@ -82,7 +81,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		BC137CA42A128221002D6667 /* Sunny.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Sunny.json; path = ../../../Downloads/Sunny.json; sourceTree = "<group>"; };
 		BC137CA72A1282CD002D6667 /* Sunny.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Sunny.json; sourceTree = "<group>"; };
 		BC137CAC2A1284F6002D6667 /* SunnyNight.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = SunnyNight.json; path = ../../../../Downloads/SunnyNight.json; sourceTree = "<group>"; };
 		BC137CAE2A128518002D6667 /* CloudMany.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = CloudMany.json; path = ../../../../Downloads/CloudMany.json; sourceTree = "<group>"; };
@@ -279,7 +277,6 @@
 				BC137CA62A1282A9002D6667 /* LottieAnimation */,
 				BCA30F7F29FE203B0078D0B1 /* Preview Content */,
 				BCA30F9429FE39BC0078D0B1 /* Env.swift */,
-				BC137CA42A128221002D6667 /* Sunny.json */,
 			);
 			path = MyDedicatedWeatherApp;
 			sourceTree = "<group>";
@@ -487,7 +484,6 @@
 				BCE489B92A4EA33400A18B2B /* SpoqaHanSansNeo-Bold.woff in Resources */,
 				BCB101532A482BFB00EE1EE8 /* Location.json in Resources */,
 				BCE489C82A4EA33400A18B2B /* SpoqaHanSansNeo-Thin.eot in Resources */,
-				BC137CA52A128221002D6667 /* Sunny.json in Resources */,
 				BCE4899D2A4EA32400A18B2B /* SpoqaHanSansNeo-Light.otf in Resources */,
 				BCE4899E2A4EA32400A18B2B /* SpoqaHanSansNeo-Bold.otf in Resources */,
 				BCE489BF2A4EA33400A18B2B /* SpoqaHanSansNeo-Medium.woff in Resources */,

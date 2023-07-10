@@ -32,13 +32,13 @@ struct Dummy {
         )
     }
     
-    func currentWeatherInformation() -> CurrentWeatherInformationBase {
+    func currentWeatherInformation() -> Weather.CurrentWeatherInformation {
         
-        return CurrentWeatherInformationBase(
+        return Weather.CurrentWeatherInformation(
             temperature: "",
-            windSpeed: "",
-            wetPercent: "",
-            oneHourPrecipitation: "",
+            windSpeed: ("", ""),
+            wetPercent: ("", ""),
+            oneHourPrecipitation: ("", ""),
             weatherImage: ""
         )
     }

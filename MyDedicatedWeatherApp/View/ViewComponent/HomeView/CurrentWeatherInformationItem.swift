@@ -12,10 +12,10 @@ struct CurrentWeatherInformationItem: View {
     let imageString: String
     let imageColor: Color
     let title: String
-    let value: String
+    let value: (String, String)
     let isDayMode: Bool
     var backgroundColor: Color?
-
+    
     var body: some View {
         
         let imageWidth: CGFloat = UIScreen.screenWidth / 10.41
@@ -42,10 +42,22 @@ struct CurrentWeatherInformationItem: View {
             
             Spacer()
             
-            Text(value)
-                .fontSpoqaHanSansNeo(size: 14, weight: .regular)
-                .foregroundColor(isDayMode ? CustomColor.black.toColor : .white)
-                .padding(.trailing, 17)
+            HStack(alignment: .center, spacing: 0) {
+                Text(value.0)
+                    .fontSpoqaHanSansNeo(size: 14, weight: .medium)
+                    .foregroundColor(isDayMode ? CustomColor.black.toColor : .white)
+                
+                if value.1 != "" {
+                    Text("(\(value.1))")
+                        .fontSpoqaHanSansNeo(size: 12, weight: .regular)
+                        .foregroundColor(
+                            isDayMode ?
+                            CustomColor.black.toColor.opacity(0.8) : .white.opacity(0.8)
+                        )
+                }
+            }
+            .padding(.trailing, 17)
+            
         }
         .padding(.horizontal, 11)
         .padding(.vertical, 8)
@@ -59,6 +71,6 @@ struct CurrentWeatherInformationItem: View {
 
 struct CurrentWeatherInformationItem_Previews: PreviewProvider {
     static var previews: some View {
-        CurrentWeatherInformationItem(imageString: "fine_dust", imageColor: .red.opacity(0.7), title: "미세먼지", value: "나쁨", isDayMode: true)
+        CurrentWeatherInformationItem(imageString: "fine_dust", imageColor: .red.opacity(0.7), title: "미세먼지", value: ("나쁨", ""), isDayMode: true)
     }
 }

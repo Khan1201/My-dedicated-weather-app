@@ -193,20 +193,26 @@ extension HomeViewController {
             
             VStack(alignment: .leading, spacing: 10) {
                 CurrentWeatherInformationItem(
-                    imageString: "precipitation2", imageColor: Color.blue,
-                    title: "강수량", value: homeViewModel.currentWeatherInformation.oneHourPrecipitation,
+                    imageString: "precipitation2",
+                    imageColor: Color.blue,
+                    title: "강수량",
+                    value: homeViewModel.currentWeatherInformation.oneHourPrecipitation,
                     isDayMode: homeViewModel.isDayMode
                 )
                 
                 CurrentWeatherInformationItem(
-                    imageString: "wind2", imageColor: Color.red.opacity(0.7),
-                    title: "바람", value: homeViewModel.currentWeatherInformation.windSpeed,
+                    imageString: "wind2",
+                    imageColor: Color.red.opacity(0.7),
+                    title: "바람",
+                    value: homeViewModel.currentWeatherInformation.windSpeed,
                     isDayMode: homeViewModel.isDayMode
                 )
                 
                 CurrentWeatherInformationItem(
-                    imageString: "wet2", imageColor: Color.blue.opacity(0.7),
-                    title: "습도", value: homeViewModel.currentWeatherInformation.wetPercent,
+                    imageString: "wet2",
+                    imageColor: Color.blue.opacity(0.7),
+                    title: "습도",
+                    value: homeViewModel.currentWeatherInformation.wetPercent,
                     isDayMode: homeViewModel.isDayMode
                 )
                 

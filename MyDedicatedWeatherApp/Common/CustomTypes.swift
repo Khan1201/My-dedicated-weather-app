@@ -19,6 +19,23 @@ struct Weather {
         let description: String
         let color: Color
     }
+    
+    struct TodayWeatherInformation {
+        
+        let time: String
+        let weatherImage: String
+        let precipitation: String
+        let temperature: String
+    }
+
+    struct CurrentWeatherInformation {
+        
+        let temperature: String
+        let windSpeed: (String, String)
+        let wetPercent: (String, String)
+        let oneHourPrecipitation: (String, String)
+        let weatherImage: String
+    }
 }
 
 enum TabBarType: CaseIterable {

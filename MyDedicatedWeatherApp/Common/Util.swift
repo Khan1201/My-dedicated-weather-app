@@ -73,7 +73,7 @@ struct Util {
      - parameter sunset: 일몰 시간
      */
     func isDayMode(hhMM: String, sunrise: String, sunset: String) -> Bool {
-                
+        
         let hhMMToInt = Int(hhMM) ?? 0
         let sunriseToInt = Int(sunrise) ?? 0
         let sunsetToInt = Int(sunset) ?? 0
@@ -305,31 +305,34 @@ struct Util {
     //    }
     
     /**
-     초단기예보 or 단기예보의 1시간 강수량 값 -> String
+     초단기예보 or 단기예보의 1시간 강수량 값 -> (String, String)
      
      - parameter value: 예보 조회 response 1시간 강수량 값
      */
-    func remakeOneHourPrecipitationValueByVeryShortTermOrShortTermForecast(value: String) -> String {
+    func remakeOneHourPrecipitationValueByVeryShortTermOrShortTermForecast(value: String) -> (String, String) {
         
         if value == "강수없음" {
-            return "비 없음"
+            return ("비 없음", "")
             
         } else if value == "30.0~50.0mm" || value == "50.0mm 이상" {
-            return "매우 강한 비"
+            return ("매우 강한 비", "30mm 이상")
             
         } else {
-            
             let stringToDouble: Double = Double(value.replacingOccurrences(of: "mm", with: "")) ?? 0
+            
             switch stringToDouble {
                 
             case 1.0...2.9:
-                return "약한 비"
+                return ("약한 비", value + "mm")
+                
             case 3.0...14.9:
-                return "보통 비"
+                return ("보통 비", value + "mm")
+                
             case 15.0...29.9:
-                return "강한 비"
+                return ("강한 비", value + "mm")
+                
             default:
-                return "알 수 없음"
+                return ("알 수 없음", "")
             }
         }
     }
@@ -458,26 +461,31 @@ struct Util {
     }
     
     /**
-     초단기예보 or 단기예보의 바람속도 값 -> String
+     초단기예보 or 단기예보의 바람속도 값 ->( String, String)
      
      - parameter value: 예보 조회 response 바람속도 값
      */
-    func remakeWindSpeedValueByVeryShortTermOrShortTermForecast(value: String) -> String {
+    func remakeWindSpeedValueByVeryShortTermOrShortTermForecast(value: String) -> (String, String) {
         
         let stringToDouble = Double(value) ?? 0.0
         
         switch stringToDouble {
+            
         case 0.0...3.9:
-            return "약한 바람"
+            return ("약한 바람", "\(value)m/s")
+            
         case 4.0...8.9:
-            return "약간 강한 바람"
+            return ("약간 강한 바람", "\(value)m/s")
+            
         case 9.0...13.9:
-            return "강한 바람"
+            return ("강한 바람", "\(value)m/s")
+            
         case _ where stringToDouble > 13.9:
-            return "매우 강한 바람"
+            
+            return ("매우 강한 바람", "\(value)m/s")
             
         default:
-            return "알 수 없음"
+            return ("알 수 없음", "")
         }
     }
     
@@ -615,7 +623,7 @@ struct Util {
                 sunset: sunset,
                 isAnimationImage: isAnimationImage
             )
-
+            
         } else {
             return remakeSkyStateValueByVeryShortTermOrShortTermForecast(
                 skyValue,
