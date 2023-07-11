@@ -159,24 +159,55 @@ extension HomeViewController {
             }
             .padding(.leading, 40)
             
-            HStack(alignment: .center, spacing: 10) {
+            HStack(alignment: .center, spacing: 20) {
                 LottieView(
                     jsonName: homeViewModel.currentWeatherAnimationImg,
                     loopMode: .loop
                 )
                 .frame(width: animationWidth, height: animationHeight)
                 
-                HStack(alignment: .top, spacing: 2) {
-                    Text(homeViewModel.currentWeatherInformation.temperature)
-                        .fontSpoqaHanSansNeo(size: 45, weight: .bold)
-                        .foregroundColor(homeViewModel.isDayMode ? CustomColor.black.toColor : .white)
-                        .loadingProgress(isLoadCompleted: homeViewModel.isCurrentWeatherInformationLoadCompleted)
-                        .padding(.top, 5)
+                VStack(alignment: .center, spacing: 0) {
                     
-                    Text("° C")
-                        .fontSpoqaHanSansNeo(size: 14, weight: .light)
-                        .foregroundColor(homeViewModel.isDayMode ? CustomColor.black.toColor : .white)
+                    HStack(alignment: .top, spacing: 2) {
+                        Text(homeViewModel.currentWeatherInformation.temperature)
+                            .fontSpoqaHanSansNeo(size: 55, weight: .bold)
+                            .foregroundColor(homeViewModel.isDayMode ? CustomColor.black.toColor : .white)
+                            .loadingProgress(isLoadCompleted: homeViewModel.isCurrentWeatherInformationLoadCompleted)
+                            .padding(.top, 5)
+                        
+                        Text("° C")
+                            .fontSpoqaHanSansNeo(size: 18, weight: .medium)
+                            .foregroundColor(homeViewModel.isDayMode ? CustomColor.black.toColor : .white)
+                    }
+                    
+                    HStack(alignment: .center, spacing: 0) {
+                        Image(systemName: "arrow.down")
+                            .resizable()
+                            .renderingMode(.template)
+                            .foregroundColor(Color.blue.opacity(0.4))
+                            .frame(width: 15, height: 15)
+                        
+                        Text(homeViewModel.todayMinMaxTemperature.0)
+                            .fontSpoqaHanSansNeo(size: 16, weight: .regular)
+                            .foregroundColor(.white.opacity(0.8))
+                            .padding(.leading, 3)
+                        
+                        Image(systemName: "arrow.up")
+                            .resizable()
+                            .renderingMode(.template)
+                            .foregroundColor(Color.red.opacity(0.4))
+                            .frame(width: 15, height: 15)
+                            .padding(.leading, 10)
+                        
+                        Text(homeViewModel.todayMinMaxTemperature.1)
+                            .fontSpoqaHanSansNeo(size: 16, weight: .regular)
+                            .foregroundColor(.white.opacity(0.8))
+                            .padding(.leading, 3)
+                    }
+                    .padding(.top, 10)
+                    
                 }
+                
             }
             .padding(.leading, 50)
             .padding(.trailing, 30)

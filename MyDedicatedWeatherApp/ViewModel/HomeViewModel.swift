@@ -598,8 +598,13 @@ extension HomeViewModel {
         guard let minTemp = UserDefaults.standard.string(forKey: "minTemp") else { return }
         guard let maxTemp = UserDefaults.standard.string(forKey: "maxTemp") else { return }
         
-        todayMinMaxTemperature = (minTemp, maxTemp)
-        print(todayMinMaxTemperature)
+        guard let minTempToDouble = Double(minTemp) else { return }
+        guard let maxTempToDouble = Double(maxTemp) else { return }
+        
+        let minTempToString = String(Int(minTempToDouble))
+        let maxTempToString = String(Int(maxTempToDouble))
+        
+        todayMinMaxTemperature = (minTempToString, maxTempToString)
     }
     
     /**
