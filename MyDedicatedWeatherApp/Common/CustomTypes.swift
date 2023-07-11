@@ -21,7 +21,6 @@ struct Weather {
     }
     
     struct TodayWeatherInformation {
-        
         let time: String
         let weatherImage: String
         let precipitation: String
@@ -29,7 +28,6 @@ struct Weather {
     }
 
     struct CurrentWeatherInformation {
-        
         let temperature: String
         let windSpeed: (String, String)
         let wetPercent: (String, String)

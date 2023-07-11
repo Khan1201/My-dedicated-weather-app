@@ -546,10 +546,12 @@ struct Util {
         let currentYearMonthDay = currentDateByCustomFormatter(dateFormat: "yyyyMMdd")
         let currentHour = currentDateByCustomFormatter(dateFormat: "HH")
         
+        let currentYearMonthDayToInt = Int(currentYearMonthDay) ?? 0
+        
         switch Int(currentHour) ?? 0 {
             
         case 00...02:
-            return String(Int(currentYearMonthDay) ?? 0 - 1)
+            return String(currentYearMonthDayToInt - 1)
         default:
             return currentYearMonthDay
         }

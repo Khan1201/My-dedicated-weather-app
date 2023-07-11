@@ -161,7 +161,7 @@ extension HomeViewController {
             
             HStack(alignment: .center, spacing: 10) {
                 LottieView(
-                    jsonName: homeViewModel.currentWeatherWithDescriptionAndImgString.imageString,
+                    jsonName: homeViewModel.currentWeatherAnimationImg,
                     loopMode: .loop
                 )
                 .frame(width: animationWidth, height: animationHeight)

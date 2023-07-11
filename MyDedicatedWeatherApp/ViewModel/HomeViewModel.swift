@@ -13,14 +13,17 @@ final class HomeViewModel: ObservableObject {
     
     @Published private(set) var threeToTenDaysTemperature: [temperatureMinMax] = [] // day 3 ~ 10 temperature
     @Published private(set) var errorMessage: String = ""
-    @Published private(set) var currentWeatherWithDescriptionAndImgString: Weather.DescriptionAndImageString = .init(description: "", imageString: "")
     @Published private(set) var currentTemperature: String = ""
+    @Published private(set) var currentWeatherAnimationImg: String = ""
     @Published private(set) var currentWeatherInformation: Weather.CurrentWeatherInformation = Dummy().currentWeatherInformation()
     @Published private(set) var currentFineDustTuple: Weather.DescriptionAndColor = .init(description: "", color: .clear)
     @Published private(set) var currentUltraFineDustTuple: Weather.DescriptionAndColor = .init(description: "", color: .clear)
+    @Published private(set) var todayMinMaxTemperature: (String, String) = ("", "")
     @Published private(set) var todayWeatherInformations: [Weather.TodayWeatherInformation] = []
     
     @Published var subLocalityByKakaoAddress: String = ""
+    
+    var xy: Util.LatXLngY = .init(lat: 0, lng: 0, x: 0, y: 0)
     
     @Published private(set) var isDayMode: Bool = false
     @Published private(set) var sunRiseAndSetHHmm: (String, String) = ("","")
@@ -39,10 +42,15 @@ final class HomeViewModel: ObservableObject {
     private let env = Env()
     private let jsonRequest = JsonRequest()
     private var subscriptions: Set<AnyCancellable> = []
+}
+
+// MARK: - Request HTTP..
+
+extension HomeViewModel {
     
-    // MARK: - Request..
-    
-    /// 중기예보 Items request
+    /**
+     Request 중기예보 Items
+     */
     func requestMidTermForecastItems() async {
         
         let parameters: MidTermForecastReq = MidTermForecastReq(
@@ -77,9 +85,14 @@ final class HomeViewModel: ObservableObject {
         }
     }
     
-    /// 초 단기예보  Items request
+    /**
+     Request 초 단기예보 Items
+     - parameter xy: 공공데이터 값으로 변환된 X, Y
+     
+     */
     func requestVeryShortForecastItems(xy: Util.LatXLngY) async {
         
+        self.xy = xy
         let baseTime = util.veryShortTermForecastBaseTime()
         
         let parameters: VeryShortOrShortTermForecastReq = VeryShortOrShortTermForecastReq(
@@ -102,8 +115,9 @@ final class HomeViewModel: ObservableObject {
             DispatchQueue.main.async {
                 
                 if let items = result.item {
+                    self.currentWeatherAnimationImg = self.currentWeatherDescriptionAndImage(items: items).imageString
                     self.setCurrentTemperature(items: items)
-                    self.setCurrentWeatherInformations(items: items)
+                    self.setCurrentWeatherInformation(items: items)
                 }
             }
             
@@ -120,15 +134,23 @@ final class HomeViewModel: ObservableObject {
     }
     
     
-    /// 단기예보  Items request
-    func requestShortForecastItems(xy: Util.LatXLngY) async {
+    /**
+     Request 단기예보 Items
+     
+     - parameter xy: 공공데이터 값으로 변환된 X, Y
+     - parameter baseTime: Request param 의 `baseTime`
+     
+     `baseTime` == nil -> 앱 첫 진입 시 자동 계산되어 호출
+     `baseTime` != nil -> 앱 첫 진입 시 호출이 아닌, 수동 호출
+     */
+    func requestShortForecastItems(xy: Util.LatXLngY, baseTime: String? = nil) async {
         
         let parameters = VeryShortOrShortTermForecastReq(
             serviceKey: env.openDataApiResponseKey,
             baseDate: util.shortTermForcastBaseDate(),
-//            baseDate: "20230705",
-            baseTime: util.shortTermForecastBaseTime(),
-//            baseTime: "0500",
+            //            baseDate: "20230705",
+            baseTime: baseTime != nil ? baseTime! : util.shortTermForecastBaseTime(), // baseTime != nil -> 앱 구동 시 호출이 아닌, 수동 호출
+            //            baseTime: "0500",
             nx: String(xy.x),
             ny: String(xy.y)
         )
@@ -145,7 +167,14 @@ final class HomeViewModel: ObservableObject {
             
             DispatchQueue.main.async {
                 if let items = result.item {
-                    self.setTodayWeathers(items: items)
+                    
+                    if baseTime == nil { // baseTime == nil -> 앱 구동 시 처음 호출 (자동 baseTime set)
+                        self.setTodayWeatherInformations(items: items)
+                        self.setTodayMinMaxTemperature(items: items, baseTime: self.util.shortTermForecastBaseTime())
+                        
+                    } else {
+                        self.setTodayMinMaxTemperature(items: items, baseTime: "0200")
+                    }
                 }
             }
             
@@ -162,7 +191,9 @@ final class HomeViewModel: ObservableObject {
         }
     }
     
-    /// 실시간 미세먼지, 초미세먼지 Items request
+    /**
+     Request 실시간 미세먼지, 초미세먼지 Items request
+     */
     func requestRealTimeFindDustForecastItems() async {
         
         let parameters: RealTimeFindDustForecastReq = RealTimeFindDustForecastReq(
@@ -201,7 +232,12 @@ final class HomeViewModel: ObservableObject {
         }
     }
     
-    /// 미세먼지 주변 측정소 X, Y 좌표. request
+    /**
+     Request 미세먼지 측정소가 위치한 X, Y 좌표
+     
+     - parameter subLocality: ex) 성수동 1가
+     - parameter locality: ex) 서울특별시
+     */
     func requestDustForecastStationXY(subLocality: String, locality: String) async {
         
         let param: DustForecastStationXYReq = DustForecastStationXYReq(
@@ -237,13 +273,17 @@ final class HomeViewModel: ObservableObject {
         }
     }
     
-    /// 미세먼지 주변 측정소 name request
-    func requestDustForecastStation() async {
+    /**
+     Request 미세먼지 측정소 이름
+     - parameter tmxAndtmY: 미세먼지 측정소 X, Y 좌표
+     
+     */
+    func requestDustForecastStation(tmXAndtmY: (String, String)) async {
         
         let param: DustForecastStationReq = DustForecastStationReq(
             serviceKey: env.openDataApiResponseKey,
-            tmX: ForDustStationRequest.tmXAndtmY.0,
-            tmY: ForDustStationRequest.tmXAndtmY.1
+            tmX: tmXAndtmY.0,
+            tmY: tmXAndtmY.1
         )
         
         do {
@@ -272,7 +312,14 @@ final class HomeViewModel: ObservableObject {
         }
     }
     
-    // 'SubLocality'(성수동 1가) request by kakao address
+    /**
+     Request sublocality(성수동 1가) by kakao address
+     - parameter longitude: 경도
+     - parameter latitude: 위도
+     
+     Apple이 제공하는.reverseGeocodeLocation 에서 특정 기기에서 sublocality가 nil로 할당되므로
+     kakao address request 에서 가져오도록 결정함.
+     */
     func requestKaKaoAddressBy(longitude: String, latitude: String) async {
         
         let param = KakaoAddressBase.Req(x: longitude, y: latitude)
@@ -306,7 +353,7 @@ final class HomeViewModel: ObservableObject {
     }
     
     /**
-     Request 일출 및 일몰 시간 item by longitude(경도), latitude(위도)
+     Request 일출 및 일몰 시간 item
      !!! Must first called when location manager updated !!!
      
      - parameter long: longitude(경도),
@@ -329,36 +376,14 @@ final class HomeViewModel: ObservableObject {
             }
             .store(in: &subscriptions)
     }
-    
-    // MARK: - Set Actions..
-    
-    /**
-     초 단기예보 Items ->`currentWeatherWithDescriptionAndImgString`(날씨 String, 이미지 String)에 해당하는 값들 Extract
-     
-     - parameter items: [초단기예보 Model]
-     */
-    func setCurrentWeatherWithDescriptionAndImgString(items: [VeryShortOrShortTermForecastBase<VeryShortTermForecastCategory>]) -> Weather.DescriptionAndImageString {
-        
-        let firstPTYItem = items.first { item in // 강수 형태
-            item.category == .PTY
-        }
-        
-        let firstSKYItem = items.first { item in // 하늘 상태
-            item.category == .SKY
-        }
-        
-        return util.veryShortOrShortTermForecastWeatherDescriptionWithImageString(
-            ptyValue: firstPTYItem?.fcstValue ?? "",
-            skyValue: firstSKYItem?.fcstValue ?? "",
-            hhMMForDayOrNightImage: firstPTYItem?.fcstTime ?? "",
-            sunrise: sunRiseAndSetHHmm.0,
-            sunset: sunRiseAndSetHHmm.1,
-            isAnimationImage: true
-        )
-    }
+}
+
+// MARK: - Set Variables..
+
+extension HomeViewModel {
     
     /**
-     초 단기예보 Items -> `currentTemperature` 추출
+     Set 초 단기예보 Items -> `currentTemperature`(현재 기온) varialbe
      
      - parameter items: [초단기예보 Model]
      */
@@ -380,7 +405,7 @@ final class HomeViewModel: ObservableObject {
      
      - parameter items: [초단기예보 Model]
      */
-    func setCurrentWeatherInformations(items: [VeryShortOrShortTermForecastBase<VeryShortTermForecastCategory>]) {
+    func setCurrentWeatherInformation(items: [VeryShortOrShortTermForecastBase<VeryShortTermForecastCategory>]) {
         
         let currentTemperature = items.first { item in
             item.category == .T1H
@@ -407,25 +432,23 @@ final class HomeViewModel: ObservableObject {
             oneHourPrecipitation: util.remakeOneHourPrecipitationValueByVeryShortTermOrShortTermForecast(
                 value: currentOneHourPrecipitation?.fcstValue ?? ""
             ),
-            weatherImage: setCurrentWeatherWithDescriptionAndImgString(items: items).imageString
+            weatherImage: currentWeatherDescriptionAndImage(items: items).imageString
         )
         
         isCurrentWeatherInformationLoadCompleted = true
     }
     
     /**
-     단기예보 Items ->` todayWeathers`(시간 String, 날씨 이미지 String, 강수확률 String, 온도 String)에 해당하는 값들 Extract
+     Set 단기예보 Items ->` todayWeatherInformations`variable
      
      - parameter items: [초단기예보 Model]
      */
-    func setTodayWeathers(items: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>]) {
+    func setTodayWeatherInformations(items: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>]) {
         
         let currentDate = util.currentDateByCustomFormatter(dateFormat: "yyyyMMdd")
-//        let currentHour = util.currentDateByCustomFormatter(dateFormat: "HH")
         let currentHour = "05"
-
         
-        //
+        // 온도 filter
         let temperatureItems = items.filter { item in
             item.category == .TMP
         }
@@ -437,7 +460,7 @@ final class HomeViewModel: ObservableObject {
         
         var todayTemperatureItems: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>] = []
         
-        //
+        // 강수형태 filter
         let precipitationItems = items.filter { item in
             item.category == .PTY
         }
@@ -449,7 +472,7 @@ final class HomeViewModel: ObservableObject {
         
         var todayPrecipitationItems: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>] = []
         
-        //
+        // 강수확률 filter
         let precipitationPercentItems = items.filter { item in
             item.category == .POP
         }
@@ -461,7 +484,7 @@ final class HomeViewModel: ObservableObject {
         
         var todayPrecipitationPercentItems: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>] = []
         
-        //
+        // 하늘상태 filter
         let skyStateItems = items.filter { item in
             item.category == .SKY
         }
@@ -473,7 +496,7 @@ final class HomeViewModel: ObservableObject {
         
         var todaySkyStateItems: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>] = []
         
-        //
+        // 각 index 해당하는 값(시간에 해당하는 값) append
         for i in 0...23 {
             todayTemperatureItems.append(temperatureItems[todayTemperatureStartIndex + i])
             todayPrecipitationItems.append(precipitationItems[todayPrecipitationStartIndex + i])
@@ -510,7 +533,77 @@ final class HomeViewModel: ObservableObject {
     }
     
     /**
-     중기예보 Items->` threeToTenDaysTemperature`( (최저온도 String, 최고온도 String), day String )에 해당하는 값들 Extract
+     Set 단기예보 Items -> `todayMinMaxTemperature` variable
+     
+     - parameter items: [단기예보 Model]
+     */
+    func setTodayMinMaxTemperature(items: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>], baseTime: String) {
+        
+        switch baseTime {
+            
+        case "0200":
+            
+            guard let minTemp = items.filter(
+                { item in
+                    item.category == .TMN
+                }
+            ).first?.fcstValue else { return }
+            
+            UserDefaults.standard.set(minTemp, forKey: "minTemp")
+            
+            guard let maxTemp = items.filter(
+                { item in
+                    item.category == .TMX
+                }
+            ).first?.fcstValue else { return }
+            
+            UserDefaults.standard.set(maxTemp, forKey: "maxTemp")
+            
+        case "0500":
+            guard let maxTemp = items.filter(
+                { item in
+                    item.category == .TMX
+                }
+            ).first?.fcstValue else { return }
+            
+            UserDefaults.standard.set(maxTemp, forKey: "maxTemp")
+            
+        case "0800":
+            guard let maxTemp = items.filter(
+                { item in
+                    item.category == .TMX
+                }
+            ).first?.fcstValue else { return }
+            
+            UserDefaults.standard.set(maxTemp, forKey: "maxTemp")
+            
+        case "1100":
+            guard let maxTemp = items.filter(
+                { item in
+                    item.category == .TMX
+                }
+            ).first?.fcstValue else { return }
+            
+            UserDefaults.standard.set(maxTemp, forKey: "maxTemp")
+            
+        default:
+            if UserDefaults.standard.string(forKey: "maxTemp") == nil ||
+                UserDefaults.standard.string(forKey: "minTemp") == nil {
+                Task {
+                    await requestShortForecastItems(xy: xy, baseTime: "0200")
+                }
+            }
+        }
+        
+        guard let minTemp = UserDefaults.standard.string(forKey: "minTemp") else { return }
+        guard let maxTemp = UserDefaults.standard.string(forKey: "maxTemp") else { return }
+        
+        todayMinMaxTemperature = (minTemp, maxTemp)
+        print(todayMinMaxTemperature)
+    }
+    
+    /**
+     Set 중기예보 Items->` threeToTenDaysTemperature` (최저온도 String, 최고온도 String, 현재Date Int ) varialbe
      
      - parameter item: 중기예보 Model
      */
@@ -534,14 +627,51 @@ final class HomeViewModel: ObservableObject {
             )
         }
     }
-    
+    /**
+     Set riseItem -> `isDayMode`variable
+     
+     - parameter riseItem: 일출, 일몰 Item
+     */
     func setIsDayMode(riseItem: SunAndMoonriseBase) {
         
         let currentHHmm = util.currentDateByCustomFormatter(dateFormat: "HHmm")
         isDayMode = util.isDayMode(hhMM: currentHHmm, sunrise: riseItem.sunrise, sunset: riseItem.sunset)
     }
+}
+
+// MARK: - Return funcs..
+
+extension HomeViewModel {
     
-    // MARK: - View On Appear, Task Actions..
+    /**
+     Return 초 단기예보 Items ->`currentWeatherDescriptionAndImage`(현재 날씨 설명, 이미지 string)
+     
+     - parameter items: [초단기예보 Model]
+     */
+    func currentWeatherDescriptionAndImage(items: [VeryShortOrShortTermForecastBase<VeryShortTermForecastCategory>]) -> Weather.DescriptionAndImageString {
+        
+        let firstPTYItem = items.first { item in // 강수 형태
+            item.category == .PTY
+        }
+        
+        let firstSKYItem = items.first { item in // 하늘 상태
+            item.category == .SKY
+        }
+        
+        return util.veryShortOrShortTermForecastWeatherDescriptionWithImageString(
+            ptyValue: firstPTYItem?.fcstValue ?? "",
+            skyValue: firstSKYItem?.fcstValue ?? "",
+            hhMMForDayOrNightImage: firstPTYItem?.fcstTime ?? "",
+            sunrise: sunRiseAndSetHHmm.0,
+            sunset: sunRiseAndSetHHmm.1,
+            isAnimationImage: true
+        )
+    }
+}
+
+// MARK: - View On Appear, Task Actions..
+
+extension HomeViewModel {
     
     func HomeViewControllerLocationManagerUpdatedAction(
         xy: Util.LatXLngY,
@@ -561,7 +691,7 @@ final class HomeViewModel: ObservableObject {
                 subLocality: umdName,
                 locality: locality
             )
-            await requestDustForecastStation()
+            await requestDustForecastStation(tmXAndtmY: ForDustStationRequest.tmXAndtmY)
             await requestRealTimeFindDustForecastItems()
         }
     }
