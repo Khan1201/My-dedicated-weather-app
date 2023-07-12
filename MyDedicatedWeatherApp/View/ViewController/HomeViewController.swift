@@ -6,12 +6,20 @@
 //
 
 import SwiftUI
+import SwiftUIPager
 
 struct HomeViewController: View {
     @StateObject var homeViewModel: HomeViewModel = HomeViewModel()
     @StateObject var locationDataManagerVM = LocationDataManagerVM()
     
+    @State private var arrowRightOffset: CGFloat = -25
+    @State private var pagerHeight: CGFloat = 0
+    @State private var page: Page = .first()
+    @State private var pageIndex: Int = 0
+    
     var body: some View {
+        
+        let isFirstPage: Bool = pageIndex == 0
         
         switch locationDataManagerVM.locationPermissonType {
             
@@ -21,8 +29,49 @@ struct HomeViewController: View {
                 
                 VStack(alignment: .leading, spacing: 15) {
                     currentWeatherWithImageAndTemperatureView
-                    currentWeatherWithAdditionalInformationsView
+                    
+                    Pager(page: page, data: homeViewModel.pageViewCount, id: \.self) { index in
+                        
+                        switch index {
+                            
+                        case 0:
+                            currentWeatherInfPagerFirstView
+                                .background {
+                                    GeometryReader { proxy in
+                                        Color.clear
+                                            .onAppear {
+                                                pagerHeight = proxy.size.height
+                                            }
+                                    }
+                                }
+                            
+                        case 1:
+                            currentWeatherInfPagerSecondView
+                            
+                        default:
+                            EmptyView()
+                            
+                        }
+                    }
+                    .onPageChanged { index in
+                        pageIndex = index
+                    }
+                    .frame(height: pagerHeight != 0 ? pagerHeight : nil)
+                    .overlay(alignment: isFirstPage ? .topTrailing : .topLeading) {
+                        Image("arrow_\(isFirstPage ? "right" : "left")")
+                            .resizable()
+                            .renderingMode(.template)
+                            .foregroundColor(.white)
+                            .frame(width: 30, height: 30)
+                            .offset(x: isFirstPage ? -18 : 18, y: arrowRightOffset)
+                    }
+                    .onAppear {
+                        withAnimation(.linear(duration: 0.8).repeatForever()) {
+                            arrowRightOffset = -15
+                        }
+                    }
                 }
+                
                 Rectangle()
                     .frame(maxWidth: .infinity, maxHeight: 1)
                     .foregroundColor(.white.opacity(0.3))
@@ -205,7 +254,6 @@ extension HomeViewController {
                             .padding(.leading, 3)
                     }
                     .padding(.top, 10)
-                    
                 }
                 
             }
@@ -217,93 +265,60 @@ extension HomeViewController {
 
 extension HomeViewController {
     
-    var currentWeatherWithAdditionalInformationsView: some View {
+    var currentWeatherInfPagerFirstView: some View {
         
-        return VStack(alignment: .center, spacing: 25) {
+        return VStack(alignment: .leading, spacing: 10) {
+            CurrentWeatherInformationItem(
+                imageString: "precipitation2",
+                imageColor: Color.blue,
+                title: "강수량",
+                value: homeViewModel.currentWeatherInformation.oneHourPrecipitation,
+                isDayMode: homeViewModel.isDayMode
+            )
             
+            CurrentWeatherInformationItem(
+                imageString: "wind2",
+                imageColor: Color.red.opacity(0.7),
+                title: "바람",
+                value: homeViewModel.currentWeatherInformation.windSpeed,
+                isDayMode: homeViewModel.isDayMode
+            )
             
-            VStack(alignment: .leading, spacing: 10) {
-                CurrentWeatherInformationItem(
-                    imageString: "precipitation2",
-                    imageColor: Color.blue,
-                    title: "강수량",
-                    value: homeViewModel.currentWeatherInformation.oneHourPrecipitation,
-                    isDayMode: homeViewModel.isDayMode
-                )
-                
-                CurrentWeatherInformationItem(
-                    imageString: "wind2",
-                    imageColor: Color.red.opacity(0.7),
-                    title: "바람",
-                    value: homeViewModel.currentWeatherInformation.windSpeed,
-                    isDayMode: homeViewModel.isDayMode
-                )
-                
-                CurrentWeatherInformationItem(
-                    imageString: "wet2",
-                    imageColor: Color.blue.opacity(0.7),
-                    title: "습도",
-                    value: homeViewModel.currentWeatherInformation.wetPercent,
-                    isDayMode: homeViewModel.isDayMode
-                )
-                
-                //                CurrentWeatherInformationItem(
-                //                    imageString: "fine_dust", imageColor: Color.black.opacity(0.7),
-                //                    title: "미세먼지", value: homeViewModel.currentFineDustTuple.description,
-                //                    isDayMode: homeViewModel.isDayMode,
-                //                    backgroundColor: homeViewModel.currentFineDustTuple.color
-                //                )
-                //
-                //                CurrentWeatherInformationItem(
-                //                    imageString: "fine_dust", imageColor: Color.red.opacity(0.7),
-                //                    title: "초미세먼지", value: homeViewModel.currentUltraFineDustTuple.description,
-                //                    isDayMode: homeViewModel.isDayMode,
-                //                    backgroundColor: homeViewModel.currentUltraFineDustTuple.color
-                //                )
-            }
-            .padding(.horizontal, 26)
-            
-            //            HStack(alignment: .top, spacing: 60) {
-            //
-            //                WeatherInforamtionsWithImageAndDescriptionView(
-            //                    imageString: "precipitation",
-            //                    description: homeViewModel.currentWeatherInformation.oneHourPrecipitation
-            //                )
-            //                .loadingProgress(isLoadCompleted: $homeViewModel.isCurrentWeatherInformationLoadCompleted)
-            //
-            //                WeatherInforamtionsWithImageAndDescriptionView(
-            //                    imageString: "wind",
-            //                    description: homeViewModel.currentWeatherInformation.windSpeed
-            //                )
-            //                .loadingProgress(isLoadCompleted: $homeViewModel.isCurrentWeatherInformationLoadCompleted)
-            //
-            //                WeatherInforamtionsWithImageAndDescriptionView(
-            //                    imageString: "wet",
-            //                    description: homeViewModel.currentWeatherInformation.wetPercent + "%"
-            //                )
-            //                .loadingProgress(isLoadCompleted: $homeViewModel.isCurrentWeatherInformationLoadCompleted)
-            //            }
-            
-            //            HStack(alignment: .center, spacing: 40) {
-            //
-            //                FineDustWithDescriptionAndBackgroundColorView(
-            //                    title: "미세먼지",
-            //                    description: homeViewModel.currentFineDustTuple.description,
-            //                    descriptionFontColor: homeViewModel.currentFineDustTuple.color
-            //                        .opacity(0.8),
-            //                    backgroundColor:  homeViewModel.currentFineDustTuple.color.opacity(0.4)
-            //                )
-            //                .loadingProgress(isLoadCompleted: $homeViewModel.isFineDustLoadCompleted)
-            //
-            //                FineDustWithDescriptionAndBackgroundColorView(
-            //                    title: "초미세먼지",
-            //                    description: homeViewModel.currentUltraFineDustTuple.description,
-            //                    descriptionFontColor: homeViewModel.currentUltraFineDustTuple.color
-            //                        .opacity(0.8),
-            //                    backgroundColor:  homeViewModel.currentUltraFineDustTuple.color.opacity(0.4)
-            //                )
-            //                .loadingProgress(isLoadCompleted: $homeViewModel.isFineDustLoadCompleted)
-            //            }
+            CurrentWeatherInformationItem(
+                imageString: "wet2",
+                imageColor: Color.blue.opacity(0.7),
+                title: "습도",
+                value: homeViewModel.currentWeatherInformation.wetPercent,
+                isDayMode: homeViewModel.isDayMode
+            )
         }
+        .padding(.horizontal, 26)
+    }
+}
+
+extension HomeViewController {
+    
+    var currentWeatherInfPagerSecondView: some View {
+        
+        VStack(alignment: .leading, spacing: 10) {
+            CurrentWeatherInformationItem(
+                imageString: "fine_dust",
+                imageColor: Color.black.opacity(0.7),
+                title: "미세먼지",
+                value: (homeViewModel.currentFineDustTuple.description, ""),
+                isDayMode: homeViewModel.isDayMode,
+                backgroundColor: homeViewModel.currentFineDustTuple.color
+            )
+            
+            CurrentWeatherInformationItem(
+                imageString: "fine_dust",
+                imageColor: Color.red.opacity(0.7),
+                title: "초미세먼지",
+                value: (homeViewModel.currentUltraFineDustTuple.description, ""),
+                isDayMode: homeViewModel.isDayMode,
+                backgroundColor: homeViewModel.currentUltraFineDustTuple.color
+            )
+        }
+        .padding(.horizontal, 26)
     }
 }

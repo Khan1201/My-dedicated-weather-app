@@ -24,6 +24,7 @@
 		BC7692372A431C69005F4D7B /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC7692362A431C69005F4D7B /* MainTabView.swift */; };
 		BC76923A2A431CC8005F4D7B /* CustomBottomTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC7692392A431CC8005F4D7B /* CustomBottomTabBarView.swift */; };
 		BC76923D2A4329DC005F4D7B /* CornerRadiusStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC76923C2A4329DC005F4D7B /* CornerRadiusStyle.swift */; };
+		BC78251B2A5EE15900930FD6 /* SwiftUIPager in Frameworks */ = {isa = PBXBuildFile; productRef = BC78251A2A5EE15900930FD6 /* SwiftUIPager */; };
 		BC7D33E22A12788E00B1012F /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = BC7D33E12A12788E00B1012F /* Lottie */; };
 		BC7D33E52A127ABB00B1012F /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC7D33E42A127ABB00B1012F /* LottieView.swift */; };
 		BC85A94E2A02570E00C4CC48 /* VeryShortOrShortTermForecastBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC85A94D2A02570E00C4CC48 /* VeryShortOrShortTermForecastBase.swift */; };
@@ -168,6 +169,7 @@
 			files = (
 				BCA30F8C29FE25280078D0B1 /* Alamofire in Frameworks */,
 				BC7D33E22A12788E00B1012F /* Lottie in Frameworks */,
+				BC78251B2A5EE15900930FD6 /* SwiftUIPager in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -429,6 +431,7 @@
 			packageProductDependencies = (
 				BCA30F8B29FE25280078D0B1 /* Alamofire */,
 				BC7D33E12A12788E00B1012F /* Lottie */,
+				BC78251A2A5EE15900930FD6 /* SwiftUIPager */,
 			);
 			productName = MyDedicatedWeatherApp;
 			productReference = BCA30F7629FE20390078D0B1 /* MyDedicatedWeatherApp.app */;
@@ -461,6 +464,7 @@
 			packageReferences = (
 				BCA30F8A29FE25280078D0B1 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				BC7D33E02A12788E00B1012F /* XCRemoteSwiftPackageReference "lottie-ios" */,
+				BC7825192A5EE15900930FD6 /* XCRemoteSwiftPackageReference "SwiftUIPager" */,
 			);
 			productRefGroup = BCA30F7729FE20390078D0B1 /* Products */;
 			projectDirPath = "";
@@ -765,6 +769,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		BC7825192A5EE15900930FD6 /* XCRemoteSwiftPackageReference "SwiftUIPager" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/fermoya/SwiftUIPager.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
 		BC7D33E02A12788E00B1012F /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/airbnb/lottie-ios";
@@ -784,6 +796,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		BC78251A2A5EE15900930FD6 /* SwiftUIPager */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BC7825192A5EE15900930FD6 /* XCRemoteSwiftPackageReference "SwiftUIPager" */;
+			productName = SwiftUIPager;
+		};
 		BC7D33E12A12788E00B1012F /* Lottie */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = BC7D33E02A12788E00B1012F /* XCRemoteSwiftPackageReference "lottie-ios" */;
