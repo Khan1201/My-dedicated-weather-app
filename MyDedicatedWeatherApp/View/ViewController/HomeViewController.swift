@@ -36,14 +36,7 @@ struct HomeViewController: View {
                             
                         case 0:
                             currentWeatherInfPagerFirstView
-                                .background {
-                                    GeometryReader { proxy in
-                                        Color.clear
-                                            .onAppear {
-                                                pagerHeight = proxy.size.height
-                                            }
-                                    }
-                                }
+                                .getHeight(height: $pagerHeight)
                             
                         case 1:
                             currentWeatherInfPagerSecondView

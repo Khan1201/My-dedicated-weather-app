@@ -32,6 +32,7 @@
 		BC91FD542A4483CA00D3E665 /* LoadingProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC91FD532A4483CA00D3E665 /* LoadingProgress.swift */; };
 		BC96646C2A41F2C900D2433C /* WeatherInforamtionsWithImageAndDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC96646B2A41F2C900D2433C /* WeatherInforamtionsWithImageAndDescriptionView.swift */; };
 		BC96646E2A41F58300D2433C /* FineDustWithDescriptionAndBackgroundColorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC96646D2A41F58300D2433C /* FineDustWithDescriptionAndBackgroundColorView.swift */; };
+		BCA2C1B72A603B6900BBEBE2 /* GetHeight.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA2C1B62A603B6900BBEBE2 /* GetHeight.swift */; };
 		BCA30F7A29FE203A0078D0B1 /* MyDedicatedWeatherAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30F7929FE203A0078D0B1 /* MyDedicatedWeatherAppApp.swift */; };
 		BCA30F7C29FE203A0078D0B1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30F7B29FE203A0078D0B1 /* ContentView.swift */; };
 		BCA30F7E29FE203A0078D0B1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BCA30F7D29FE203A0078D0B1 /* Assets.xcassets */; };
@@ -106,6 +107,7 @@
 		BC91FD532A4483CA00D3E665 /* LoadingProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingProgress.swift; sourceTree = "<group>"; };
 		BC96646B2A41F2C900D2433C /* WeatherInforamtionsWithImageAndDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherInforamtionsWithImageAndDescriptionView.swift; sourceTree = "<group>"; };
 		BC96646D2A41F58300D2433C /* FineDustWithDescriptionAndBackgroundColorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FineDustWithDescriptionAndBackgroundColorView.swift; sourceTree = "<group>"; };
+		BCA2C1B62A603B6900BBEBE2 /* GetHeight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetHeight.swift; sourceTree = "<group>"; };
 		BCA30F7629FE20390078D0B1 /* MyDedicatedWeatherApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyDedicatedWeatherApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCA30F7929FE203A0078D0B1 /* MyDedicatedWeatherAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDedicatedWeatherAppApp.swift; sourceTree = "<group>"; };
 		BCA30F7B29FE203A0078D0B1 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -220,8 +222,9 @@
 		BC91FD522A44839900D3E665 /* ViewModifier */ = {
 			isa = PBXGroup;
 			children = (
-				BC91FD532A4483CA00D3E665 /* LoadingProgress.swift */,
-				BCE489CC2A4EA4CE00A18B2B /* SpoqaHanSansNeoFont.swift */,
+				BCA2C1B52A603B5900BBEBE2 /* Loading */,
+				BCA2C1B42A603B4B00BBEBE2 /* Font */,
+				BCA2C1B32A603B3C00BBEBE2 /* GeometryReader */,
 			);
 			path = ViewModifier;
 			sourceTree = "<group>";
@@ -245,6 +248,30 @@
 				BCBE178A2A5302D300541AEB /* TodayWeatherItem.swift */,
 			);
 			path = HomeView;
+			sourceTree = "<group>";
+		};
+		BCA2C1B32A603B3C00BBEBE2 /* GeometryReader */ = {
+			isa = PBXGroup;
+			children = (
+				BCA2C1B62A603B6900BBEBE2 /* GetHeight.swift */,
+			);
+			path = GeometryReader;
+			sourceTree = "<group>";
+		};
+		BCA2C1B42A603B4B00BBEBE2 /* Font */ = {
+			isa = PBXGroup;
+			children = (
+				BCE489CC2A4EA4CE00A18B2B /* SpoqaHanSansNeoFont.swift */,
+			);
+			path = Font;
+			sourceTree = "<group>";
+		};
+		BCA2C1B52A603B5900BBEBE2 /* Loading */ = {
+			isa = PBXGroup;
+			children = (
+				BC91FD532A4483CA00D3E665 /* LoadingProgress.swift */,
+			);
+			path = Loading;
 			sourceTree = "<group>";
 		};
 		BCA30F6D29FE20390078D0B1 = {
@@ -531,6 +558,7 @@
 				BCA30F7C29FE203A0078D0B1 /* ContentView.swift in Sources */,
 				BCB16E302A4DC66300AACFF0 /* KakaoAddressBase.swift in Sources */,
 				BCA30F9529FE39BC0078D0B1 /* Env.swift in Sources */,
+				BCA2C1B72A603B6900BBEBE2 /* GetHeight.swift in Sources */,
 				BCCD80682A07A59800501BEA /* LocationDataManagerVM.swift in Sources */,
 				BCA30FA529FE73C90078D0B1 /* HomeViewController.swift in Sources */,
 				BCA30F9729FE3A190078D0B1 /* Util.swift in Sources */,
