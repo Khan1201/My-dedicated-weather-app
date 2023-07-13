@@ -24,7 +24,6 @@ struct TodayWeatherItem: View {
             Text(time)
                 .fontSpoqaHanSansNeo(size: 14, weight: .medium)
                 .foregroundColor(.white)
-//                .foregroundColor(isDayMode ? CustomColor.black.toColor : .white)
             
             Image(weatherImage)
                 .resizable()
@@ -33,17 +32,15 @@ struct TodayWeatherItem: View {
                     view
                         .overlay(alignment: .bottom) {
                             Text(percent + "%")
-                                .fontSpoqaHanSansNeo(size: 10, weight: .medium)
+                                .fontSpoqaHanSansNeo(size: 10, weight: .bold)
                                 .foregroundColor(CustomColor.lightBlue.toColor)
                                 .offset(y: 12)
                         }
-                        
                 }
             
-            Text(temperature)
+            Text(temperature + "°")
                 .fontSpoqaHanSansNeo(size: 18, weight: .medium)
                 .foregroundColor(.white)
-//                .foregroundColor(isDayMode ? CustomColor.black.toColor : .white)
         }
     }
 }

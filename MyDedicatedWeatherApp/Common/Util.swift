@@ -121,7 +121,6 @@ struct Util {
         dayImageString: String,
         nightImgString: String
     ) -> String {
-        
         let currentHH = Int(currentDateByCustomFormatter(dateFormat: "HH")) ?? 0
         
         if isDayMode(hhMM: hhMM, sunrise: sunrise, sunset: sunset) {
@@ -323,13 +322,13 @@ struct Util {
             switch stringToDouble {
                 
             case 1.0...2.9:
-                return ("약한 비", value + "mm")
+                return ("약한 비", value)
                 
             case 3.0...14.9:
-                return ("보통 비", value + "mm")
+                return ("보통 비", value)
                 
             case 15.0...29.9:
-                return ("강한 비", value + "mm")
+                return ("강한 비", value)
                 
             default:
                 return ("알 수 없음", "")

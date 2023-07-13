@@ -75,7 +75,7 @@ struct HomeViewController: View {
                     HStack(alignment: .center, spacing: 24) {
                         ForEach(homeViewModel.todayWeatherInformations, id: \.time) { item in
                             TodayWeatherItem(
-                                time: homeViewModel.todayWeatherInformations.first?.time == item.time ? "Now" : item.time,
+                                time: item.time,
                                 weatherImage: item.weatherImage,
                                 percent: item.precipitation,
                                 temperature: item.temperature,
@@ -88,7 +88,7 @@ struct HomeViewController: View {
                     .padding(.vertical, 10)
                 }
                 .background {
-                    homeViewModel.isDayMode ? Color.black.opacity(0.03) : Color.white.opacity(0.03)
+                    homeViewModel.isDayMode ? CustomColor.lightNavy.toColor.opacity(0.2) : Color.white.opacity(0.08)
                 }
                 .cornerRadius(16)
                 .padding(.horizontal, 26)
@@ -96,11 +96,10 @@ struct HomeViewController: View {
             .padding(.top, 25)
             .frame(height: UIScreen.screenHeight, alignment: .center)
             .background {
-                
                 if homeViewModel.isDayMode {
                     Image("background_sunny")
                         .overlay {
-                            Color.black.opacity(0.15)
+                            Color.black.opacity(0.1)
                         }
                     
                 } else {
@@ -180,26 +179,62 @@ extension HomeViewController {
         return VStack(alignment: .leading, spacing: 8) {
             
             
-            VStack(alignment: .leading, spacing: 10) {
-                Text(
-                """
-                \(locationDataManagerVM.currentLocation),
-                \(homeViewModel.subLocalityByKakaoAddress)
-                """
-                )
-                .fontSpoqaHanSansNeo(size: 24, weight: .medium)
-                .foregroundColor(homeViewModel.isDayMode ? CustomColor.black.toColor : .white)
-                .lineSpacing(2)
-                .loadingProgress(isLoadCompleted: locationDataManagerVM.isLocationUpdated)
+            HStack(alignment: .center, spacing: 60) {
+                VStack(alignment: .leading, spacing: 10) {
+                    Text(
+                    """
+                    \(locationDataManagerVM.currentLocation),
+                    \(homeViewModel.subLocalityByKakaoAddress)
+                    """
+                    )
+                    .fontSpoqaHanSansNeo(size: 24, weight: .medium)
+                    .foregroundColor(.white)
+                    .lineSpacing(2)
+                    .loadingProgress(isLoadCompleted: locationDataManagerVM.isLocationUpdated)
+                    
+                    
+                    Text(Util().currentDateByCustomFormatter(
+                        dateFormat: "E요일, M월 d일")
+                    )
+                    .font(.system(size: 13))
+                    .foregroundColor(.white)
+                }
+                .padding(.leading, 40)
                 
-                
-                Text(Util().currentDateByCustomFormatter(
-                    dateFormat: "E요일, M월 d일")
-                )
-                .font(.system(size: 13))
-                .foregroundColor(homeViewModel.isDayMode ? CustomColor.black.toColor.opacity(0.7) : .white.opacity(0.7))
+                VStack(alignment: .leading, spacing: 0) {
+                    HStack(alignment: .center, spacing: 4) {
+                        Image("sunrise")
+                            .resizable()
+                            .frame(width: 24, height: 24)
+                        
+                        Text("AM \(homeViewModel.sunRiseAndSetHHmm.0)")
+                            .fontSpoqaHanSansNeo(size: 14, weight: .regular)
+                            .foregroundColor(.white.opacity(0.8))
+                    }
+                    .padding(.bottom, 5)
+                    .overlay(alignment: .bottom) {
+                        Rectangle()
+                            .frame(height: 1)
+                            .foregroundColor(.white.opacity(0.3))  // Day
+                    }
+                    
+                    HStack(alignment: .center, spacing: 4) {
+                        Image("sunset")
+                            .resizable()
+                            .frame(width: 24, height: 24)
+                        
+                        Text("PM \(homeViewModel.sunRiseAndSetHHmm.1)")
+                            .fontSpoqaHanSansNeo(size: 14, weight: .medium)
+                            .foregroundColor(.white.opacity(0.8))
+                    }
+                    .padding(.top, 5)
+                }
+                .padding(.vertical, 6)
+                .padding(.horizontal, 12)
+                .background(Color.red.opacity(homeViewModel.isDayMode ? 0.3 : 0.2))
+                .cornerRadius(14)
             }
-            .padding(.leading, 40)
+            
             
             HStack(alignment: .center, spacing: 20) {
                 LottieView(
@@ -213,37 +248,37 @@ extension HomeViewController {
                     HStack(alignment: .top, spacing: 2) {
                         Text(homeViewModel.currentWeatherInformation.temperature)
                             .fontSpoqaHanSansNeo(size: 55, weight: .bold)
-                            .foregroundColor(homeViewModel.isDayMode ? CustomColor.black.toColor : .white)
+                            .foregroundColor(.white)
                             .loadingProgress(isLoadCompleted: homeViewModel.isCurrentWeatherInformationLoadCompleted)
                             .padding(.top, 5)
                         
                         Text("° C")
                             .fontSpoqaHanSansNeo(size: 18, weight: .medium)
-                            .foregroundColor(homeViewModel.isDayMode ? CustomColor.black.toColor : .white)
+                            .foregroundColor(.white)
                     }
                     
                     HStack(alignment: .center, spacing: 0) {
                         Image(systemName: "arrow.down")
                             .resizable()
                             .renderingMode(.template)
-                            .foregroundColor(Color.blue.opacity(0.4))
+                            .foregroundColor(Color.blue.opacity(homeViewModel.isDayMode ? 0.8 : 0.6))
                             .frame(width: 15, height: 15)
                         
                         Text(homeViewModel.todayMinMaxTemperature.0)
                             .fontSpoqaHanSansNeo(size: 16, weight: .regular)
-                            .foregroundColor(.white.opacity(0.8))
+                            .foregroundColor(.white.opacity(0.9))
                             .padding(.leading, 3)
                         
                         Image(systemName: "arrow.up")
                             .resizable()
                             .renderingMode(.template)
-                            .foregroundColor(Color.red.opacity(0.4))
+                            .foregroundColor(Color.red.opacity(homeViewModel.isDayMode ? 0.8 : 0.6))
                             .frame(width: 15, height: 15)
                             .padding(.leading, 10)
                         
                         Text(homeViewModel.todayMinMaxTemperature.1)
                             .fontSpoqaHanSansNeo(size: 16, weight: .regular)
-                            .foregroundColor(.white.opacity(0.8))
+                            .foregroundColor(.white.opacity(0.9))
                             .padding(.leading, 3)
                     }
                     .padding(.top, 10)

@@ -16,6 +16,19 @@ struct CurrentWeatherInformationItem: View {
     let isDayMode: Bool
     var backgroundColor: Color?
     
+    func currentBackgroundColor() -> Color {
+        
+        if backgroundColor != nil {
+            return backgroundColor!.opacity(0.45)
+            
+        } else if isDayMode {
+            return CustomColor.lightNavy.toColor.opacity(0.2)
+            
+        } else {
+            return Color.white.opacity(0.08)
+        }
+    }
+    
     var body: some View {
         
         let imageWidth: CGFloat = UIScreen.screenWidth / 10.41
@@ -37,7 +50,7 @@ struct CurrentWeatherInformationItem: View {
             
             Text(title)
                 .fontSpoqaHanSansNeo(size: 14, weight: .regular)
-                .foregroundColor(isDayMode ? CustomColor.black.toColor : .white)
+                .foregroundColor(.white)
                 .padding(.leading, 14)
             
             Spacer()
@@ -45,15 +58,12 @@ struct CurrentWeatherInformationItem: View {
             HStack(alignment: .center, spacing: 0) {
                 Text(value.0)
                     .fontSpoqaHanSansNeo(size: 14, weight: .medium)
-                    .foregroundColor(isDayMode ? CustomColor.black.toColor : .white)
+                    .foregroundColor(.white)
                 
                 if value.1 != "" {
                     Text("(\(value.1))")
                         .fontSpoqaHanSansNeo(size: 12, weight: .regular)
-                        .foregroundColor(
-                            isDayMode ?
-                            CustomColor.black.toColor.opacity(0.8) : .white.opacity(0.8)
-                        )
+                        .foregroundColor(.white)
                 }
             }
             .padding(.trailing, 17)
@@ -62,8 +72,7 @@ struct CurrentWeatherInformationItem: View {
         .padding(.horizontal, 11)
         .padding(.vertical, 8)
         .background(
-            backgroundColor != nil ?
-            backgroundColor?.opacity(0.45) : .white.opacity(0.36)
+            currentBackgroundColor()
         )
         .cornerRadius(10)
     }

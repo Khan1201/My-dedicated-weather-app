@@ -10,7 +10,7 @@ import SwiftUI
 
 enum CustomColor: String {
     
-    case black, lightBlue
+    case black, lightBlue, lightNavy
     
     var toColor: Color {
         
@@ -21,6 +21,9 @@ enum CustomColor: String {
             
         case .lightBlue:
             return Color(hexCode: "81CFFA")
+            
+        case .lightNavy:
+            return Color.init(hexCode: "254659")
         }
     }
 }
