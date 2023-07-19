@@ -546,8 +546,9 @@ struct Util {
         let currentHour = currentDateByCustomFormatter(dateFormat: "HH")
         
         let currentYearMonthDayToInt = Int(currentYearMonthDay) ?? 0
+        let currentHourToInt = Int(currentHour) ?? 0
         
-        switch Int(currentHour) ?? 0 {
+        switch currentHourToInt {
             
         case 00...02:
             return String(currentYearMonthDayToInt - 1)
@@ -723,8 +724,6 @@ struct Util {
             rs.lng = alon * RADDEG
         }
         return rs
-        
-        
     }
     
     struct LatXLngY {

@@ -149,9 +149,8 @@ extension HomeViewModel {
         let parameters = VeryShortOrShortTermForecastReq(
             serviceKey: env.openDataApiResponseKey,
             baseDate: util.shortTermForcastBaseDate(),
-            //            baseDate: "20230705",
-            baseTime: baseTime != nil ? baseTime! : util.shortTermForecastBaseTime(), // baseTime != nil -> 앱 구동 시 호출이 아닌, 수동 호출
-            //            baseTime: "0500",
+            baseTime: baseTime != nil ? baseTime! : util.shortTermForecastBaseTime(),
+            /// baseTime != nil -> 앱 구동 시 호출이 아닌, 수동 호출
             nx: String(xy.x),
             ny: String(xy.y)
         )
@@ -171,7 +170,10 @@ extension HomeViewModel {
                     
                     if baseTime == nil { // baseTime == nil -> 앱 구동 시 처음 호출 (자동 baseTime set)
                         self.setTodayWeatherInformations(items: items)
-                        self.setTodayMinMaxTemperature(items: items, baseTime: self.util.shortTermForecastBaseTime())
+                        self.setTodayMinMaxTemperature(
+                            items: items,
+                            baseTime: self.util.shortTermForecastBaseTime()
+                        )
                         
                     } else {
                         self.setTodayMinMaxTemperature(items: items, baseTime: "0200")
@@ -543,7 +545,6 @@ extension HomeViewModel {
         switch baseTime {
             
         case "0200":
-            
             guard let minTemp = items.filter(
                 { item in
                     item.category == .TMN

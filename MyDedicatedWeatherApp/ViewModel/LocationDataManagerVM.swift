@@ -46,7 +46,7 @@ final class LocationDataManagerVM: NSObject, ObservableObject {
     
     func convertLocationToXYForVeryShortForecast() -> Util.LatXLngY {
         let XY: Util.LatXLngY = util.convertGPS2XY(
-            mode: .toGPS,
+            mode: .toXY,
             lat_X: locationManager.location?.coordinate.latitude ?? 0,
             lng_Y:locationManager.location?.coordinate.longitude ?? 0
         )
