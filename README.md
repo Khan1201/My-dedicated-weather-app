@@ -1,6 +1,6 @@
 # 날씨 모아보기(06.18 ~ ing)
 <img width="250" alt="image" src="https://github.com/Khan1201/My-dedicated-weather-app/assets/87113698/3b64b027-7920-4764-9ad1-958aba36955c">
-<img src="https://github.com/Khan1201/My-dedicated-weather-app/assets/87113698/ea0e59c1-05d5-4305-a98c-7bf6d6424a70" width="250" height="510"/>
+<img src="https://github.com/Khan1201/My-dedicated-weather-app/assets/87113698/0b4b644a-17f2-4d2f-8163-f96f5d27a05d" width="250" height="510"/>
 
 <br>
 
