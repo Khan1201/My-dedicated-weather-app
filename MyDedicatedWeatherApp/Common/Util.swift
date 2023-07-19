@@ -579,7 +579,15 @@ struct Util {
                 return "2330"
                 
             } else {
-                return String((Int(currentHour) ?? 0) - 1) + "30"
+                let currentHourToInt = Int(currentHour) ?? 0
+                let currentHourMinusOneHour = currentHourToInt - 1
+                var toString = String(currentHourMinusOneHour)
+                
+                if toString.count == 1 {
+                    toString.insert("0", at: toString.startIndex)
+                }
+                
+                return toString + "30"
             }
             
         } else { // currentMinute >= 30

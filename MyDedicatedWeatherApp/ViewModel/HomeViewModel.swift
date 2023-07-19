@@ -95,10 +95,11 @@ extension HomeViewModel {
         
         self.xy = xy
         let baseTime = util.veryShortTermForecastBaseTime()
+        let baseDate = util.veryShortTermForecastBaseDate(baseTime: baseTime)
         
         let parameters: VeryShortOrShortTermForecastReq = VeryShortOrShortTermForecastReq(
             serviceKey: env.openDataApiResponseKey,
-            baseDate: util.veryShortTermForecastBaseDate(baseTime: baseTime),
+            baseDate: baseDate,
             baseTime: baseTime,
             nx: String(xy.x),
             ny: String(xy.y)
@@ -605,6 +606,9 @@ extension HomeViewModel {
         
         let minTempToString = String(Int(minTempToDouble))
         let maxTempToString = String(Int(maxTempToDouble))
+        
+//        UserDefaults.standard.set(nil, forKey: "minTemp")
+//        UserDefaults.standard.set(nil, forKey: "maxTemp")
         
         todayMinMaxTemperature = (minTempToString, maxTempToString)
     }
