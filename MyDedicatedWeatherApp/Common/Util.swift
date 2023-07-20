@@ -381,6 +381,8 @@ struct Util {
                 description: "눈",
                 imageString: isAnimationImage ? animationJson : "weather_snow"
             )
+        case "4":
+            return Weather.DescriptionAndImageString(description: "소나기", imageString: "weather_rain_small")
             
         case "5":
             return Weather.DescriptionAndImageString(description: "빗방울", imageString: "weather_rain_small")

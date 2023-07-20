@@ -450,7 +450,7 @@ extension HomeViewModel {
     func setTodayWeatherInformations(items: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>]) {
         
         let currentDate = util.currentDateByCustomFormatter(dateFormat: "yyyyMMdd")
-        let currentHour = "05"
+        let currentHour = util.currentDateByCustomFormatter(dateFormat: "HH")
         
         // 온도 filter
         let temperatureItems = items.filter { item in
@@ -509,7 +509,6 @@ extension HomeViewModel {
         }
         
         for index in todayTemperatureItems.indices {
-            
             let weather: Weather.DescriptionAndImageString = util.veryShortOrShortTermForecastWeatherDescriptionWithImageString(
                 ptyValue: todayPrecipitationItems[index].fcstValue,
                 skyValue: todaySkyStateItems[index].fcstValue,
