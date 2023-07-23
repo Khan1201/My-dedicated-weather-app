@@ -166,18 +166,20 @@ extension HomeViewModel {
                 requestName: "requestShortForecastItems(xy:)"
             )
             
-            DispatchQueue.main.async {
-                if let items = result.item {
-                    
-                    if baseTime == nil { // baseTime == nil -> 앱 구동 시 처음 호출 (자동 baseTime set)
+            if let items = result.item {
+                
+                if baseTime == nil { // baseTime == nil -> 앱 구동 시 처음 호출 (자동 baseTime set)
+                    DispatchQueue.main.async {
                         self.setTodayWeatherInformations(items: items)
                         self.setTodayMinMaxTemperature(
                             items: items,
                             baseTime: self.util.shortTermForecastBaseTime()
                         )
-                        
-                    } else {
-                        self.setTodayMinMaxTemperature(items: items, baseTime: "0200")
+                    }
+                    
+                } else {
+                    DispatchQueue.main.async {
+                        self.setTodayMinMaxTemperature(items: items, baseTime: baseTime ?? "")
                     }
                 }
             }
@@ -540,76 +542,61 @@ extension HomeViewModel {
      
      - parameter items: [단기예보 Model]
      */
-    func setTodayMinMaxTemperature(items: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>], baseTime: String) {
-        
+    func setTodayMinMaxTemperature(
+        items: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>],
+        baseTime: String
+    ) {
         switch baseTime {
             
         case "0200":
-            guard let minTemp = items.filter(
-                { item in
-                    item.category == .TMN
-                }
-            ).first?.fcstValue else { return }
-            
-            UserDefaults.standard.set(minTemp, forKey: "minTemp")
-            
-            guard let maxTemp = items.filter(
-                { item in
-                    item.category == .TMX
-                }
-            ).first?.fcstValue else { return }
-            
-            UserDefaults.standard.set(maxTemp, forKey: "maxTemp")
+            setTodayMinMaxTemperature(items: items, isMinTemp: true)
+            setTodayMinMaxTemperature(items: items, isMinTemp: false)
             
         case "0500":
-            guard let maxTemp = items.filter(
-                { item in
-                    item.category == .TMX
-                }
-            ).first?.fcstValue else { return }
-            
-            UserDefaults.standard.set(maxTemp, forKey: "maxTemp")
+            requestMinTemp()
+            setTodayMinMaxTemperature(items: items, isMinTemp: false)
             
         case "0800":
-            guard let maxTemp = items.filter(
-                { item in
-                    item.category == .TMX
-                }
-            ).first?.fcstValue else { return }
-            
-            UserDefaults.standard.set(maxTemp, forKey: "maxTemp")
+            requestMinTemp()
+            setTodayMinMaxTemperature(items: items, isMinTemp: false)
             
         case "1100":
-            guard let maxTemp = items.filter(
+            requestMinTemp()
+            setTodayMinMaxTemperature(items: items, isMinTemp: false)
+            
+        default:
+            requestMinMaxTemp()
+        }
+        
+        func setTodayMinMaxTemperature(items: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>], isMinTemp: Bool) {
+            guard let minOrMaxTemp = items.filter(
                 { item in
-                    item.category == .TMX
+                    item.category == (isMinTemp ? .TMN : .TMX)
                 }
             ).first?.fcstValue else { return }
             
-            UserDefaults.standard.set(maxTemp, forKey: "maxTemp")
-            
-        default:
-            if UserDefaults.standard.string(forKey: "maxTemp") == nil ||
-                UserDefaults.standard.string(forKey: "minTemp") == nil {
-                Task {
-                    await requestShortForecastItems(xy: xy, baseTime: "0200")
-                }
+            guard let minOrMaxTempToDouble = Double(minOrMaxTemp) else { return }
+            let toString = String(Int(minOrMaxTempToDouble))
+
+            if isMinTemp {
+                todayMinMaxTemperature.0 = toString
+                
+            } else {
+                todayMinMaxTemperature.1 = toString
             }
         }
         
-        guard let minTemp = UserDefaults.standard.string(forKey: "minTemp") else { return }
-        guard let maxTemp = UserDefaults.standard.string(forKey: "maxTemp") else { return }
+        func requestMinTemp() {
+            Task {
+                await requestShortForecastItems(xy: xy, baseTime: "0200")
+            }
+        }
         
-        guard let minTempToDouble = Double(minTemp) else { return }
-        guard let maxTempToDouble = Double(maxTemp) else { return }
-        
-        let minTempToString = String(Int(minTempToDouble))
-        let maxTempToString = String(Int(maxTempToDouble))
-        
-//        UserDefaults.standard.set(nil, forKey: "minTemp")
-//        UserDefaults.standard.set(nil, forKey: "maxTemp")
-        
-        todayMinMaxTemperature = (minTempToString, maxTempToString)
+        func requestMinMaxTemp() {
+            Task {
+                await requestShortForecastItems(xy: xy, baseTime: "1100")
+            }
+        }
     }
     
     /**
