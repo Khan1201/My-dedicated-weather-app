@@ -1,5 +1,5 @@
 //
-//  HomeViewController.swift
+//  TodayViewController.swift
 //  MyDedicatedWeatherApp
 //
 //  Created by 윤형석 on 2023/04/30.
@@ -8,8 +8,8 @@
 import SwiftUI
 import SwiftUIPager
 
-struct HomeViewController: View {
-    @StateObject var homeViewModel: HomeViewModel = HomeViewModel()
+struct TodayViewController: View {
+    @StateObject var homeViewModel: TodayViewModel = TodayViewModel()
     @StateObject var locationDataManagerVM = LocationDataManagerVM()
     
     @State private var arrowRightOffset: CGFloat = -25
@@ -167,15 +167,15 @@ struct HomeViewController: View {
     }
 }
 
-struct HomeViewController_Previews: PreviewProvider {
+struct TodayViewController_Previews: PreviewProvider {
     static var previews: some View {
-        HomeViewController()
+        TodayViewController()
     }
 }
 
 // MARK: - Supporting Views..
 
-extension HomeViewController {
+extension TodayViewController {
     
     var currentWeatherWithImageAndTemperatureView: some View {
         
@@ -297,7 +297,7 @@ extension HomeViewController {
     }
 }
 
-extension HomeViewController {
+extension TodayViewController {
     
     var currentWeatherInfPagerFirstView: some View {
         
@@ -330,7 +330,7 @@ extension HomeViewController {
     }
 }
 
-extension HomeViewController {
+extension TodayViewController {
     
     var currentWeatherInfPagerSecondView: some View {
         

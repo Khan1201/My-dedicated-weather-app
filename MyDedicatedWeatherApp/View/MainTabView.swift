@@ -15,7 +15,7 @@ struct MainTabView: View {
                 
         VStack(alignment: .leading, spacing: 0) {
             TabView(selection: $currentTab) {
-                HomeViewController()
+                TodayViewController()
                     .tag(TabBarType.current)
                 
                 Text("gdgd")

@@ -1,5 +1,5 @@
 //
-//  HomeViewModel.swift
+//  TodayViewModel.swift
 //  MyDedicatedWeatherApp
 //
 //  Created by 윤형석 on 2023/04/30.
@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import Combine
 
-final class HomeViewModel: ObservableObject {
+final class TodayViewModel: ObservableObject {
     
     @Published private(set) var threeToTenDaysTemperature: [temperatureMinMax] = [] // day 3 ~ 10 temperature
     @Published private(set) var errorMessage: String = ""
@@ -47,7 +47,7 @@ final class HomeViewModel: ObservableObject {
 
 // MARK: - Request HTTP..
 
-extension HomeViewModel {
+extension TodayViewModel {
     
     /**
      Request 중기예보 Items
@@ -386,7 +386,7 @@ extension HomeViewModel {
 
 // MARK: - Set Variables..
 
-extension HomeViewModel {
+extension TodayViewModel {
     
     /**
      Set 초 단기예보 Items -> `currentTemperature`(현재 기온) varialbe
@@ -638,7 +638,7 @@ extension HomeViewModel {
 
 // MARK: - Return funcs..
 
-extension HomeViewModel {
+extension TodayViewModel {
     
     /**
      Return 초 단기예보 Items ->`currentWeatherDescriptionAndImage`(현재 날씨 설명, 이미지 string)
@@ -668,7 +668,7 @@ extension HomeViewModel {
 
 // MARK: - View On Appear, Task Actions..
 
-extension HomeViewModel {
+extension TodayViewModel {
     
     func HomeViewControllerLocationManagerUpdatedAction(
         xy: Util.LatXLngY,
