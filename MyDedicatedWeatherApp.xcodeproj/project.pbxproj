@@ -18,6 +18,8 @@
 		BC37A6002A3ED7BC00C16278 /* DustForecastStationBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC37A5FF2A3ED7BC00C16278 /* DustForecastStationBase.swift */; };
 		BC37A6022A3ED7CD00C16278 /* DustForecastStationXYBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC37A6012A3ED7CD00C16278 /* DustForecastStationXYBase.swift */; };
 		BC37A6042A3F094E00C16278 /* CustomTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC37A6032A3F094E00C16278 /* CustomTypes.swift */; };
+		BC5386522A6EC18500D8E085 /* WeekViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5386512A6EC18500D8E085 /* WeekViewController.swift */; };
+		BC5386542A6EC19700D8E085 /* WeekViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5386532A6EC19700D8E085 /* WeekViewModel.swift */; };
 		BC65D50F2A0BDF1C00EFADD4 /* WeatherInformationsWithImgAndTimeAndTemperature.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC65D50E2A0BDF1C00EFADD4 /* WeatherInformationsWithImgAndTimeAndTemperature.swift */; };
 		BC6EF8BD2A10AAB30072A2DE /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6EF8BC2A10AAB30072A2DE /* Extension.swift */; };
 		BC6EF8BF2A10C0DC0072A2DE /* RealTimeFindDustForecastBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6EF8BE2A10C0DC0072A2DE /* RealTimeFindDustForecastBase.swift */; };
@@ -94,6 +96,8 @@
 		BC37A5FF2A3ED7BC00C16278 /* DustForecastStationBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DustForecastStationBase.swift; sourceTree = "<group>"; };
 		BC37A6012A3ED7CD00C16278 /* DustForecastStationXYBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DustForecastStationXYBase.swift; sourceTree = "<group>"; };
 		BC37A6032A3F094E00C16278 /* CustomTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTypes.swift; sourceTree = "<group>"; };
+		BC5386512A6EC18500D8E085 /* WeekViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekViewController.swift; sourceTree = "<group>"; };
+		BC5386532A6EC19700D8E085 /* WeekViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekViewModel.swift; sourceTree = "<group>"; };
 		BC65D50E2A0BDF1C00EFADD4 /* WeatherInformationsWithImgAndTimeAndTemperature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherInformationsWithImgAndTimeAndTemperature.swift; sourceTree = "<group>"; };
 		BC6EF8BC2A10AAB30072A2DE /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		BC6EF8BE2A10C0DC0072A2DE /* RealTimeFindDustForecastBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealTimeFindDustForecastBase.swift; sourceTree = "<group>"; };
@@ -193,6 +197,13 @@
 			path = LottieAnimation;
 			sourceTree = "<group>";
 		};
+		BC5386502A6EC15600D8E085 /* WeekView */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = WeekView;
+			sourceTree = "<group>";
+		};
 		BC7692382A431C94005F4D7B /* TabBar */ = {
 			isa = PBXGroup;
 			children = (
@@ -231,6 +242,7 @@
 			isa = PBXGroup;
 			children = (
 				BCA30FA429FE73C90078D0B1 /* TodayViewController.swift */,
+				BC5386512A6EC18500D8E085 /* WeekViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -378,6 +390,7 @@
 			children = (
 				BCA30FA629FE73D70078D0B1 /* TodayViewModel.swift */,
 				BCCD80672A07A59800501BEA /* LocationDataManagerVM.swift */,
+				BC5386532A6EC19700D8E085 /* WeekViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -385,6 +398,7 @@
 		BCA30FAB29FFE35B0078D0B1 /* ViewComponent */ = {
 			isa = PBXGroup;
 			children = (
+				BC5386502A6EC15600D8E085 /* WeekView */,
 				BC96646A2A41ED0600D2433C /* TodayView */,
 				BC91FD522A44839900D3E665 /* ViewModifier */,
 				BC7D33E32A127A7300B1012F /* ViewRepresentable */,
@@ -579,9 +593,11 @@
 				BCA30F9329FE28F20078D0B1 /* MidTermForecastBase.swift in Sources */,
 				BC91FD542A4483CA00D3E665 /* LoadingProgress.swift in Sources */,
 				BCE489CD2A4EA4CE00A18B2B /* SpoqaHanSansNeoFont.swift in Sources */,
+				BC5386542A6EC19700D8E085 /* WeekViewModel.swift in Sources */,
 				BC37A6022A3ED7CD00C16278 /* DustForecastStationXYBase.swift in Sources */,
 				BCE489D12A4EAD5F00A18B2B /* CurrentWeatherInformationItem.swift in Sources */,
 				BC91FD512A44836D00D3E665 /* Extensions.swift in Sources */,
+				BC5386522A6EC18500D8E085 /* WeekViewController.swift in Sources */,
 				BCCA26272A514609005BB1B5 /* SunOrMoonRiseBase.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

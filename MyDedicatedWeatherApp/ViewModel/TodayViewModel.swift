@@ -24,7 +24,7 @@ final class TodayViewModel: ObservableObject {
     @Published var subLocalityByKakaoAddress: String = ""
     
     let pageViewCount: [Int] = [0, 1]
-    var xy: Util.LatXLngY = .init(lat: 0, lng: 0, x: 0, y: 0)
+    static private(set) var xy: Util.LatXLngY = .init(lat: 0, lng: 0, x: 0, y: 0)
     
     @Published private(set) var isDayMode: Bool = false
     @Published private(set) var sunRiseAndSetHHmm: (String, String) = ("","")
@@ -93,7 +93,7 @@ extension TodayViewModel {
      */
     func requestVeryShortForecastItems(xy: Util.LatXLngY) async {
         
-        self.xy = xy
+        TodayViewModel.xy = xy
         let baseTime = util.veryShortTermForecastBaseTime()
         let baseDate = util.veryShortTermForecastBaseDate(baseTime: baseTime)
         
@@ -588,13 +588,13 @@ extension TodayViewModel {
         
         func requestMinTemp() {
             Task {
-                await requestShortForecastItems(xy: xy, baseTime: "0200")
+                await requestShortForecastItems(xy: TodayViewModel.xy, baseTime: "0200")
             }
         }
         
         func requestMinMaxTemp() {
             Task {
-                await requestShortForecastItems(xy: xy, baseTime: "1100")
+                await requestShortForecastItems(xy: TodayViewModel.xy, baseTime: "1100")
             }
         }
     }
