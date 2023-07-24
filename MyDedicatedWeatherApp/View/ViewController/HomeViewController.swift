@@ -57,9 +57,15 @@ struct HomeViewController: View {
                             .foregroundColor(.white)
                             .frame(width: 30, height: 30)
                             .offset(x: isFirstPage ? -18 : 18, y: arrowRightOffset)
+                            .onTapGesture {
+                                withAnimation {
+                                    isFirstPage ? page.update(.next) : page.update(.previous)
+                                }
+                                pageIndex = page.index
+                            }
                     }
                     .onAppear {
-                        withAnimation(.linear(duration: 0.8).repeatForever()) {
+                        withAnimation(.linear(duration: 0.6).repeatForever()) {
                             arrowRightOffset = -15
                         }
                     }

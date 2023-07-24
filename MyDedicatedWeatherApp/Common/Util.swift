@@ -528,7 +528,7 @@ struct Util {
         case 1400...1659:
             return "1400"
             
-        case 1700...1959:
+        case 1700...1959:   
             return "1700"
             
         case 2000...2259:
