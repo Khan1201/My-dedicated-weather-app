@@ -9,7 +9,7 @@ import SwiftUI
 import SwiftUIPager
 
 struct TodayViewController: View {
-    @StateObject var homeViewModel: TodayViewModel = TodayViewModel()
+    @StateObject var viewModel: TodayViewModel = TodayViewModel()
     @StateObject var locationDataManagerVM = LocationDataManagerVM()
     
     @State private var arrowRightOffset: CGFloat = -25
@@ -30,7 +30,7 @@ struct TodayViewController: View {
                 VStack(alignment: .leading, spacing: 15) {
                     currentWeatherWithImageAndTemperatureView
                     
-                    Pager(page: page, data: homeViewModel.pageViewCount, id: \.self) { index in
+                    Pager(page: page, data: viewModel.pageViewCount, id: \.self) { index in
                         
                         switch index {
                             
@@ -79,22 +79,22 @@ struct TodayViewController: View {
                 
                 ScrollView(.horizontal, showsIndicators: true) {
                     HStack(alignment: .center, spacing: 24) {
-                        ForEach(homeViewModel.todayWeatherInformations, id: \.time) { item in
+                        ForEach(viewModel.todayWeatherInformations, id: \.time) { item in
                             TodayWeatherItem(
                                 time: item.time,
                                 weatherImage: item.weatherImage,
                                 percent: item.precipitation,
                                 temperature: item.temperature,
-                                isDayMode: homeViewModel.isDayMode
+                                isDayMode: viewModel.isDayMode
                             )
-                            .padding(.leading, homeViewModel.todayWeatherInformations.first?.time == item.time ? 15 : 0)
-                            .padding(.trailing, homeViewModel.todayWeatherInformations.last?.time == item.time ? 15 : 0)
+                            .padding(.leading, viewModel.todayWeatherInformations.first?.time == item.time ? 15 : 0)
+                            .padding(.trailing, viewModel.todayWeatherInformations.last?.time == item.time ? 15 : 0)
                         }
                     }
                     .padding(.vertical, 10)
                 }
                 .background {
-                    homeViewModel.isDayMode ? CustomColor.lightNavy.toColor.opacity(0.2) : Color.white.opacity(0.08)
+                    viewModel.isDayMode ? CustomColor.lightNavy.toColor.opacity(0.2) : Color.white.opacity(0.08)
                 }
                 .cornerRadius(16)
                 .padding(.horizontal, 26)
@@ -102,7 +102,7 @@ struct TodayViewController: View {
             .padding(.top, 25)
             .frame(height: UIScreen.screenHeight, alignment: .center)
             .background {
-                if homeViewModel.isDayMode {
+                if viewModel.isDayMode {
                     Image("background_sunny")
                         .overlay {
                             Color.black.opacity(0.1)
@@ -131,14 +131,14 @@ struct TodayViewController: View {
                 }
             }
             .onChange(of: locationDataManagerVM.isLocationUpdated) { _ in
-                homeViewModel.HomeViewControllerLocationManagerUpdatedAction(
+                viewModel.TodayViewControllerLocationManagerUpdatedAction(
                     xy: locationDataManagerVM.convertLocationToXYForVeryShortForecast(),
                     longLati: locationDataManagerVM.longitudeAndLatitude
                 )
             }
-            .onChange(of: homeViewModel.isKakaoAddressLoadCompleted) { newValue in
-                homeViewModel.HomeViewControllerKakaoAddressUpdatedAction(
-                    umdName: homeViewModel.subLocalityByKakaoAddress,
+            .onChange(of: viewModel.isKakaoAddressLoadCompleted) { newValue in
+                viewModel.TodayViewControllerKakaoAddressUpdatedAction(
+                    umdName: viewModel.subLocalityByKakaoAddress,
                     locality: locationDataManagerVM.currentLocationLocality
                 )
             }
@@ -190,7 +190,7 @@ extension TodayViewController {
                     Text(
                     """
                     \(locationDataManagerVM.currentLocation),
-                    \(homeViewModel.subLocalityByKakaoAddress)
+                    \(viewModel.subLocalityByKakaoAddress)
                     """
                     )
                     .fontSpoqaHanSansNeo(size: 24, weight: .medium)
@@ -213,7 +213,7 @@ extension TodayViewController {
                             .resizable()
                             .frame(width: 24, height: 24)
                         
-                        Text("AM \(homeViewModel.sunRiseAndSetHHmm.0)")
+                        Text("AM \(viewModel.sunRiseAndSetHHmm.0)")
                             .fontSpoqaHanSansNeo(size: 14, weight: .regular)
                             .foregroundColor(.white.opacity(0.8))
                     }
@@ -229,7 +229,7 @@ extension TodayViewController {
                             .resizable()
                             .frame(width: 24, height: 24)
                         
-                        Text("PM \(homeViewModel.sunRiseAndSetHHmm.1)")
+                        Text("PM \(viewModel.sunRiseAndSetHHmm.1)")
                             .fontSpoqaHanSansNeo(size: 14, weight: .medium)
                             .foregroundColor(.white.opacity(0.8))
                     }
@@ -237,14 +237,14 @@ extension TodayViewController {
                 }
                 .padding(.vertical, 6)
                 .padding(.horizontal, 12)
-                .background(Color.red.opacity(homeViewModel.isDayMode ? 0.3 : 0.2))
+                .background(Color.red.opacity(viewModel.isDayMode ? 0.3 : 0.2))
                 .cornerRadius(14)
             }
             
             
             HStack(alignment: .center, spacing: 20) {
                 LottieView(
-                    jsonName: homeViewModel.currentWeatherAnimationImg,
+                    jsonName: viewModel.currentWeatherAnimationImg,
                     loopMode: .loop
                 )
                 .frame(width: animationWidth, height: animationHeight)
@@ -252,10 +252,10 @@ extension TodayViewController {
                 VStack(alignment: .center, spacing: 0) {
                     
                     HStack(alignment: .top, spacing: 2) {
-                        Text(homeViewModel.currentWeatherInformation.temperature)
+                        Text(viewModel.currentWeatherInformation.temperature)
                             .fontSpoqaHanSansNeo(size: 55, weight: .bold)
                             .foregroundColor(.white)
-                            .loadingProgress(isLoadCompleted: homeViewModel.isCurrentWeatherInformationLoadCompleted)
+                            .loadingProgress(isLoadCompleted: viewModel.isCurrentWeatherInformationLoadCompleted)
                             .padding(.top, 5)
                         
                         Text("° C")
@@ -267,10 +267,10 @@ extension TodayViewController {
                         Image(systemName: "arrow.down")
                             .resizable()
                             .renderingMode(.template)
-                            .foregroundColor(Color.blue.opacity(homeViewModel.isDayMode ? 0.8 : 0.6))
+                            .foregroundColor(Color.blue.opacity(viewModel.isDayMode ? 0.8 : 0.6))
                             .frame(width: 15, height: 15)
                         
-                        Text(homeViewModel.todayMinMaxTemperature.0)
+                        Text(viewModel.todayMinMaxTemperature.0)
                             .fontSpoqaHanSansNeo(size: 16, weight: .regular)
                             .foregroundColor(.white.opacity(0.9))
                             .padding(.leading, 3)
@@ -278,11 +278,11 @@ extension TodayViewController {
                         Image(systemName: "arrow.up")
                             .resizable()
                             .renderingMode(.template)
-                            .foregroundColor(Color.red.opacity(homeViewModel.isDayMode ? 0.8 : 0.6))
+                            .foregroundColor(Color.red.opacity(viewModel.isDayMode ? 0.8 : 0.6))
                             .frame(width: 15, height: 15)
                             .padding(.leading, 10)
                         
-                        Text(homeViewModel.todayMinMaxTemperature.1)
+                        Text(viewModel.todayMinMaxTemperature.1)
                             .fontSpoqaHanSansNeo(size: 16, weight: .regular)
                             .foregroundColor(.white.opacity(0.9))
                             .padding(.leading, 3)
@@ -306,24 +306,24 @@ extension TodayViewController {
                 imageString: "precipitation2",
                 imageColor: Color.blue,
                 title: "강수량",
-                value: homeViewModel.currentWeatherInformation.oneHourPrecipitation,
-                isDayMode: homeViewModel.isDayMode
+                value: viewModel.currentWeatherInformation.oneHourPrecipitation,
+                isDayMode: viewModel.isDayMode
             )
             
             CurrentWeatherInformationItem(
                 imageString: "wind2",
                 imageColor: Color.red.opacity(0.7),
                 title: "바람",
-                value: homeViewModel.currentWeatherInformation.windSpeed,
-                isDayMode: homeViewModel.isDayMode
+                value: viewModel.currentWeatherInformation.windSpeed,
+                isDayMode: viewModel.isDayMode
             )
             
             CurrentWeatherInformationItem(
                 imageString: "wet2",
                 imageColor: Color.blue.opacity(0.7),
                 title: "습도",
-                value: homeViewModel.currentWeatherInformation.wetPercent,
-                isDayMode: homeViewModel.isDayMode
+                value: viewModel.currentWeatherInformation.wetPercent,
+                isDayMode: viewModel.isDayMode
             )
         }
         .padding(.horizontal, 26)
@@ -339,18 +339,18 @@ extension TodayViewController {
                 imageString: "fine_dust",
                 imageColor: Color.black.opacity(0.7),
                 title: "미세먼지",
-                value: (homeViewModel.currentFineDustTuple.description, ""),
-                isDayMode: homeViewModel.isDayMode,
-                backgroundColor: homeViewModel.currentFineDustTuple.color
+                value: (viewModel.currentFineDustTuple.description, ""),
+                isDayMode: viewModel.isDayMode,
+                backgroundColor: viewModel.currentFineDustTuple.color
             )
             
             CurrentWeatherInformationItem(
                 imageString: "fine_dust",
                 imageColor: Color.red.opacity(0.7),
                 title: "초미세먼지",
-                value: (homeViewModel.currentUltraFineDustTuple.description, ""),
-                isDayMode: homeViewModel.isDayMode,
-                backgroundColor: homeViewModel.currentUltraFineDustTuple.color
+                value: (viewModel.currentUltraFineDustTuple.description, ""),
+                isDayMode: viewModel.isDayMode,
+                backgroundColor: viewModel.currentUltraFineDustTuple.color
             )
         }
         .padding(.horizontal, 26)

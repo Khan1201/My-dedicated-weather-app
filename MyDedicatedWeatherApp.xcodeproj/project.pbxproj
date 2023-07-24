@@ -48,7 +48,6 @@
 		BCA30FA529FE73C90078D0B1 /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30FA429FE73C90078D0B1 /* TodayViewController.swift */; };
 		BCA30FA729FE73D70078D0B1 /* TodayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30FA629FE73D70078D0B1 /* TodayViewModel.swift */; };
 		BCA30FAA29FFDC580078D0B1 /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30FA929FFDC580078D0B1 /* Dummy.swift */; };
-		BCA30FAD29FFE3850078D0B1 /* HomeViewMinMaxTemperatureVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30FAC29FFE3850078D0B1 /* HomeViewMinMaxTemperatureVC.swift */; };
 		BCB101532A482BFB00EE1EE8 /* Location.json in Resources */ = {isa = PBXBuildFile; fileRef = BCB101522A482BFB00EE1EE8 /* Location.json */; };
 		BCB16E2D2A4C717D00AACFF0 /* Validate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB16E2C2A4C717D00AACFF0 /* Validate.swift */; };
 		BCB16E302A4DC66300AACFF0 /* KakaoAddressBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB16E2F2A4DC66300AACFF0 /* KakaoAddressBase.swift */; };
@@ -124,7 +123,6 @@
 		BCA30FA629FE73D70078D0B1 /* TodayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewModel.swift; sourceTree = "<group>"; };
 		BCA30FA829FE7D780078D0B1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		BCA30FA929FFDC580078D0B1 /* Dummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummy.swift; sourceTree = "<group>"; };
-		BCA30FAC29FFE3850078D0B1 /* HomeViewMinMaxTemperatureVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewMinMaxTemperatureVC.swift; sourceTree = "<group>"; };
 		BCB101522A482BFB00EE1EE8 /* Location.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Location.json; path = ../../../../Downloads/Location.json; sourceTree = "<group>"; };
 		BCB16E2C2A4C717D00AACFF0 /* Validate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validate.swift; sourceTree = "<group>"; };
 		BCB16E2F2A4DC66300AACFF0 /* KakaoAddressBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoAddressBase.swift; sourceTree = "<group>"; };
@@ -237,17 +235,16 @@
 			path = ViewController;
 			sourceTree = "<group>";
 		};
-		BC96646A2A41ED0600D2433C /* HomeView */ = {
+		BC96646A2A41ED0600D2433C /* TodayView */ = {
 			isa = PBXGroup;
 			children = (
-				BCA30FAC29FFE3850078D0B1 /* HomeViewMinMaxTemperatureVC.swift */,
 				BC65D50E2A0BDF1C00EFADD4 /* WeatherInformationsWithImgAndTimeAndTemperature.swift */,
 				BC96646B2A41F2C900D2433C /* WeatherInforamtionsWithImageAndDescriptionView.swift */,
 				BC96646D2A41F58300D2433C /* FineDustWithDescriptionAndBackgroundColorView.swift */,
 				BCE489D02A4EAD5F00A18B2B /* CurrentWeatherInformationItem.swift */,
 				BCBE178A2A5302D300541AEB /* TodayWeatherItem.swift */,
 			);
-			path = HomeView;
+			path = TodayView;
 			sourceTree = "<group>";
 		};
 		BCA2C1B32A603B3C00BBEBE2 /* GeometryReader */ = {
@@ -388,11 +385,11 @@
 		BCA30FAB29FFE35B0078D0B1 /* ViewComponent */ = {
 			isa = PBXGroup;
 			children = (
+				BC96646A2A41ED0600D2433C /* TodayView */,
 				BC91FD522A44839900D3E665 /* ViewModifier */,
 				BC7D33E32A127A7300B1012F /* ViewRepresentable */,
 				BC76923B2A4329BF005F4D7B /* Modifier */,
 				BC7692382A431C94005F4D7B /* TabBar */,
-				BC96646A2A41ED0600D2433C /* HomeView */,
 			);
 			path = ViewComponent;
 			sourceTree = "<group>";
@@ -564,7 +561,6 @@
 				BCA30F9729FE3A190078D0B1 /* Util.swift in Sources */,
 				BC76923D2A4329DC005F4D7B /* CornerRadiusStyle.swift in Sources */,
 				BCA30FA729FE73D70078D0B1 /* TodayViewModel.swift in Sources */,
-				BCA30FAD29FFE3850078D0B1 /* HomeViewMinMaxTemperatureVC.swift in Sources */,
 				BCCA26292A51481B005BB1B5 /* SunOrMoonRiseServiceByXML.swift in Sources */,
 				BC37A6042A3F094E00C16278 /* CustomTypes.swift in Sources */,
 				BC96646C2A41F2C900D2433C /* WeatherInforamtionsWithImageAndDescriptionView.swift in Sources */,

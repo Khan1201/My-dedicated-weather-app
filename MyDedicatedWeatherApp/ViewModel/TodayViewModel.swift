@@ -670,7 +670,7 @@ extension TodayViewModel {
 
 extension TodayViewModel {
     
-    func HomeViewControllerLocationManagerUpdatedAction(
+    func TodayViewControllerLocationManagerUpdatedAction(
         xy: Util.LatXLngY,
         longLati: (String, String)
     ) {
@@ -682,7 +682,7 @@ extension TodayViewModel {
         }
     }
     
-    func HomeViewControllerKakaoAddressUpdatedAction(umdName: String, locality: String) {
+    func TodayViewControllerKakaoAddressUpdatedAction(umdName: String, locality: String) {
         Task {
             await requestDustForecastStationXY(
                 subLocality: umdName,
