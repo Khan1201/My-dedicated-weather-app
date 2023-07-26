@@ -1,5 +1,5 @@
 //
-//  TodayWeatherItem.swift
+//  TodayWeatherItemView.swift
 //  MyDedicatedWeatherApp
 //
 //  Created by 윤형석 on 2023/07/03.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct TodayWeatherItem: View {
+struct TodayWeatherItemView: View {
     
     let time: String
     let weatherImage: String
@@ -47,6 +47,6 @@ struct TodayWeatherItem: View {
 
 struct TodayWeatherItem_Previews: PreviewProvider {
     static var previews: some View {
-        TodayWeatherItem(time: "1AM", weatherImage: "weather_sunny", percent: "20", temperature: "21", isDayMode: false)
+        TodayWeatherItemView(time: "1AM", weatherImage: "weather_sunny", percent: "20", temperature: "21", isDayMode: false)
     }
 }

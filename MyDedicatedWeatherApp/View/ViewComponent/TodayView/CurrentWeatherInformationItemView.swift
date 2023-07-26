@@ -1,5 +1,5 @@
 //
-//  CurrentWeatherInformationItem.swift
+//  CurrentWeatherInformationItemView.swift
 //  MyDedicatedWeatherApp
 //
 //  Created by 윤형석 on 2023/06/30.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CurrentWeatherInformationItem: View {
+struct CurrentWeatherInformationItemView: View {
     
     let imageString: String
     let imageColor: Color
@@ -80,6 +80,6 @@ struct CurrentWeatherInformationItem: View {
 
 struct CurrentWeatherInformationItem_Previews: PreviewProvider {
     static var previews: some View {
-        CurrentWeatherInformationItem(imageString: "fine_dust", imageColor: .red.opacity(0.7), title: "미세먼지", value: ("나쁨", ""), isDayMode: true)
+        CurrentWeatherInformationItemView(imageString: "fine_dust", imageColor: .red.opacity(0.7), title: "미세먼지", value: ("나쁨", ""), isDayMode: true)
     }
 }

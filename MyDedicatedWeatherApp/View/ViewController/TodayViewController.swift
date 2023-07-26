@@ -80,7 +80,7 @@ struct TodayViewController: View {
                 ScrollView(.horizontal, showsIndicators: true) {
                     HStack(alignment: .center, spacing: 24) {
                         ForEach(viewModel.todayWeatherInformations, id: \.time) { item in
-                            TodayWeatherItem(
+                            TodayWeatherItemView(
                                 time: item.time,
                                 weatherImage: item.weatherImage,
                                 percent: item.precipitation,
@@ -302,7 +302,7 @@ extension TodayViewController {
     var currentWeatherInfPagerFirstView: some View {
         
         return VStack(alignment: .leading, spacing: 10) {
-            CurrentWeatherInformationItem(
+            CurrentWeatherInformationItemView(
                 imageString: "precipitation2",
                 imageColor: Color.blue,
                 title: "강수량",
@@ -310,7 +310,7 @@ extension TodayViewController {
                 isDayMode: viewModel.isDayMode
             )
             
-            CurrentWeatherInformationItem(
+            CurrentWeatherInformationItemView(
                 imageString: "wind2",
                 imageColor: Color.red.opacity(0.7),
                 title: "바람",
@@ -318,7 +318,7 @@ extension TodayViewController {
                 isDayMode: viewModel.isDayMode
             )
             
-            CurrentWeatherInformationItem(
+            CurrentWeatherInformationItemView(
                 imageString: "wet2",
                 imageColor: Color.blue.opacity(0.7),
                 title: "습도",
@@ -335,7 +335,7 @@ extension TodayViewController {
     var currentWeatherInfPagerSecondView: some View {
         
         VStack(alignment: .leading, spacing: 10) {
-            CurrentWeatherInformationItem(
+            CurrentWeatherInformationItemView(
                 imageString: "fine_dust",
                 imageColor: Color.black.opacity(0.7),
                 title: "미세먼지",
@@ -344,7 +344,7 @@ extension TodayViewController {
                 backgroundColor: viewModel.currentFineDustTuple.color
             )
             
-            CurrentWeatherInformationItem(
+            CurrentWeatherInformationItemView(
                 imageString: "fine_dust",
                 imageColor: Color.red.opacity(0.7),
                 title: "초미세먼지",
