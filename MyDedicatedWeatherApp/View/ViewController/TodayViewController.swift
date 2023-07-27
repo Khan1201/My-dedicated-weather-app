@@ -101,35 +101,7 @@ struct TodayViewController: View {
             }
             .padding(.top, 25)
             .frame(height: UIScreen.screenHeight, alignment: .center)
-            .background {
-                if viewModel.isDayMode {
-                    Image("background_sunny")
-                        .overlay {
-                            Color.black.opacity(0.1)
-                        }
-                    
-                } else {
-                    LinearGradient(
-                        stops: [
-                            Gradient.Stop(color: Color(red: 0.07, green: 0.1, blue: 0.14), location: 0.00),
-                            Gradient.Stop(color: Color(red: 0.17, green: 0.19, blue: 0.26), location: 1.00),
-                        ],
-                        startPoint: UnitPoint(x: 0, y: 0),
-                        endPoint: UnitPoint(x: 1, y: 1)
-                    )
-                    .ignoresSafeArea()
-                    .overlay {
-                        Image("background_star")
-                            .resizable()
-                            .frame(width: UIScreen.screenWidth, height: UIScreen.screenHeight)
-                    }
-                    .overlay(alignment: .topTrailing) {
-                        Image("background_cloud")
-                            .resizable()
-                            .frame(width: 400, height: 400)
-                    }
-                }
-            }
+            .todayViewBackground(isDayMode: viewModel.isDayMode)
             .onChange(of: locationDataManagerVM.isLocationUpdated) { _ in
                 viewModel.TodayViewControllerLocationManagerUpdatedAction(
                     xy: locationDataManagerVM.convertLocationToXYForVeryShortForecast(),
