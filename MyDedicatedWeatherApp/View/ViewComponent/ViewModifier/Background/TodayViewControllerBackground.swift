@@ -1,5 +1,5 @@
 //
-//  TodayViewBackground.swift
+//  TodayViewControllerBackground.swift
 //  MyDedicatedWeatherApp
 //
 //  Created by 윤형석 on 2023/07/27.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct TodayViewBackground: ViewModifier {
+struct TodayViewControllerBackground: ViewModifier {
     let isDayMode: Bool
     
     func body(content: Content) -> some View {
@@ -45,7 +45,7 @@ struct TodayViewBackground: ViewModifier {
 }
 
 extension View {
-    func todayViewBackground(isDayMode: Bool) -> some View {
-        modifier(TodayViewBackground(isDayMode: isDayMode))
+    func todayViewControllerBackground(isDayMode: Bool) -> some View {
+        modifier(TodayViewControllerBackground(isDayMode: isDayMode))
     }
 }

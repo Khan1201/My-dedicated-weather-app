@@ -71,37 +71,19 @@ struct TodayViewController: View {
                     }
                 }
                 
-                Rectangle()
-                    .frame(maxWidth: .infinity, maxHeight: 1)
-                    .foregroundColor(.white.opacity(0.3))
+                LineDivider(height: 1, foregroudnColor: .white.opacity(0.3))
                     .padding(.vertical, 20)
                     .padding(.horizontal, 26)
                 
-                ScrollView(.horizontal, showsIndicators: true) {
-                    HStack(alignment: .center, spacing: 24) {
-                        ForEach(viewModel.todayWeatherInformations, id: \.time) { item in
-                            TodayWeatherItemView(
-                                time: item.time,
-                                weatherImage: item.weatherImage,
-                                percent: item.precipitation,
-                                temperature: item.temperature,
-                                isDayMode: viewModel.isDayMode
-                            )
-                            .padding(.leading, viewModel.todayWeatherInformations.first?.time == item.time ? 15 : 0)
-                            .padding(.trailing, viewModel.todayWeatherInformations.last?.time == item.time ? 15 : 0)
-                        }
-                    }
-                    .padding(.vertical, 10)
-                }
-                .background {
-                    viewModel.isDayMode ? CustomColor.lightNavy.toColor.opacity(0.2) : Color.white.opacity(0.08)
-                }
-                .cornerRadius(16)
+                TodayWeatherItemScrollView(
+                    todayWeatherInformations: viewModel.todayWeatherInformations,
+                    isDayMode: viewModel.isDayMode
+                )
                 .padding(.horizontal, 26)
             }
             .padding(.top, 25)
             .frame(height: UIScreen.screenHeight, alignment: .center)
-            .todayViewBackground(isDayMode: viewModel.isDayMode)
+            .todayViewControllerBackground(isDayMode: viewModel.isDayMode)
             .onChange(of: locationDataManagerVM.isLocationUpdated) { _ in
                 viewModel.TodayViewControllerLocationManagerUpdatedAction(
                     xy: locationDataManagerVM.convertLocationToXYForVeryShortForecast(),
