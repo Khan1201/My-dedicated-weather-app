@@ -21,6 +21,7 @@
 		BC4DDA282A72B4F1000376C0 /* TodayViewControllerBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4DDA272A72B4F1000376C0 /* TodayViewControllerBackground.swift */; };
 		BC4DDA2F2A72B9B8000376C0 /* LineDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4DDA2E2A72B9B8000376C0 /* LineDivider.swift */; };
 		BC4DDA312A72BA4F000376C0 /* TodayWeatherItemScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4DDA302A72BA4F000376C0 /* TodayWeatherItemScrollView.swift */; };
+		BC4DDA332A72BD40000376C0 /* LeftOrRightAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4DDA322A72BD40000376C0 /* LeftOrRightAnimationView.swift */; };
 		BC5386522A6EC18500D8E085 /* WeekViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5386512A6EC18500D8E085 /* WeekViewController.swift */; };
 		BC5386542A6EC19700D8E085 /* WeekViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5386532A6EC19700D8E085 /* WeekViewModel.swift */; };
 		BC6EF8BD2A10AAB30072A2DE /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6EF8BC2A10AAB30072A2DE /* Extension.swift */; };
@@ -99,6 +100,7 @@
 		BC4DDA272A72B4F1000376C0 /* TodayViewControllerBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewControllerBackground.swift; sourceTree = "<group>"; };
 		BC4DDA2E2A72B9B8000376C0 /* LineDivider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineDivider.swift; sourceTree = "<group>"; };
 		BC4DDA302A72BA4F000376C0 /* TodayWeatherItemScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayWeatherItemScrollView.swift; sourceTree = "<group>"; };
+		BC4DDA322A72BD40000376C0 /* LeftOrRightAnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftOrRightAnimationView.swift; sourceTree = "<group>"; };
 		BC5386512A6EC18500D8E085 /* WeekViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekViewController.swift; sourceTree = "<group>"; };
 		BC5386532A6EC19700D8E085 /* WeekViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekViewModel.swift; sourceTree = "<group>"; };
 		BC6EF8BC2A10AAB30072A2DE /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
@@ -213,6 +215,14 @@
 			path = Divider;
 			sourceTree = "<group>";
 		};
+		BC4DDA342A72BF48000376C0 /* TabView */ = {
+			isa = PBXGroup;
+			children = (
+				BC96646A2A41ED0600D2433C /* TodayView */,
+			);
+			path = TabView;
+			sourceTree = "<group>";
+		};
 		BC5386502A6EC15600D8E085 /* WeekView */ = {
 			isa = PBXGroup;
 			children = (
@@ -270,6 +280,7 @@
 				BCE489D02A4EAD5F00A18B2B /* CurrentWeatherInformationItemView.swift */,
 				BC4DDA302A72BA4F000376C0 /* TodayWeatherItemScrollView.swift */,
 				BCBE178A2A5302D300541AEB /* TodayWeatherItemView.swift */,
+				BC4DDA322A72BD40000376C0 /* LeftOrRightAnimationView.swift */,
 			);
 			path = TodayView;
 			sourceTree = "<group>";
@@ -413,9 +424,9 @@
 		BCA30FAB29FFE35B0078D0B1 /* ViewComponent */ = {
 			isa = PBXGroup;
 			children = (
+				BC4DDA342A72BF48000376C0 /* TabView */,
 				BC4DDA2D2A72B9A0000376C0 /* Divider */,
 				BC5386502A6EC15600D8E085 /* WeekView */,
-				BC96646A2A41ED0600D2433C /* TodayView */,
 				BC91FD522A44839900D3E665 /* ViewModifier */,
 				BC7D33E32A127A7300B1012F /* ViewRepresentable */,
 				BC76923B2A4329BF005F4D7B /* Modifier */,
@@ -606,6 +617,7 @@
 				BC76923A2A431CC8005F4D7B /* CustomBottomTabBarView.swift in Sources */,
 				BCA30FAA29FFDC580078D0B1 /* Dummy.swift in Sources */,
 				BCA30F9329FE28F20078D0B1 /* MidTermForecastBase.swift in Sources */,
+				BC4DDA332A72BD40000376C0 /* LeftOrRightAnimationView.swift in Sources */,
 				BC91FD542A4483CA00D3E665 /* LoadingProgress.swift in Sources */,
 				BCE489CD2A4EA4CE00A18B2B /* SpoqaHanSansNeoFont.swift in Sources */,
 				BC5386542A6EC19700D8E085 /* WeekViewModel.swift in Sources */,

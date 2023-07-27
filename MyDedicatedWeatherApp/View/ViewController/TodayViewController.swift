@@ -12,7 +12,6 @@ struct TodayViewController: View {
     @StateObject var viewModel: TodayViewModel = TodayViewModel()
     @StateObject var locationDataManagerVM = LocationDataManagerVM()
     
-    @State private var arrowRightOffset: CGFloat = -25
     @State private var pagerHeight: CGFloat = 0
     @State private var page: Page = .first()
     @State private var pageIndex: Int = 0
@@ -51,23 +50,7 @@ struct TodayViewController: View {
                     }
                     .frame(height: pagerHeight != 0 ? pagerHeight : nil)
                     .overlay(alignment: isFirstPage ? .topTrailing : .topLeading) {
-                        Image("arrow_\(isFirstPage ? "right" : "left")")
-                            .resizable()
-                            .renderingMode(.template)
-                            .foregroundColor(.white)
-                            .frame(width: 30, height: 30)
-                            .offset(x: isFirstPage ? -18 : 18, y: arrowRightOffset)
-                            .onTapGesture {
-                                withAnimation {
-                                    isFirstPage ? page.update(.next) : page.update(.previous)
-                                }
-                                pageIndex = page.index
-                            }
-                    }
-                    .onAppear {
-                        withAnimation(.linear(duration: 0.6).repeatForever()) {
-                            arrowRightOffset = -15
-                        }
+                        LeftOrRightAnimationView(page: $page, pageIndex: $pageIndex)
                     }
                 }
                 
