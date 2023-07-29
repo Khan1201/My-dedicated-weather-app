@@ -354,16 +354,9 @@ struct Util {
             return Weather.DescriptionAndImageString(description: "없음", imageString: "")
             
         case "1":
-            let animationJson = self.decideAnimationWhetherDayOrNight(
-                hhMM: hhMMForDayOrNightImage,
-                sunrise: sunrise,
-                sunset: sunset,
-                dayJson: "Rain",
-                nightJson: "RainNight"
-            )
             return Weather.DescriptionAndImageString(
                 description: "비",
-                imageString: isAnimationImage ? animationJson : "weather_rain"
+                imageString: isAnimationImage ? "RainManyLottie" : "weather_rain"
             )
             
         case "2":
@@ -374,21 +367,54 @@ struct Util {
                 hhMM: hhMMForDayOrNightImage,
                 sunrise: sunrise,
                 sunset: sunset,
-                dayJson: "Snow",
-                nightJson: "SnowNight"
+                dayJson: "SnowLottie",
+                nightJson: "SnowNightLottie"
             )
             return Weather.DescriptionAndImageString(
                 description: "눈",
                 imageString: isAnimationImage ? animationJson : "weather_snow"
             )
         case "4":
-            return Weather.DescriptionAndImageString(description: "소나기", imageString: "weather_rain_small")
+            let animationJson = self.decideAnimationWhetherDayOrNight(
+                hhMM: hhMMForDayOrNightImage,
+                sunrise: sunrise,
+                sunset: sunset,
+                dayJson: "RainShowerLottie",
+                nightJson: "RainShowerNightLottie"
+            )
+            
+            return Weather.DescriptionAndImageString(
+                description: "소나기",
+                imageString: isAnimationImage ? animationJson : "weather_rain_small"
+            )
             
         case "5":
-            return Weather.DescriptionAndImageString(description: "빗방울", imageString: "weather_rain_small")
+            let animationJson = self.decideAnimationWhetherDayOrNight(
+                hhMM: hhMMForDayOrNightImage,
+                sunrise: sunrise,
+                sunset: sunset,
+                dayJson: "RainShowerLottie",
+                nightJson: "RainShowerNightLottie"
+            )
+            
+            return Weather.DescriptionAndImageString(
+                description: "빗방울",
+                imageString: isAnimationImage ? animationJson : "weather_rain_small"
+            )
             
         case "6":
-            return Weather.DescriptionAndImageString(description: "빗방울 / 눈날림", imageString: "weather_rain_snow")
+            let animationJson = self.decideAnimationWhetherDayOrNight(
+                hhMM: hhMMForDayOrNightImage,
+                sunrise: sunrise,
+                sunset: sunset,
+                dayJson: "SnowLottie",
+                nightJson: "SnowNightLottie"
+            )
+ 
+            return Weather.DescriptionAndImageString(
+                description: "빗방울 / 눈날림",
+                imageString: isAnimationImage ? animationJson : "weather_rain_snow"
+            )
             
         default:
             return Weather.DescriptionAndImageString(description: "알 수 없음", imageString: "load_fail")
@@ -415,8 +441,8 @@ struct Util {
                 hhMM: hhMMForDayOrNightImage,
                 sunrise: sunrise,
                 sunset: sunset,
-                dayJson: "Sunny",
-                nightJson: "SunnyNight"
+                dayJson: "SunnyLottie",
+                nightJson: "SunnyNightLottie"
             )
             let imageString = self.decideImageWhetherDayOrNight(
                 hhMM: hhMMForDayOrNightImage,
@@ -435,8 +461,8 @@ struct Util {
                 hhMM: hhMMForDayOrNightImage,
                 sunrise: sunrise,
                 sunset: sunset,
-                dayJson: "CloudMany",
-                nightJson: "CloudManyNight"
+                dayJson: "CloudManyLottie",
+                nightJson: "CloudManyNightLottie"
             )
             let imageString = self.decideImageWhetherDayOrNight(
                 hhMM: hhMMForDayOrNightImage,
@@ -453,11 +479,14 @@ struct Util {
         case "4":
             return Weather.DescriptionAndImageString(
                 description: "흐림",
-                imageString: isAnimationImage ? "Cloudy" : "weather_blur"
+                imageString: isAnimationImage ? "BlurLottie" : "weather_blur"
             )
             
         default:
-            return Weather.DescriptionAndImageString(description: "알 수 없음", imageString: "load_fail")
+            return Weather.DescriptionAndImageString(
+                description: "알 수 없음",
+                imageString: isAnimationImage ? "LoadFailLottie" :  "load_fail"
+            )
         }
     }
     

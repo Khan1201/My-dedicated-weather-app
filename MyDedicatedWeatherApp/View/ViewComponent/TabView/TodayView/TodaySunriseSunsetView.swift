@@ -22,7 +22,7 @@ struct TodaySunriseSunsetView: View {
                     .resizable()
                     .frame(width: 24, height: 24)
                 
-                Text("AM \(sunriseTime)")
+                Text("오전 \(sunriseTime)")
                     .fontSpoqaHanSansNeo(size: 14, weight: .regular)
                     .foregroundColor(.white.opacity(0.8))
             }
@@ -38,7 +38,7 @@ struct TodaySunriseSunsetView: View {
                     .resizable()
                     .frame(width: 24, height: 24)
                 
-                Text("PM \(sunsetTime)")
+                Text("오후 \(sunsetTime)")
                     .fontSpoqaHanSansNeo(size: 14, weight: .medium)
                     .foregroundColor(.white.opacity(0.8))
             }

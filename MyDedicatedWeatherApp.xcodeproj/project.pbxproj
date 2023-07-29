@@ -7,14 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		BC137CAD2A1284F6002D6667 /* SunnyNight.json in Resources */ = {isa = PBXBuildFile; fileRef = BC137CAC2A1284F6002D6667 /* SunnyNight.json */; };
-		BC137CAF2A128518002D6667 /* CloudMany.json in Resources */ = {isa = PBXBuildFile; fileRef = BC137CAE2A128518002D6667 /* CloudMany.json */; };
-		BC137CB12A128546002D6667 /* Cloudy.json in Resources */ = {isa = PBXBuildFile; fileRef = BC137CB02A128546002D6667 /* Cloudy.json */; };
-		BC137CB32A12885D002D6667 /* CloudManyNight.json in Resources */ = {isa = PBXBuildFile; fileRef = BC137CB22A12885D002D6667 /* CloudManyNight.json */; };
-		BC137CB52A1288F3002D6667 /* Rain.json in Resources */ = {isa = PBXBuildFile; fileRef = BC137CB42A1288F3002D6667 /* Rain.json */; };
-		BC137CB72A128913002D6667 /* RainNight.json in Resources */ = {isa = PBXBuildFile; fileRef = BC137CB62A128913002D6667 /* RainNight.json */; };
-		BC137CB92A128959002D6667 /* Snow.json in Resources */ = {isa = PBXBuildFile; fileRef = BC137CB82A128959002D6667 /* Snow.json */; };
-		BC137CBB2A128975002D6667 /* SnowNight.json in Resources */ = {isa = PBXBuildFile; fileRef = BC137CBA2A128975002D6667 /* SnowNight.json */; };
 		BC37A6002A3ED7BC00C16278 /* DustForecastStationBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC37A5FF2A3ED7BC00C16278 /* DustForecastStationBase.swift */; };
 		BC37A6022A3ED7CD00C16278 /* DustForecastStationXYBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC37A6012A3ED7CD00C16278 /* DustForecastStationXYBase.swift */; };
 		BC37A6042A3F094E00C16278 /* CustomTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC37A6032A3F094E00C16278 /* CustomTypes.swift */; };
@@ -55,9 +47,21 @@
 		BCA30FA529FE73C90078D0B1 /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30FA429FE73C90078D0B1 /* TodayViewController.swift */; };
 		BCA30FA729FE73D70078D0B1 /* TodayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30FA629FE73D70078D0B1 /* TodayViewModel.swift */; };
 		BCA30FAA29FFDC580078D0B1 /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30FA929FFDC580078D0B1 /* Dummy.swift */; };
-		BCB101532A482BFB00EE1EE8 /* Location.json in Resources */ = {isa = PBXBuildFile; fileRef = BCB101522A482BFB00EE1EE8 /* Location.json */; };
 		BCB16E2D2A4C717D00AACFF0 /* Validate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB16E2C2A4C717D00AACFF0 /* Validate.swift */; };
 		BCB16E302A4DC66300AACFF0 /* KakaoAddressBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB16E2F2A4DC66300AACFF0 /* KakaoAddressBase.swift */; };
+		BCB532132A75114100DC2B33 /* CloudManyNightLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BCB532062A75114100DC2B33 /* CloudManyNightLottie.json */; };
+		BCB532142A75114100DC2B33 /* SunnyLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BCB532072A75114100DC2B33 /* SunnyLottie.json */; };
+		BCB532152A75114100DC2B33 /* LoadFailLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BCB532082A75114100DC2B33 /* LoadFailLottie.json */; };
+		BCB532162A75114100DC2B33 /* RainShowerNightLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BCB532092A75114100DC2B33 /* RainShowerNightLottie.json */; };
+		BCB532172A75114100DC2B33 /* SunnyNightLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BCB5320A2A75114100DC2B33 /* SunnyNightLottie.json */; };
+		BCB532182A75114100DC2B33 /* RainShowerLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BCB5320B2A75114100DC2B33 /* RainShowerLottie.json */; };
+		BCB532192A75114100DC2B33 /* ThunderLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BCB5320C2A75114100DC2B33 /* ThunderLottie.json */; };
+		BCB5321A2A75114100DC2B33 /* CloudManyLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BCB5320D2A75114100DC2B33 /* CloudManyLottie.json */; };
+		BCB5321B2A75114100DC2B33 /* SnowLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BCB5320E2A75114100DC2B33 /* SnowLottie.json */; };
+		BCB5321C2A75114100DC2B33 /* SnowNightLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BCB5320F2A75114100DC2B33 /* SnowNightLottie.json */; };
+		BCB5321D2A75114100DC2B33 /* ThunderRainLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BCB532102A75114100DC2B33 /* ThunderRainLottie.json */; };
+		BCB5321E2A75114100DC2B33 /* BlurLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BCB532112A75114100DC2B33 /* BlurLottie.json */; };
+		BCB5321F2A75114100DC2B33 /* RainManyLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BCB532122A75114100DC2B33 /* RainManyLottie.json */; };
 		BCBE178B2A5302D300541AEB /* TodayWeatherItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCBE178A2A5302D300541AEB /* TodayWeatherItemView.swift */; };
 		BCCA26272A514609005BB1B5 /* SunOrMoonRiseBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCCA26262A514609005BB1B5 /* SunOrMoonRiseBase.swift */; };
 		BCCA26292A51481B005BB1B5 /* SunOrMoonRiseServiceByXML.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCCA26282A51481B005BB1B5 /* SunOrMoonRiseServiceByXML.swift */; };
@@ -89,15 +93,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		BC137CA72A1282CD002D6667 /* Sunny.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Sunny.json; sourceTree = "<group>"; };
-		BC137CAC2A1284F6002D6667 /* SunnyNight.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = SunnyNight.json; path = ../../../../Downloads/SunnyNight.json; sourceTree = "<group>"; };
-		BC137CAE2A128518002D6667 /* CloudMany.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = CloudMany.json; path = ../../../../Downloads/CloudMany.json; sourceTree = "<group>"; };
-		BC137CB02A128546002D6667 /* Cloudy.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Cloudy.json; path = ../../../../Downloads/Cloudy.json; sourceTree = "<group>"; };
-		BC137CB22A12885D002D6667 /* CloudManyNight.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = CloudManyNight.json; path = ../../../../Downloads/CloudManyNight.json; sourceTree = "<group>"; };
-		BC137CB42A1288F3002D6667 /* Rain.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Rain.json; path = ../../../../Downloads/Rain.json; sourceTree = "<group>"; };
-		BC137CB62A128913002D6667 /* RainNight.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = RainNight.json; path = ../../../../Downloads/RainNight.json; sourceTree = "<group>"; };
-		BC137CB82A128959002D6667 /* Snow.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Snow.json; path = ../../../../Downloads/Snow.json; sourceTree = "<group>"; };
-		BC137CBA2A128975002D6667 /* SnowNight.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = SnowNight.json; path = ../../../../Downloads/SnowNight.json; sourceTree = "<group>"; };
 		BC37A5FF2A3ED7BC00C16278 /* DustForecastStationBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DustForecastStationBase.swift; sourceTree = "<group>"; };
 		BC37A6012A3ED7CD00C16278 /* DustForecastStationXYBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DustForecastStationXYBase.swift; sourceTree = "<group>"; };
 		BC37A6032A3F094E00C16278 /* CustomTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTypes.swift; sourceTree = "<group>"; };
@@ -137,9 +132,21 @@
 		BCA30FA629FE73D70078D0B1 /* TodayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewModel.swift; sourceTree = "<group>"; };
 		BCA30FA829FE7D780078D0B1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		BCA30FA929FFDC580078D0B1 /* Dummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummy.swift; sourceTree = "<group>"; };
-		BCB101522A482BFB00EE1EE8 /* Location.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Location.json; path = ../../../../Downloads/Location.json; sourceTree = "<group>"; };
 		BCB16E2C2A4C717D00AACFF0 /* Validate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validate.swift; sourceTree = "<group>"; };
 		BCB16E2F2A4DC66300AACFF0 /* KakaoAddressBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoAddressBase.swift; sourceTree = "<group>"; };
+		BCB532062A75114100DC2B33 /* CloudManyNightLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CloudManyNightLottie.json; sourceTree = "<group>"; };
+		BCB532072A75114100DC2B33 /* SunnyLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SunnyLottie.json; sourceTree = "<group>"; };
+		BCB532082A75114100DC2B33 /* LoadFailLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LoadFailLottie.json; sourceTree = "<group>"; };
+		BCB532092A75114100DC2B33 /* RainShowerNightLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = RainShowerNightLottie.json; sourceTree = "<group>"; };
+		BCB5320A2A75114100DC2B33 /* SunnyNightLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SunnyNightLottie.json; sourceTree = "<group>"; };
+		BCB5320B2A75114100DC2B33 /* RainShowerLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = RainShowerLottie.json; sourceTree = "<group>"; };
+		BCB5320C2A75114100DC2B33 /* ThunderLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ThunderLottie.json; sourceTree = "<group>"; };
+		BCB5320D2A75114100DC2B33 /* CloudManyLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CloudManyLottie.json; sourceTree = "<group>"; };
+		BCB5320E2A75114100DC2B33 /* SnowLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SnowLottie.json; sourceTree = "<group>"; };
+		BCB5320F2A75114100DC2B33 /* SnowNightLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SnowNightLottie.json; sourceTree = "<group>"; };
+		BCB532102A75114100DC2B33 /* ThunderRainLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ThunderRainLottie.json; sourceTree = "<group>"; };
+		BCB532112A75114100DC2B33 /* BlurLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BlurLottie.json; sourceTree = "<group>"; };
+		BCB532122A75114100DC2B33 /* RainManyLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = RainManyLottie.json; sourceTree = "<group>"; };
 		BCBE178A2A5302D300541AEB /* TodayWeatherItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayWeatherItemView.swift; sourceTree = "<group>"; };
 		BCCA26262A514609005BB1B5 /* SunOrMoonRiseBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunOrMoonRiseBase.swift; sourceTree = "<group>"; };
 		BCCA26282A51481B005BB1B5 /* SunOrMoonRiseServiceByXML.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunOrMoonRiseServiceByXML.swift; sourceTree = "<group>"; };
@@ -193,16 +200,19 @@
 		BC137CA62A1282A9002D6667 /* LottieAnimation */ = {
 			isa = PBXGroup;
 			children = (
-				BCB101522A482BFB00EE1EE8 /* Location.json */,
-				BC137CBA2A128975002D6667 /* SnowNight.json */,
-				BC137CB82A128959002D6667 /* Snow.json */,
-				BC137CB62A128913002D6667 /* RainNight.json */,
-				BC137CB42A1288F3002D6667 /* Rain.json */,
-				BC137CB02A128546002D6667 /* Cloudy.json */,
-				BC137CAE2A128518002D6667 /* CloudMany.json */,
-				BC137CB22A12885D002D6667 /* CloudManyNight.json */,
-				BC137CAC2A1284F6002D6667 /* SunnyNight.json */,
-				BC137CA72A1282CD002D6667 /* Sunny.json */,
+				BCB532112A75114100DC2B33 /* BlurLottie.json */,
+				BCB5320D2A75114100DC2B33 /* CloudManyLottie.json */,
+				BCB532062A75114100DC2B33 /* CloudManyNightLottie.json */,
+				BCB532082A75114100DC2B33 /* LoadFailLottie.json */,
+				BCB532122A75114100DC2B33 /* RainManyLottie.json */,
+				BCB5320B2A75114100DC2B33 /* RainShowerLottie.json */,
+				BCB532092A75114100DC2B33 /* RainShowerNightLottie.json */,
+				BCB5320E2A75114100DC2B33 /* SnowLottie.json */,
+				BCB5320F2A75114100DC2B33 /* SnowNightLottie.json */,
+				BCB532072A75114100DC2B33 /* SunnyLottie.json */,
+				BCB5320A2A75114100DC2B33 /* SunnyNightLottie.json */,
+				BCB5320C2A75114100DC2B33 /* ThunderLottie.json */,
+				BCB532102A75114100DC2B33 /* ThunderRainLottie.json */,
 			);
 			path = LottieAnimation;
 			sourceTree = "<group>";
@@ -557,38 +567,42 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BC137CAD2A1284F6002D6667 /* SunnyNight.json in Resources */,
+				BCB532132A75114100DC2B33 /* CloudManyNightLottie.json in Resources */,
+				BCB532142A75114100DC2B33 /* SunnyLottie.json in Resources */,
 				BCE4899F2A4EA32400A18B2B /* SpoqaHanSansNeo-Medium.otf in Resources */,
 				BCE489C42A4EA33400A18B2B /* SpoqaHanSansNeo-Regular.eot in Resources */,
-				BC137CB72A128913002D6667 /* RainNight.json in Resources */,
+				BCB5321E2A75114100DC2B33 /* BlurLottie.json in Resources */,
 				BCE4899C2A4EA32400A18B2B /* LICENSE in Resources */,
+				BCB532192A75114100DC2B33 /* ThunderLottie.json in Resources */,
+				BCB532172A75114100DC2B33 /* SunnyNightLottie.json in Resources */,
+				BCB5321D2A75114100DC2B33 /* ThunderRainLottie.json in Resources */,
+				BCB532182A75114100DC2B33 /* RainShowerLottie.json in Resources */,
 				BCE489B92A4EA33400A18B2B /* SpoqaHanSansNeo-Bold.woff in Resources */,
-				BCB101532A482BFB00EE1EE8 /* Location.json in Resources */,
 				BCE489C82A4EA33400A18B2B /* SpoqaHanSansNeo-Thin.eot in Resources */,
 				BCE4899D2A4EA32400A18B2B /* SpoqaHanSansNeo-Light.otf in Resources */,
+				BCB532162A75114100DC2B33 /* RainShowerNightLottie.json in Resources */,
 				BCE4899E2A4EA32400A18B2B /* SpoqaHanSansNeo-Bold.otf in Resources */,
 				BCE489BF2A4EA33400A18B2B /* SpoqaHanSansNeo-Medium.woff in Resources */,
 				BCE489A02A4EA32400A18B2B /* SpoqaHanSansNeo-Regular.otf in Resources */,
-				BC137CBB2A128975002D6667 /* SnowNight.json in Resources */,
+				BCB5321B2A75114100DC2B33 /* SnowLottie.json in Resources */,
 				BCE489BD2A4EA33400A18B2B /* SpoqaHanSansNeo-Regular.woff2 in Resources */,
-				BC137CB32A12885D002D6667 /* CloudManyNight.json in Resources */,
+				BCB5321A2A75114100DC2B33 /* CloudManyLottie.json in Resources */,
+				BCB532152A75114100DC2B33 /* LoadFailLottie.json in Resources */,
 				BCE489C92A4EA33400A18B2B /* SpoqaHanSansNeo-Medium.eot in Resources */,
 				BCE489C12A4EA33400A18B2B /* SpoqaHanSansNeo-Thin.woff in Resources */,
 				BCE489C72A4EA33400A18B2B /* SpoqaHanSansNeo-Medium.woff2 in Resources */,
-				BC137CB12A128546002D6667 /* Cloudy.json in Resources */,
 				BCE489BC2A4EA33400A18B2B /* SpoqaHanSansNeo-Thin.woff2 in Resources */,
 				BCE489B72A4EA33400A18B2B /* SpoqaHanSansNeo-Regular.woff in Resources */,
-				BC137CB92A128959002D6667 /* Snow.json in Resources */,
 				BCE489B82A4EA33400A18B2B /* SpoqaHanSansNeo-Bold.eot in Resources */,
 				BCE489BA2A4EA33400A18B2B /* SpoqaHanSansNeo-Light.woff2 in Resources */,
 				BCE489BE2A4EA33400A18B2B /* SpoqaHanSansNeo-Bold.woff2 in Resources */,
 				BCA30F8129FE203B0078D0B1 /* Preview Assets.xcassets in Resources */,
+				BCB5321C2A75114100DC2B33 /* SnowNightLottie.json in Resources */,
 				BCA30F7E29FE203A0078D0B1 /* Assets.xcassets in Resources */,
-				BC137CAF2A128518002D6667 /* CloudMany.json in Resources */,
 				BCE489C62A4EA33400A18B2B /* SpoqaHanSansNeo-Light.eot in Resources */,
 				BCE489C22A4EA33400A18B2B /* SpoqaHanSansNeo-Light.woff in Resources */,
-				BC137CB52A1288F3002D6667 /* Rain.json in Resources */,
 				BCE489A12A4EA32400A18B2B /* SpoqaHanSansNeo-Thin.otf in Resources */,
+				BCB5321F2A75114100DC2B33 /* RainManyLottie.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

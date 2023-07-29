@@ -58,7 +58,7 @@ extension CurrentWeatherInfItemPagerView {
     var currentWeatherInfPagerFirstView: some View {
         VStack(alignment: .leading, spacing: 10) {
             CurrentWeatherInformationItemView(
-                imageString: "precipitation2",
+                imageString: "precipitation",
                 imageColor: Color.blue,
                 title: "강수량",
                 value: viewModel.currentWeatherInformation.oneHourPrecipitation,
@@ -66,7 +66,7 @@ extension CurrentWeatherInfItemPagerView {
             )
             
             CurrentWeatherInformationItemView(
-                imageString: "wind2",
+                imageString: "wind",
                 imageColor: Color.red.opacity(0.7),
                 title: "바람",
                 value: viewModel.currentWeatherInformation.windSpeed,
@@ -74,7 +74,7 @@ extension CurrentWeatherInfItemPagerView {
             )
             
             CurrentWeatherInformationItemView(
-                imageString: "wet2",
+                imageString: "wet",
                 imageColor: Color.blue.opacity(0.7),
                 title: "습도",
                 value: viewModel.currentWeatherInformation.wetPercent,
