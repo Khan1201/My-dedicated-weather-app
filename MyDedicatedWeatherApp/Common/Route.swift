@@ -15,7 +15,8 @@ enum Route {
         GET_REAL_TIME_FIND_DUST_FORECAST,
         GET_DUST_FORECAST_STATION_XY,
         GET_DUST_FORECAST_STATION,
-        GET_KAKAO_ADDRESS
+        GET_KAKAO_ADDRESS,
+        GET_SUNRISE_SUNSET_TEMPERATURE
     
     var val: String {
         
@@ -41,6 +42,10 @@ enum Route {
             
         case .GET_KAKAO_ADDRESS:
             return "https://dapi.kakao.com/v2/local/geo/coord2address.json"
+            
+        case .GET_SUNRISE_SUNSET_TEMPERATURE:
+            return "https://apis.data.go.kr/B090041/openapi/service/RiseSetInfoService/getLCRiseSetInfo"
+            
         }
     }
 }

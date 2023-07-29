@@ -9,10 +9,10 @@ import Foundation
 
 struct SunAndMoonriseBase: Decodable {
     
-    var sunrise: String = ""
-    var sunset: String = ""
-    var moonrise: String = ""
-    var moonset: String = ""
+    var sunrise: String
+    var sunset: String
+    var moonrise: String
+    var moonset: String 
     
     enum TagType: String, CaseIterable {
         case sunrise, sunset, moonrise, moonset, none

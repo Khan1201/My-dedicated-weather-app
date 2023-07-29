@@ -42,4 +42,13 @@ struct Dummy {
             weatherImage: ""
         )
     }
+    
+    func SunAndMoonriseBase() -> SunAndMoonriseBase {
+        return .init(
+            sunrise: "",
+            sunset: "",
+            moonrise: "",
+            moonset: ""
+        )
+    }
 }

@@ -16,7 +16,7 @@ final class SunAndMoonRiseByXMLService: NSObject {
 
     var result = PassthroughSubject<SunAndMoonriseBase, Never>()
     
-    var tempResult: SunAndMoonriseBase = .init()
+    var tempResult: SunAndMoonriseBase = Dummy().SunAndMoonriseBase()
     var isLock: Bool = false
     var tagType: SunAndMoonriseBase.TagType = .none
     
@@ -25,7 +25,7 @@ final class SunAndMoonRiseByXMLService: NSObject {
         self.queryItem = queryItem
         super.init()
         
-        let url = URL(string: "https://apis.data.go.kr/B090041/openapi/service/RiseSetInfoService/getLCRiseSetInfo")
+        let url = URL(string: Route.GET_SUNRISE_SUNSET_TEMPERATURE.val)
 
         AF.request(url!, method: .get, parameters: queryItem)
             .response { data in

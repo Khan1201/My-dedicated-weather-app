@@ -17,7 +17,7 @@ final class TodayViewModel: ObservableObject {
     @Published private(set) var currentWeatherInformation: Weather.CurrentWeatherInformation = Dummy().currentWeatherInformation()
     @Published private(set) var currentFineDustTuple: Weather.DescriptionAndColor = .init(description: "", color: .clear)
     @Published private(set) var currentUltraFineDustTuple: Weather.DescriptionAndColor = .init(description: "", color: .clear)
-    @Published private(set) var todayMinMaxTemperature: (String, String) = ("", "")
+    @Published private(set) var todayMinMaxTemperature: (String, String) = ("__", "__")
     @Published private(set) var todayWeatherInformations: [Weather.TodayWeatherInformation] = []
     
     @Published var subLocalityByKakaoAddress: String = ""
@@ -25,7 +25,7 @@ final class TodayViewModel: ObservableObject {
     static private(set) var xy: Util.LatXLngY = .init(lat: 0, lng: 0, x: 0, y: 0)
     
     @Published private(set) var isDayMode: Bool = false
-    @Published private(set) var sunRiseAndSetHHmm: (String, String) = ("","")
+    @Published private(set) var sunRiseAndSetHHmm: (String, String) = ("----", "----")
     
     /// Load Completed Variables..
     @Published private(set) var isCurrentWeatherInformationLoadCompleted: Bool = false
