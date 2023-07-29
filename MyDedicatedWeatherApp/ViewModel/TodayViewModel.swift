@@ -29,6 +29,7 @@ final class TodayViewModel: ObservableObject {
     
     /// Load Completed Variables..
     @Published private(set) var isCurrentWeatherInformationLoadCompleted: Bool = false
+    @Published private(set) var isCurrentWeatherAnimationSetCompleted: Bool = false
     @Published private(set) var isFineDustLoadCompleted: Bool = false
     @Published private(set) var isKakaoAddressLoadCompleted: Bool = false
     
@@ -115,7 +116,7 @@ extension TodayViewModel {
             DispatchQueue.main.async {
                 
                 if let items = result.item {
-                    self.currentWeatherAnimationImg = self.currentWeatherDescriptionAndImage(items: items).imageString
+                    self.setCurrentWeatherAnimationImg(items: items)
                     self.setCurrentTemperature(items: items)
                     self.setCurrentWeatherInformation(items: items)
                 }
@@ -427,6 +428,14 @@ extension TodayViewModel {
             item.category == .RN1
         }
         
+        let firstPTYItem = items.first { item in // 강수 형태
+            item.category == .PTY
+        }
+        
+        let firstSKYItem = items.first { item in // 하늘 상태
+            item.category == .SKY
+        }
+        
         currentWeatherInformation = Weather.CurrentWeatherInformation(
             temperature: currentTemperature?.fcstValue ?? "",
             windSpeed: util.remakeWindSpeedValueByVeryShortTermOrShortTermForecast(
@@ -436,7 +445,14 @@ extension TodayViewModel {
             oneHourPrecipitation: util.remakeOneHourPrecipitationValueByVeryShortTermOrShortTermForecast(
                 value: currentOneHourPrecipitation?.fcstValue ?? ""
             ),
-            weatherImage: currentWeatherDescriptionAndImage(items: items).imageString
+            weatherImage: util.veryShortOrShortTermForecastWeatherDescriptionWithImageString(
+                ptyValue: firstPTYItem?.fcstValue ?? "",
+                skyValue: firstSKYItem?.fcstValue ?? "",
+                hhMMForDayOrNightImage: firstPTYItem?.fcstTime ?? "",
+                sunrise: sunRiseAndSetHHmm.0,
+                sunset: sunRiseAndSetHHmm.1,
+                isAnimationImage: false
+            ).imageString
         )
         
         isCurrentWeatherInformationLoadCompleted = true
@@ -622,28 +638,13 @@ extension TodayViewModel {
             )
         }
     }
-    /**
-     Set riseItem -> `isDayMode`variable
-     
-     - parameter riseItem: 일출, 일몰 Item
-     */
-    func setIsDayMode(riseItem: SunAndMoonriseBase) {
-        
-        let currentHHmm = util.currentDateByCustomFormatter(dateFormat: "HHmm")
-        isDayMode = util.isDayMode(hhMM: currentHHmm, sunrise: riseItem.sunrise, sunset: riseItem.sunset)
-    }
-}
-
-// MARK: - Return funcs..
-
-extension TodayViewModel {
     
     /**
-     Return 초 단기예보 Items ->`currentWeatherDescriptionAndImage`(현재 날씨 설명, 이미지 string)
+     Set 초 단기예보 Items ->`currentWeatherAnimationImg`(현재 날씨 animation lottie)
      
      - parameter items: [초단기예보 Model]
      */
-    func currentWeatherDescriptionAndImage(items: [VeryShortOrShortTermForecastBase<VeryShortTermForecastCategory>]) -> Weather.DescriptionAndImageString {
+    func setCurrentWeatherAnimationImg(items: [VeryShortOrShortTermForecastBase<VeryShortTermForecastCategory>]) {
         
         let firstPTYItem = items.first { item in // 강수 형태
             item.category == .PTY
@@ -653,14 +654,27 @@ extension TodayViewModel {
             item.category == .SKY
         }
         
-        return util.veryShortOrShortTermForecastWeatherDescriptionWithImageString(
+        currentWeatherAnimationImg = util.veryShortOrShortTermForecastWeatherDescriptionWithImageString(
             ptyValue: firstPTYItem?.fcstValue ?? "",
             skyValue: firstSKYItem?.fcstValue ?? "",
             hhMMForDayOrNightImage: firstPTYItem?.fcstTime ?? "",
             sunrise: sunRiseAndSetHHmm.0,
             sunset: sunRiseAndSetHHmm.1,
             isAnimationImage: true
-        )
+        ).imageString
+        
+        isCurrentWeatherAnimationSetCompleted = true
+    }
+    
+    /**
+     Set riseItem -> `isDayMode`variable
+     
+     - parameter riseItem: 일출, 일몰 Item
+     */
+    func setIsDayMode(riseItem: SunAndMoonriseBase) {
+        
+        let currentHHmm = util.currentDateByCustomFormatter(dateFormat: "HHmm")
+        isDayMode = util.isDayMode(hhMM: currentHHmm, sunrise: riseItem.sunrise, sunset: riseItem.sunset)
     }
 }
 
