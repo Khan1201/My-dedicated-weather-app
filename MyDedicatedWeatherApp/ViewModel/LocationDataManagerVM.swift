@@ -12,8 +12,8 @@ import UIKit
 final class LocationDataManagerVM: NSObject, ObservableObject {
     
     private var locationManager = CLLocationManager()
-    @Published var currentLocation: String = "" // 서울특별시 성수동 1가
-    @Published var currentLocationLocality: String = "" // 서울특별시
+    @Published var currentLocation: String = "서울특별시" // 서울특별시, 대구광역시
+    @Published var currentLocationForSubLocationReq: String = "" // For sub loc req..
     @Published var locationPermissonType: PermissionType = .notAllow
     
     var longitudeAndLatitude: (String, String) {
@@ -95,7 +95,7 @@ extension LocationDataManagerVM: CLLocationManagerDelegate {
             guard let self = self else { return }
             if let address: CLPlacemark = place?.last {
                 self.currentLocation = "\(address.locality ?? "")"
-                self.currentLocationLocality = address.administrativeArea ?? ""
+                self.currentLocationForSubLocationReq = address.administrativeArea ?? ""
                 self.isLocationUpdated = true
             }
         }

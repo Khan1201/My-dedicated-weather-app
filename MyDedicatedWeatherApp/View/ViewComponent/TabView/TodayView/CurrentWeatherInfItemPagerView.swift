@@ -13,6 +13,7 @@ struct CurrentWeatherInfItemPagerView: View {
     @ObservedObject var viewModel: TodayViewModel
     @Binding var pageIndex: Int
     let page: Page
+    let isLoadCompleted: Bool
     
     @State private var pagerViewHeight: CGFloat = 0
     
@@ -39,6 +40,7 @@ struct CurrentWeatherInfItemPagerView: View {
             pageIndex = index
         }
         .frame(height: pagerViewHeight != 0 ? pagerViewHeight : nil)
+        .loadingProgressLottie(isLoadingCompleted: isLoadCompleted, height: pagerViewHeight)
     }
 }
 
@@ -47,7 +49,8 @@ struct CurrentWeatherInfItemPagerView_Previews: PreviewProvider {
         CurrentWeatherInfItemPagerView(
             viewModel: TodayViewModel(),
             pageIndex: .constant(1),
-            page: .first()
+            page: .first(),
+            isLoadCompleted: true
         )
     }
 }

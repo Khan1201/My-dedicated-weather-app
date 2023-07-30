@@ -51,4 +51,45 @@ struct Dummy {
             moonset: ""
         )
     }
+    
+    func todayWeatherInformations() -> [Weather.TodayWeatherInformation] {
+        return [
+            .init(
+                time: "0000",
+                weatherImage: "weather_sunny",
+                precipitation: "00",
+                temperature: "00"
+            ),
+            .init(
+                time: "0000",
+                weatherImage: "weather_sunny",
+                precipitation: "00",
+                temperature: "00"
+            ),
+            .init(
+                time: "0000",
+                weatherImage: "weather_sunny",
+                precipitation: "00",
+                temperature: "00"
+            ),
+            .init(
+                time: "0000",
+                weatherImage: "weather_sunny",
+                precipitation: "00",
+                temperature: "00"
+            ),
+            .init(
+                time: "0000",
+                weatherImage: "weather_sunny",
+                precipitation: "00",
+                temperature: "00"
+            ),
+            .init(
+                time: "0000",
+                weatherImage: "weather_sunny",
+                precipitation: "00",
+                temperature: "00"
+            ),
+        ]
+    }
 }

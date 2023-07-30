@@ -12,27 +12,29 @@ final class TodayViewModel: ObservableObject {
     
     @Published private(set) var threeToTenDaysTemperature: [temperatureMinMax] = [] // day 3 ~ 10 temperature
     @Published private(set) var errorMessage: String = ""
-    @Published private(set) var currentTemperature: String = ""
+    @Published private(set) var currentTemperature: String = "00"
     @Published private(set) var currentWeatherAnimationImg: String = ""
     @Published private(set) var currentWeatherInformation: Weather.CurrentWeatherInformation = Dummy().currentWeatherInformation()
     @Published private(set) var currentFineDustTuple: Weather.DescriptionAndColor = .init(description: "", color: .clear)
     @Published private(set) var currentUltraFineDustTuple: Weather.DescriptionAndColor = .init(description: "", color: .clear)
     @Published private(set) var todayMinMaxTemperature: (String, String) = ("__", "__")
-    @Published private(set) var todayWeatherInformations: [Weather.TodayWeatherInformation] = []
+    @Published private(set) var todayWeatherInformations: [Weather.TodayWeatherInformation] = Dummy().todayWeatherInformations()
     
-    @Published var subLocalityByKakaoAddress: String = ""
+    @Published var subLocalityByKakaoAddress: String = "성수동 1가"
     
     static private(set) var xy: Util.LatXLngY = .init(lat: 0, lng: 0, x: 0, y: 0)
     
     @Published private(set) var isDayMode: Bool = false
-    @Published private(set) var sunRiseAndSetHHmm: (String, String) = ("----", "----")
+    @Published private(set) var sunRiseAndSetHHmm: (String, String) = ("0000", "0000")
     
     /// Load Completed Variables..
     @Published private(set) var isCurrentWeatherInformationLoadCompleted: Bool = false
     @Published private(set) var isCurrentWeatherAnimationSetCompleted: Bool = false
     @Published private(set) var isFineDustLoadCompleted: Bool = false
     @Published private(set) var isKakaoAddressLoadCompleted: Bool = false
-    @Published private(set) var loadingTest: Bool = false
+    @Published private(set) var isMinMaxTempLoadCompleted: Bool = false
+    @Published private(set) var isSunriseSunsetLoadCompleted: Bool = false
+    @Published private(set) var isTodayWeatherInformationLoadCompleted: Bool = false
     
     private enum ForDustStationRequest {
         static var tmXAndtmY: (String, String) = ("","")
@@ -379,6 +381,7 @@ extension TodayViewModel {
                 guard let self = self else { return }
                 self.sunRiseAndSetHHmm = (value.sunrise, value.sunset)
                 self.setIsDayMode(riseItem: value)
+                self.isSunriseSunsetLoadCompleted = true
             }
             .store(in: &subscriptions)
     }
@@ -466,6 +469,7 @@ extension TodayViewModel {
      */
     func setTodayWeatherInformations(items: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>]) {
         
+        todayWeatherInformations = []
         let currentDate = util.currentDateByCustomFormatter(dateFormat: "yyyyMMdd")
         let currentHour = util.currentDateByCustomFormatter(dateFormat: "HH")
         
@@ -547,8 +551,8 @@ extension TodayViewModel {
                 precipitation: todayPrecipitationPercentItems[index].fcstValue,
                 temperature: todayTemperatureItems[index].fcstValue
             )
-            
             todayWeatherInformations.append(todayWeather)
+            isTodayWeatherInformationLoadCompleted = true
         }
     }
     
@@ -582,7 +586,7 @@ extension TodayViewModel {
         default:
             requestMinMaxTemp()
         }
-        loadingTest = true
+        isMinMaxTempLoadCompleted = true
         
         func setTodayMinMaxTemperature(items: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>], isMinTemp: Bool) {
             guard let minOrMaxTemp = items.filter(

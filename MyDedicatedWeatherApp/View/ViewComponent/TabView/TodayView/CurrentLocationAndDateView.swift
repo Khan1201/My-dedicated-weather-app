@@ -11,7 +11,6 @@ struct CurrentLocationAndDateView: View {
     
     let location: String
     let subLocation: String
-    let isLocationUpdated: Bool
     
     var body: some View {
         
@@ -25,7 +24,6 @@ struct CurrentLocationAndDateView: View {
             .fontSpoqaHanSansNeo(size: 24, weight: .medium)
             .foregroundColor(.white)
             .lineSpacing(2)
-            .loadingProgress(isLoadCompleted: isLocationUpdated)
             
             Text(Util().currentDateByCustomFormatter(
                 dateFormat: "E요일, M월 d일")
@@ -38,6 +36,6 @@ struct CurrentLocationAndDateView: View {
 
 struct CurrentLocationAndDateView_Previews: PreviewProvider {
     static var previews: some View {
-        CurrentLocationAndDateView(location: "", subLocation: "", isLocationUpdated: true)
+        CurrentLocationAndDateView(location: "", subLocation: "")
     }
 }

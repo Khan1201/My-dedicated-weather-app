@@ -10,6 +10,8 @@ import SwiftUI
 struct LoadingProgressLottie: ViewModifier {
     
     let isLoadingCompleted: Bool
+    var width: CGFloat?
+    var height: CGFloat?
     
     @State private var size: CGSize = CGSize()
     @State private var isGetSize: Bool = false
@@ -27,14 +29,25 @@ struct LoadingProgressLottie: ViewModifier {
             }
             .if(!isLoadingCompleted && isGetSize) { _ in
                 return LottieView(jsonName: "LoadingLottie", loopMode: .loop)
-                    .frame(width: size.width, height: size.height)
+                    .frame(width: width == nil ? size.width : width,
+                           height: height == nil ? size.height : height
+                    )
             }
-        
     }
 }
 
 extension View {
-    func loadingProgressLottie(isLoadingCompleted: Bool) -> some View {
-        modifier(LoadingProgressLottie(isLoadingCompleted: isLoadingCompleted))
+    func loadingProgressLottie(
+        isLoadingCompleted: Bool,
+        width: CGFloat? = nil,
+        height: CGFloat? = nil
+    ) -> some View {
+        modifier(
+            LoadingProgressLottie(
+                isLoadingCompleted: isLoadingCompleted,
+                width: width,
+                height: height
+            )
+        )
     }
 }

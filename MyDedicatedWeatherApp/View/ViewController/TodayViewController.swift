@@ -32,10 +32,12 @@ struct TodayViewController: View {
                     CurrentWeatherInfItemPagerView(
                         viewModel: viewModel,
                         pageIndex: $pageIndex,
-                        page: page
+                        page: page,
+                        isLoadCompleted: viewModel.isTodayWeatherInformationLoadCompleted
                     )
                     .overlay(alignment: isFirstPage ? .topTrailing : .topLeading) {
                         LeftOrRightAnimationView(page: $page, pageIndex: $pageIndex)
+                            .opacity(viewModel.isTodayWeatherInformationLoadCompleted ? 1: 0)
                     }
                 }
                 
@@ -48,6 +50,7 @@ struct TodayViewController: View {
                     isDayMode: viewModel.isDayMode
                 )
                 .padding(.horizontal, 26)
+                .loadingProgressLottie(isLoadingCompleted: viewModel.isTodayWeatherInformationLoadCompleted)
             }
             .padding(.top, 25)
             .frame(height: UIScreen.screenHeight, alignment: .center)
@@ -61,7 +64,7 @@ struct TodayViewController: View {
             .onChange(of: viewModel.isKakaoAddressLoadCompleted) { newValue in
                 viewModel.TodayViewControllerKakaoAddressUpdatedAction(
                     umdName: viewModel.subLocalityByKakaoAddress,
-                    locality: locationDataManagerVM.currentLocationLocality
+                    locality: locationDataManagerVM.currentLocationForSubLocationReq
                 )
             }
             
@@ -109,16 +112,17 @@ extension TodayViewController {
             HStack(alignment: .center, spacing: 60) {
                 CurrentLocationAndDateView(
                     location: locationDataManagerVM.currentLocation,
-                    subLocation: viewModel.subLocalityByKakaoAddress,
-                    isLocationUpdated: locationDataManagerVM.isLocationUpdated
+                    subLocation: viewModel.subLocalityByKakaoAddress
                 )
                 .padding(.leading, 40)
+                .loadingProgressLottie(isLoadingCompleted: viewModel.isKakaoAddressLoadCompleted)
                 
                 TodaySunriseSunsetView(
                     sunriseTime: viewModel.sunRiseAndSetHHmm.0,
                     sunsetTime: viewModel.sunRiseAndSetHHmm.1,
                     isDayMode: viewModel.isDayMode
                 )
+                .loadingProgressLottie(isLoadingCompleted: viewModel.isSunriseSunsetLoadCompleted)
             }
             
             HStack(alignment: .center, spacing: 20) {
@@ -132,10 +136,11 @@ extension TodayViewController {
                 CurrentTempAndMinMaxTempView(
                     temp: viewModel.currentWeatherInformation.temperature,
                     minMaxTemp: viewModel.todayMinMaxTemperature,
-                    isDayMode: viewModel.isDayMode,
-                    tempLoadCompleted: viewModel.isCurrentWeatherInformationLoadCompleted
+                    isDayMode: viewModel.isDayMode
                 )
-                .loadingProgressLottie(isLoadingCompleted: viewModel.loadingTest)
+                .loadingProgressLottie(
+                    isLoadingCompleted: viewModel.isCurrentWeatherInformationLoadCompleted && viewModel.isMinMaxTempLoadCompleted
+                )
             }
             .padding(.leading, 50)
             .padding(.trailing, 30)

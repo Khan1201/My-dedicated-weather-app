@@ -12,7 +12,6 @@ struct CurrentTempAndMinMaxTempView: View {
     let temp: String
     let minMaxTemp: (String, String)
     let isDayMode: Bool
-    let tempLoadCompleted: Bool
     
     var body: some View {
         
@@ -22,7 +21,6 @@ struct CurrentTempAndMinMaxTempView: View {
                 Text(temp)
                     .fontSpoqaHanSansNeo(size: 55, weight: .bold)
                     .foregroundColor(.white)
-                    .loadingProgress(isLoadCompleted: tempLoadCompleted)
                     .padding(.top, 5)
                 
                 Text("° C")
@@ -64,8 +62,7 @@ struct CurrentTempAndMinMaxTempView_Previews: PreviewProvider {
         CurrentTempAndMinMaxTempView(
             temp: "",
             minMaxTemp: ("", ""),
-            isDayMode: false,
-            tempLoadCompleted: true
+            isDayMode: false
         )
     }
 }
