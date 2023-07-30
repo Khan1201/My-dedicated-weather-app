@@ -127,7 +127,7 @@ extension TodayViewController {
                     loopMode: .loop
                 )
                 .frame(width: animationWidth, height: animationHeight)
-                .loadingProgress(isLoadCompleted: viewModel.isCurrentWeatherAnimationSetCompleted)
+                .loadingProgressLottie(isLoadingCompleted: viewModel.isCurrentWeatherAnimationSetCompleted)
                 
                 CurrentTempAndMinMaxTempView(
                     temp: viewModel.currentWeatherInformation.temperature,
@@ -135,6 +135,7 @@ extension TodayViewController {
                     isDayMode: viewModel.isDayMode,
                     tempLoadCompleted: viewModel.isCurrentWeatherInformationLoadCompleted
                 )
+                .loadingProgressLottie(isLoadingCompleted: viewModel.loadingTest)
             }
             .padding(.leading, 50)
             .padding(.trailing, 30)

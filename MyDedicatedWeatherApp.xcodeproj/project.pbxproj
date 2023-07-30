@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BC251F292A76A18F004CE9CF /* LoadingProgressLottie.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC251F282A76A18F004CE9CF /* LoadingProgressLottie.swift */; };
+		BC251F2B2A76A2F8004CE9CF /* LoadingLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BC251F2A2A76A2F8004CE9CF /* LoadingLottie.json */; };
 		BC37A6002A3ED7BC00C16278 /* DustForecastStationBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC37A5FF2A3ED7BC00C16278 /* DustForecastStationBase.swift */; };
 		BC37A6022A3ED7CD00C16278 /* DustForecastStationXYBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC37A6012A3ED7CD00C16278 /* DustForecastStationXYBase.swift */; };
 		BC37A6042A3F094E00C16278 /* CustomTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC37A6032A3F094E00C16278 /* CustomTypes.swift */; };
@@ -93,6 +95,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		BC251F282A76A18F004CE9CF /* LoadingProgressLottie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingProgressLottie.swift; sourceTree = "<group>"; };
+		BC251F2A2A76A2F8004CE9CF /* LoadingLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LoadingLottie.json; sourceTree = "<group>"; };
 		BC37A5FF2A3ED7BC00C16278 /* DustForecastStationBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DustForecastStationBase.swift; sourceTree = "<group>"; };
 		BC37A6012A3ED7CD00C16278 /* DustForecastStationXYBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DustForecastStationXYBase.swift; sourceTree = "<group>"; };
 		BC37A6032A3F094E00C16278 /* CustomTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTypes.swift; sourceTree = "<group>"; };
@@ -200,6 +204,7 @@
 		BC137CA62A1282A9002D6667 /* LottieAnimation */ = {
 			isa = PBXGroup;
 			children = (
+				BC251F2A2A76A2F8004CE9CF /* LoadingLottie.json */,
 				BCB532112A75114100DC2B33 /* BlurLottie.json */,
 				BCB5320D2A75114100DC2B33 /* CloudManyLottie.json */,
 				BCB532062A75114100DC2B33 /* CloudManyNightLottie.json */,
@@ -327,6 +332,7 @@
 			isa = PBXGroup;
 			children = (
 				BC91FD532A4483CA00D3E665 /* LoadingProgress.swift */,
+				BC251F282A76A18F004CE9CF /* LoadingProgressLottie.swift */,
 			);
 			path = Loading;
 			sourceTree = "<group>";
@@ -587,6 +593,7 @@
 				BCB5321B2A75114100DC2B33 /* SnowLottie.json in Resources */,
 				BCE489BD2A4EA33400A18B2B /* SpoqaHanSansNeo-Regular.woff2 in Resources */,
 				BCB5321A2A75114100DC2B33 /* CloudManyLottie.json in Resources */,
+				BC251F2B2A76A2F8004CE9CF /* LoadingLottie.json in Resources */,
 				BCB532152A75114100DC2B33 /* LoadFailLottie.json in Resources */,
 				BCE489C92A4EA33400A18B2B /* SpoqaHanSansNeo-Medium.eot in Resources */,
 				BCE489C12A4EA33400A18B2B /* SpoqaHanSansNeo-Thin.woff in Resources */,
@@ -623,6 +630,7 @@
 				BC4DDA312A72BA4F000376C0 /* TodayWeatherItemScrollView.swift in Sources */,
 				BC4DDA2F2A72B9B8000376C0 /* LineDivider.swift in Sources */,
 				BCB16E302A4DC66300AACFF0 /* KakaoAddressBase.swift in Sources */,
+				BC251F292A76A18F004CE9CF /* LoadingProgressLottie.swift in Sources */,
 				BCA30F9529FE39BC0078D0B1 /* Env.swift in Sources */,
 				BCA2C1B72A603B6900BBEBE2 /* GetHeight.swift in Sources */,
 				BCCD80682A07A59800501BEA /* LocationDataManagerVM.swift in Sources */,

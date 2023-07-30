@@ -32,6 +32,7 @@ final class TodayViewModel: ObservableObject {
     @Published private(set) var isCurrentWeatherAnimationSetCompleted: Bool = false
     @Published private(set) var isFineDustLoadCompleted: Bool = false
     @Published private(set) var isKakaoAddressLoadCompleted: Bool = false
+    @Published private(set) var loadingTest: Bool = false
     
     private enum ForDustStationRequest {
         static var tmXAndtmY: (String, String) = ("","")
@@ -581,6 +582,7 @@ extension TodayViewModel {
         default:
             requestMinMaxTemp()
         }
+        loadingTest = true
         
         func setTodayMinMaxTemperature(items: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>], isMinTemp: Bool) {
             guard let minOrMaxTemp = items.filter(
