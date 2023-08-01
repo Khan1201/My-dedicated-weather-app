@@ -28,7 +28,7 @@ struct LoadingProgressLottie: ViewModifier {
                 }
             }
             .if(!isLoadingCompleted && isGetSize) { _ in
-                return LottieView(jsonName: "LoadingLottie", loopMode: .loop)
+                return LottieView(jsonName: "LoadingLottie", loopMode: .loop, speed: 1.5)
                     .frame(width: width == nil ? size.width : width,
                            height: height == nil ? size.height : height
                     )

@@ -9,7 +9,14 @@ import SwiftUI
 
 struct WeekViewController: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        
+        VStack(alignment: .leading, spacing: 0) {
+            LottieView(jsonName: "BackgroundRainyLottie", loopMode: .loop)
+                .frame(width: 375, height: 500, alignment: .center)
+        }
+        .background {
+            Color.blue
+        }
     }
 }
 

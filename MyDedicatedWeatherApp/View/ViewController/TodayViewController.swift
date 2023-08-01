@@ -54,25 +54,20 @@ struct TodayViewController: View {
             }
             .padding(.top, 25)
             .frame(height: UIScreen.screenHeight, alignment: .center)
-            .todayViewControllerBackground(isDayMode: viewModel.isDayMode)
-            .onChange(of: locationDataManagerVM.isLocationUpdated) { _ in
-                viewModel.TodayViewControllerLocationManagerUpdatedAction(
-                    xy: locationDataManagerVM.convertLocationToXYForVeryShortForecast(),
-                    longLati: locationDataManagerVM.longitudeAndLatitude
-                )
-            }
-            .onChange(of: viewModel.isKakaoAddressLoadCompleted) { newValue in
-                viewModel.TodayViewControllerKakaoAddressUpdatedAction(
-                    umdName: viewModel.subLocalityByKakaoAddress,
-                    locality: locationDataManagerVM.currentLocationForSubLocationReq
-                )
-            }
+            .todayViewControllerBackground(
+                isDayMode: viewModel.isDayMode,
+                isAllLoadCompleted: viewModel.isAllLoadCompleted,
+                skyType: .sunnyNight
+            )
+            .onChangeAtTodayViewController()
+            .environmentObject(viewModel)
+            .environmentObject(locationDataManagerVM)
             
         case .notAllow:
             
             VStack(alignment: .center, spacing: 20) {
                 
-                LottieView(jsonName: "Location", loopMode: .loop)
+                LottieView(jsonName: "LocationLottie", loopMode: .loop)
                     .frame(width: 100, height: 100, alignment: .center)
                 
                 Text("위치정보 권한이 필요합니다.")

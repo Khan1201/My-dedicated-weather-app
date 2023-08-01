@@ -14,10 +14,12 @@ struct LottieView: UIViewRepresentable {
     
     private let jsonName: String
     private let loopMode: LottieLoopMode
+    private let speed: CGFloat
     
-    init(jsonName: String, loopMode: LottieLoopMode) {
+    init(jsonName: String, loopMode: LottieLoopMode, speed: CGFloat = 1.0) {
         self.jsonName = jsonName
         self.loopMode = loopMode
+        self.speed = speed
     }
     
     func makeUIView(context: UIViewRepresentableContext<LottieView>) -> UIView {
@@ -35,6 +37,7 @@ struct LottieView: UIViewRepresentable {
         animationView.play()
         // 백그라운드에서 재생이 멈추는 오류를 잡습니다
         animationView.backgroundBehavior = .pauseAndRestore
+        animationView.animationSpeed = speed
         
         //컨테이너의 너비와 높이를 자동으로 지정할 수 있도록합니다. 로티는 컨테이너 위에 작성됩니다.
         animationView.translatesAutoresizingMaskIntoConstraints = false

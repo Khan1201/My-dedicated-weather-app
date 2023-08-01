@@ -9,6 +9,12 @@
 /* Begin PBXBuildFile section */
 		BC251F292A76A18F004CE9CF /* LoadingProgressLottie.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC251F282A76A18F004CE9CF /* LoadingProgressLottie.swift */; };
 		BC251F2B2A76A2F8004CE9CF /* LoadingLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BC251F2A2A76A2F8004CE9CF /* LoadingLottie.json */; };
+		BC307E1E2A7934B60008800A /* BackgroundRainyLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BC307E1D2A7934B60008800A /* BackgroundRainyLottie.json */; };
+		BC307E202A7935D60008800A /* LocationLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BC307E1F2A7935D60008800A /* LocationLottie.json */; };
+		BC307E222A79371F0008800A /* BackgroundSnowLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BC307E212A79371F0008800A /* BackgroundSnowLottie.json */; };
+		BC307E252A7940950008800A /* OnChangeAtTodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC307E242A7940950008800A /* OnChangeAtTodayViewController.swift */; };
+		BC307E2B2A794A760008800A /* BackgroundSunnyDayLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BC307E2A2A794A760008800A /* BackgroundSunnyDayLottie.json */; };
+		BC307E2D2A7951220008800A /* BackgroundSunnyNightLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BC307E2C2A7951220008800A /* BackgroundSunnyNightLottie.json */; };
 		BC37A6002A3ED7BC00C16278 /* DustForecastStationBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC37A5FF2A3ED7BC00C16278 /* DustForecastStationBase.swift */; };
 		BC37A6022A3ED7CD00C16278 /* DustForecastStationXYBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC37A6012A3ED7CD00C16278 /* DustForecastStationXYBase.swift */; };
 		BC37A6042A3F094E00C16278 /* CustomTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC37A6032A3F094E00C16278 /* CustomTypes.swift */; };
@@ -97,6 +103,12 @@
 /* Begin PBXFileReference section */
 		BC251F282A76A18F004CE9CF /* LoadingProgressLottie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingProgressLottie.swift; sourceTree = "<group>"; };
 		BC251F2A2A76A2F8004CE9CF /* LoadingLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LoadingLottie.json; sourceTree = "<group>"; };
+		BC307E1D2A7934B60008800A /* BackgroundRainyLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BackgroundRainyLottie.json; sourceTree = "<group>"; };
+		BC307E1F2A7935D60008800A /* LocationLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LocationLottie.json; sourceTree = "<group>"; };
+		BC307E212A79371F0008800A /* BackgroundSnowLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BackgroundSnowLottie.json; sourceTree = "<group>"; };
+		BC307E242A7940950008800A /* OnChangeAtTodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnChangeAtTodayViewController.swift; sourceTree = "<group>"; };
+		BC307E2A2A794A760008800A /* BackgroundSunnyDayLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BackgroundSunnyDayLottie.json; sourceTree = "<group>"; };
+		BC307E2C2A7951220008800A /* BackgroundSunnyNightLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BackgroundSunnyNightLottie.json; sourceTree = "<group>"; };
 		BC37A5FF2A3ED7BC00C16278 /* DustForecastStationBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DustForecastStationBase.swift; sourceTree = "<group>"; };
 		BC37A6012A3ED7CD00C16278 /* DustForecastStationXYBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DustForecastStationXYBase.swift; sourceTree = "<group>"; };
 		BC37A6032A3F094E00C16278 /* CustomTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTypes.swift; sourceTree = "<group>"; };
@@ -204,6 +216,11 @@
 		BC137CA62A1282A9002D6667 /* LottieAnimation */ = {
 			isa = PBXGroup;
 			children = (
+				BC307E2C2A7951220008800A /* BackgroundSunnyNightLottie.json */,
+				BC307E1F2A7935D60008800A /* LocationLottie.json */,
+				BC307E2A2A794A760008800A /* BackgroundSunnyDayLottie.json */,
+				BC307E212A79371F0008800A /* BackgroundSnowLottie.json */,
+				BC307E1D2A7934B60008800A /* BackgroundRainyLottie.json */,
 				BC251F2A2A76A2F8004CE9CF /* LoadingLottie.json */,
 				BCB532112A75114100DC2B33 /* BlurLottie.json */,
 				BCB5320D2A75114100DC2B33 /* CloudManyLottie.json */,
@@ -220,6 +237,14 @@
 				BCB532102A75114100DC2B33 /* ThunderRainLottie.json */,
 			);
 			path = LottieAnimation;
+			sourceTree = "<group>";
+		};
+		BC307E232A79406B0008800A /* OnChange */ = {
+			isa = PBXGroup;
+			children = (
+				BC307E242A7940950008800A /* OnChangeAtTodayViewController.swift */,
+			);
+			path = OnChange;
 			sourceTree = "<group>";
 		};
 		BC4DDA262A72B4DD000376C0 /* Background */ = {
@@ -280,6 +305,7 @@
 		BC91FD522A44839900D3E665 /* ViewModifier */ = {
 			isa = PBXGroup;
 			children = (
+				BC307E232A79406B0008800A /* OnChange */,
 				BC4DDA262A72B4DD000376C0 /* Background */,
 				BCA2C1B52A603B5900BBEBE2 /* Loading */,
 				BCA2C1B42A603B4B00BBEBE2 /* Font */,
@@ -583,6 +609,7 @@
 				BCB532172A75114100DC2B33 /* SunnyNightLottie.json in Resources */,
 				BCB5321D2A75114100DC2B33 /* ThunderRainLottie.json in Resources */,
 				BCB532182A75114100DC2B33 /* RainShowerLottie.json in Resources */,
+				BC307E202A7935D60008800A /* LocationLottie.json in Resources */,
 				BCE489B92A4EA33400A18B2B /* SpoqaHanSansNeo-Bold.woff in Resources */,
 				BCE489C82A4EA33400A18B2B /* SpoqaHanSansNeo-Thin.eot in Resources */,
 				BCE4899D2A4EA32400A18B2B /* SpoqaHanSansNeo-Light.otf in Resources */,
@@ -590,6 +617,7 @@
 				BCE4899E2A4EA32400A18B2B /* SpoqaHanSansNeo-Bold.otf in Resources */,
 				BCE489BF2A4EA33400A18B2B /* SpoqaHanSansNeo-Medium.woff in Resources */,
 				BCE489A02A4EA32400A18B2B /* SpoqaHanSansNeo-Regular.otf in Resources */,
+				BC307E2D2A7951220008800A /* BackgroundSunnyNightLottie.json in Resources */,
 				BCB5321B2A75114100DC2B33 /* SnowLottie.json in Resources */,
 				BCE489BD2A4EA33400A18B2B /* SpoqaHanSansNeo-Regular.woff2 in Resources */,
 				BCB5321A2A75114100DC2B33 /* CloudManyLottie.json in Resources */,
@@ -599,11 +627,14 @@
 				BCE489C12A4EA33400A18B2B /* SpoqaHanSansNeo-Thin.woff in Resources */,
 				BCE489C72A4EA33400A18B2B /* SpoqaHanSansNeo-Medium.woff2 in Resources */,
 				BCE489BC2A4EA33400A18B2B /* SpoqaHanSansNeo-Thin.woff2 in Resources */,
+				BC307E1E2A7934B60008800A /* BackgroundRainyLottie.json in Resources */,
 				BCE489B72A4EA33400A18B2B /* SpoqaHanSansNeo-Regular.woff in Resources */,
 				BCE489B82A4EA33400A18B2B /* SpoqaHanSansNeo-Bold.eot in Resources */,
 				BCE489BA2A4EA33400A18B2B /* SpoqaHanSansNeo-Light.woff2 in Resources */,
 				BCE489BE2A4EA33400A18B2B /* SpoqaHanSansNeo-Bold.woff2 in Resources */,
+				BC307E2B2A794A760008800A /* BackgroundSunnyDayLottie.json in Resources */,
 				BCA30F8129FE203B0078D0B1 /* Preview Assets.xcassets in Resources */,
+				BC307E222A79371F0008800A /* BackgroundSnowLottie.json in Resources */,
 				BCB5321C2A75114100DC2B33 /* SnowNightLottie.json in Resources */,
 				BCA30F7E29FE203A0078D0B1 /* Assets.xcassets in Resources */,
 				BCE489C62A4EA33400A18B2B /* SpoqaHanSansNeo-Light.eot in Resources */,
@@ -628,6 +659,7 @@
 				BCB16E2D2A4C717D00AACFF0 /* Validate.swift in Sources */,
 				BCA30F7C29FE203A0078D0B1 /* ContentView.swift in Sources */,
 				BC4DDA312A72BA4F000376C0 /* TodayWeatherItemScrollView.swift in Sources */,
+				BC307E252A7940950008800A /* OnChangeAtTodayViewController.swift in Sources */,
 				BC4DDA2F2A72B9B8000376C0 /* LineDivider.swift in Sources */,
 				BCB16E302A4DC66300AACFF0 /* KakaoAddressBase.swift in Sources */,
 				BC251F292A76A18F004CE9CF /* LoadingProgressLottie.swift in Sources */,

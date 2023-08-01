@@ -27,7 +27,7 @@ final class TodayViewModel: ObservableObject {
     @Published private(set) var isDayMode: Bool = false
     @Published private(set) var sunRiseAndSetHHmm: (String, String) = ("0000", "0000")
     
-    /// Load Completed Variables..
+    /// Load Completed Variables..(7 values)
     @Published private(set) var isCurrentWeatherInformationLoadCompleted: Bool = false
     @Published private(set) var isCurrentWeatherAnimationSetCompleted: Bool = false
     @Published private(set) var isFineDustLoadCompleted: Bool = false
@@ -35,6 +35,8 @@ final class TodayViewModel: ObservableObject {
     @Published private(set) var isMinMaxTempLoadCompleted: Bool = false
     @Published private(set) var isSunriseSunsetLoadCompleted: Bool = false
     @Published private(set) var isTodayWeatherInformationLoadCompleted: Bool = false
+    
+    @Published private(set) var isAllLoadCompleted: Bool = false
     
     private enum ForDustStationRequest {
         static var tmXAndtmY: (String, String) = ("","")
@@ -597,7 +599,7 @@ extension TodayViewModel {
             
             guard let minOrMaxTempToDouble = Double(minOrMaxTemp) else { return }
             let toString = String(Int(minOrMaxTempToDouble))
-
+            
             if isMinTemp {
                 todayMinMaxTemperature.0 = toString
                 
@@ -681,6 +683,20 @@ extension TodayViewModel {
         
         let currentHHmm = util.currentDateByCustomFormatter(dateFormat: "HHmm")
         isDayMode = util.isDayMode(hhMM: currentHHmm, sunrise: riseItem.sunrise, sunset: riseItem.sunset)
+    }
+    
+    
+    /**
+     Set `isAllLoadCompleted` variable
+     
+     */
+    func setIsAllLoadCompleted() {
+        
+        isAllLoadCompleted = // 7 values
+        (isCurrentWeatherInformationLoadCompleted &&
+        isCurrentWeatherAnimationSetCompleted && isFineDustLoadCompleted &&
+        isKakaoAddressLoadCompleted && isMinMaxTempLoadCompleted &&
+        isSunriseSunsetLoadCompleted && isTodayWeatherInformationLoadCompleted)
     }
 }
 

@@ -34,6 +34,39 @@ struct Weather {
         let oneHourPrecipitation: (String, String)
         let weatherImage: String
     }
+    
+    enum SkyType {
+        case sunnyDay,
+             sunnyNight,
+             cloudy,
+             rainy,
+             snow,
+             thunder
+        
+        var lottieName: String {
+            
+            switch self {
+                
+            case .sunnyDay:
+                return "BackgroundSunnyDayLottie"
+                
+            case .sunnyNight:
+                return "BackgroundSunnyNightLottie"
+
+            case .cloudy:
+                return "BackgroundSunnyLottie"
+                
+            case .rainy:
+                return "BackgroundRainyLottie"
+                
+            case .snow:
+                return "BackgroundSnowLottie"
+                
+            case .thunder:
+                return "BackgroundSnowLottie"
+            }
+        }
+    }
 }
 
 enum TabBarType: CaseIterable {
