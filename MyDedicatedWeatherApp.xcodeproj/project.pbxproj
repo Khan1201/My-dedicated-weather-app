@@ -14,7 +14,6 @@
 		BC307E222A79371F0008800A /* BackgroundSnowLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BC307E212A79371F0008800A /* BackgroundSnowLottie.json */; };
 		BC307E252A7940950008800A /* OnChangeAtTodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC307E242A7940950008800A /* OnChangeAtTodayViewController.swift */; };
 		BC307E2B2A794A760008800A /* BackgroundSunnyDayLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BC307E2A2A794A760008800A /* BackgroundSunnyDayLottie.json */; };
-		BC307E2D2A7951220008800A /* BackgroundSunnyNightLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BC307E2C2A7951220008800A /* BackgroundSunnyNightLottie.json */; };
 		BC37A6002A3ED7BC00C16278 /* DustForecastStationBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC37A5FF2A3ED7BC00C16278 /* DustForecastStationBase.swift */; };
 		BC37A6022A3ED7CD00C16278 /* DustForecastStationXYBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC37A6012A3ED7CD00C16278 /* DustForecastStationXYBase.swift */; };
 		BC37A6042A3F094E00C16278 /* CustomTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC37A6032A3F094E00C16278 /* CustomTypes.swift */; };
@@ -34,6 +33,8 @@
 		BC76923A2A431CC8005F4D7B /* CustomBottomTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC7692392A431CC8005F4D7B /* CustomBottomTabBarView.swift */; };
 		BC76923D2A4329DC005F4D7B /* CornerRadiusStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC76923C2A4329DC005F4D7B /* CornerRadiusStyle.swift */; };
 		BC78251B2A5EE15900930FD6 /* SwiftUIPager in Frameworks */ = {isa = PBXBuildFile; productRef = BC78251A2A5EE15900930FD6 /* SwiftUIPager */; };
+		BC78EFE92A7A922900DC3352 /* BackgroundSunnyNightLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BC78EFE82A7A922900DC3352 /* BackgroundSunnyNightLottie.json */; };
+		BC78EFEB2A7A92B700DC3352 /* BackgroundCloudyLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BC78EFEA2A7A92B700DC3352 /* BackgroundCloudyLottie.json */; };
 		BC7D33E22A12788E00B1012F /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = BC7D33E12A12788E00B1012F /* Lottie */; };
 		BC7D33E52A127ABB00B1012F /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC7D33E42A127ABB00B1012F /* LottieView.swift */; };
 		BC85A94E2A02570E00C4CC48 /* VeryShortOrShortTermForecastBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC85A94D2A02570E00C4CC48 /* VeryShortOrShortTermForecastBase.swift */; };
@@ -108,7 +109,6 @@
 		BC307E212A79371F0008800A /* BackgroundSnowLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BackgroundSnowLottie.json; sourceTree = "<group>"; };
 		BC307E242A7940950008800A /* OnChangeAtTodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnChangeAtTodayViewController.swift; sourceTree = "<group>"; };
 		BC307E2A2A794A760008800A /* BackgroundSunnyDayLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BackgroundSunnyDayLottie.json; sourceTree = "<group>"; };
-		BC307E2C2A7951220008800A /* BackgroundSunnyNightLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BackgroundSunnyNightLottie.json; sourceTree = "<group>"; };
 		BC37A5FF2A3ED7BC00C16278 /* DustForecastStationBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DustForecastStationBase.swift; sourceTree = "<group>"; };
 		BC37A6012A3ED7CD00C16278 /* DustForecastStationXYBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DustForecastStationXYBase.swift; sourceTree = "<group>"; };
 		BC37A6032A3F094E00C16278 /* CustomTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTypes.swift; sourceTree = "<group>"; };
@@ -127,6 +127,8 @@
 		BC7692362A431C69005F4D7B /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
 		BC7692392A431CC8005F4D7B /* CustomBottomTabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBottomTabBarView.swift; sourceTree = "<group>"; };
 		BC76923C2A4329DC005F4D7B /* CornerRadiusStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CornerRadiusStyle.swift; sourceTree = "<group>"; };
+		BC78EFE82A7A922900DC3352 /* BackgroundSunnyNightLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BackgroundSunnyNightLottie.json; sourceTree = "<group>"; };
+		BC78EFEA2A7A92B700DC3352 /* BackgroundCloudyLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BackgroundCloudyLottie.json; sourceTree = "<group>"; };
 		BC7D33E42A127ABB00B1012F /* LottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
 		BC85A94D2A02570E00C4CC48 /* VeryShortOrShortTermForecastBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VeryShortOrShortTermForecastBase.swift; sourceTree = "<group>"; };
 		BC91FD502A44836D00D3E665 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
@@ -216,11 +218,8 @@
 		BC137CA62A1282A9002D6667 /* LottieAnimation */ = {
 			isa = PBXGroup;
 			children = (
-				BC307E2C2A7951220008800A /* BackgroundSunnyNightLottie.json */,
+				BC78EFEC2A7A9F3600DC3352 /* BackgroundLottie */,
 				BC307E1F2A7935D60008800A /* LocationLottie.json */,
-				BC307E2A2A794A760008800A /* BackgroundSunnyDayLottie.json */,
-				BC307E212A79371F0008800A /* BackgroundSnowLottie.json */,
-				BC307E1D2A7934B60008800A /* BackgroundRainyLottie.json */,
 				BC251F2A2A76A2F8004CE9CF /* LoadingLottie.json */,
 				BCB532112A75114100DC2B33 /* BlurLottie.json */,
 				BCB5320D2A75114100DC2B33 /* CloudManyLottie.json */,
@@ -292,6 +291,18 @@
 				BC76923C2A4329DC005F4D7B /* CornerRadiusStyle.swift */,
 			);
 			path = Modifier;
+			sourceTree = "<group>";
+		};
+		BC78EFEC2A7A9F3600DC3352 /* BackgroundLottie */ = {
+			isa = PBXGroup;
+			children = (
+				BC307E2A2A794A760008800A /* BackgroundSunnyDayLottie.json */,
+				BC78EFE82A7A922900DC3352 /* BackgroundSunnyNightLottie.json */,
+				BC78EFEA2A7A92B700DC3352 /* BackgroundCloudyLottie.json */,
+				BC307E1D2A7934B60008800A /* BackgroundRainyLottie.json */,
+				BC307E212A79371F0008800A /* BackgroundSnowLottie.json */,
+			);
+			path = BackgroundLottie;
 			sourceTree = "<group>";
 		};
 		BC7D33E32A127A7300B1012F /* ViewRepresentable */ = {
@@ -612,13 +623,14 @@
 				BC307E202A7935D60008800A /* LocationLottie.json in Resources */,
 				BCE489B92A4EA33400A18B2B /* SpoqaHanSansNeo-Bold.woff in Resources */,
 				BCE489C82A4EA33400A18B2B /* SpoqaHanSansNeo-Thin.eot in Resources */,
+				BC78EFEB2A7A92B700DC3352 /* BackgroundCloudyLottie.json in Resources */,
 				BCE4899D2A4EA32400A18B2B /* SpoqaHanSansNeo-Light.otf in Resources */,
 				BCB532162A75114100DC2B33 /* RainShowerNightLottie.json in Resources */,
 				BCE4899E2A4EA32400A18B2B /* SpoqaHanSansNeo-Bold.otf in Resources */,
 				BCE489BF2A4EA33400A18B2B /* SpoqaHanSansNeo-Medium.woff in Resources */,
 				BCE489A02A4EA32400A18B2B /* SpoqaHanSansNeo-Regular.otf in Resources */,
-				BC307E2D2A7951220008800A /* BackgroundSunnyNightLottie.json in Resources */,
 				BCB5321B2A75114100DC2B33 /* SnowLottie.json in Resources */,
+				BC78EFE92A7A922900DC3352 /* BackgroundSunnyNightLottie.json in Resources */,
 				BCE489BD2A4EA33400A18B2B /* SpoqaHanSansNeo-Regular.woff2 in Resources */,
 				BCB5321A2A75114100DC2B33 /* CloudManyLottie.json in Resources */,
 				BC251F2B2A76A2F8004CE9CF /* LoadingLottie.json in Resources */,

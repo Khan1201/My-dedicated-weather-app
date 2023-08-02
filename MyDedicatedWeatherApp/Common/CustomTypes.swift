@@ -34,36 +34,44 @@ struct Weather {
         let oneHourPrecipitation: (String, String)
         let weatherImage: String
     }
-    
-    enum SkyType {
-        case sunnyDay,
-             sunnyNight,
+
+    enum SkyType: String {
+        case sunny,
              cloudy,
              rainy,
              snow,
              thunder
         
-        var lottieName: String {
+        var backgroundImageKeyword: String {
             
             switch self {
                 
-            case .sunnyDay:
-                return "BackgroundSunnyDayLottie"
+            case .sunny:
+                return "sunny"
                 
-            case .sunnyNight:
-                return "BackgroundSunnyNightLottie"
-
+            case .cloudy, .rainy, .snow, .thunder:
+                return "blur"
+            }
+        }
+        
+        var backgroundLottieKeyword: String {
+            
+            switch self {
+                
+            case .sunny:
+                return "Sunny"
+                
             case .cloudy:
-                return "BackgroundSunnyLottie"
-                
+                return "Cloudy"
+            
             case .rainy:
-                return "BackgroundRainyLottie"
+                return "Rainy"
                 
             case .snow:
-                return "BackgroundSnowLottie"
+                return "Snow"
                 
             case .thunder:
-                return "BackgroundSnowLottie"
+                return "Thunder"
             }
         }
     }

@@ -55,9 +55,9 @@ struct TodayViewController: View {
             .padding(.top, 25)
             .frame(height: UIScreen.screenHeight, alignment: .center)
             .todayViewControllerBackground(
-                isDayMode: viewModel.isDayMode,
+                isDayMode: true,
                 isAllLoadCompleted: viewModel.isAllLoadCompleted,
-                skyType: .sunnyNight
+                skyType: .sunny
             )
             .onChangeAtTodayViewController()
             .environmentObject(viewModel)
