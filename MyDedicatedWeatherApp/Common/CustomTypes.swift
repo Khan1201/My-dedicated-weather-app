@@ -10,8 +10,9 @@ import SwiftUI
 
 struct Weather {
     
-    struct DescriptionAndImageString {
+    struct DescriptionAndSkyTypeAndImageString {
         let description: String
+        let skyType: SkyType
         let imageString: String
     }
     
@@ -33,14 +34,17 @@ struct Weather {
         let wetPercent: (String, String)
         let oneHourPrecipitation: (String, String)
         let weatherImage: String
+        let skyType: SkyType
     }
 
     enum SkyType: String {
         case sunny,
              cloudy,
+             blur,
              rainy,
              snow,
-             thunder
+             thunder,
+             none
         
         var backgroundImageKeyword: String {
             
@@ -49,8 +53,11 @@ struct Weather {
             case .sunny:
                 return "sunny"
                 
-            case .cloudy, .rainy, .snow, .thunder:
+            case .cloudy, .blur, .rainy, .snow, .thunder:
                 return "blur"
+                
+            case .none:
+                return ""
             }
         }
         
@@ -63,6 +70,9 @@ struct Weather {
                 
             case .cloudy:
                 return "Cloudy"
+                
+            case .blur:
+                return ""
             
             case .rainy:
                 return "Rainy"
@@ -72,6 +82,9 @@ struct Weather {
                 
             case .thunder:
                 return "Thunder"
+                
+            case .none:
+                return ""
             }
         }
     }

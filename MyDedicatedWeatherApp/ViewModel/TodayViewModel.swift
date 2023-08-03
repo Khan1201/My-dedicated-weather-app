@@ -442,6 +442,15 @@ extension TodayViewModel {
             item.category == .SKY
         }
         
+        let veryShortTermForecastWeatherInf = util.veryShortOrShortTermForecastWeatherDescriptionAndSkyTypeAndImageString(
+            ptyValue: firstPTYItem?.fcstValue ?? "",
+            skyValue: firstSKYItem?.fcstValue ?? "",
+            hhMMForDayOrNightImage: firstPTYItem?.fcstTime ?? "",
+            sunrise: sunRiseAndSetHHmm.0,
+            sunset: sunRiseAndSetHHmm.1,
+            isAnimationImage: false
+        )
+        
         currentWeatherInformation = Weather.CurrentWeatherInformation(
             temperature: currentTemperature?.fcstValue ?? "",
             windSpeed: util.remakeWindSpeedValueByVeryShortTermOrShortTermForecast(
@@ -451,14 +460,8 @@ extension TodayViewModel {
             oneHourPrecipitation: util.remakeOneHourPrecipitationValueByVeryShortTermOrShortTermForecast(
                 value: currentOneHourPrecipitation?.fcstValue ?? ""
             ),
-            weatherImage: util.veryShortOrShortTermForecastWeatherDescriptionWithImageString(
-                ptyValue: firstPTYItem?.fcstValue ?? "",
-                skyValue: firstSKYItem?.fcstValue ?? "",
-                hhMMForDayOrNightImage: firstPTYItem?.fcstTime ?? "",
-                sunrise: sunRiseAndSetHHmm.0,
-                sunset: sunRiseAndSetHHmm.1,
-                isAnimationImage: false
-            ).imageString
+            weatherImage: veryShortTermForecastWeatherInf.imageString,
+            skyType: veryShortTermForecastWeatherInf.skyType
         )
         
         isCurrentWeatherInformationLoadCompleted = true
@@ -532,7 +535,7 @@ extension TodayViewModel {
         }
         
         for index in todayTemperatureItems.indices {
-            let weather: Weather.DescriptionAndImageString = util.veryShortOrShortTermForecastWeatherDescriptionWithImageString(
+            let weather: Weather.DescriptionAndSkyTypeAndImageString = util.veryShortOrShortTermForecastWeatherDescriptionAndSkyTypeAndImageString(
                 ptyValue: todayPrecipitationItems[index].fcstValue,
                 skyValue: todaySkyStateItems[index].fcstValue,
                 hhMMForDayOrNightImage: todayTemperatureItems[index].fcstTime,
@@ -662,7 +665,7 @@ extension TodayViewModel {
             item.category == .SKY
         }
         
-        currentWeatherAnimationImg = util.veryShortOrShortTermForecastWeatherDescriptionWithImageString(
+        currentWeatherAnimationImg = util.veryShortOrShortTermForecastWeatherDescriptionAndSkyTypeAndImageString(
             ptyValue: firstPTYItem?.fcstValue ?? "",
             skyValue: firstSKYItem?.fcstValue ?? "",
             hhMMForDayOrNightImage: firstPTYItem?.fcstTime ?? "",

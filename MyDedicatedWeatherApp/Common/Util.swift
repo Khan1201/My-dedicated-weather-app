@@ -346,21 +346,30 @@ struct Util {
         sunrise: String,
         sunset: String,
         isAnimationImage: Bool
-    ) -> Weather.DescriptionAndImageString {
+    ) -> Weather.DescriptionAndSkyTypeAndImageString {
         
         switch value {
             
         case "0":
-            return Weather.DescriptionAndImageString(description: "없음", imageString: "")
+            return Weather.DescriptionAndSkyTypeAndImageString(
+                description: "없음",
+                skyType: .none,
+                imageString: ""
+            )
             
         case "1":
-            return Weather.DescriptionAndImageString(
+            return Weather.DescriptionAndSkyTypeAndImageString(
                 description: "비",
+                skyType: .rainy,
                 imageString: isAnimationImage ? "RainManyLottie" : "weather_rain"
             )
             
         case "2":
-            return Weather.DescriptionAndImageString(description: "비/눈", imageString: "weather_rain_snow")
+            return Weather.DescriptionAndSkyTypeAndImageString(
+                description: "비/눈",
+                skyType: .snow,
+                imageString: "weather_rain_snow"
+            )
             
         case "3":
             let animationJson = self.decideAnimationWhetherDayOrNight(
@@ -370,8 +379,9 @@ struct Util {
                 dayJson: "SnowLottie",
                 nightJson: "SnowNightLottie"
             )
-            return Weather.DescriptionAndImageString(
+            return Weather.DescriptionAndSkyTypeAndImageString(
                 description: "눈",
+                skyType: .snow,
                 imageString: isAnimationImage ? animationJson : "weather_snow"
             )
         case "4":
@@ -383,8 +393,9 @@ struct Util {
                 nightJson: "RainShowerNightLottie"
             )
             
-            return Weather.DescriptionAndImageString(
+            return Weather.DescriptionAndSkyTypeAndImageString(
                 description: "소나기",
+                skyType: .rainy,
                 imageString: isAnimationImage ? animationJson : "weather_rain_small"
             )
             
@@ -397,8 +408,9 @@ struct Util {
                 nightJson: "RainShowerNightLottie"
             )
             
-            return Weather.DescriptionAndImageString(
+            return Weather.DescriptionAndSkyTypeAndImageString(
                 description: "빗방울",
+                skyType: .rainy,
                 imageString: isAnimationImage ? animationJson : "weather_rain_small"
             )
             
@@ -411,13 +423,18 @@ struct Util {
                 nightJson: "SnowNightLottie"
             )
  
-            return Weather.DescriptionAndImageString(
+            return Weather.DescriptionAndSkyTypeAndImageString(
                 description: "빗방울 / 눈날림",
+                skyType: .snow,
                 imageString: isAnimationImage ? animationJson : "weather_rain_snow"
             )
             
         default:
-            return Weather.DescriptionAndImageString(description: "알 수 없음", imageString: "load_fail")
+            return Weather.DescriptionAndSkyTypeAndImageString(
+                description: "알 수 없음",
+                skyType: .none,
+                imageString: "load_fail"
+            )
         }
     }
     
@@ -433,7 +450,7 @@ struct Util {
         sunrise: String,
         sunset: String,
         isAnimationImage: Bool
-    ) -> Weather.DescriptionAndImageString {
+    ) -> Weather.DescriptionAndSkyTypeAndImageString {
         
         switch value {
         case "1":
@@ -451,8 +468,9 @@ struct Util {
                 dayImageString: "weather_sunny",
                 nightImgString: "weather_sunny_night"
             )
-            return Weather.DescriptionAndImageString(
+            return Weather.DescriptionAndSkyTypeAndImageString(
                 description: "맑음",
+                skyType: .sunny,
                 imageString: isAnimationImage ? animationJson : imageString
             )
             
@@ -471,20 +489,23 @@ struct Util {
                 dayImageString: "weather_cloud_many",
                 nightImgString: "weather_cloud_many_night"
             )
-            return Weather.DescriptionAndImageString(
+            return Weather.DescriptionAndSkyTypeAndImageString(
                 description: "구름많음",
+                skyType: .cloudy,
                 imageString: isAnimationImage ? animationJson : imageString
             )
             
         case "4":
-            return Weather.DescriptionAndImageString(
+            return Weather.DescriptionAndSkyTypeAndImageString(
                 description: "흐림",
+                skyType: .blur,
                 imageString: isAnimationImage ? "BlurLottie" : "weather_blur"
             )
             
         default:
-            return Weather.DescriptionAndImageString(
+            return Weather.DescriptionAndSkyTypeAndImageString(
                 description: "알 수 없음",
+                skyType: .none,
                 imageString: isAnimationImage ? "LoadFailLottie" :  "load_fail"
             )
         }
@@ -647,14 +668,14 @@ struct Util {
      - parameter ptyValue: 강수량 값,
      - parameter skyValue: 하늘상태 값
      */
-    func veryShortOrShortTermForecastWeatherDescriptionWithImageString(
+    func veryShortOrShortTermForecastWeatherDescriptionAndSkyTypeAndImageString(
         ptyValue: String,
         skyValue: String,
         hhMMForDayOrNightImage: String,
         sunrise: String,
         sunset: String,
         isAnimationImage: Bool
-    ) -> Weather.DescriptionAndImageString {
+    ) -> Weather.DescriptionAndSkyTypeAndImageString {
         
         if ptyValue != "0" {
             return remakePrecipitaionTypeValueByVeryShortTermOrShortTermForecast(

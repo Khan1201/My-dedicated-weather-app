@@ -27,6 +27,9 @@ struct TodayViewControllerBackground: ViewModifier {
             case .cloudy:
                 return ""
                 
+            case .blur:
+                return ""
+                
             case .rainy:
                 return ""
 
@@ -35,7 +38,9 @@ struct TodayViewControllerBackground: ViewModifier {
 
             case .thunder:
                 return ""
-
+                
+            case .none:
+                return ""
             }
         }
         
@@ -49,6 +54,9 @@ struct TodayViewControllerBackground: ViewModifier {
             case .cloudy:
                 return -35
                 
+            case .blur:
+                return 0
+                
             case .rainy:
                 return 0
                 
@@ -58,6 +66,8 @@ struct TodayViewControllerBackground: ViewModifier {
             case .thunder:
                 return 0
                 
+            case .none:
+                return 0
             }
         }
         

@@ -39,7 +39,8 @@ struct Dummy {
             windSpeed: ("", ""),
             wetPercent: ("", ""),
             oneHourPrecipitation: ("", ""),
-            weatherImage: ""
+            weatherImage: "",
+            skyType: .cloudy
         )
     }
     
