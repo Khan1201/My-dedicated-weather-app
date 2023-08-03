@@ -22,7 +22,7 @@ final class TodayViewModel: ObservableObject {
     
     @Published var subLocalityByKakaoAddress: String = "성수동 1가"
     
-    static private(set) var xy: CommonUtil.LatXLngY = .init(lat: 0, lng: 0, x: 0, y: 0)
+    static private(set) var xy: Gps2XY.LatXLngY = .init(lat: 0, lng: 0, x: 0, y: 0)
     
     @Published private(set) var isDayMode: Bool = false
     @Published private(set) var sunRiseAndSetHHmm: (String, String) = ("0000", "0000")
@@ -44,6 +44,12 @@ final class TodayViewModel: ObservableObject {
     }
     
     private let commonUtil: CommonUtil = CommonUtil()
+    private let commonForecastUtil: CommonForecastUtil = CommonForecastUtil()
+    private let veryShortTermForecastUtil: VeryShortTermForecastUtil = VeryShortTermForecastUtil()
+    private let shortTermForecastUtil: ShortTermForecastUtil = ShortTermForecastUtil()
+    private let midTermForecastUtil: MidTermForecastUtil = MidTermForecastUtil()
+    private let fineDustLookUpUtil: FineDustLookUpUtil = FineDustLookUpUtil()
+    
     private let env = Env()
     private let jsonRequest = JsonRequest()
     private var subscriptions: Set<AnyCancellable> = []
@@ -61,7 +67,7 @@ extension TodayViewModel {
         let parameters: MidTermForecastReq = MidTermForecastReq(
             serviceKey: env.openDataApiResponseKey,
             regId: MidTermLocationID.daegu.val,
-            tmFc: commonUtil.midTermForecastRequestDate()
+            tmFc: midTermForecastUtil.requestDate()
         )
         do {
             let result = try await jsonRequest.newRequest(
@@ -95,11 +101,11 @@ extension TodayViewModel {
      - parameter xy: 공공데이터 값으로 변환된 X, Y
      
      */
-    func requestVeryShortForecastItems(xy: CommonUtil.LatXLngY) async {
+    func requestVeryShortForecastItems(xy: Gps2XY.LatXLngY) async {
         
         TodayViewModel.xy = xy
-        let baseTime = commonUtil.veryShortTermForecastBaseTime()
-        let baseDate = commonUtil.veryShortTermForecastBaseDate(baseTime: baseTime)
+        let baseTime = veryShortTermForecastUtil.requestBaseTime()
+        let baseDate = veryShortTermForecastUtil.requestBaseDate(baseTime: baseTime)
         
         let parameters: VeryShortOrShortTermForecastReq = VeryShortOrShortTermForecastReq(
             serviceKey: env.openDataApiResponseKey,
@@ -149,12 +155,12 @@ extension TodayViewModel {
      `baseTime` == nil -> 앱 첫 진입 시 자동 계산되어 호출
      `baseTime` != nil -> 앱 첫 진입 시 호출이 아닌, 수동 호출
      */
-    func requestShortForecastItems(xy: CommonUtil.LatXLngY, baseTime: String? = nil) async {
+    func requestShortForecastItems(xy: Gps2XY.LatXLngY, baseTime: String? = nil) async {
         
         let parameters = VeryShortOrShortTermForecastReq(
             serviceKey: env.openDataApiResponseKey,
-            baseDate: commonUtil.shortTermForcastBaseDate(),
-            baseTime: baseTime != nil ? baseTime! : commonUtil.shortTermForecastBaseTime(),
+            baseDate: shortTermForecastUtil.requestBaseDate(),
+            baseTime: baseTime != nil ? baseTime! : shortTermForecastUtil.requestBaseTime(),
             /// baseTime != nil -> 앱 구동 시 호출이 아닌, 수동 호출
             nx: String(xy.x),
             ny: String(xy.y)
@@ -177,7 +183,7 @@ extension TodayViewModel {
                         self.setTodayWeatherInformations(items: items)
                         self.setTodayMinMaxTemperature(
                             items: items,
-                            baseTime: self.commonUtil.shortTermForecastBaseTime()
+                            baseTime: self.shortTermForecastUtil.requestBaseTime()
                         )
                     }
                     
@@ -224,8 +230,8 @@ extension TodayViewModel {
             if let item = result.items?.first {
                 
                 DispatchQueue.main.async {
-                    self.currentFineDustTuple = self.commonUtil.remakeFindDustValue(value: item.pm10Value)
-                    self.currentUltraFineDustTuple = self.commonUtil.remakeUltraFindDustValue(value: item.pm25Value)
+                    self.currentFineDustTuple = self.fineDustLookUpUtil.remakeFindDustValue(value: item.pm10Value)
+                    self.currentUltraFineDustTuple = self.fineDustLookUpUtil.remakeUltraFindDustValue(value: item.pm25Value)
                     self.isFineDustLoadCompleted = true
                 }
             }
@@ -442,7 +448,7 @@ extension TodayViewModel {
             item.category == .SKY
         }
         
-        let veryShortTermForecastWeatherInf = commonUtil.veryShortOrShortTermForecastWeatherDescriptionAndSkyTypeAndImageString(
+        let veryShortTermForecastWeatherInf = commonForecastUtil.veryShortOrShortTermForecastWeatherDescriptionAndSkyTypeAndImageString(
             ptyValue: firstPTYItem?.fcstValue ?? "",
             skyValue: firstSKYItem?.fcstValue ?? "",
             hhMMForDayOrNightImage: firstPTYItem?.fcstTime ?? "",
@@ -453,11 +459,11 @@ extension TodayViewModel {
         
         currentWeatherInformation = Weather.CurrentWeatherInformation(
             temperature: currentTemperature?.fcstValue ?? "",
-            windSpeed: commonUtil.remakeWindSpeedValueByVeryShortTermOrShortTermForecast(
+            windSpeed: commonForecastUtil.remakeWindSpeedValueByVeryShortTermOrShortTermForecast(
                 value: currentWindSpeed?.fcstValue ?? ""
             ),
             wetPercent: ("\(currentWetPercent?.fcstValue ?? "")%", ""),
-            oneHourPrecipitation: commonUtil.remakeOneHourPrecipitationValueByVeryShortTermOrShortTermForecast(
+            oneHourPrecipitation: commonForecastUtil.remakeOneHourPrecipitationValueByVeryShortTermOrShortTermForecast(
                 value: currentOneHourPrecipitation?.fcstValue ?? ""
             ),
             weatherImage: veryShortTermForecastWeatherInf.imageString,
@@ -537,7 +543,7 @@ extension TodayViewModel {
         }
         
         for index in todayTemperatureItems.indices {
-            let weather: Weather.DescriptionAndSkyTypeAndImageString = commonUtil.veryShortOrShortTermForecastWeatherDescriptionAndSkyTypeAndImageString(
+            let weather: Weather.DescriptionAndSkyTypeAndImageString = commonForecastUtil.veryShortOrShortTermForecastWeatherDescriptionAndSkyTypeAndImageString(
                 ptyValue: todayPrecipitationItems[index].fcstValue,
                 skyValue: todaySkyStateItems[index].fcstValue,
                 hhMMForDayOrNightImage: todayTemperatureItems[index].fcstTime,
@@ -667,7 +673,7 @@ extension TodayViewModel {
             item.category == .SKY
         }
         
-        currentWeatherAnimationImg = commonUtil.veryShortOrShortTermForecastWeatherDescriptionAndSkyTypeAndImageString(
+        currentWeatherAnimationImg = commonForecastUtil.veryShortOrShortTermForecastWeatherDescriptionAndSkyTypeAndImageString(
             ptyValue: firstPTYItem?.fcstValue ?? "",
             skyValue: firstSKYItem?.fcstValue ?? "",
             hhMMForDayOrNightImage: firstPTYItem?.fcstTime ?? "",
@@ -687,7 +693,7 @@ extension TodayViewModel {
     func setIsDayMode(riseItem: SunAndMoonriseBase) {
         
         let currentHHmm = Date().toString(format: "HHmm")
-        isDayMode = commonUtil.isDayMode(hhMM: currentHHmm, sunrise: riseItem.sunrise, sunset: riseItem.sunset)
+        isDayMode = commonForecastUtil.isDayMode(hhMM: currentHHmm, sunrise: riseItem.sunrise, sunset: riseItem.sunset)
     }
     
     
@@ -710,7 +716,7 @@ extension TodayViewModel {
 extension TodayViewModel {
     
     func TodayViewControllerLocationManagerUpdatedAction(
-        xy: CommonUtil.LatXLngY,
+        xy: Gps2XY.LatXLngY,
         longLati: (String, String)
     ) {
         Task {

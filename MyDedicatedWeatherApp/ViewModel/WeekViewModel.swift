@@ -11,21 +11,22 @@ final class WeekViewModel: ObservableObject {
     
     @Published var errorMessage: String = ""
     
-    private let commonUtil = CommonUtil()
-    private let env = Env()
-    private let jsonRequest = JsonRequest()
+    private let commonUtil: CommonUtil = CommonUtil()
+    private let shortTermForecastUtil: ShortTermForecastUtil = ShortTermForecastUtil()
+    private let env: Env = Env()
+    private let jsonRequest: JsonRequest = JsonRequest()
     
     /**
      Request 단기예보 Items
      
      - parameter xy: 공공데이터 값으로 변환된 X, Y
      */
-    func requestShortForecastItems(xy: CommonUtil.LatXLngY) async {
+    func requestShortForecastItems(xy: Gps2XY.LatXLngY) async {
         
         let parameters = VeryShortOrShortTermForecastReq(
             serviceKey: env.openDataApiResponseKey,
-            baseDate: commonUtil.shortTermForcastBaseDate(),
-            baseTime: commonUtil.shortTermForecastBaseTime(),
+            baseDate: shortTermForecastUtil.requestBaseDate(),
+            baseTime: shortTermForecastUtil.requestBaseTime(),
             /// baseTime != nil -> 앱 구동 시 호출이 아닌, 수동 호출
             nx: String(xy.x),
             ny: String(xy.y)

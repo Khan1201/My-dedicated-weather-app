@@ -90,6 +90,24 @@ struct Weather {
     }
 }
 
+// MARK: - About 위도, 경도 -> x, y 좌표
+
+struct Gps2XY {
+    
+    struct LatXLngY {
+        public var lat: Double
+        public var lng: Double
+        
+        public var x: Int
+        public var y: Int
+    }
+    
+    enum LocationConvertMode: String {
+        case toXY
+        case toGPS
+    }
+}
+
 enum TabBarType: CaseIterable {
     
     case current,
