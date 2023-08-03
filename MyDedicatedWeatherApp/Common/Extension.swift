@@ -44,3 +44,39 @@ extension UIColor {
                   alpha: alpha)
     }
 }
+
+extension Date {
+    
+    /**
+     day를 더하여 format 형식으로 String 반환
+     
+     - parameter byAdding: 더할  값
+     - parameter format: format 형식 (ex: "yyyy")
+     */
+    func toString(byAdding day: Int, format: String) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = format
+        
+        let addedDate: Date = Calendar.current.date(byAdding: .day, value: day, to: self) ?? self
+        
+        return dateFormatter.string(from: addedDate)
+    }
+    /**
+     format 형식으로 String 반환
+     
+     - parameter dateFormat: dateFormat String
+     */
+    func toString(format: String) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = format
+        
+        return dateFormatter.string(from: self)
+    }
+}
+
+extension String {
+    
+    var toInt: Int {
+        return Int(self) ?? 0
+    }
+}

@@ -374,7 +374,7 @@ extension TodayViewModel {
         SunAndMoonRiseByXMLService(
             queryItem: .init(
                 serviceKey: env.openDataApiResponseKey,
-                locdate: util.currentDateByCustomFormatter(dateFormat: "yyyyMMdd"),
+                locdate: Date().toString(format: "yyyyMMdd"),
                 longitude: long,
                 latitude: lat
             )
@@ -474,9 +474,11 @@ extension TodayViewModel {
      */
     func setTodayWeatherInformations(items: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>]) {
         
+        let currentDate: Date = Date()
+        
         todayWeatherInformations = []
-        let currentDate = util.currentDateByCustomFormatter(dateFormat: "yyyyMMdd")
-        let currentHour = util.currentDateByCustomFormatter(dateFormat: "HH")
+        let yyyyMMddByString = currentDate.toString(format: "yyyyMMdd")
+        let hhByString = currentDate.toString(format: "HH")
         
         // 온도 filter
         let temperatureItems = items.filter { item in
@@ -485,7 +487,7 @@ extension TodayViewModel {
         
         let todayTemperatureStartIndex = temperatureItems.firstIndex { item in
             let fcstTimeHHIndex = item.fcstTime.index(item.fcstTime.startIndex, offsetBy: 1)
-            return item.fcstDate == currentDate && item.fcstTime[...fcstTimeHHIndex] == currentHour
+            return item.fcstDate == yyyyMMddByString && item.fcstTime[...fcstTimeHHIndex] == hhByString
         } ?? 0
         
         var todayTemperatureItems: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>] = []
@@ -497,7 +499,7 @@ extension TodayViewModel {
         
         let todayPrecipitationStartIndex = precipitationItems.firstIndex { item in
             let fcstTimeHHIndex = item.fcstTime.index(item.fcstTime.startIndex, offsetBy: 1)
-            return item.fcstDate == currentDate && item.fcstTime[...fcstTimeHHIndex] == currentHour
+            return item.fcstDate == yyyyMMddByString && item.fcstTime[...fcstTimeHHIndex] == hhByString
         } ?? 0
         
         var todayPrecipitationItems: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>] = []
@@ -509,7 +511,7 @@ extension TodayViewModel {
         
         let todayPrecipitationPercentStartIndex = precipitationPercentItems.firstIndex { item in
             let fcstTimeHHIndex = item.fcstTime.index(item.fcstTime.startIndex, offsetBy: 1)
-            return item.fcstDate == currentDate && item.fcstTime[...fcstTimeHHIndex] == currentHour
+            return item.fcstDate == yyyyMMddByString && item.fcstTime[...fcstTimeHHIndex] == hhByString
         } ?? 0
         
         var todayPrecipitationPercentItems: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>] = []
@@ -521,7 +523,7 @@ extension TodayViewModel {
         
         let todaySkyStateStartIndex = skyStateItems.firstIndex { item in
             let fcstTimeHHIndex = item.fcstTime.index(item.fcstTime.startIndex, offsetBy: 1)
-            return item.fcstDate == currentDate && item.fcstTime[...fcstTimeHHIndex] == currentHour
+            return item.fcstDate == yyyyMMddByString && item.fcstTime[...fcstTimeHHIndex] == hhByString
         } ?? 0
         
         var todaySkyStateItems: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>] = []
@@ -684,7 +686,7 @@ extension TodayViewModel {
      */
     func setIsDayMode(riseItem: SunAndMoonriseBase) {
         
-        let currentHHmm = util.currentDateByCustomFormatter(dateFormat: "HHmm")
+        let currentHHmm = Date().toString(format: "HHmm")
         isDayMode = util.isDayMode(hhMM: currentHHmm, sunrise: riseItem.sunrise, sunset: riseItem.sunset)
     }
     

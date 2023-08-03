@@ -11,27 +11,7 @@ import SwiftUI
 struct Util {
     
     //MARK: - Common..
-    
-    /**
-     Current date String by adding day
-     
-     - parameter currentDate:current date,
-     - parameter day: for adding day,
-     - parameter dateFormat: for current date format type
-     */
-    func dateToStringByAddingDay(currentDate: Date, day: Int, dateFormat: String) -> String {
-        
-        let calender: Calendar = Calendar.current
-        let dateFormatter: DateFormatter = DateFormatter()
-        dateFormatter.dateFormat = dateFormat
-        
-        let dateComponent: DateComponents = DateComponents(day: day)
-        
-        let yesterdayDate: Date = calender.date(byAdding: dateComponent, to: currentDate) ?? Date()
-        let yesterdayDateToString = dateFormatter.string(from: yesterdayDate)
-        return yesterdayDateToString
-    }
-    
+
     /**
      ex) 현재시각 AM 10시
      1000 -> 10:00 변환
@@ -49,20 +29,6 @@ struct Util {
         let minute = HHmm[minuteIndex...lastIndex]
         
         return hour + ":" + minute
-    }
-    
-    /**
-     현재 Date -> dateFormat 에 따른 Date
-     
-     - parameter dateFormat: dateFormat String
-     */
-    func currentDateByCustomFormatter(dateFormat: String) -> String {
-        
-        let formatter = DateFormatter()
-        formatter.dateFormat = dateFormat
-        formatter.locale = Locale(identifier: "ko")
-        
-        return formatter.string(from: Date())
     }
     
     /**
@@ -121,7 +87,7 @@ struct Util {
         dayImageString: String,
         nightImgString: String
     ) -> String {
-        let currentHH = Int(currentDateByCustomFormatter(dateFormat: "HH")) ?? 0
+        let currentHH = Date().toString(format: "HH").toInt
         
         if isDayMode(hhMM: hhMM, sunrise: sunrise, sunset: sunset) {
             return dayImageString
@@ -184,11 +150,7 @@ struct Util {
         
         let currentDate0600ToString = dateFormatter0600.string(from: currentDate)
         let currentDate1800ToString = dateFormatter1800.string(from: currentDate)
-        let yesterdayDate1800ToString = dateToStringByAddingDay(
-            currentDate: currentDate,
-            day: -1,
-            dateFormat: "yyyyMMddHHmm"
-        )
+        let yesterdayDate1800ToString = currentDate.toString(byAdding: -1, format: "yyyyMMddHHmm")
         let currentDateToString = dateFormatterCurrent.string(from: currentDate)
         
         
@@ -553,9 +515,6 @@ struct Util {
         dateFormatterHourMinute.dateFormat = "HHmm"
         
         let todayDate: Date = Date()
-        
-        //        let yesterdayYearMonthDay: String = dateToStringByAddingDay(currentDate: todayDate, day: -1, dateFormat: "yyyyMMdd")
-        //        let currentYearMonthDay: String = dateFormatterYearMonthDay.string(from: todayDate)
         let currentHourMinute: Int = Int(dateFormatterHourMinute.string(from: todayDate)) ?? 0
         
         switch currentHourMinute {
@@ -594,8 +553,9 @@ struct Util {
     
     func shortTermForcastBaseDate() -> String {
         
-        let currentYearMonthDay = currentDateByCustomFormatter(dateFormat: "yyyyMMdd")
-        let currentHour = currentDateByCustomFormatter(dateFormat: "HH")
+        let currentDate: Date = Date()
+        let currentYearMonthDay = currentDate.toString(format: "yyyyMMdd")
+        let currentHour = currentDate.toString(format: "HH")
         
         let currentYearMonthDayToInt = Int(currentYearMonthDay) ?? 0
         let currentHourToInt = Int(currentHour) ?? 0
@@ -655,10 +615,9 @@ struct Util {
      */
     func veryShortTermForecastBaseDate(baseTime: String) -> String {
         
-        return dateToStringByAddingDay(
-            currentDate: Date(),
-            day: baseTime == "2330" ? -1 : 0,
-            dateFormat: "yyyyMMdd"
+        return Date().toString(
+            byAdding: baseTime == "2330" ? -1 : 0,
+            format: "yyyyMMdd"
         )
     }
     

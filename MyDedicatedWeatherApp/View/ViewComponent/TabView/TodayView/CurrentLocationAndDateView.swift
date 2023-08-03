@@ -24,9 +24,9 @@ struct CurrentLocationAndDateView: View {
             .fontSpoqaHanSansNeo(size: 24, weight: .medium)
             .foregroundColor(.white)
             .lineSpacing(2)
-            
-            Text(Util().currentDateByCustomFormatter(
-                dateFormat: "E요일, M월 d일")
+
+            Text(
+                Date().toString(format: "E요일, M월 d일")
             )
             .font(.system(size: 13))
             .foregroundColor(.white)
