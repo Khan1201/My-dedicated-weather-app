@@ -27,7 +27,7 @@ final class LocationDataManagerVM: NSObject, ObservableObject {
     /// Load Completed Variables..
     @Published var isLocationUpdated: Bool = false
     
-    private let util: Util = Util()
+    private let util: CommonUtil = CommonUtil()
     
     enum PermissionType {
         
@@ -44,8 +44,8 @@ final class LocationDataManagerVM: NSObject, ObservableObject {
         locationManager.requestLocation()
     }
     
-    func convertLocationToXYForVeryShortForecast() -> Util.LatXLngY {
-        let XY: Util.LatXLngY = util.convertGPS2XY(
+    func convertLocationToXYForVeryShortForecast() -> CommonUtil.LatXLngY {
+        let XY: CommonUtil.LatXLngY = util.convertGPS2XY(
             mode: .toXY,
             lat_X: locationManager.location?.coordinate.latitude ?? 0,
             lng_Y:locationManager.location?.coordinate.longitude ?? 0

@@ -49,7 +49,7 @@
 		BCA30F9129FE265B0078D0B1 /* Route.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30F9029FE265B0078D0B1 /* Route.swift */; };
 		BCA30F9329FE28F20078D0B1 /* MidTermForecastBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30F9229FE28F20078D0B1 /* MidTermForecastBase.swift */; };
 		BCA30F9529FE39BC0078D0B1 /* Env.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30F9429FE39BC0078D0B1 /* Env.swift */; };
-		BCA30F9729FE3A190078D0B1 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30F9629FE3A190078D0B1 /* Util.swift */; };
+		BCA30F9729FE3A190078D0B1 /* CommonUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30F9629FE3A190078D0B1 /* CommonUtil.swift */; };
 		BCA30F9A29FE49FE0078D0B1 /* OpenDataRes.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30F9929FE49FE0078D0B1 /* OpenDataRes.swift */; };
 		BCA30FA029FE6D690078D0B1 /* ErrorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30F9F29FE6D690078D0B1 /* ErrorType.swift */; };
 		BCA30FA229FE6FC30078D0B1 /* JsonRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30FA129FE6FC30078D0B1 /* JsonRequest.swift */; };
@@ -142,7 +142,7 @@
 		BCA30F9029FE265B0078D0B1 /* Route.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Route.swift; sourceTree = "<group>"; };
 		BCA30F9229FE28F20078D0B1 /* MidTermForecastBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidTermForecastBase.swift; sourceTree = "<group>"; };
 		BCA30F9429FE39BC0078D0B1 /* Env.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Env.swift; sourceTree = "<group>"; };
-		BCA30F9629FE3A190078D0B1 /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
+		BCA30F9629FE3A190078D0B1 /* CommonUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonUtil.swift; sourceTree = "<group>"; };
 		BCA30F9929FE49FE0078D0B1 /* OpenDataRes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenDataRes.swift; sourceTree = "<group>"; };
 		BCA30F9F29FE6D690078D0B1 /* ErrorType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorType.swift; sourceTree = "<group>"; };
 		BCA30FA129FE6FC30078D0B1 /* JsonRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JsonRequest.swift; sourceTree = "<group>"; };
@@ -393,6 +393,7 @@
 		BCA30F7829FE203A0078D0B1 /* MyDedicatedWeatherApp */ = {
 			isa = PBXGroup;
 			children = (
+				BCBA400C2A7BFF4800B6EFD2 /* Util */,
 				BCE489952A4EA2F900A18B2B /* CustomFont */,
 				BCA30FA829FE7D780078D0B1 /* Info.plist */,
 				BCA30F8F29FE26500078D0B1 /* Common */,
@@ -450,7 +451,6 @@
 			isa = PBXGroup;
 			children = (
 				BCA30F9029FE265B0078D0B1 /* Route.swift */,
-				BCA30F9629FE3A190078D0B1 /* Util.swift */,
 				BCA30F9F29FE6D690078D0B1 /* ErrorType.swift */,
 				BCA30FA929FFDC580078D0B1 /* Dummy.swift */,
 				BC6EF8BC2A10AAB30072A2DE /* Extension.swift */,
@@ -506,6 +506,14 @@
 				BCB16E2F2A4DC66300AACFF0 /* KakaoAddressBase.swift */,
 			);
 			path = KaKao;
+			sourceTree = "<group>";
+		};
+		BCBA400C2A7BFF4800B6EFD2 /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				BCA30F9629FE3A190078D0B1 /* CommonUtil.swift */,
+			);
+			path = Util;
 			sourceTree = "<group>";
 		};
 		BCE489952A4EA2F900A18B2B /* CustomFont */ = {
@@ -679,7 +687,7 @@
 				BCA2C1B72A603B6900BBEBE2 /* GetHeight.swift in Sources */,
 				BCCD80682A07A59800501BEA /* LocationDataManagerVM.swift in Sources */,
 				BCA30FA529FE73C90078D0B1 /* TodayViewController.swift in Sources */,
-				BCA30F9729FE3A190078D0B1 /* Util.swift in Sources */,
+				BCA30F9729FE3A190078D0B1 /* CommonUtil.swift in Sources */,
 				BC76923D2A4329DC005F4D7B /* CornerRadiusStyle.swift in Sources */,
 				BCA30FA729FE73D70078D0B1 /* TodayViewModel.swift in Sources */,
 				BCCA26292A51481B005BB1B5 /* SunOrMoonRiseServiceByXML.swift in Sources */,

@@ -1,5 +1,5 @@
 //
-//  Util.swift
+//  CommonUtil.swift
 //  MyDedicatedWeatherApp
 //
 //  Created by 윤형석 on 2023/04/30.
@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct Util {
+struct CommonUtil {
     
     //MARK: - Common..
 
