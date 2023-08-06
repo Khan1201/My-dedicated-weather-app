@@ -11,22 +11,14 @@ struct VeryShortTermForecastUtil {
     
     /**
      Return 현재시간 -> baseTime (초단기예보 Requst 타입)
-     
      */
     func requestBaseTime() -> String {
+        let currentDate: Date = Date()
+        let currentHour: String = currentDate.toString(format: "HH")
+        let currentMinute: String = currentDate.toString(format: "mm")
+        let currentMinuteToInt: Int = Int(currentMinute) ?? 0
         
-        let dateFormatterHour: DateFormatter = DateFormatter()
-        dateFormatterHour.dateFormat = "HH"
-        
-        let dateFormatterMinute: DateFormatter = DateFormatter()
-        dateFormatterMinute.dateFormat = "mm"
-        
-        let currentDay: Date = Date()
-        
-        let currentHour: String = dateFormatterHour.string(from: currentDay)
-        let currentMinute: Int = Int(dateFormatterMinute.string(from: currentDay)) ?? 0
-        
-        if currentMinute < 30 {
+        if currentMinuteToInt < 30 {
             if currentHour == "00" {
                 return "2330"
                 

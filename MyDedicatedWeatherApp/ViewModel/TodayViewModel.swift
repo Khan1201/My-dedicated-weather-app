@@ -100,6 +100,21 @@ extension TodayViewModel {
      Request 초 단기예보 Items
      - parameter xy: 공공데이터 값으로 변환된 X, Y
      
+     Response:
+     - 총 60개 데이터
+     - 각 카테고리 별 데이터 6개
+     
+     Index:
+     - 0 ~ 5: LGT (낙뢰)
+     - 6 ~ 11: PTY (강수 형태)
+     - 12 ~ 17: RN1 (1시간 강수량)
+     - 18 ~ 23: SKY (하늘 상태)
+     - 24 ~ 29: T1H (현재 기온)
+     - 30 ~ 35: REH (습도)
+     - 36 ~ 41: UUU (동서 바람성분)
+     - 42 ~ 47: VVV (남북 바람성분)
+     - 48 ~ 53: VEC (풍향)
+     - 54 ~ 59: WSD(풍속)
      */
     func requestVeryShortForecastItems(xy: Gps2XY.LatXLngY) async {
         
@@ -145,7 +160,6 @@ extension TodayViewModel {
         }
     }
     
-    
     /**
      Request 단기예보 Items
      
@@ -154,6 +168,34 @@ extension TodayViewModel {
      
      `baseTime` == nil -> 앱 첫 진입 시 자동 계산되어 호출
      `baseTime` != nil -> 앱 첫 진입 시 호출이 아닌, 수동 호출
+     
+     Response:
+     - 1시간 별 데이터 12개 (13:00 -> 12개, 14:00 -> 12개)
+     - 요청 basetime 별 response 값이 다름
+     
+     시간 별 Index:
+     - 0: TMP (온도)
+     - 1: UUU (풍속 동서성분)
+     - 2: VVV (풍속 남북성분)
+     - 3: VEC (풍향)
+     - 4: WSD (풍속)
+     - 5: SKY (하늘 상태)
+     - 6: PTY (강수 형태)
+     - 7: POP (강수 확률)
+     - 8: WAV (파고)
+     - 9: PCP (1시간 강수량)
+     - 10: REH (습도)
+     - 11: SNO (1시간 신적설)
+     
+     요청 basetime 별 데이터 크기:
+     - 0200: '+1시간' ~ '+70시간'
+     - 0500: '+1시간' ~ '+67시간'
+     - 0800: '+1시간' ~ '+64시간'
+     - 1100: '+1시간' ~ '+61시간'
+     - 1400: '+1시간' ~ '+58시간' (0200 ~ 1400 : 오늘 ~ 모레까지)
+     - 1700: '+1시간' ~ '+79시간'
+     - 2000: '+1시간' ~ '+76시간'
+     - 2300: '+1시간' ~ '+73시간' (17:00 ~ 2300: 오늘 ~ 모레+1일 까지)
      */
     func requestShortForecastItems(xy: Gps2XY.LatXLngY, baseTime: String? = nil) async {
         
@@ -176,22 +218,10 @@ extension TodayViewModel {
                 requestName: "requestShortForecastItems(xy:)"
             )
             
-            if let items = result.item {
-                
-                if baseTime == nil { // baseTime == nil -> 앱 구동 시 처음 호출 (자동 baseTime set)
-                    DispatchQueue.main.async {
-                        self.setTodayWeatherInformations(items: items)
-                        self.setTodayMinMaxTemperature(
-                            items: items,
-                            baseTime: self.shortTermForecastUtil.requestBaseTime()
-                        )
-                    }
-                    
-                } else {
-                    DispatchQueue.main.async {
-                        self.setTodayMinMaxTemperature(items: items, baseTime: baseTime ?? "")
-                    }
-                }
+            guard let items = result.item else { return }
+            
+            DispatchQueue.main.async {
+                self.setTodayWeatherInformations(items: items)
             }
             
         } catch APIError.transportError {
@@ -405,16 +435,7 @@ extension TodayViewModel {
      - parameter items: [초단기예보 Model]
      */
     func setCurrentTemperature(items: [VeryShortOrShortTermForecastBase<VeryShortTermForecastCategory>]) {
-        
-        let currenTemperatureItem = items.first { item in
-            item.category == .T1H
-        }
-        
-        if let currenTemperatureItem = currenTemperatureItem {
-            currentTemperature = currenTemperatureItem.fcstValue
-        } else {
-            print ("currenTemperatureItem == null..")
-        }
+        currentTemperature = items[24].fcstValue
     }
     
     /**
@@ -423,48 +444,30 @@ extension TodayViewModel {
      - parameter items: [초단기예보 Model]
      */
     func setCurrentWeatherInformation(items: [VeryShortOrShortTermForecastBase<VeryShortTermForecastCategory>]) {
-        
-        let currentTemperature = items.first { item in
-            item.category == .T1H
-        }
-        
-        let currentWindSpeed = items.first { item in
-            item.category == .WSD
-        }
-        
-        let currentWetPercent = items.first { item in
-            item.category == .REH
-        }
-        
-        let currentOneHourPrecipitation = items.first { item in
-            item.category == .RN1
-        }
-        
-        let firstPTYItem = items.first { item in // 강수 형태
-            item.category == .PTY
-        }
-        
-        let firstSKYItem = items.first { item in // 하늘 상태
-            item.category == .SKY
-        }
+        let currentTemperature = items[24]
+        let currentWindSpeed = items[54]
+        let currentWetPercent = items[30]
+        let currentOneHourPrecipitation = items[12]
+        let firstPTYItem = items[6]
+        let firstSKYItem = items[18]
         
         let veryShortTermForecastWeatherInf = commonForecastUtil.veryShortOrShortTermForecastWeatherDescriptionAndSkyTypeAndImageString(
-            ptyValue: firstPTYItem?.fcstValue ?? "",
-            skyValue: firstSKYItem?.fcstValue ?? "",
-            hhMMForDayOrNightImage: firstPTYItem?.fcstTime ?? "",
+            ptyValue: firstPTYItem.fcstValue,
+            skyValue: firstSKYItem.fcstValue,
+            hhMMForDayOrNightImage: firstPTYItem.fcstTime,
             sunrise: sunRiseAndSetHHmm.0,
             sunset: sunRiseAndSetHHmm.1,
             isAnimationImage: false
         )
         
         currentWeatherInformation = Weather.CurrentWeatherInformation(
-            temperature: currentTemperature?.fcstValue ?? "",
+            temperature: currentTemperature.fcstValue,
             windSpeed: commonForecastUtil.remakeWindSpeedValueByVeryShortTermOrShortTermForecast(
-                value: currentWindSpeed?.fcstValue ?? ""
+                value: currentWindSpeed.fcstValue
             ),
-            wetPercent: ("\(currentWetPercent?.fcstValue ?? "")%", ""),
+            wetPercent: ("\(currentWetPercent.fcstValue)%", ""),
             oneHourPrecipitation: commonForecastUtil.remakeOneHourPrecipitationValueByVeryShortTermOrShortTermForecast(
-                value: currentOneHourPrecipitation?.fcstValue ?? ""
+                value: currentOneHourPrecipitation.fcstValue
             ),
             weatherImage: veryShortTermForecastWeatherInf.imageString,
             skyType: veryShortTermForecastWeatherInf.skyType
@@ -479,157 +482,75 @@ extension TodayViewModel {
      - parameter items: [초단기예보 Model]
      */
     func setTodayWeatherInformations(items: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>]) {
-        
-        let currentDate: Date = Date()
-        
         todayWeatherInformations = []
-        let yyyyMMddByString = currentDate.toString(format: "yyyyMMdd")
-        let hhByString = currentDate.toString(format: "HH")
         
-        // 온도 filter
-        let temperatureItems = items.filter { item in
-            item.category == .TMP
-        }
-        
-        let todayTemperatureStartIndex = temperatureItems.firstIndex { item in
-            let fcstTimeHHIndex = item.fcstTime.index(item.fcstTime.startIndex, offsetBy: 1)
-            return item.fcstDate == yyyyMMddByString && item.fcstTime[...fcstTimeHHIndex] == hhByString
-        } ?? 0
-        
-        var todayTemperatureItems: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>] = []
-        
-        // 강수형태 filter
-        let precipitationItems = items.filter { item in
-            item.category == .PTY
-        }
-        
-        let todayPrecipitationStartIndex = precipitationItems.firstIndex { item in
-            let fcstTimeHHIndex = item.fcstTime.index(item.fcstTime.startIndex, offsetBy: 1)
-            return item.fcstDate == yyyyMMddByString && item.fcstTime[...fcstTimeHHIndex] == hhByString
-        } ?? 0
-        
-        var todayPrecipitationItems: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>] = []
-        
-        // 강수확률 filter
-        let precipitationPercentItems = items.filter { item in
-            item.category == .POP
-        }
-        
-        let todayPrecipitationPercentStartIndex = precipitationPercentItems.firstIndex { item in
-            let fcstTimeHHIndex = item.fcstTime.index(item.fcstTime.startIndex, offsetBy: 1)
-            return item.fcstDate == yyyyMMddByString && item.fcstTime[...fcstTimeHHIndex] == hhByString
-        } ?? 0
-        
-        var todayPrecipitationPercentItems: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>] = []
-        
-        // 하늘상태 filter
-        let skyStateItems = items.filter { item in
-            item.category == .SKY
-        }
-        
-        let todaySkyStateStartIndex = skyStateItems.firstIndex { item in
-            let fcstTimeHHIndex = item.fcstTime.index(item.fcstTime.startIndex, offsetBy: 1)
-            return item.fcstDate == yyyyMMddByString && item.fcstTime[...fcstTimeHHIndex] == hhByString
-        } ?? 0
-        
-        var todaySkyStateItems: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>] = []
+        var tempIndex = 0
+        let skyIndex = tempIndex + 5
+        let ptyIndex = tempIndex + 6
+        let popIndex = tempIndex + 7
+        var step = 12
         
         // 각 index 해당하는 값(시간에 해당하는 값) append
-        for i in 0...23 {
-            todayTemperatureItems.append(temperatureItems[todayTemperatureStartIndex + i])
-            todayPrecipitationItems.append(precipitationItems[todayPrecipitationStartIndex + i])
-            todaySkyStateItems.append(skyStateItems[todaySkyStateStartIndex + i])
-            todayPrecipitationPercentItems.append(precipitationPercentItems[todayPrecipitationPercentStartIndex + i])
-        }
-        
-        for index in todayTemperatureItems.indices {
-            let weather: Weather.DescriptionAndSkyTypeAndImageString = commonForecastUtil.veryShortOrShortTermForecastWeatherDescriptionAndSkyTypeAndImageString(
-                ptyValue: todayPrecipitationItems[index].fcstValue,
-                skyValue: todaySkyStateItems[index].fcstValue,
-                hhMMForDayOrNightImage: todayTemperatureItems[index].fcstTime,
+        for _ in 0...23 {
+            
+            // 1시간 별 데이터 중 TMX(최고온도), TMN(최저온도) 가 있는지
+            // 존재하면 1시간 별 데이터 기존 12개 -> 13이 됨
+            let isExistTmxOrTmn = items[tempIndex + 12].category == .TMX ||
+            items[tempIndex + 12].category == .TMN
+            
+            step = isExistTmxOrTmn ? 13 : 12
+            
+            let weatherImage: Weather.DescriptionAndSkyTypeAndImageString = commonForecastUtil.veryShortOrShortTermForecastWeatherDescriptionAndSkyTypeAndImageString(
+                ptyValue: items[ptyIndex].fcstValue,
+                skyValue: items[skyIndex].fcstValue,
+                hhMMForDayOrNightImage: items[tempIndex].fcstTime,
                 sunrise: self.sunRiseAndSetHHmm.0,
                 sunset: self.sunRiseAndSetHHmm.1,
                 isAnimationImage: false
             )
             
-            let hourEndIndex = todayTemperatureItems[index].fcstTime.index(
-                todayTemperatureItems[index].fcstTime.startIndex, offsetBy: 1
-            )
-            
-            let hour = String(todayTemperatureItems[index].fcstTime[...hourEndIndex])
-            
             let todayWeather = Weather.TodayWeatherInformation(
-                time: commonUtil.convertAMOrPM(hour),
-                weatherImage: weather.imageString,
-                precipitation: todayPrecipitationPercentItems[index].fcstValue,
-                temperature: todayTemperatureItems[index].fcstValue
+                time: commonUtil.convertAMOrPMFromHHmm(items[tempIndex].fcstTime),
+                weatherImage: weatherImage.imageString,
+                precipitation: items[popIndex].fcstValue,
+                temperature: items[tempIndex].fcstValue
             )
             todayWeatherInformations.append(todayWeather)
-            isTodayWeatherInformationLoadCompleted = true
+            
+            tempIndex += step
         }
+        isTodayWeatherInformationLoadCompleted = true
+        self.setTodayMinMaxTemperature(todayWeatherInformations)
     }
-    
+
     /**
-     Set 단기예보 Items -> `todayMinMaxTemperature` variable
+     Set 오늘 날씨 정보 리스트 -> `todayMinMaxTemperature` variable
      
-     - parameter items: [단기예보 Model]
+     - parameter todayWeathers: [todayWeatherInformations] 오늘 날씨 정보 리스트
      */
-    func setTodayMinMaxTemperature(
-        items: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>],
-        baseTime: String
-    ) {
-        switch baseTime {
-            
-        case "0200":
-            setTodayMinMaxTemperature(items: items, isMinTemp: true)
-            setTodayMinMaxTemperature(items: items, isMinTemp: false)
-            
-        case "0500":
-            requestMinTemp()
-            setTodayMinMaxTemperature(items: items, isMinTemp: false)
-            
-        case "0800":
-            requestMinTemp()
-            setTodayMinMaxTemperature(items: items, isMinTemp: false)
-            
-        case "1100":
-            requestMinTemp()
-            setTodayMinMaxTemperature(items: items, isMinTemp: false)
-            
-        default:
-            requestMinMaxTemp()
-        }
-        isMinMaxTempLoadCompleted = true
+    func setTodayMinMaxTemperature(_ todayWeathers: [Weather.TodayWeatherInformation]) {
+        var maxTemp: Int = 0
+        var minTemp: Int = 0
         
-        func setTodayMinMaxTemperature(items: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>], isMinTemp: Bool) {
-            guard let minOrMaxTemp = items.filter(
-                { item in
-                    item.category == (isMinTemp ? .TMN : .TMX)
-                }
-            ).first?.fcstValue else { return }
+        for (index, todayWeather) in todayWeatherInformations.enumerated() {
             
-            guard let minOrMaxTempToDouble = Double(minOrMaxTemp) else { return }
-            let toString = String(Int(minOrMaxTempToDouble))
+            let tempToInt: Int = Int(todayWeather.temperature) ?? 0
             
-            if isMinTemp {
-                todayMinMaxTemperature.0 = toString
+            if index == 0 {
+                maxTemp = tempToInt
+                minTemp = tempToInt
+            }
+            
+            if tempToInt > maxTemp {
+                maxTemp = tempToInt
                 
-            } else {
-                todayMinMaxTemperature.1 = toString
+            } else if tempToInt < minTemp {
+                minTemp = tempToInt
             }
         }
         
-        func requestMinTemp() {
-            Task {
-                await requestShortForecastItems(xy: TodayViewModel.xy, baseTime: "0200")
-            }
-        }
-        
-        func requestMinMaxTemp() {
-            Task {
-                await requestShortForecastItems(xy: TodayViewModel.xy, baseTime: "1100")
-            }
-        }
+        todayMinMaxTemperature = (String(minTemp), String(maxTemp))
+        isMinMaxTempLoadCompleted = true
     }
     
     /**
@@ -664,19 +585,13 @@ extension TodayViewModel {
      - parameter items: [초단기예보 Model]
      */
     func setCurrentWeatherAnimationImg(items: [VeryShortOrShortTermForecastBase<VeryShortTermForecastCategory>]) {
-        
-        let firstPTYItem = items.first { item in // 강수 형태
-            item.category == .PTY
-        }
-        
-        let firstSKYItem = items.first { item in // 하늘 상태
-            item.category == .SKY
-        }
+        let firstPTYItem = items[6] // 강수 형태 first
+        let firstSKYItem = items[18] // 하늘 상태 first
         
         currentWeatherAnimationImg = commonForecastUtil.veryShortOrShortTermForecastWeatherDescriptionAndSkyTypeAndImageString(
-            ptyValue: firstPTYItem?.fcstValue ?? "",
-            skyValue: firstSKYItem?.fcstValue ?? "",
-            hhMMForDayOrNightImage: firstPTYItem?.fcstTime ?? "",
+            ptyValue: firstPTYItem.fcstValue,
+            skyValue: firstSKYItem.fcstValue,
+            hhMMForDayOrNightImage: firstPTYItem.fcstTime,
             sunrise: sunRiseAndSetHHmm.0,
             sunset: sunRiseAndSetHHmm.1,
             isAnimationImage: true
@@ -705,9 +620,9 @@ extension TodayViewModel {
         
         isAllLoadCompleted = // 7 values
         (isCurrentWeatherInformationLoadCompleted &&
-        isCurrentWeatherAnimationSetCompleted && isFineDustLoadCompleted &&
-        isKakaoAddressLoadCompleted && isMinMaxTempLoadCompleted &&
-        isSunriseSunsetLoadCompleted && isTodayWeatherInformationLoadCompleted)
+         isCurrentWeatherAnimationSetCompleted && isFineDustLoadCompleted &&
+         isKakaoAddressLoadCompleted && isMinMaxTempLoadCompleted &&
+         isSunriseSunsetLoadCompleted && isTodayWeatherInformationLoadCompleted)
     }
 }
 

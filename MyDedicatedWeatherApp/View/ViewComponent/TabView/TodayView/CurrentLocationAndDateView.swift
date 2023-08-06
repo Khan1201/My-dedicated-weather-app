@@ -26,7 +26,7 @@ struct CurrentLocationAndDateView: View {
             .lineSpacing(2)
 
             Text(
-                Date().toString(format: "E요일, M월 d일")
+                Date().toString(format: "EE요일, M월 d일")
             )
             .font(.system(size: 13))
             .foregroundColor(.white)

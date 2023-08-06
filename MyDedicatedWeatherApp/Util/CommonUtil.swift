@@ -36,9 +36,13 @@ struct CommonUtil {
      
      - parameter HH: Hour
      */
-    func convertAMOrPM(_ HH: String) -> String {
+    func convertAMOrPMFromHHmm(_ HHmm: String) -> String {
         
-        let hourToInt = Int(HH) ?? 0
+        let hourEndIndex = HHmm.index(
+            HHmm.startIndex, offsetBy: 1
+        )
+        let hour = String(HHmm[...hourEndIndex])
+        let hourToInt = Int(hour) ?? 0
         
         if hourToInt - 12 > 0 {
             return "\(hourToInt - 12)PM"
