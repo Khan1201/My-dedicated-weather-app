@@ -10,20 +10,35 @@ import SwiftUI
 struct MainTabView: View {
     
     @State var currentTab: TabBarType = .current
+    @State var isLoading: Bool = true
     
     var body: some View {
                 
         VStack(alignment: .leading, spacing: 0) {
-            TabView(selection: $currentTab) {
-                TodayViewController()
-                    .tag(TabBarType.current)
+            
+            ZStack(alignment: .center) {
+                if isLoading {
+                    Text("로딩중 입니다.")
+                        .onAppear {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+                                isLoading = false
+                            }
+                        }
+                }
                 
-                Text("gdgd")
-                    .tag(TabBarType.forecast)
+                TabView(selection: $currentTab) {
+                    TodayViewController()
+                        .tag(TabBarType.current)
+                    
+                    Text("gdgd")
+                        .tag(TabBarType.forecast)
+                }
+                .overlay(alignment: .bottom) {
+                    CustomBottomTabBarView(currentTab: $currentTab)
+                }
+                .opacity(isLoading ? 0 : 1)
             }
-            .overlay(alignment: .bottom) {
-                CustomBottomTabBarView(currentTab: $currentTab)
-            }
+            
         }
         .ignoresSafeArea(.all)
     }
