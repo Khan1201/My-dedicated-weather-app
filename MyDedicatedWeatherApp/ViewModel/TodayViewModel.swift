@@ -117,7 +117,8 @@ extension TodayViewModel {
      - 54 ~ 59: WSD(풍속)
      */
     func requestVeryShortForecastItems(xy: Gps2XY.LatXLngY) async {
-        
+        let startTime = CFAbsoluteTimeGetCurrent()
+
         TodayViewModel.xy = xy
         let baseTime = veryShortTermForecastUtil.requestBaseTime()
         let baseDate = veryShortTermForecastUtil.requestBaseDate(baseTime: baseTime)
@@ -145,6 +146,8 @@ extension TodayViewModel {
                     self.setCurrentWeatherAnimationImg(items: items)
                     self.setCurrentTemperature(items: items)
                     self.setCurrentWeatherInformation(items: items)
+                    let durationTime = CFAbsoluteTimeGetCurrent() - startTime
+                    print("초단기 req 소요시간: \(durationTime)")
                 }
             }
             
@@ -198,7 +201,8 @@ extension TodayViewModel {
      - 2300: '+1시간' ~ '+73시간' (17:00 ~ 2300: 오늘 ~ 모레+1일 까지)
      */
     func requestShortForecastItems(xy: Gps2XY.LatXLngY, baseTime: String? = nil) async {
-        
+        let reqStartTime = CFAbsoluteTimeGetCurrent()
+
         let parameters = VeryShortOrShortTermForecastReq(
             serviceKey: env.openDataApiResponseKey,
             baseDate: shortTermForecastUtil.requestBaseDate(),
@@ -217,11 +221,16 @@ extension TodayViewModel {
                 resultType: OpenDataRes<VeryShortOrShortTermForecastBase<ShortTermForecastCategory>>.self,
                 requestName: "requestShortForecastItems(xy:)"
             )
+            let reqEndTime = CFAbsoluteTimeGetCurrent() - reqStartTime
+            let logicStartTime = CFAbsoluteTimeGetCurrent()
             
             guard let items = result.item else { return }
             
             DispatchQueue.main.async {
                 self.setTodayWeatherInformations(items: items)
+                let logicEndTime = CFAbsoluteTimeGetCurrent() - logicStartTime
+                print("단기 req 호출 소요시간: \(reqEndTime)")
+                print("단기 req 로직 소요시간: \(logicEndTime)")
             }
             
         } catch APIError.transportError {
@@ -367,7 +376,8 @@ extension TodayViewModel {
      kakao address request 에서 가져오도록 결정함.
      */
     func requestKaKaoAddressBy(longitude: String, latitude: String) async {
-        
+        let startTime = CFAbsoluteTimeGetCurrent()
+
         let param = KakaoAddressBase.Req(x: longitude, y: latitude)
         let header = Validate().kakaoHeader()
         
@@ -384,6 +394,8 @@ extension TodayViewModel {
             DispatchQueue.main.async {
                 self.subLocalityByKakaoAddress = result.documents[0].address.subLocality
                 self.isKakaoAddressLoadCompleted = true
+                let durationTime = CFAbsoluteTimeGetCurrent() - startTime
+                print("카카오 주소 req 소요시간: \(durationTime)")
             }
             
         } catch APIError.transportError {
@@ -407,6 +419,7 @@ extension TodayViewModel {
      */
     func requestSunAndMoonrise(long: String, lat: String) async {
         
+        let startTime = CFAbsoluteTimeGetCurrent()
         SunAndMoonRiseByXMLService(
             queryItem: .init(
                 serviceKey: env.openDataApiResponseKey,
@@ -417,9 +430,13 @@ extension TodayViewModel {
         ).result
             .sink { [weak self] value in
                 guard let self = self else { return }
-                self.sunRiseAndSetHHmm = (value.sunrise, value.sunset)
-                self.setIsDayMode(riseItem: value)
-                self.isSunriseSunsetLoadCompleted = true
+                DispatchQueue.main.async {
+                    self.sunRiseAndSetHHmm = (value.sunrise, value.sunset)
+                    self.setIsDayMode(riseItem: value)
+                    self.isSunriseSunsetLoadCompleted = true
+                    let durationTime = CFAbsoluteTimeGetCurrent() - startTime
+                    print("일출 일몰 req 소요시간: \(durationTime)")
+                }
             }
             .store(in: &subscriptions)
     }

@@ -40,7 +40,7 @@ extension VeryShortOrShortTermForecastBase {
 struct VeryShortOrShortTermForecastReq: Encodable {
     let serviceKey: String
     let pageNo: String = "1"
-    let numOfRows: String = "1000"
+    let numOfRows: String = "300"
     let dataType: String = "JSON"
     let baseDate: String
     let baseTime: String
