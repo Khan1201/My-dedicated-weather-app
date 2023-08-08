@@ -30,7 +30,7 @@ struct MainTabView: View {
                     TodayViewController()
                         .tag(TabBarType.current)
                     
-                    Text("gdgd")
+                    WeekViewController()
                         .tag(TabBarType.forecast)
                 }
                 .overlay(alignment: .bottom) {

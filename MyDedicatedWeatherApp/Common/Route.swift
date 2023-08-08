@@ -9,14 +9,16 @@ import Foundation
 
 enum Route {
     
-    case GET_WEATHER_MID_TERM_FORECAST,
-        GET_WEATHER_SHORT_TERM_FORECAST,
-        GET_WEATHER_VERY_SHORT_TERM_FORECAST,
-        GET_REAL_TIME_FIND_DUST_FORECAST,
-        GET_DUST_FORECAST_STATION_XY,
-        GET_DUST_FORECAST_STATION,
-        GET_KAKAO_ADDRESS,
-        GET_SUNRISE_SUNSET_TEMPERATURE
+    case GET_WEATHER_SHORT_TERM_FORECAST,
+         GET_WEATHER_VERY_SHORT_TERM_FORECAST,
+         GET_REAL_TIME_FIND_DUST_FORECAST,
+         GET_DUST_FORECAST_STATION_XY,
+         GET_DUST_FORECAST_STATION,
+         GET_KAKAO_ADDRESS,
+         GET_SUNRISE_SUNSET_TEMPERATURE,
+         GET_WEATHER_MID_TERM_FORECAST_TEMP,
+         GET_WEATHER_MID_TERM_FORECAST_SKYSTATE,
+         GET_WEATHER_MID_TERM_FORECAST_NEWS
     
     var val: String {
         
@@ -25,7 +27,7 @@ enum Route {
         case .GET_WEATHER_SHORT_TERM_FORECAST:
             return "https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst"
         
-        case .GET_WEATHER_MID_TERM_FORECAST:
+        case .GET_WEATHER_MID_TERM_FORECAST_TEMP:
             return "https://apis.data.go.kr/1360000/MidFcstInfoService/getMidTa"
             
         case .GET_WEATHER_VERY_SHORT_TERM_FORECAST:
@@ -46,6 +48,11 @@ enum Route {
         case .GET_SUNRISE_SUNSET_TEMPERATURE:
             return "https://apis.data.go.kr/B090041/openapi/service/RiseSetInfoService/getLCRiseSetInfo"
             
+        case .GET_WEATHER_MID_TERM_FORECAST_SKYSTATE:
+            return "http://apis.data.go.kr/1360000/MidFcstInfoService/getMidLandFcst"
+            
+        case .GET_WEATHER_MID_TERM_FORECAST_NEWS:
+            return "http://apis.data.go.kr/1360000/MidFcstInfoService/getMidFcst"
         }
     }
 }

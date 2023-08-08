@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct WeekViewController: View {
+    
+    @StateObject var viewModel: WeekViewModel = WeekViewModel()
+    
     var body: some View {
         
         VStack(alignment: .leading, spacing: 0) {
@@ -16,6 +19,9 @@ struct WeekViewController: View {
         }
         .background {
             Color.blue
+        }
+        .task {
+            await viewModel.requestMidTermForecastTempItems()
         }
     }
 }

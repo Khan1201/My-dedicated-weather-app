@@ -9,8 +9,6 @@ import Foundation
 import Combine
 
 final class TodayViewModel: ObservableObject {
-    
-    @Published private(set) var threeToTenDaysTemperature: [temperatureMinMax] = [] // day 3 ~ 10 temperature
     @Published private(set) var errorMessage: String = ""
     @Published private(set) var currentTemperature: String = "00"
     @Published private(set) var currentWeatherAnimationImg: String = ""
@@ -58,43 +56,6 @@ final class TodayViewModel: ObservableObject {
 // MARK: - Request HTTP..
 
 extension TodayViewModel {
-    
-    /**
-     Request 중기예보 Items
-     */
-    func requestMidTermForecastItems() async {
-        
-        let parameters: MidTermForecastReq = MidTermForecastReq(
-            serviceKey: env.openDataApiResponseKey,
-            regId: MidTermLocationID.daegu.val,
-            tmFc: midTermForecastUtil.requestDate()
-        )
-        do {
-            let result = try await jsonRequest.newRequest(
-                url: Route.GET_WEATHER_MID_TERM_FORECAST.val,
-                method: .get,
-                parameters: parameters,
-                headers: nil,
-                resultType: OpenDataRes<MidTermForecastBase>.self,
-                requestName: "requestMidTermForecastItems()"
-            )
-            DispatchQueue.main.async {
-                if let item = result.item?.first {
-                    self.setThreeToTenDaysTemperature(item: item)
-                }
-                
-            }
-        } catch APIError.transportError {
-            
-            DispatchQueue.main.async {
-                self.errorMessage = "API 통신 에러"
-            }
-        } catch {
-            DispatchQueue.main.async {
-                self.errorMessage = "알 수 없는 오류"
-            }
-        }
-    }
     
     /**
      Request 초 단기예보 Items
@@ -568,32 +529,6 @@ extension TodayViewModel {
         
         todayMinMaxTemperature = (String(minTemp), String(maxTemp))
         isMinMaxTempLoadCompleted = true
-    }
-    
-    /**
-     Set 중기예보 Items->` threeToTenDaysTemperature` (최저온도 String, 최고온도 String, 현재Date Int ) varialbe
-     
-     - parameter item: 중기예보 Model
-     */
-    func setThreeToTenDaysTemperature(item: MidTermForecastBase) {
-        
-        let minMaxItems: [(Int, Int)] = [
-            (item.taMin3, item.taMax3),
-            (item.taMin4, item.taMax4),
-            (item.taMin5, item.taMax5),
-            (item.taMin6, item.taMax6),
-            (item.taMin7, item.taMax7),
-            (item.taMin8, item.taMax8),
-            (item.taMin9, item.taMax9),
-            (item.taMin10, item.taMax10)
-        ]
-        
-        for index in 0...7 { // day 3 ~ 10
-            threeToTenDaysTemperature.append(temperatureMinMax.init(
-                minMax:(minMaxItems[index].0, minMaxItems[index].1),
-                day: index + 3)
-            )
-        }
     }
     
     /**
