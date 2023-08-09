@@ -22,6 +22,7 @@ struct WeekViewController: View {
         }
         .task {
             await viewModel.requestMidTermForecastTempItems()
+            await viewModel.requestMidTermForecastSkyStateItems()
         }
     }
 }

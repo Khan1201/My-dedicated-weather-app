@@ -23,7 +23,7 @@ struct OnChangeAtTodayViewController: ViewModifier {
             .onChange(of: viewModel.isKakaoAddressLoadCompleted) { newValue in
                 viewModel.TodayViewControllerKakaoAddressUpdatedAction(
                     umdName: viewModel.subLocalityByKakaoAddress,
-                    locality: locationDataManagerVM.currentLocationForSubLocationReq
+                    locality: locationDataManagerVM.currentLocation
                 )
             }
             // 7 values..

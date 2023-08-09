@@ -99,18 +99,3 @@ struct MidTermForecastReq: Encodable {
         try container.encode(tmFc, forKey: .tmFc)
     }
 }
-
-enum MidTermLocationID: String, Codable {
-    
-    case seoul, daegu
-    
-    var val: String {
-        switch self {
-        case .daegu:
-            return "11H10701"
-            
-        case .seoul:
-            return "11B10101"
-        }
-    }
-}

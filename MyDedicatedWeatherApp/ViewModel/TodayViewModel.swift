@@ -355,6 +355,8 @@ extension TodayViewModel {
             DispatchQueue.main.async {
                 self.subLocalityByKakaoAddress = result.documents[0].address.subLocality
                 self.isKakaoAddressLoadCompleted = true
+                UserDefaults.standard.set(self.subLocalityByKakaoAddress, forKey: "subLocality")
+
                 let durationTime = CFAbsoluteTimeGetCurrent() - startTime
                 print("카카오 주소 req 소요시간: \(durationTime)")
             }
@@ -395,6 +397,7 @@ extension TodayViewModel {
                     self.sunRiseAndSetHHmm = (value.sunrise, value.sunset)
                     self.setIsDayMode(riseItem: value)
                     self.isSunriseSunsetLoadCompleted = true
+                    
                     let durationTime = CFAbsoluteTimeGetCurrent() - startTime
                     print("일출 일몰 req 소요시간: \(durationTime)")
                 }

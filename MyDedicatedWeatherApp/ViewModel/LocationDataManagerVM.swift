@@ -13,7 +13,6 @@ final class LocationDataManagerVM: NSObject, ObservableObject {
     
     private var locationManager = CLLocationManager()
     @Published var currentLocation: String = "서울특별시" // 서울특별시, 대구광역시
-    @Published var currentLocationForSubLocationReq: String = "" // For sub loc req..
     @Published var locationPermissonType: PermissionType = .notAllow
     
     var longitudeAndLatitude: (String, String) {
@@ -94,9 +93,9 @@ extension LocationDataManagerVM: CLLocationManagerDelegate {
         geoCoder.reverseGeocodeLocation(location, preferredLocale: local) { [weak self] place, error in
             guard let self = self else { return }
             if let address: CLPlacemark = place?.last {
-                self.currentLocation = "\(address.locality ?? "")"
-                self.currentLocationForSubLocationReq = address.administrativeArea ?? ""
+                self.currentLocation = address.administrativeArea ?? ""
                 self.isLocationUpdated = true
+                UserDefaults.standard.set(self.currentLocation, forKey: "locality")
             }
         }
     }

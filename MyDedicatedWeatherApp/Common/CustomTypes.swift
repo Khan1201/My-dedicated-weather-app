@@ -122,3 +122,7 @@ enum TabBarType: CaseIterable {
         search,
         setting
 }
+
+enum MidtermReqType {
+    case temperature, skystate, news
+}
