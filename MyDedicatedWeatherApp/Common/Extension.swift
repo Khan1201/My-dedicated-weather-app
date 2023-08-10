@@ -81,3 +81,10 @@ extension String {
         return Int(self) ?? 0
     }
 }
+
+extension Int {
+    
+    var toString: String {
+        return String(self)
+    }
+}

@@ -8,7 +8,7 @@
 import Foundation
 
 struct MidTermForecastSkyStateBase: Decodable {
-    let rnSt3Am: Int
+    let rnSt3Am: Int // 강수 확률
     let rnSt4Am: Int
     let rnSt5Am: Int
     let rnSt6Am: Int
@@ -16,7 +16,7 @@ struct MidTermForecastSkyStateBase: Decodable {
     let rnSt8: Int
     let rnSt9: Int
     let rnSt10: Int
-    let wf3Am: String
+    let wf3Am: String // 하늘 상태 정보
     let wf4Am: String
     let wf5Am: String
     let wf6Am: String

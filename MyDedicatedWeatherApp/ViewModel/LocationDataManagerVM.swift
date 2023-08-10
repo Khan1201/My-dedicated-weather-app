@@ -44,12 +44,14 @@ final class LocationDataManagerVM: NSObject, ObservableObject {
     }
     
     func convertLocationToXYForVeryShortForecast() -> Gps2XY.LatXLngY {
-        let XY: Gps2XY.LatXLngY = commonForecastUtil.convertGPS2XY(
+        let xy: Gps2XY.LatXLngY = commonForecastUtil.convertGPS2XY(
             mode: .toXY,
             lat_X: locationManager.location?.coordinate.latitude ?? 0,
             lng_Y:locationManager.location?.coordinate.longitude ?? 0
         )
-        return XY
+        UserDefaults.standard.set(xy.x, forKey: "x")
+        UserDefaults.standard.set(xy.y, forKey: "y")
+        return xy
     }
     
     func openAppSetting() {

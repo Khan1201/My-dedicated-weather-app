@@ -21,6 +21,7 @@ struct WeekViewController: View {
             Color.blue
         }
         .task {
+            await viewModel.requestShortForecastItems()
             await viewModel.requestMidTermForecastTempItems()
             await viewModel.requestMidTermForecastSkyStateItems()
         }
