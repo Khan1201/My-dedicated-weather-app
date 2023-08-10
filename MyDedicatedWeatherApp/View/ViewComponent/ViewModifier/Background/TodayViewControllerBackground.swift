@@ -11,7 +11,6 @@ struct TodayViewControllerBackground: ViewModifier {
     let isDayMode: Bool
     let isAllLoadCompleted: Bool
     let skyType: Weather.SkyType
-    @State private var height: CGFloat = 0
     
     func body(content: Content) -> some View {
         
@@ -74,9 +73,7 @@ struct TodayViewControllerBackground: ViewModifier {
         content
             .background {
                 VStack(alignment: .leading, spacing: 0) {
-                    
                     if isDayMode {
-                        
                         Image("background_weather_\(skyType.backgroundImageKeyword)")
                             .resizable()
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -86,12 +83,10 @@ struct TodayViewControllerBackground: ViewModifier {
                         
                     } else {
                         LinearGradient(
-                            stops: [
-                                Gradient.Stop(color: Color(red: 0.07, green: 0.1, blue: 0.14), location: 0.00),
-                                Gradient.Stop(color: Color(red: 0.17, green: 0.19, blue: 0.26), location: 1.00),
-                            ],
-                            startPoint: UnitPoint(x: 0, y: 0),
-                            endPoint: UnitPoint(x: 1, y: 1)
+                            colors: [Color(red: 0.07, green: 0.1, blue: 0.14),
+                                     Color(red: 0.17, green: 0.19, blue: 0.26)],
+                            startPoint: .top,
+                            endPoint: .bottom
                         )
                         .ignoresSafeArea()
                         .overlay {
@@ -102,9 +97,8 @@ struct TodayViewControllerBackground: ViewModifier {
                         .overlay(alignment: .topTrailing) {
                             Image("background_cloud")
                                 .resizable()
-                                .frame(width: 400, height: 400)
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
                         }
-                        .getHeight(height: $height)
                     }
                 }
                 .if(isAllLoadCompleted) { view in
@@ -115,7 +109,6 @@ struct TodayViewControllerBackground: ViewModifier {
                                 loopMode: .loop,
                                 speed: isSunnyDay ? 1.8 : 1.0
                             )
-                            .frame(width: UIScreen.screenWidth, height: height)
                             .offset(y: lottieOffset)
                         }
                 }
