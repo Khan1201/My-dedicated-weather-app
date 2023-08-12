@@ -269,4 +269,12 @@ extension WeekViewModel {
             return (wfToImageString, rnSt)
         }
     }
+    
+    func setWeeklyWeatherInformations() {
+        if tommorowAndTwoDaysLaterInformations.count == 2 && minMaxTemperaturesByThreeToTenDay.count == 8 && weatherImageAndRainfallPercentsByThreeToTenDay.count == 8 {
+            
+        } else {
+            
+        }
+    }
 }

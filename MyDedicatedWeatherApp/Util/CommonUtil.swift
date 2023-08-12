@@ -8,7 +8,8 @@
 import Foundation
 import SwiftUI
 
-struct CommonUtil {
+final class CommonUtil {
+    static let shared = CommonUtil()
     
     //MARK: - Common..
 
@@ -69,14 +70,14 @@ struct CommonUtil {
         ***********************************************************
         ⚠️ Error
         -----------------------------------------------------------
-        ●Function Name: \(requestName)
+        ●Function Name: \(funcTitle)
         -----------------------------------------------------------
         ●Description:
         \(description)
         -----------------------------------------------------------
         ●Value(s):
-        \(value ?? "")
-        \(values ?? "")
+          → Value: \(value ?? "")
+          → Values: \(values ?? [])
         ***********************************************************
         """)
     }
@@ -86,11 +87,11 @@ struct CommonUtil {
         ***********************************************************
         👍 Success
         -----------------------------------------------------------
-        ●Function Name: \(requestName)
+        ●Function Name: \(funcTitle)
         -----------------------------------------------------------
         ●Value(s):
-        \(value ?? "")
-        \(values ?? "")
+          → Value: \(value ?? "")
+          → Values: \(values ?? [])
         ***********************************************************
         """)
     }

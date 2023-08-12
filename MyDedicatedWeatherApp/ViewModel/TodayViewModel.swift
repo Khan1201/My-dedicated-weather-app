@@ -41,7 +41,6 @@ final class TodayViewModel: ObservableObject {
         static var stationName: String = ""
     }
     
-    private let commonUtil: CommonUtil = CommonUtil()
     private let commonForecastUtil: CommonForecastUtil = CommonForecastUtil()
     private let veryShortTermForecastUtil: VeryShortTermForecastUtil = VeryShortTermForecastUtil()
     private let shortTermForecastUtil: ShortTermForecastUtil = ShortTermForecastUtil()
@@ -493,7 +492,7 @@ extension TodayViewModel {
             )
             
             let todayWeather = Weather.TodayWeatherInformation(
-                time: commonUtil.convertAMOrPMFromHHmm(items[tempIndex].fcstTime),
+                time: CommonUtil.shared.convertAMOrPMFromHHmm(items[tempIndex].fcstTime),
                 weatherImage: weatherImage.imageString,
                 precipitation: items[popIndex].fcstValue,
                 temperature: items[tempIndex].fcstValue
