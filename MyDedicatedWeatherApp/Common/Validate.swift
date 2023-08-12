@@ -12,6 +12,6 @@ struct Validate {
     
     func kakaoHeader() -> HTTPHeaders? {
         
-        return HTTPHeaders(["Authorization": "KakaoAK \(Env().kakaoRestAPIKey)"])
+        return HTTPHeaders(["Authorization": "KakaoAK \(Env.shared.kakaoRestAPIKey)"])
     }
 }

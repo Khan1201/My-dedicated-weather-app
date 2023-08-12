@@ -21,8 +21,6 @@ final class WeekViewModel: ObservableObject {
     
     private let shortTermForecastUtil: ShortTermForecastUtil = ShortTermForecastUtil()
     private let commonForecastUtil: CommonForecastUtil = CommonForecastUtil()
-    private let env: Env = Env()
-    private let jsonRequest: JsonRequest = JsonRequest()
     private let midTermForecastUtil: MidTermForecastUtil = MidTermForecastUtil()
 }
 
@@ -37,7 +35,7 @@ extension WeekViewModel {
     func requestShortForecastItems() async {
         
         let parameters = VeryShortOrShortTermForecastReq(
-            serviceKey: env.openDataApiResponseKey,
+            serviceKey: Env.shared.openDataApiResponseKey,
             numOfRows: "701",
             baseDate: shortTermForecastUtil.requestBaseDate(),
             baseTime: shortTermForecastUtil.requestBaseTime(),
@@ -46,7 +44,7 @@ extension WeekViewModel {
         )
         
         do {
-            let result = try await jsonRequest.newRequest(
+            let result = try await JsonRequest.shared.newRequest(
                 url: Route.GET_WEATHER_SHORT_TERM_FORECAST.val,
                 method: .get,
                 parameters: parameters,
@@ -80,14 +78,14 @@ extension WeekViewModel {
     func requestMidTermForecastTempItems() async {
         
         let parameters: MidTermForecastReq = MidTermForecastReq(
-            serviceKey: env.openDataApiResponseKey,
+            serviceKey: Env.shared.openDataApiResponseKey,
             regId: midTermForecastUtil.requestRegOrStnId(locality: locality, reqType: .temperature, subLocality: subLocality),
             stnId: nil,
             tmFc: midTermForecastUtil.requestTmFc()
         )
         
         do {
-            let result = try await jsonRequest.newRequest(
+            let result = try await JsonRequest.shared.newRequest(
                 url: Route.GET_WEATHER_MID_TERM_FORECAST_TEMP.val,
                 method: .get,
                 parameters: parameters,
@@ -119,14 +117,14 @@ extension WeekViewModel {
     func requestMidTermForecastSkyStateItems() async {
         
         let parameters: MidTermForecastReq = MidTermForecastReq(
-            serviceKey: env.openDataApiResponseKey,
+            serviceKey: Env.shared.openDataApiResponseKey,
             regId: midTermForecastUtil.requestRegOrStnId(locality: locality, reqType: .skystate),
             stnId: nil,
             tmFc: midTermForecastUtil.requestTmFc()
         )
         
         do {
-            let result = try await jsonRequest.newRequest(
+            let result = try await JsonRequest.shared.newRequest(
                 url: Route.GET_WEATHER_MID_TERM_FORECAST_SKYSTATE.val,
                 method: .get,
                 parameters: parameters,

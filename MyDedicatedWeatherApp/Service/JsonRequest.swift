@@ -8,7 +8,8 @@
 import Foundation
 import Alamofire
 
-struct JsonRequest {
+final class JsonRequest {
+    static let shared = JsonRequest()
     
     func newRequest<T:Decodable, Parameters: Encodable>(
         url: String,

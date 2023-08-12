@@ -46,9 +46,6 @@ final class TodayViewModel: ObservableObject {
     private let shortTermForecastUtil: ShortTermForecastUtil = ShortTermForecastUtil()
     private let midTermForecastUtil: MidTermForecastUtil = MidTermForecastUtil()
     private let fineDustLookUpUtil: FineDustLookUpUtil = FineDustLookUpUtil()
-    
-    private let env = Env()
-    private let jsonRequest = JsonRequest()
     private var subscriptions: Set<AnyCancellable> = []
 }
 
@@ -84,7 +81,7 @@ extension TodayViewModel {
         let baseDate = veryShortTermForecastUtil.requestBaseDate(baseTime: baseTime)
         
         let parameters: VeryShortOrShortTermForecastReq = VeryShortOrShortTermForecastReq(
-            serviceKey: env.openDataApiResponseKey,
+            serviceKey: Env.shared.openDataApiResponseKey,
             numOfRows: "300",
             baseDate: baseDate,
             baseTime: baseTime,
@@ -93,7 +90,7 @@ extension TodayViewModel {
         )
         
         do {
-            let result = try await jsonRequest.newRequest(
+            let result = try await JsonRequest.shared.newRequest(
                 url: Route.GET_WEATHER_VERY_SHORT_TERM_FORECAST.val,
                 method: .get,
                 parameters: parameters,
@@ -165,7 +162,7 @@ extension TodayViewModel {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
 
         let parameters = VeryShortOrShortTermForecastReq(
-            serviceKey: env.openDataApiResponseKey,
+            serviceKey: Env.shared.openDataApiResponseKey,
             numOfRows: "300",
             baseDate: shortTermForecastUtil.requestBaseDate(),
             baseTime: baseTime != nil ? baseTime! : shortTermForecastUtil.requestBaseTime(),
@@ -175,7 +172,7 @@ extension TodayViewModel {
         )
         
         do {
-            let result = try await jsonRequest.newRequest(
+            let result = try await JsonRequest.shared.newRequest(
                 url: Route.GET_WEATHER_SHORT_TERM_FORECAST.val,
                 method: .get,
                 parameters: parameters,
@@ -214,12 +211,12 @@ extension TodayViewModel {
     func requestRealTimeFindDustForecastItems() async {
         
         let parameters: RealTimeFindDustForecastReq = RealTimeFindDustForecastReq(
-            serviceKey: env.openDataApiResponseKey,
+            serviceKey: Env.shared.openDataApiResponseKey,
             stationName: ForDustStationRequest.stationName
         )
         
         do {
-            let result = try await jsonRequest.newRequest(
+            let result = try await JsonRequest.shared.newRequest(
                 url: Route.GET_REAL_TIME_FIND_DUST_FORECAST.val,
                 method: .get,
                 parameters: parameters,
@@ -258,12 +255,12 @@ extension TodayViewModel {
     func requestDustForecastStationXY(subLocality: String, locality: String) async {
         
         let param: DustForecastStationXYReq = DustForecastStationXYReq(
-            serviceKey: env.openDataApiResponseKey,
+            serviceKey: Env.shared.openDataApiResponseKey,
             umdName: subLocality
         )
         
         do {
-            let result = try await jsonRequest.newRequest(
+            let result = try await JsonRequest.shared.newRequest(
                 url: Route.GET_DUST_FORECAST_STATION_XY.val,
                 method: .get,
                 parameters: param,
@@ -298,13 +295,13 @@ extension TodayViewModel {
     func requestDustForecastStation(tmXAndtmY: (String, String)) async {
         
         let param: DustForecastStationReq = DustForecastStationReq(
-            serviceKey: env.openDataApiResponseKey,
+            serviceKey: Env.shared.openDataApiResponseKey,
             tmX: tmXAndtmY.0,
             tmY: tmXAndtmY.1
         )
         
         do {
-            let result = try await jsonRequest.newRequest(
+            let result = try await JsonRequest.shared.newRequest(
                 url: Route.GET_DUST_FORECAST_STATION.val,
                 method: .get,
                 parameters: param,
@@ -344,7 +341,7 @@ extension TodayViewModel {
         let header = Validate().kakaoHeader()
         
         do {
-            let result = try await jsonRequest.newRequest(
+            let result = try await JsonRequest.shared.newRequest(
                 url: Route.GET_KAKAO_ADDRESS.val,
                 method: .get,
                 parameters: param,
@@ -386,7 +383,7 @@ extension TodayViewModel {
         let startTime = CFAbsoluteTimeGetCurrent()
         SunAndMoonRiseByXMLService(
             queryItem: .init(
-                serviceKey: env.openDataApiResponseKey,
+                serviceKey: Env.shared.openDataApiResponseKey,
                 locdate: Date().toString(format: "yyyyMMdd"),
                 longitude: long,
                 latitude: lat
