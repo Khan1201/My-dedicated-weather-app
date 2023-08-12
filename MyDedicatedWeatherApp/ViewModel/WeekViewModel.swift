@@ -25,7 +25,11 @@ final class WeekViewModel: ObservableObject {
     private let env: Env = Env()
     private let jsonRequest: JsonRequest = JsonRequest()
     private let midTermForecastUtil: MidTermForecastUtil = MidTermForecastUtil()
-    
+}
+
+// MARK: - Request funcs..
+
+extension WeekViewModel {
     /**
      Request 단기예보 Items
      
@@ -35,6 +39,7 @@ final class WeekViewModel: ObservableObject {
         
         let parameters = VeryShortOrShortTermForecastReq(
             serviceKey: env.openDataApiResponseKey,
+            numOfRows: "701",
             baseDate: shortTermForecastUtil.requestBaseDate(),
             baseTime: shortTermForecastUtil.requestBaseTime(),
             nx: String(xy.0),
@@ -52,94 +57,7 @@ final class WeekViewModel: ObservableObject {
             )
             
             DispatchQueue.main.async {
-                let tommorrowDate: String = Date().toString(byAdding: 1, format: "yyyyMMdd")
-                let twoDaysLaterDate: String = Date().toString(byAdding: 2, format: "yyyyMMdd")
-                
-                var precipitationPercentes: [String] = []
-                var skyStateImageStrings: [String] = []
-                var minMaxTemperaturesByThreeToTenDay: [(String, String)] = []
-                
-                let tommorowTempFilteredItems: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>] = result.item?.filter({ item in
-                    item.category == .TMP && item.fcstDate == tommorrowDate
-                }) ?? []
-                
-                let twoDaysLaterTempFilteredItems: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>] = result.item?.filter({ item in
-                    item.category == .TMP && item.fcstDate == twoDaysLaterDate
-                }) ?? []
-                
-                let skyStateFilteredItems: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>] = result.item?.filter({ item in
-                    item.category == .SKY && (item.fcstDate == tommorrowDate || item.fcstDate == twoDaysLaterDate) && item.fcstTime == "1200"
-                }) ?? []
-                
-                let percentFilteredItems: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>] = result.item?.filter({ item in
-                    item.category == .POP && (item.fcstDate == tommorrowDate || item.fcstDate == twoDaysLaterDate) && item.fcstTime == "1200"
-                }) ?? []
-                                
-                
-                for item in percentFilteredItems {
-                    precipitationPercentes.append(item.fcstValue)
-                }
-                
-                for item in skyStateFilteredItems {
-                    skyStateImageStrings.append(
-                        self.commonForecastUtil.remakeSkyStateValueByVeryShortTermOrShortTermForecast(
-                            item.fcstValue,
-                            hhMMForDayOrNightImage: "1200",
-                            sunrise: "0600",
-                            sunset: "2000",
-                            isAnimationImage: false
-                        ).imageString
-                    )
-                }
-                
-                var tommorowMinTemp = 0
-                var tommorowMaxTemp = 0
-                var twoDaysLaterMinTemp = 0
-                var twoDaysLaterMaxTemp = 0
-                
-                for (index, item) in tommorowTempFilteredItems.enumerated() {
-                    if index == 0 {
-                        tommorowMinTemp = item.fcstValue.toInt
-                        tommorowMaxTemp = item.fcstValue.toInt
-                        
-                    } else {
-                        if item.fcstValue.toInt > tommorowMaxTemp {
-                            tommorowMaxTemp = item.fcstValue.toInt
-                        } else if item.fcstValue.toInt < tommorowMinTemp {
-                            tommorowMinTemp = item.fcstValue.toInt
-                        }
-                    }
-                }
-                
-                for (index, item) in twoDaysLaterTempFilteredItems.enumerated() {
-                    if index == 0 {
-                        twoDaysLaterMinTemp = item.fcstValue.toInt
-                        twoDaysLaterMaxTemp = item.fcstValue.toInt
-                        
-                    } else {
-                        if item.fcstValue.toInt > twoDaysLaterMaxTemp {
-                            twoDaysLaterMaxTemp = item.fcstValue.toInt
-                        } else if item.fcstValue.toInt < twoDaysLaterMinTemp {
-                            twoDaysLaterMinTemp = item.fcstValue.toInt
-                        }
-                    }
-                }
-                
-                minMaxTemperaturesByThreeToTenDay.append((tommorowMinTemp.toString, tommorowMaxTemp.toString))
-                minMaxTemperaturesByThreeToTenDay.append((twoDaysLaterMinTemp.toString, twoDaysLaterMaxTemp.toString))
-                
-                for i in minMaxTemperaturesByThreeToTenDay.indices {
-                    self.tommorowAndTwoDaysLaterInformations.append(
-                        .init(
-                            weatherImage: skyStateImageStrings[i],
-                            minTemperature: minMaxTemperaturesByThreeToTenDay[i].0,
-                            maxTemperature: minMaxTemperaturesByThreeToTenDay[i].1,
-                            precipitationPercent: precipitationPercentes[i]
-                        )
-                    )
-                }
- 
-                print(self.tommorowAndTwoDaysLaterInformations)
+                setTommorowAndTwoDaysLaterInformations(by: result)
             }
             
         } catch APIError.transportError {
@@ -178,15 +96,7 @@ final class WeekViewModel: ObservableObject {
             )
             DispatchQueue.main.async {
                 if let item = result.item?.first {
-                    self.minMaxTemperaturesByThreeToTenDay.append((item.taMin3, item.taMax3))
-                    self.minMaxTemperaturesByThreeToTenDay.append((item.taMin4, item.taMax4))
-                    self.minMaxTemperaturesByThreeToTenDay.append((item.taMin5, item.taMax5))
-                    self.minMaxTemperaturesByThreeToTenDay.append((item.taMin6, item.taMax6))
-                    self.minMaxTemperaturesByThreeToTenDay.append((item.taMin7, item.taMax7))
-                    self.minMaxTemperaturesByThreeToTenDay.append((item.taMin8, item.taMax8))
-                    self.minMaxTemperaturesByThreeToTenDay.append((item.taMin8, item.taMax8))
-                    self.minMaxTemperaturesByThreeToTenDay.append((item.taMin9, item.taMax9))
-                    self.minMaxTemperaturesByThreeToTenDay.append((item.taMin10, item.taMax10))
+                    setMinMaxTemperaturesByThreeToTenDay(by: item)
                 }
                 
             }
@@ -225,19 +135,7 @@ final class WeekViewModel: ObservableObject {
             )
             DispatchQueue.main.async {
                 if let item = result.item?.first {
-                    self.weatherImageAndRainfallPercentsByThreeToTenDay.append(weatherImageAndRainfallPercent(wf: item.wf3Am, rnSt: item.rnSt3Am))
-                    self.weatherImageAndRainfallPercentsByThreeToTenDay.append(weatherImageAndRainfallPercent(wf: item.wf4Am, rnSt: item.rnSt4Am))
-                    self.weatherImageAndRainfallPercentsByThreeToTenDay.append(weatherImageAndRainfallPercent(wf: item.wf5Am, rnSt: item.rnSt5Am))
-                    self.weatherImageAndRainfallPercentsByThreeToTenDay.append(weatherImageAndRainfallPercent(wf: item.wf6Am, rnSt: item.rnSt6Am))
-                    self.weatherImageAndRainfallPercentsByThreeToTenDay.append(weatherImageAndRainfallPercent(wf: item.wf7Am, rnSt: item.rnSt7Am))
-                    self.weatherImageAndRainfallPercentsByThreeToTenDay.append(weatherImageAndRainfallPercent(wf: item.wf8, rnSt: item.rnSt8))
-                    self.weatherImageAndRainfallPercentsByThreeToTenDay.append(weatherImageAndRainfallPercent(wf: item.wf9, rnSt: item.rnSt9))
-                    self.weatherImageAndRainfallPercentsByThreeToTenDay.append(weatherImageAndRainfallPercent(wf: item.wf10, rnSt: item.rnSt10))
-                    
-                    func weatherImageAndRainfallPercent(wf: String, rnSt: Int) -> (String, Int){
-                        let wfToImageString = self.midTermForecastUtil.remakeSkyStateValueToImageString(value: wf)
-                        return (wf, rnSt)
-                    }
+                    setweatherImageAndRainfallPercentsByThreeToTenDay(by: item)
                 }
                 
             }
@@ -250,6 +148,126 @@ final class WeekViewModel: ObservableObject {
             DispatchQueue.main.async {
                 self.errorMessage = "알 수 없는 오류"
             }
+        }
+    }
+}
+
+// MARK: - Set funcs..
+
+extension WeekViewModel {
+    /**
+     Set `tommorowAndTwoDaysLaterInformations`(오늘 ~ 내일까지의 최저, 최고 온도 및 하늘정보 image, 강수확률 데이터)
+     - parameter item: requestShortForecastItems() 결과 데이터
+     */
+    func setTommorowAndTwoDaysLaterInformations(by: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>]) {
+        let tommorrowDate: String = Date().toString(byAdding: 1, format: "yyyyMMdd")
+        let twoDaysLaterDate: String = Date().toString(byAdding: 2, format: "yyyyMMdd")
+        
+        // 각 변수에는 오늘, 내일 데이터 포함 (count == 2)
+        var precipitationPercentes: [String] = []
+        var skyStateImageStrings: [String] = []
+        var minMaxTemperatures: [(String, String)] = []
+        
+        let tommorowTempFilteredItems: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>] = result.item?.filter({ item in
+            item.category == .TMP && item.fcstDate == tommorrowDate
+        }) ?? []
+        
+        let twoDaysLaterTempFilteredItems: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>] = result.item?.filter({ item in
+            item.category == .TMP && item.fcstDate == twoDaysLaterDate
+        }) ?? []
+        
+        let skyStateFilteredItems: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>] = result.item?.filter({ item in
+            item.category == .SKY && (item.fcstDate == tommorrowDate || item.fcstDate == twoDaysLaterDate) && item.fcstTime == "1200"
+        }) ?? []
+        
+        let percentFilteredItems: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>] = result.item?.filter({ item in
+            item.category == .POP && (item.fcstDate == tommorrowDate || item.fcstDate == twoDaysLaterDate) && item.fcstTime == "1200"
+        }) ?? []
+                        
+        
+        for i in 0..<skyStateFilteredItems.count {
+            precipitationPercentes.append(percentFilteredItems[i].fcstValue)
+            skyStateImageStrings.append(
+                self.commonForecastUtil.remakeSkyStateValueByVeryShortTermOrShortTermForecast(
+                    skyStateFilteredItems[i].fcstValue,
+                    hhMMForDayOrNightImage: "1200",
+                    sunrise: "0600",
+                    sunset: "2000",
+                    isAnimationImage: false
+                ).imageString
+            )
+        }
+        
+        let tommorowMinMaxTemp: (String, String) = minMaxItem(by: tommorowTempFilteredItems)
+        let twoDaysLaterMinMaxTemp: (String, String) = minMaxItem(by: twoDaysLaterTempFilteredItems)
+        
+        minMaxTemperatures.append(tommorowMinMaxTemp)
+        minMaxTemperatures.append(twoDaysLaterMinMaxTemp)
+        
+        for i in 0..<2 {
+            self.tommorowAndTwoDaysLaterInformations.append(
+                .init(
+                    weatherImage: skyStateImageStrings[i],
+                    minTemperature: minMaxTemperatures[i].0,
+                    maxTemperature: minMaxTemperatures[i].1,
+                    precipitationPercent: precipitationPercentes[i]
+                )
+            )
+        }
+        
+        func minMaxItem(by filteredItems: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>]) -> (String, String) {
+            var minMaxResult: (Int, Int) = (0, 0)
+            
+            for (index, item) in filteredItems.enumerated() {
+                if index == 0 {
+                    minMaxResult = (item.fcstValue.toInt, item.fcstValue.toInt)
+                    
+                } else {
+                    if item.fcstValue.toInt > minMaxResult.1 {
+                        minMaxResult.1 = item.fcstValue.toInt
+                    } else if item.fcstValue.toInt < minMaxResult.0 {
+                        minMaxResult.0 = item.fcstValue.toInt
+                    }
+                }
+            }
+            
+            return (minMaxResult.0.toString, minMaxResult.1.toString)
+        }
+    }
+    
+    /**
+     Set `setMinMaxTemperaturesByThreeToTenDay`(3일 ~ 10일 까지의 최소, 최고 온도 데이터)
+     - parameter item: requestMidTermForecastTempItems() 결과 데이터
+     */
+    func setMinMaxTemperaturesByThreeToTenDay(by item: MidTermForecastTemperatureBase) {
+        self.minMaxTemperaturesByThreeToTenDay.append((item.taMin3, item.taMax3))
+        self.minMaxTemperaturesByThreeToTenDay.append((item.taMin4, item.taMax4))
+        self.minMaxTemperaturesByThreeToTenDay.append((item.taMin5, item.taMax5))
+        self.minMaxTemperaturesByThreeToTenDay.append((item.taMin6, item.taMax6))
+        self.minMaxTemperaturesByThreeToTenDay.append((item.taMin7, item.taMax7))
+        self.minMaxTemperaturesByThreeToTenDay.append((item.taMin8, item.taMax8))
+        self.minMaxTemperaturesByThreeToTenDay.append((item.taMin8, item.taMax8))
+        self.minMaxTemperaturesByThreeToTenDay.append((item.taMin9, item.taMax9))
+        self.minMaxTemperaturesByThreeToTenDay.append((item.taMin10, item.taMax10))
+    }
+    
+    /**
+     Set `weatherImageAndRainfallPercentsByThreeToTenDay`(3일 ~ 10일 까지의 하늘정보 image, 강수확률 데이터)
+     - parameter item: requestMidTermForecastSkyStateItems() 결과 데이터
+     */
+    func setWeatherImageAndRainfallPercentsByThreeToTenDay(by item: MidTermForecastSkyStateBase) {
+        self.weatherImageAndRainfallPercentsByThreeToTenDay.append(weatherImageAndRainfallPercent(wf: item.wf3Am, rnSt: item.rnSt3Am))
+        self.weatherImageAndRainfallPercentsByThreeToTenDay.append(weatherImageAndRainfallPercent(wf: item.wf4Am, rnSt: item.rnSt4Am))
+        self.weatherImageAndRainfallPercentsByThreeToTenDay.append(weatherImageAndRainfallPercent(wf: item.wf5Am, rnSt: item.rnSt5Am))
+        self.weatherImageAndRainfallPercentsByThreeToTenDay.append(weatherImageAndRainfallPercent(wf: item.wf6Am, rnSt: item.rnSt6Am))
+        self.weatherImageAndRainfallPercentsByThreeToTenDay.append(weatherImageAndRainfallPercent(wf: item.wf7Am, rnSt: item.rnSt7Am))
+        self.weatherImageAndRainfallPercentsByThreeToTenDay.append(weatherImageAndRainfallPercent(wf: item.wf8, rnSt: item.rnSt8))
+        self.weatherImageAndRainfallPercentsByThreeToTenDay.append(weatherImageAndRainfallPercent(wf: item.wf9, rnSt: item.rnSt9))
+        self.weatherImageAndRainfallPercentsByThreeToTenDay.append(weatherImageAndRainfallPercent(wf: item.wf10, rnSt: item.rnSt10))
+        
+        func weatherImageAndRainfallPercent(wf: String, rnSt: Int) -> (String, Int){
+            let wfToImageString = self.midTermForecastUtil.remakeSkyStateValueToImageString(value: wf)
+            return (wf, rnSt)
         }
     }
 }

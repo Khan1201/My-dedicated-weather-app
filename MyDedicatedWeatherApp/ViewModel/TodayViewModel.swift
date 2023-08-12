@@ -86,6 +86,7 @@ extension TodayViewModel {
         
         let parameters: VeryShortOrShortTermForecastReq = VeryShortOrShortTermForecastReq(
             serviceKey: env.openDataApiResponseKey,
+            numOfRows: "300",
             baseDate: baseDate,
             baseTime: baseTime,
             nx: String(xy.x),
@@ -166,6 +167,7 @@ extension TodayViewModel {
 
         let parameters = VeryShortOrShortTermForecastReq(
             serviceKey: env.openDataApiResponseKey,
+            numOfRows: "300",
             baseDate: shortTermForecastUtil.requestBaseDate(),
             baseTime: baseTime != nil ? baseTime! : shortTermForecastUtil.requestBaseTime(),
             /// baseTime != nil -> 앱 구동 시 호출이 아닌, 수동 호출
