@@ -246,7 +246,6 @@ extension WeekViewModel {
         self.minMaxTemperaturesByThreeToTenDay.append((item.taMin6, item.taMax6))
         self.minMaxTemperaturesByThreeToTenDay.append((item.taMin7, item.taMax7))
         self.minMaxTemperaturesByThreeToTenDay.append((item.taMin8, item.taMax8))
-        self.minMaxTemperaturesByThreeToTenDay.append((item.taMin8, item.taMax8))
         self.minMaxTemperaturesByThreeToTenDay.append((item.taMin9, item.taMax9))
         self.minMaxTemperaturesByThreeToTenDay.append((item.taMin10, item.taMax10))
     }
@@ -266,8 +265,8 @@ extension WeekViewModel {
         self.weatherImageAndRainfallPercentsByThreeToTenDay.append(weatherImageAndRainfallPercent(wf: item.wf10, rnSt: item.rnSt10))
         
         func weatherImageAndRainfallPercent(wf: String, rnSt: Int) -> (String, Int){
-            let wfToImageString = self.midTermForecastUtil.remakeSkyStateValueToImageString(value: wf)
-            return (wf, rnSt)
+            let wfToImageString = midTermForecastUtil.remakeSkyStateValueToImageString(value: wf)
+            return (wfToImageString, rnSt)
         }
     }
 }
