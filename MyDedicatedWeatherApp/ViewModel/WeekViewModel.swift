@@ -12,8 +12,8 @@ final class WeekViewModel: ObservableObject {
     @Published var errorMessage: String = ""
     
     var tommorowAndTwoDaysLaterInformations: [Weather.WeeklyWeatherInformation] = []
-    var minMaxTemperaturesByThreeToTenDay: [(Int, Int)] = []
-    var weatherImageAndRainfallPercentsByThreeToTenDay: [(String, Int)] = []
+    var minMaxTemperaturesByThreeToTenDay: [(String, String)] = []
+    var weatherImageAndRainfallPercentsByThreeToTenDay: [(String, String)] = []
     
     private let locality: String = UserDefaults.standard.string(forKey: "locality") ?? ""
     private let subLocality: String = UserDefaults.standard.string(forKey: "subLocality") ?? ""
@@ -135,6 +135,7 @@ extension WeekViewModel {
             DispatchQueue.main.async {
                 if let item = result.item?.first {
                     self.setWeatherImageAndRainfallPercentsByThreeToTenDay(by: item)
+                    self.setWeeklyWeatherInformations()
                 }
                 
             }
@@ -148,6 +149,12 @@ extension WeekViewModel {
                 self.errorMessage = "알 수 없는 오류"
             }
         }
+    }
+    
+    func performWeekRequests() async {
+        await requestShortForecastItems()
+        await requestMidTermForecastTempItems()
+        await requestMidTermForecastSkyStateItems()
     }
 }
 
@@ -238,14 +245,14 @@ extension WeekViewModel {
      - parameter item: requestMidTermForecastTempItems() 결과 데이터
      */
     func setMinMaxTemperaturesByThreeToTenDay(by item: MidTermForecastTemperatureBase) {
-        self.minMaxTemperaturesByThreeToTenDay.append((item.taMin3, item.taMax3))
-        self.minMaxTemperaturesByThreeToTenDay.append((item.taMin4, item.taMax4))
-        self.minMaxTemperaturesByThreeToTenDay.append((item.taMin5, item.taMax5))
-        self.minMaxTemperaturesByThreeToTenDay.append((item.taMin6, item.taMax6))
-        self.minMaxTemperaturesByThreeToTenDay.append((item.taMin7, item.taMax7))
-        self.minMaxTemperaturesByThreeToTenDay.append((item.taMin8, item.taMax8))
-        self.minMaxTemperaturesByThreeToTenDay.append((item.taMin9, item.taMax9))
-        self.minMaxTemperaturesByThreeToTenDay.append((item.taMin10, item.taMax10))
+        self.minMaxTemperaturesByThreeToTenDay.append((item.taMin3.toString, item.taMax3.toString))
+        self.minMaxTemperaturesByThreeToTenDay.append((item.taMin4.toString, item.taMax4.toString))
+        self.minMaxTemperaturesByThreeToTenDay.append((item.taMin5.toString, item.taMax5.toString))
+        self.minMaxTemperaturesByThreeToTenDay.append((item.taMin6.toString, item.taMax6.toString))
+        self.minMaxTemperaturesByThreeToTenDay.append((item.taMin7.toString, item.taMax7.toString))
+        self.minMaxTemperaturesByThreeToTenDay.append((item.taMin8.toString, item.taMax8.toString))
+        self.minMaxTemperaturesByThreeToTenDay.append((item.taMin9.toString, item.taMax9.toString))
+        self.minMaxTemperaturesByThreeToTenDay.append((item.taMin10.toString, item.taMax10.toString))
     }
     
     /**
@@ -262,17 +269,45 @@ extension WeekViewModel {
         self.weatherImageAndRainfallPercentsByThreeToTenDay.append(weatherImageAndRainfallPercent(wf: item.wf9, rnSt: item.rnSt9))
         self.weatherImageAndRainfallPercentsByThreeToTenDay.append(weatherImageAndRainfallPercent(wf: item.wf10, rnSt: item.rnSt10))
         
-        func weatherImageAndRainfallPercent(wf: String, rnSt: Int) -> (String, Int){
+        func weatherImageAndRainfallPercent(wf: String, rnSt: Int) -> (String, String){
             let wfToImageString = midTermForecastUtil.remakeSkyStateValueToImageString(value: wf)
-            return (wfToImageString, rnSt)
+            return (wfToImageString, rnSt.toString)
         }
     }
     
     func setWeeklyWeatherInformations() {
         if tommorowAndTwoDaysLaterInformations.count == 2 && minMaxTemperaturesByThreeToTenDay.count == 8 && weatherImageAndRainfallPercentsByThreeToTenDay.count == 8 {
             
-        } else {
+            var threeToTenDayInformations: [Weather.WeeklyWeatherInformation] = []
+            for i in 0..<8 {
+                let threeToTenDayInformation: Weather.WeeklyWeatherInformation = .init(
+                    weatherImage: weatherImageAndRainfallPercentsByThreeToTenDay[i].0,
+                    rainfallPercent: weatherImageAndRainfallPercentsByThreeToTenDay[i].1,
+                    minTemperature: minMaxTemperaturesByThreeToTenDay[i].0,
+                    maxTemperature: minMaxTemperaturesByThreeToTenDay[i].1)
+                
+                threeToTenDayInformations.append(threeToTenDayInformation)
+            }
+            weeklyWeatherInformations.append(contentsOf: tommorowAndTwoDaysLaterInformations)
+            weeklyWeatherInformations.append(contentsOf: threeToTenDayInformations)
+            CommonUtil.shared.printSuccess(funcTitle: "setWeeklyWeatherInformations()", values: weeklyWeatherInformations)
             
+        } else {
+            CommonUtil.shared.printError(
+                funcTitle: "setWeeklyWeatherInformations()",
+                description: """
+                주간 예보 날씨 정보 Set 실패
+                tommorowAndTwoDaysLaterInformations,
+                minMaxTemperaturesByThreeToTenDay,
+                weatherImageAndRainfallPercentsByThreeToTenDay
+                의 값이 제대로 들어있는지 확인하세요.
+                """,
+                values: [
+                    tommorowAndTwoDaysLaterInformations.count,
+                    minMaxTemperaturesByThreeToTenDay.count,
+                    weatherImageAndRainfallPercentsByThreeToTenDay.count
+                ]
+            )
         }
     }
 }

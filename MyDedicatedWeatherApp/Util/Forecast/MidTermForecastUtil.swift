@@ -266,7 +266,7 @@ struct MidTermForecastUtil {
         if value == "맑음" {
             return "weather_sunny"
             
-        } else if value == "구름 많음" {
+        } else if value == "구름많음" {
             return "weather_cloud_many"
             
         } else if value == "흐림" {

@@ -82,7 +82,7 @@ final class CommonUtil {
         """)
     }
     
-    func printSuccess(funcTitle: String, description: String, value: Any? = nil, values: [Any]? = nil) {
+    func printSuccess(funcTitle: String, value: Any? = nil, values: [Any]? = nil) {
         print("""
         ***********************************************************
         👍 Success
