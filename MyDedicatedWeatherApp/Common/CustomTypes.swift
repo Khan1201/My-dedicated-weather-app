@@ -43,13 +43,6 @@ struct Weather {
         let minTemperature: String
         let maxTemperature: String
     }
-    
-    struct TommorowAndTwoDaysLaterInformation {
-        let weatherImage: String
-        let minTemperature: String
-        let maxTemperature: String
-        let precipitationPercent: String
-    }
 
     enum SkyType: String {
         case sunny,

@@ -8,11 +8,10 @@
 import Foundation
 
 final class WeekViewModel: ObservableObject {
-    
     @Published var weeklyWeatherInformations: [Weather.WeeklyWeatherInformation] = []
     @Published var errorMessage: String = ""
     
-    var tommorowAndTwoDaysLaterInformations: [Weather.TommorowAndTwoDaysLaterInformation] = []
+    var tommorowAndTwoDaysLaterInformations: [Weather.WeeklyWeatherInformation] = []
     var minMaxTemperaturesByThreeToTenDay: [(Int, Int)] = []
     var weatherImageAndRainfallPercentsByThreeToTenDay: [(String, Int)] = []
     
@@ -57,7 +56,9 @@ extension WeekViewModel {
             )
             
             DispatchQueue.main.async {
-                setTommorowAndTwoDaysLaterInformations(by: result)
+                if let item = result.item {
+                    self.setTommorowAndTwoDaysLaterInformations(by: item)
+                }
             }
             
         } catch APIError.transportError {
@@ -96,7 +97,7 @@ extension WeekViewModel {
             )
             DispatchQueue.main.async {
                 if let item = result.item?.first {
-                    setMinMaxTemperaturesByThreeToTenDay(by: item)
+                    self.setMinMaxTemperaturesByThreeToTenDay(by: item)
                 }
                 
             }
@@ -135,7 +136,7 @@ extension WeekViewModel {
             )
             DispatchQueue.main.async {
                 if let item = result.item?.first {
-                    setweatherImageAndRainfallPercentsByThreeToTenDay(by: item)
+                    self.setWeatherImageAndRainfallPercentsByThreeToTenDay(by: item)
                 }
                 
             }
@@ -157,9 +158,9 @@ extension WeekViewModel {
 extension WeekViewModel {
     /**
      Set `tommorowAndTwoDaysLaterInformations`(오늘 ~ 내일까지의 최저, 최고 온도 및 하늘정보 image, 강수확률 데이터)
-     - parameter item: requestShortForecastItems() 결과 데이터
+     - parameter items: requestShortForecastItems() 결과 데이터
      */
-    func setTommorowAndTwoDaysLaterInformations(by: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>]) {
+    func setTommorowAndTwoDaysLaterInformations(by items: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>]) {
         let tommorrowDate: String = Date().toString(byAdding: 1, format: "yyyyMMdd")
         let twoDaysLaterDate: String = Date().toString(byAdding: 2, format: "yyyyMMdd")
         
@@ -168,23 +169,22 @@ extension WeekViewModel {
         var skyStateImageStrings: [String] = []
         var minMaxTemperatures: [(String, String)] = []
         
-        let tommorowTempFilteredItems: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>] = result.item?.filter({ item in
+        let tommorowTempFilteredItems = items.filter { item in
             item.category == .TMP && item.fcstDate == tommorrowDate
-        }) ?? []
+        }
         
-        let twoDaysLaterTempFilteredItems: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>] = result.item?.filter({ item in
+        let twoDaysLaterTempFilteredItems = items.filter { item in
             item.category == .TMP && item.fcstDate == twoDaysLaterDate
-        }) ?? []
+        }
         
-        let skyStateFilteredItems: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>] = result.item?.filter({ item in
+        let skyStateFilteredItems = items.filter { item in
             item.category == .SKY && (item.fcstDate == tommorrowDate || item.fcstDate == twoDaysLaterDate) && item.fcstTime == "1200"
-        }) ?? []
+        }
         
-        let percentFilteredItems: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>] = result.item?.filter({ item in
+        let percentFilteredItems = items.filter { item in
             item.category == .POP && (item.fcstDate == tommorrowDate || item.fcstDate == twoDaysLaterDate) && item.fcstTime == "1200"
-        }) ?? []
+        }
                         
-        
         for i in 0..<skyStateFilteredItems.count {
             precipitationPercentes.append(percentFilteredItems[i].fcstValue)
             skyStateImageStrings.append(
@@ -208,9 +208,9 @@ extension WeekViewModel {
             self.tommorowAndTwoDaysLaterInformations.append(
                 .init(
                     weatherImage: skyStateImageStrings[i],
+                    rainfallPercent: precipitationPercentes[i],
                     minTemperature: minMaxTemperatures[i].0,
-                    maxTemperature: minMaxTemperatures[i].1,
-                    precipitationPercent: precipitationPercentes[i]
+                    maxTemperature: minMaxTemperatures[i].1
                 )
             )
         }
