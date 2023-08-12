@@ -70,4 +70,67 @@ struct Dummy {
             ),
         ]
     }
+    
+    func weeklyWeatherInformation() -> Weather.WeeklyWeatherInformation {
+        return .init(
+            weatherImage: "weather_cloud_many",
+            rainfallPercent: "40",
+            minTemperature: "23",
+            maxTemperature: "32"
+        )
+    }
+    
+    func weeklyWeatherInformations() -> [Weather.WeeklyWeatherInformation] {
+        return [
+            .init(
+                weatherImage: "weather_cloud_many",
+                rainfallPercent: "40",
+                minTemperature: "23",
+                maxTemperature: "32"
+            ),
+            .init(
+                weatherImage: "weather_blur",
+                rainfallPercent: "40",
+                minTemperature: "23",
+                maxTemperature: "32"
+            ),
+            .init(
+                weatherImage: "weather_cloud_many",
+                rainfallPercent: "40",
+                minTemperature: "23",
+                maxTemperature: "32"
+            ),
+            .init(
+                weatherImage: "weather_sunny",
+                rainfallPercent: "40",
+                minTemperature: "23",
+                maxTemperature: "32"
+            ),
+            .init(
+                weatherImage: "weather_rain",
+                rainfallPercent: "40",
+                minTemperature: "23",
+                maxTemperature: "32"
+            ),
+            .init(
+                weatherImage: "weather_snow",
+                rainfallPercent: "40",
+                minTemperature: "23",
+                maxTemperature: "32"
+            ),
+            .init(
+                weatherImage: "weather_sunny",
+                rainfallPercent: "40",
+                minTemperature: "23",
+                maxTemperature: "32"
+            ),
+            .init(
+                weatherImage: "weather_sunny",
+                rainfallPercent: "40",
+                minTemperature: "23",
+                maxTemperature: "32"
+            ),
+            
+        ]
+    }
 }
