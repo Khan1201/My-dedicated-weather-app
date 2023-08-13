@@ -12,11 +12,11 @@ final class TodayViewModel: ObservableObject {
     @Published private(set) var errorMessage: String = ""
     @Published private(set) var currentTemperature: String = "00"
     @Published private(set) var currentWeatherAnimationImg: String = ""
-    @Published private(set) var currentWeatherInformation: Weather.CurrentWeatherInformation = Dummy().currentWeatherInformation()
+    @Published private(set) var currentWeatherInformation: Weather.CurrentWeatherInformation = Dummy.shared.currentWeatherInformation()
     @Published private(set) var currentFineDustTuple: Weather.DescriptionAndColor = .init(description: "", color: .clear)
     @Published private(set) var currentUltraFineDustTuple: Weather.DescriptionAndColor = .init(description: "", color: .clear)
     @Published private(set) var todayMinMaxTemperature: (String, String) = ("__", "__")
-    @Published private(set) var todayWeatherInformations: [Weather.TodayWeatherInformation] = Dummy().todayWeatherInformations()
+    @Published private(set) var todayWeatherInformations: [Weather.TodayWeatherInformation] = Dummy.shared.todayWeatherInformations()
     
     @Published var subLocalityByKakaoAddress: String = "성수동 1가"
     

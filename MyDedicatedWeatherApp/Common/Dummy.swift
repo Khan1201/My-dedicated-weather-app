@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct Dummy {
+final class Dummy {
+    static let shared = Dummy()
     
     func currentWeatherInformation() -> Weather.CurrentWeatherInformation {
         

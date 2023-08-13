@@ -16,7 +16,7 @@ final class SunAndMoonRiseByXMLService: NSObject {
 
     var result = PassthroughSubject<SunAndMoonriseBase, Never>()
     
-    var tempResult: SunAndMoonriseBase = Dummy().SunAndMoonriseBase()
+    var tempResult: SunAndMoonriseBase = Dummy.shared.SunAndMoonriseBase()
     var isLock: Bool = false
     var tagType: SunAndMoonriseBase.TagType = .none
     
