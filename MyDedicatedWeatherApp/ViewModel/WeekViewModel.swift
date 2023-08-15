@@ -8,7 +8,7 @@
 import Foundation
 
 final class WeekViewModel: ObservableObject {
-    @Published var weeklyWeatherInformations: [Weather.WeeklyWeatherInformation] = []
+    @Published var weeklyWeatherInformations: [Weather.WeeklyWeatherInformation]
     @Published var errorMessage: String = ""
     
     var tommorowAndTwoDaysLaterInformations: [Weather.WeeklyWeatherInformation] = []
@@ -22,6 +22,10 @@ final class WeekViewModel: ObservableObject {
     private let shortTermForecastUtil: ShortTermForecastUtil = ShortTermForecastUtil()
     private let commonForecastUtil: CommonForecastUtil = CommonForecastUtil()
     private let midTermForecastUtil: MidTermForecastUtil = MidTermForecastUtil()
+    
+    init(weeklyWeatherInformations: [Weather.WeeklyWeatherInformation]) {
+        self.weeklyWeatherInformations = weeklyWeatherInformations
+    }
 }
 
 // MARK: - Request funcs..

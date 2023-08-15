@@ -8,17 +8,18 @@
 import SwiftUI
 
 struct WeekViewController: View {
-    
-    @StateObject var viewModel: WeekViewModel = WeekViewModel()
+    @StateObject var viewModel: WeekViewModel = WeekViewModel(weeklyWeatherInformations: [])
     
     var body: some View {
-        
         VStack(alignment: .leading, spacing: 0) {
-            LottieView(jsonName: "BackgroundRainyLottie", loopMode: .loop)
-                .frame(width: 375, height: 500, alignment: .center)
+            VStack(alignment: .leading, spacing: 15) {
+                ForEach(viewModel.weeklyWeatherInformations, id: \.id) {
+                    WeekWeatherItemView(item: $0)
+                }
+            }
         }
         .background {
-            Color.blue
+            
         }
         .task {
             await viewModel.performWeekRequests()
@@ -28,6 +29,9 @@ struct WeekViewController: View {
 
 struct WeekViewController_Previews: PreviewProvider {
     static var previews: some View {
-        WeekViewController()
+        WeekViewController(viewModel: WeekViewModel(weeklyWeatherInformations: Dummy.shared.weeklyWeatherInformations()))
+            .onAppear {
+                
+            }
     }
 }

@@ -37,7 +37,8 @@ struct Weather {
         let skyType: SkyType
     }
     
-    struct WeeklyWeatherInformation {
+    struct WeeklyWeatherInformation: Identifiable {
+        let id = UUID()
         let weatherImage: String
         let rainfallPercent: String
         let minTemperature: String
