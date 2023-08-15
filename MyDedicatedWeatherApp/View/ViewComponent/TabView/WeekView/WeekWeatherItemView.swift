@@ -35,7 +35,7 @@ struct WeekWeatherItemView: View {
             
             Text("\(item.minTemperature)°")
                 .fontSpoqaHanSansNeo(size: 18, weight: .bold)
-                .foregroundColor(Color.gray.opacity(0.5))
+                .foregroundColor(Color.white.opacity(0.5))
                 .padding(.leading, 12)
                         
             VStack(alignment: .leading, spacing: 0) {
