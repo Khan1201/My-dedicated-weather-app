@@ -56,6 +56,7 @@ extension Date {
     func toString(byAdding day: Int, format: String) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = format
+        dateFormatter.locale = Locale(identifier: "ko")
         
         let addedDate: Date = Calendar.current.date(byAdding: .day, value: day, to: self) ?? self
         
