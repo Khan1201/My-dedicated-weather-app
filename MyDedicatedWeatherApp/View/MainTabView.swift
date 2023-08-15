@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct MainTabView: View {
-    
     @State var currentTab: TabBarType = .current
     @State var isLoading: Bool = true
     
@@ -32,6 +31,7 @@ struct MainTabView: View {
                     
                     WeekViewController()
                         .tag(TabBarType.forecast)
+
                 }
                 .overlay(alignment: .bottom) {
                     CustomBottomTabBarView(currentTab: $currentTab)
