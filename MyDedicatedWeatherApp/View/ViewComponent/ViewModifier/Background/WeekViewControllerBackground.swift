@@ -22,6 +22,7 @@ struct WeekViewControllerBackground: ViewModifier {
                             .overlay {
                                 Color.black.opacity(0.2)
                             }
+                            .ignoresSafeArea()
                         
                     } else {
                         LinearGradient(
