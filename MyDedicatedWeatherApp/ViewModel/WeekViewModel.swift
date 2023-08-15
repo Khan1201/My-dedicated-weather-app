@@ -38,7 +38,8 @@ extension WeekViewModel {
      - parameter xy: 공공데이터 값으로 변환된 X, Y
      */
     func requestShortForecastItems() async {
-        
+        let reqStartTime = CFAbsoluteTimeGetCurrent()
+
         let parameters = VeryShortOrShortTermForecastReq(
             serviceKey: Env.shared.openDataApiResponseKey,
             numOfRows: "737",
@@ -57,10 +58,15 @@ extension WeekViewModel {
                 resultType: OpenDataRes<VeryShortOrShortTermForecastBase<ShortTermForecastCategory>>.self,
                 requestName: "requestShortForecastItems(xy:)"
             )
+            let reqEndTime = CFAbsoluteTimeGetCurrent() - reqStartTime
+            let logicStartTime = CFAbsoluteTimeGetCurrent()
             
             DispatchQueue.main.async {
                 if let item = result.item {
                     self.setTommorowAndTwoDaysLaterInformations(by: item)
+                    let logicEndTime = CFAbsoluteTimeGetCurrent() - logicStartTime
+                    print("주간예보 - 단기 req 호출 소요시간: \(reqEndTime)")
+                    print("주간예보 - 단기 req 로직 소요시간: \(logicEndTime)")
                 }
             }
             
@@ -81,7 +87,8 @@ extension WeekViewModel {
      Request 중기예보 (3~ 10일) 최저, 최고 기온  Items
      */
     func requestMidTermForecastTempItems() async {
-        
+        let reqStartTime = CFAbsoluteTimeGetCurrent()
+
         let parameters: MidTermForecastReq = MidTermForecastReq(
             serviceKey: Env.shared.openDataApiResponseKey,
             regId: midTermForecastUtil.requestRegOrStnId(locality: locality, reqType: .temperature, subLocality: subLocality),
@@ -98,9 +105,16 @@ extension WeekViewModel {
                 resultType: OpenDataRes<MidTermForecastTemperatureBase>.self,
                 requestName: "requestMidTermForecastTempItems()"
             )
+            
+            let reqEndTime = CFAbsoluteTimeGetCurrent() - reqStartTime
+            let logicStartTime = CFAbsoluteTimeGetCurrent()
+            
             DispatchQueue.main.async {
                 if let item = result.item?.first {
                     self.setMinMaxTemperaturesByThreeToTenDay(by: item)
+                    let logicEndTime = CFAbsoluteTimeGetCurrent() - logicStartTime
+                    print("주간 예보 - 중기 예보(기온) req 호출 소요시간: \(reqEndTime)")
+                    print("주간 예보 - 중기 예보(기온) req 로직 소요시간: \(logicEndTime)")
                 }
                 
             }
@@ -120,7 +134,8 @@ extension WeekViewModel {
      Request 중기예보 (3~ 10일) 하늘 상태, 강수 확률 items
      */
     func requestMidTermForecastSkyStateItems() async {
-        
+        let reqStartTime = CFAbsoluteTimeGetCurrent()
+
         let parameters: MidTermForecastReq = MidTermForecastReq(
             serviceKey: Env.shared.openDataApiResponseKey,
             regId: midTermForecastUtil.requestRegOrStnId(locality: locality, reqType: .skystate),
@@ -137,10 +152,17 @@ extension WeekViewModel {
                 resultType: OpenDataRes<MidTermForecastSkyStateBase>.self,
                 requestName: "requestMidTermForecastSkyStateItems()"
             )
+            
+            let reqEndTime = CFAbsoluteTimeGetCurrent() - reqStartTime
+            let logicStartTime = CFAbsoluteTimeGetCurrent()
+            
             DispatchQueue.main.async {
                 if let item = result.item?.first {
                     self.setWeatherImageAndRainfallPercentsByThreeToTenDay(by: item)
                     self.setWeeklyWeatherInformations()
+                    let logicEndTime = CFAbsoluteTimeGetCurrent() - logicStartTime
+                    print("주간 예보 - 중기 예보(하늘상태) req 호출 소요시간: \(reqEndTime)")
+                    print("주간 예보 - 중기 예보(하늘상태) req 로직 소요시간: \(logicEndTime)")
                 }
                 
             }
