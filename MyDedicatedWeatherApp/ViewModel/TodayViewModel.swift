@@ -452,6 +452,8 @@ extension TodayViewModel {
             skyType: veryShortTermForecastWeatherInf.skyType
         )
         
+        UserDefaults.standard.set(veryShortTermForecastWeatherInf.skyType.backgroundImageKeyword, forKey: "skyKeyword")
+        
         isCurrentWeatherInformationLoadCompleted = true
     }
     
@@ -562,6 +564,7 @@ extension TodayViewModel {
         
         let currentHHmm = Date().toString(format: "HHmm")
         isDayMode = commonForecastUtil.isDayMode(hhMM: currentHHmm, sunrise: riseItem.sunrise, sunset: riseItem.sunset)
+        UserDefaults.standard.set(isDayMode, forKey: "isDayMode")
     }
     
     
