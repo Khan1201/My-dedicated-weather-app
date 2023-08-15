@@ -21,14 +21,14 @@ struct CurrentLocationAndDateView: View {
             \(subLocation)
             """
             )
-            .fontSpoqaHanSansNeo(size: 24, weight: .medium)
+            .fontSpoqaHanSansNeo(size: 26, weight: .medium)
             .foregroundColor(.white)
             .lineSpacing(2)
 
             Text(
                 Date().toString(format: "EE요일, M월 d일")
             )
-            .font(.system(size: 13))
+            .font(.system(size: 14))
             .foregroundColor(.white)
         }
     }
