@@ -36,6 +36,7 @@
 		BC78251B2A5EE15900930FD6 /* SwiftUIPager in Frameworks */ = {isa = PBXBuildFile; productRef = BC78251A2A5EE15900930FD6 /* SwiftUIPager */; };
 		BC78EFE92A7A922900DC3352 /* BackgroundSunnyNightLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BC78EFE82A7A922900DC3352 /* BackgroundSunnyNightLottie.json */; };
 		BC78EFEB2A7A92B700DC3352 /* BackgroundCloudyLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BC78EFEA2A7A92B700DC3352 /* BackgroundCloudyLottie.json */; };
+		BC7C6B4F2A8BC1D0009D2A0F /* WeekViewControllerBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC7C6B4E2A8BC1D0009D2A0F /* WeekViewControllerBackground.swift */; };
 		BC7D33E22A12788E00B1012F /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = BC7D33E12A12788E00B1012F /* Lottie */; };
 		BC7D33E52A127ABB00B1012F /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC7D33E42A127ABB00B1012F /* LottieView.swift */; };
 		BC85A94E2A02570E00C4CC48 /* VeryShortOrShortTermForecastBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC85A94D2A02570E00C4CC48 /* VeryShortOrShortTermForecastBase.swift */; };
@@ -136,6 +137,7 @@
 		BC76923C2A4329DC005F4D7B /* CornerRadiusStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CornerRadiusStyle.swift; sourceTree = "<group>"; };
 		BC78EFE82A7A922900DC3352 /* BackgroundSunnyNightLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BackgroundSunnyNightLottie.json; sourceTree = "<group>"; };
 		BC78EFEA2A7A92B700DC3352 /* BackgroundCloudyLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BackgroundCloudyLottie.json; sourceTree = "<group>"; };
+		BC7C6B4E2A8BC1D0009D2A0F /* WeekViewControllerBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekViewControllerBackground.swift; sourceTree = "<group>"; };
 		BC7D33E42A127ABB00B1012F /* LottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
 		BC85A94D2A02570E00C4CC48 /* VeryShortOrShortTermForecastBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VeryShortOrShortTermForecastBase.swift; sourceTree = "<group>"; };
 		BC86DB1B2A877F85004631D3 /* WeekWeatherItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekWeatherItemView.swift; sourceTree = "<group>"; };
@@ -262,6 +264,7 @@
 			isa = PBXGroup;
 			children = (
 				BC4DDA272A72B4F1000376C0 /* TodayViewControllerBackground.swift */,
+				BC7C6B4E2A8BC1D0009D2A0F /* WeekViewControllerBackground.swift */,
 			);
 			path = Background;
 			sourceTree = "<group>";
@@ -746,6 +749,7 @@
 				BCBA40192A7C06EE00B6EFD2 /* FineDustLookUpUtil.swift in Sources */,
 				BC4DDA332A72BD40000376C0 /* LeftOrRightAnimationView.swift in Sources */,
 				BC91FD542A4483CA00D3E665 /* LoadingProgress.swift in Sources */,
+				BC7C6B4F2A8BC1D0009D2A0F /* WeekViewControllerBackground.swift in Sources */,
 				BC4DDA3C2A72C86D000376C0 /* CurrentWeatherInfItemPagerView.swift in Sources */,
 				BCE489CD2A4EA4CE00A18B2B /* SpoqaHanSansNeoFont.swift in Sources */,
 				BC5386542A6EC19700D8E085 /* WeekViewModel.swift in Sources */,
