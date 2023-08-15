@@ -10,7 +10,8 @@ import Foundation
 final class WeekViewModel: ObservableObject {
     @Published var weeklyWeatherInformations: [Weather.WeeklyWeatherInformation]
     @Published var errorMessage: String = ""
-    
+    @Published var isWeeklyWeatherInformationsLoaded: Bool = false
+
     var tommorowAndTwoDaysLaterInformations: [Weather.WeeklyWeatherInformation] = []
     var minMaxTemperaturesByThreeToTenDay: [(String, String)] = []
     var weatherImageAndRainfallPercentsByThreeToTenDay: [(String, String)] = []
@@ -40,7 +41,7 @@ extension WeekViewModel {
         
         let parameters = VeryShortOrShortTermForecastReq(
             serviceKey: Env.shared.openDataApiResponseKey,
-            numOfRows: "701",
+            numOfRows: "737",
             baseDate: shortTermForecastUtil.requestBaseDate(),
             baseTime: shortTermForecastUtil.requestBaseTime(),
             nx: String(xy.0),
@@ -156,9 +157,11 @@ extension WeekViewModel {
     }
     
     func performWeekRequests() async {
-        await requestShortForecastItems()
-        await requestMidTermForecastTempItems()
-        await requestMidTermForecastSkyStateItems()
+        if !isWeeklyWeatherInformationsLoaded {
+            await requestShortForecastItems()
+            await requestMidTermForecastTempItems()
+            await requestMidTermForecastSkyStateItems()
+        }
     }
 }
 
@@ -170,6 +173,7 @@ extension WeekViewModel {
      - parameter items: requestShortForecastItems() 결과 데이터
      */
     func setTommorowAndTwoDaysLaterInformations(by items: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>]) {
+        tommorowAndTwoDaysLaterInformations = []
         let tommorrowDate: String = Date().toString(byAdding: 1, format: "yyyyMMdd")
         let twoDaysLaterDate: String = Date().toString(byAdding: 2, format: "yyyyMMdd")
         
@@ -213,16 +217,26 @@ extension WeekViewModel {
         minMaxTemperatures.append(tommorowMinMaxTemp)
         minMaxTemperatures.append(twoDaysLaterMinMaxTemp)
         
-        for i in 0..<2 {
-            self.tommorowAndTwoDaysLaterInformations.append(
-                .init(
-                    weatherImage: skyStateImageStrings[i],
-                    rainfallPercent: precipitationPercentes[i],
-                    minTemperature: minMaxTemperatures[i].0,
-                    maxTemperature: minMaxTemperatures[i].1
+        if skyStateImageStrings.count >= 2 && precipitationPercentes.count >= 2 {
+            for i in 0..<2 {
+                self.tommorowAndTwoDaysLaterInformations.append(
+                    .init(
+                        weatherImage: skyStateImageStrings[i],
+                        rainfallPercent: precipitationPercentes[i],
+                        minTemperature: minMaxTemperatures[i].0,
+                        maxTemperature: minMaxTemperatures[i].1
+                    )
                 )
-            )
+            }
+            
+        } else {
+            CommonUtil.shared.printError(funcTitle: "setTommorowAndTwoDaysLaterInformations()", description: """
+                단기 예보 데이터 Response의 오늘 ~ 내일 데이터 filter가 제대로 되지 않았습니다.
+                skyState array count == \(skyStateImageStrings.count),
+                rainfallPercent array count = \(precipitationPercentes.count)
+                """)
         }
+        
         
         func minMaxItem(by filteredItems: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>]) -> (String, String) {
             var minMaxResult: (Int, Int) = (0, 0)
@@ -249,6 +263,7 @@ extension WeekViewModel {
      - parameter item: requestMidTermForecastTempItems() 결과 데이터
      */
     func setMinMaxTemperaturesByThreeToTenDay(by item: MidTermForecastTemperatureBase) {
+        self.minMaxTemperaturesByThreeToTenDay = []
         self.minMaxTemperaturesByThreeToTenDay.append((item.taMin3.toString, item.taMax3.toString))
         self.minMaxTemperaturesByThreeToTenDay.append((item.taMin4.toString, item.taMax4.toString))
         self.minMaxTemperaturesByThreeToTenDay.append((item.taMin5.toString, item.taMax5.toString))
@@ -264,6 +279,7 @@ extension WeekViewModel {
      - parameter item: requestMidTermForecastSkyStateItems() 결과 데이터
      */
     func setWeatherImageAndRainfallPercentsByThreeToTenDay(by item: MidTermForecastSkyStateBase) {
+        self.weatherImageAndRainfallPercentsByThreeToTenDay = []
         self.weatherImageAndRainfallPercentsByThreeToTenDay.append(weatherImageAndRainfallPercent(wf: item.wf3Am, rnSt: item.rnSt3Am))
         self.weatherImageAndRainfallPercentsByThreeToTenDay.append(weatherImageAndRainfallPercent(wf: item.wf4Am, rnSt: item.rnSt4Am))
         self.weatherImageAndRainfallPercentsByThreeToTenDay.append(weatherImageAndRainfallPercent(wf: item.wf5Am, rnSt: item.rnSt5Am))
@@ -281,6 +297,7 @@ extension WeekViewModel {
     
     func setWeeklyWeatherInformations() {
         if tommorowAndTwoDaysLaterInformations.count == 2 && minMaxTemperaturesByThreeToTenDay.count == 8 && weatherImageAndRainfallPercentsByThreeToTenDay.count == 8 {
+            weeklyWeatherInformations = []
             
             var threeToTenDayInformations: [Weather.WeeklyWeatherInformation] = []
             for i in 0..<8 {
@@ -294,6 +311,7 @@ extension WeekViewModel {
             }
             weeklyWeatherInformations.append(contentsOf: tommorowAndTwoDaysLaterInformations)
             weeklyWeatherInformations.append(contentsOf: threeToTenDayInformations)
+            isWeeklyWeatherInformationsLoaded = true
             CommonUtil.shared.printSuccess(funcTitle: "setWeeklyWeatherInformations()", values: weeklyWeatherInformations)
             
         } else {
