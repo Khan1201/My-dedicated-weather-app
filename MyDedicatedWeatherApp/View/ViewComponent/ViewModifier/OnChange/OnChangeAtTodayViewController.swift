@@ -8,20 +8,19 @@
 import SwiftUI
 
 struct OnChangeAtTodayViewController: ViewModifier {
-    
     @EnvironmentObject var viewModel: TodayViewModel
     @EnvironmentObject var locationDataManagerVM: LocationDataManagerVM
     
     func body(content: Content) -> some View {
         content
             .onChange(of: locationDataManagerVM.isLocationUpdated) { _ in
-                viewModel.TodayViewControllerLocationManagerUpdatedAction(
+                viewModel.todayViewControllerLocationManagerUpdatedAction(
                     xy: locationDataManagerVM.convertLocationToXYForVeryShortForecast(),
                     longLati: locationDataManagerVM.longitudeAndLatitude
                 )
             }
             .onChange(of: viewModel.isKakaoAddressLoadCompleted) { newValue in
-                viewModel.TodayViewControllerKakaoAddressUpdatedAction(
+                viewModel.todayViewControllerKakaoAddressUpdatedAction(
                     umdName: viewModel.subLocalityByKakaoAddress,
                     locality: locationDataManagerVM.currentLocation
                 )

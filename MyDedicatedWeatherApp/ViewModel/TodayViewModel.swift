@@ -586,7 +586,7 @@ extension TodayViewModel {
 
 extension TodayViewModel {
     
-    func TodayViewControllerLocationManagerUpdatedAction(
+    func todayViewControllerLocationManagerUpdatedAction(
         xy: Gps2XY.LatXLngY,
         longLati: (String, String)
     ) {
@@ -598,7 +598,7 @@ extension TodayViewModel {
         }
     }
     
-    func TodayViewControllerKakaoAddressUpdatedAction(umdName: String, locality: String) {
+    func todayViewControllerKakaoAddressUpdatedAction(umdName: String, locality: String) {
         Task {
             await requestDustForecastStationXY(
                 subLocality: umdName,
