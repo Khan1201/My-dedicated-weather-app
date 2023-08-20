@@ -26,7 +26,7 @@ struct WeekWeatherItemView: View {
                     view
                         .overlay(alignment: .bottom) {
                             Text(item.rainfallPercent + "%")
-                                .fontSpoqaHanSansNeo(size: 13, weight: .bold)
+                                .fontSpoqaHanSansNeo(size: 11, weight: .bold)
                                 .foregroundColor(CustomColor.lightBlue.toColor)
                                 .offset(y: 4)
                         }
@@ -61,7 +61,7 @@ struct WeekWeatherItemView: View {
         .cornerRadius(14)
         .onAppear {
             recWidth = 0
-            withAnimation(.linear(duration: 1)) {
+            withAnimation(.easeInOut(duration: 0.8)) {
                 recWidth = CGFloat(item.maxTemperature.toInt) * 3
             }
         }
