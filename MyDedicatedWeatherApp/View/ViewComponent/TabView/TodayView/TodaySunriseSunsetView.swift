@@ -20,7 +20,7 @@ struct TodaySunriseSunsetView: View {
                 Image(systemName: "arrow.up")
                     .resizable()
                     .renderingMode(.template)
-                    .frame(width: 8, height: 8)
+                    .frame(width: 11, height: 11)
                     .foregroundColor(Color.red.opacity(0.7))
                 
                 Image("sunrise")
@@ -42,7 +42,7 @@ struct TodaySunriseSunsetView: View {
                 Image(systemName: "arrow.down")
                     .resizable()
                     .renderingMode(.template)
-                    .frame(width: 8, height: 8)
+                    .frame(width: 11, height: 11)
                     .foregroundColor(Color.red.opacity(0.7))
 
                 Image("sunset")
@@ -57,7 +57,10 @@ struct TodaySunriseSunsetView: View {
         }
         .padding(.vertical, 6)
         .padding(.horizontal, 12)
-        .background(Color.red.opacity(isDayMode ? 0.3 : 0.2))
+        .background {
+            LinearGradient(colors: [Color.red.opacity(0.9), Color.black.opacity(0.5)], startPoint: .top, endPoint: .bottom)
+                .opacity(isDayMode ? 0.6 : 0.4)
+        }
         .cornerRadius(14)
     }
 }
