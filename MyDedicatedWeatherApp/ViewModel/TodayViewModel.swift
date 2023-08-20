@@ -466,9 +466,9 @@ extension TodayViewModel {
         todayWeatherInformations = []
         
         var tempIndex = 0
-        let skyIndex = tempIndex + 5
-        let ptyIndex = tempIndex + 6
-        let popIndex = tempIndex + 7
+        var skyIndex = 5
+        var ptyIndex = 6
+        var popIndex = 7
         var step = 12
         
         // 각 index 해당하는 값(시간에 해당하는 값) append
@@ -499,6 +499,9 @@ extension TodayViewModel {
             todayWeatherInformations.append(todayWeather)
             
             tempIndex += step
+            skyIndex += step
+            ptyIndex += step
+            popIndex += step
         }
         isTodayWeatherInformationLoadCompleted = true
         self.setTodayMinMaxTemperature(todayWeatherInformations)
