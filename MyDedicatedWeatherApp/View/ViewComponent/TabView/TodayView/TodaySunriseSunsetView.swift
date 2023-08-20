@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct TodaySunriseSunsetView: View {
-    
     let sunriseTime: String
     let sunsetTime: String
     let isDayMode: Bool
@@ -18,12 +17,18 @@ struct TodaySunriseSunsetView: View {
         VStack(alignment: .leading, spacing: 0) {
             
             HStack(alignment: .center, spacing: 4) {
+                Image(systemName: "arrow.up")
+                    .resizable()
+                    .renderingMode(.template)
+                    .frame(width: 8, height: 8)
+                    .foregroundColor(Color.red.opacity(0.7))
+                
                 Image("sunrise")
                     .resizable()
-                    .frame(width: 24, height: 24)
+                    .frame(width: 20, height: 20)
                 
                 Text("오전 \(sunriseTime.hhMMtoKRhhMM(isSunset: false))")
-                    .fontSpoqaHanSansNeo(size: 14, weight: .regular)
+                    .fontSpoqaHanSansNeo(size: 10, weight: .medium)
                     .foregroundColor(.white.opacity(0.8))
             }
             .padding(.bottom, 5)
@@ -34,12 +39,18 @@ struct TodaySunriseSunsetView: View {
             }
             
             HStack(alignment: .center, spacing: 4) {
+                Image(systemName: "arrow.down")
+                    .resizable()
+                    .renderingMode(.template)
+                    .frame(width: 8, height: 8)
+                    .foregroundColor(Color.red.opacity(0.7))
+
                 Image("sunset")
                     .resizable()
-                    .frame(width: 24, height: 24)
+                    .frame(width: 20, height: 20)
                 
                 Text("오후 \(sunsetTime.hhMMtoKRhhMM(isSunset: true))")
-                    .fontSpoqaHanSansNeo(size: 14, weight: .medium)
+                    .fontSpoqaHanSansNeo(size: 10, weight: .medium)
                     .foregroundColor(.white.opacity(0.8))
             }
             .padding(.top, 5)

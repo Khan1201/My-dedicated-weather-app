@@ -104,14 +104,14 @@ extension TodayViewController {
         
         return VStack(alignment: .leading, spacing: 8) {
             
-            HStack(alignment: .center, spacing: 60) {
+            HStack(alignment: .center, spacing: 50) {
                 CurrentLocationAndDateView(
                     location: locationDataManagerVM.currentLocation,
                     subLocation: viewModel.subLocalityByKakaoAddress
                 )
                 .padding(.leading, 40)
                 .loadingProgressLottie(isLoadingCompleted: viewModel.isKakaoAddressLoadCompleted)
-                
+                                
                 TodaySunriseSunsetView(
                     sunriseTime: viewModel.sunRiseAndSetHHmm.0,
                     sunsetTime: viewModel.sunRiseAndSetHHmm.1,
