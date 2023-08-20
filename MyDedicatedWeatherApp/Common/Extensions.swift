@@ -81,6 +81,32 @@ extension String {
     var toInt: Int {
         return Int(self) ?? 0
     }
+    
+    func hhMMtoKRhhMM(isSunset: Bool) -> String {
+        guard let _ = Int(self), self.count == 4 else {
+            CommonUtil.shared.printError(funcTitle: "hhMMtoKRhhMM(isSunset:)", description: "hhMM 형태가 아닙니다.")
+            return self
+        }
+        var result = ""
+        let mmIndex = self.index(self.startIndex, offsetBy: 2)
+        let mm = self[mmIndex...]
+        
+        if isSunset {
+            let hhIndex = self.index(self.startIndex, offsetBy: 1)
+            let hh = self[...hhIndex]
+            let hhMinus12 = String(hh).toInt - 12
+            
+            result = "\(hhMinus12)시 \(String(mm))분"
+            
+        } else {
+            let hhIndex = self.index(self.startIndex, offsetBy: 1)
+            let h = self[hhIndex]
+            
+            result = "\(h)시 \(String(mm))분"
+        }
+        
+        return result
+    }
 }
 
 extension Int {
