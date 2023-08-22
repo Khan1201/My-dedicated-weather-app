@@ -20,7 +20,8 @@ struct LineChartBaseView: View {
     let yList: [Int]
     
     var lineHeight: CGFloat = 3
-    var fontSize: CGFloat = 12
+    var xItemFontSize: CGFloat = 14
+    var yItemFontSize: CGFloat = 13
     var fontWeight: Font.Weight = .bold
     
     var body: some View {
@@ -31,7 +32,7 @@ struct LineChartBaseView: View {
                 VStack(alignment: .leading, spacing: 0) {
                     ForEach(0...4, id: \.self) { i in
                         Rectangle()
-                            .fill(Color.gray.opacity(0.3))
+                            .fill(Color.white.opacity(0.2))
                             .frame(height: lineHeight)
                         
                         if i != 4 {
@@ -45,7 +46,7 @@ struct LineChartBaseView: View {
                 HStack(alignment: .center, spacing: 0) {
                     ForEach(xList.indices, id: \.self) { i in
                         Text("\(xList[i].value)")
-                            .font(.system(size: fontSize, weight: fontWeight))
+                            .font(.system(size: xItemFontSize, weight: fontWeight))
                             .foregroundColor(Color.white)
                             .getSize(size: $xTextSize)
                         
@@ -62,7 +63,7 @@ struct LineChartBaseView: View {
                 VStack(alignment: .leading, spacing: 0) {
                     ForEach(yList, id: \.self) { y in
                         Text("\(y)°")
-                            .font(.system(size: fontSize, weight: fontWeight))
+                            .font(.system(size: yItemFontSize, weight: fontWeight))
                             .foregroundColor(Color.white)
                             .getSize(size: $yTextSize)
                         

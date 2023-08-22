@@ -23,7 +23,7 @@ struct WeekViewController: View {
             .padding(.top, 35)
             
             ScrollView(.vertical, showsIndicators: false) {
-                LazyVStack(alignment: .leading, spacing: 0) {
+                VStack(alignment: .leading, spacing: 0) {
                     
                     VStack(alignment: .leading, spacing: 15) {
                         ForEach(viewModel.weeklyWeatherInformations.indices, id: \.self) { index in
@@ -31,35 +31,34 @@ struct WeekViewController: View {
                                 item: viewModel.weeklyWeatherInformations[index],
                                 day: currentDate.toString(byAdding: index + 1, format: "EE요일")
                             )
-                            .padding(.bottom, index == viewModel.weeklyWeatherInformations.count - 1 ? 45 : 0)
                         }
                     }
                     .padding(.horizontal, 24)
-
                     
                     VStack(alignment: .leading, spacing: 0) {
                         LineChartView()
                             .frame(maxWidth: .infinity, alignment: .center)
                             .padding(.leading, 30)
+                            .padding(.top, 16)
+                            .padding(.bottom, 50)
                             .opacity(graphOpacity)
+                            .background {
+                                Color.black.opacity(0.2)
+                            }
+                            .cornerRadius(14)
                             .onAppear {
                                 withAnimation(.easeOut(duration: 0.4)) {
                                     graphOpacity = 1
                                 }
                             }
                     }
-                    .padding(.top, 24)
-                    .padding(.bottom, 44)
-                    .background {
-                        Color.black.opacity(0.2)
-                    }
-                    .cornerRadius(14)
-                    .padding(.horizontal, 15)
+                    .padding(.horizontal, 10)
+                    .padding(.top, 25)
                     .padding(.bottom, 65)
                     
                     
                 }
-//                .loadingProgressLottie(isLoadingCompleted: viewModel.isWeeklyWeatherInformationsLoaded)
+                //                .loadingProgressLottie(isLoadingCompleted: viewModel.isWeeklyWeatherInformationsLoaded)
             }
             .padding(.top, 24)
         }
