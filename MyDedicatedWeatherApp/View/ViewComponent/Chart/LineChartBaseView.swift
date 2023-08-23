@@ -16,7 +16,7 @@ struct LineChartBaseView: View {
     
     let width: CGFloat
     let height: CGFloat
-    let xList: [IdentifiableValue<String>]
+    let xList: [String]
     let yList: [Int]
     
     var lineHeight: CGFloat = 3
@@ -45,7 +45,7 @@ struct LineChartBaseView: View {
             .overlay(alignment: .bottom) {
                 HStack(alignment: .center, spacing: 0) {
                     ForEach(xList.indices, id: \.self) { i in
-                        Text("\(xList[i].value)")
+                        Text("\(xList[i])")
                             .font(.system(size: xItemFontSize, weight: fontWeight))
                             .foregroundColor(Color.white)
                             .getSize(size: $xTextSize)
@@ -89,8 +89,7 @@ struct LineChartBaseView: View {
                 yStepSize: .constant(CGSize()),
                 width: 280,
                 height: 200,
-                xList: [.init(value: "월"), .init(value: "화"), .init(value: "수"), .init(value: "목"), .init(value: "금"), .init(value: "토"), .init(value: "일"), .init(value: "월"), .init(value: "화"), .init(value: "수")
-                       ],
+                xList: ["월", "화", "수", "목", "금", "토", "일"],
                 yList: [5, 4, 3, 2, 1]
             )
         }
