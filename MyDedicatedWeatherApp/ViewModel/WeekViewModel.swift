@@ -362,7 +362,7 @@ extension WeekViewModel {
         if tommorowAndTwoDaysLaterInformations.count == 2 && minMaxTemperaturesByThreeToTenDay.count == 8 {
             var minTemps: [CGFloat] = []
             var maxTemps: [CGFloat] = []
-            var xList: [String] = []
+            var xList: [(String, String)] = []
             var yList: [Int] = []
 
             let currentDate: Date = Date()
@@ -379,7 +379,9 @@ extension WeekViewModel {
             }
             
             for i in 1...7 { // 내일 ~ 7일 후
-                xList.append(currentDate.toString(byAdding: i, format: "E"))
+                let day = currentDate.toString(byAdding: i, format: "E")
+                let date = currentDate.toString(byAdding: i, format: "M/d")
+                xList.append((day, date))
             }
             
             guard let maxInMaxTemps = maxTemps.max()?.toInt else { return }
