@@ -41,7 +41,7 @@ struct WeekViewController: View {
                                 .frame(maxWidth: .infinity, alignment: .center)
                                 .padding(.leading, 30)
                                 .padding(.top, 16)
-                                .padding(.bottom, 50)
+                                .padding(.bottom, 60)
                                 .opacity(graphOpacity)
                                 .background {
                                     Color.black.opacity(0.2)
