@@ -116,6 +116,13 @@ extension Int {
     }
 }
 
+extension CGFloat {
+    
+    var toInt: Int {
+        return Int(self)
+    }
+}
+
 extension View {
     @ViewBuilder func `if`<Content: View>(
         _ condition: Bool,
