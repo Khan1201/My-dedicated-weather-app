@@ -8,19 +8,13 @@
 import SwiftUI
 
 struct LineChartView: View {
+    @Binding var temperatureChartInf: TemperatureChartInf
+
     @State private var xTextSize: CGSize = CGSize()
     @State private var yTextSize: CGSize = CGSize()
     @State private var xStepSize: CGSize = CGSize()
     @State private var yStepSize: CGSize = CGSize()
     @State private var lineStepSize: CGSize = CGSize()
-    
-    let xList: [IdentifiableValue] = [.init(value: "월"), .init(value: "화"), .init(value: "수"), .init(value: "목"), .init(value: "금"), .init(value: "토"), .init(value: "일")
-    ]
-    let yList: [Int] = [15, 20, 25, 30, 35].reversed()
-    
-    let minValues: [IdentifiableValue<CGFloat>] = [.init(value: 22), .init(value: 20), .init(value: 23), .init(value: 20), .init(value: 23), .init(value: 21), .init(value: 22)]
-    
-    let maxValues: [IdentifiableValue<CGFloat>] = [.init(value: 27), .init(value: 25), .init(value: 27), .init(value: 30), .init(value: 32), .init(value: 27), .init(value: 28)]
     
     var minLineColor: Color = Color.blue.opacity(0.6)
     var maxLineColor: Color = Color.red.opacity(0.6)
@@ -30,33 +24,29 @@ struct LineChartView: View {
         let width: CGFloat = UIScreen.screenWidth - 80
         let height: CGFloat = width * 1.0333
         let circleSize: CGSize = CGSize(width: 6, height: 6)
-
+        let rangeMin: CGFloat = CGFloat(temperatureChartInf.yList.min() ?? 0)
+        let rangeMax: CGFloat = CGFloat(temperatureChartInf.yList.max() ?? 0)
+        
         var convertedMaxValues: [CGFloat] {
-            let rangeMin: CGFloat = CGFloat(yList.min() ?? 0)
-            let rangeMax: CGFloat = CGFloat(yList.max() ?? 0)
-            
             // 0 = 바꿀 range의 최소값, height = 바꿀 range의 최대값
-            return maxValues.map { chartValue in
-                if chartValue.value == 0 {
+            return temperatureChartInf.maxTemps.map { temp in
+                if temp == 0 {
                     return 0
                     
                 } else {
-                    return (chartValue.value - rangeMin) * (CGFloat(height) - 0) / (rangeMax - rangeMin) + 0
+                    return (temp - rangeMin) * (CGFloat(height) - 0) / (rangeMax - rangeMin) + 0
                 }
             }
         }
         
         var convertedMinValues: [CGFloat] {
-            let rangeMin: CGFloat = CGFloat(yList.min() ?? 0)
-            let rangeMax: CGFloat = CGFloat(yList.max() ?? 0)
-            
             // 0 = 바꿀 range의 최소값, height = 바꿀 range의 최대값
-            return minValues.map { chartValue in
-                if chartValue.value == 0 {
+            return temperatureChartInf.minTemps.map { temp in
+                if temp == 0 {
                     return 0
                     
                 } else {
-                    return (chartValue.value - rangeMin) * (CGFloat(height) - 0) / (rangeMax - rangeMin) + 0
+                    return (temp - rangeMin) * (CGFloat(height) - 0) / (rangeMax - rangeMin) + 0
                 }
             }
         }
@@ -65,7 +55,7 @@ struct LineChartView: View {
             var result: [CGFloat] = []
             var xStepSum: CGFloat = 0
             
-            for i in 0..<maxValues.count {
+            for i in 0..<temperatureChartInf.maxTemps.count {
                 if i == 0 {
                     result.append(0)
                     
@@ -114,8 +104,8 @@ struct LineChartView: View {
                 yStepSize: $yStepSize,
                 width: width,
                 height: height,
-                xList: xList,
-                yList: yList
+                xList: temperatureChartInf.xList,
+                yList: temperatureChartInf.yList
             )
             .overlay(alignment: .bottomLeading) {
                 
@@ -125,7 +115,7 @@ struct LineChartView: View {
                     path.move(to: CGPoint(x: 0, y: height - convertedMaxValues[0]))
                     coordinates.append((0, height - convertedMaxValues[0]))
                     
-                    for i in 1..<maxValues.count {
+                    for i in 1..<temperatureChartInf.maxTemps.count {
                         path.addLine(to: CGPoint(x: xSteps[i], y: height - convertedMaxValues[i]))
                         coordinates.append((xSteps[i], height - convertedMaxValues[i]))
                     }
@@ -135,6 +125,7 @@ struct LineChartView: View {
                     ZStack(alignment: .bottomLeading) {
                         ForEach(coordinates.indices, id: \.self) { i in
                             Circle()
+                                .fill(Color.white)
                                 .frame(width: circleSize.width, height: circleSize.height)
                                 .padding(.leading, xSteps[i] - (circleSize.width / 2))
                                 .padding(.bottom, convertedMaxValues[i] - (circleSize.height / 2))
@@ -144,9 +135,9 @@ struct LineChartView: View {
                 .overlay(alignment: .bottomLeading) {
                     ZStack(alignment: .bottomLeading) {
                         ForEach(coordinates.indices, id: \.self) { i in
-                            Text("\(Int(maxValues[i].value))°")
+                            Text("\(Int(temperatureChartInf.maxTemps[i]))°")
                                 .fontSpoqaHanSansNeo(size: 10, weight: .bold)
-                                .foregroundColor(Int(maxValues[i].value) >= 30 ? Color.red.opacity(0.7) : Color.white.opacity(0.7))
+                                .foregroundColor(Int(temperatureChartInf.maxTemps[i]) >= 30 ? Color.red.opacity(0.7) : Color.white.opacity(0.7))
                                 .padding(.leading, i == coordinates.count - 1 ? xSteps[i] - 17 : xSteps[i] - 5)
                                 .padding(.bottom, convertedMaxValues[i] + 10)
                         }
@@ -161,7 +152,7 @@ struct LineChartView: View {
                     path.move(to: CGPoint(x: 0, y: height - convertedMinValues[0]))
                     coordinates.append((0, height - convertedMinValues[0]))
                     
-                    for i in 1..<minValues.count {
+                    for i in 1..<temperatureChartInf.minTemps.count {
                         path.addLine(to: CGPoint(x: xSteps[i], y: height - convertedMinValues[i]))
                         coordinates.append((xSteps[i], height - convertedMinValues[i]))
                     }
@@ -181,7 +172,7 @@ struct LineChartView: View {
                 .overlay(alignment: .bottomLeading) {
                     ZStack(alignment: .bottomLeading) {
                         ForEach(coordinates.indices, id: \.self) { i in
-                            Text("\(Int(minValues[i].value))°")
+                            Text("\(Int(temperatureChartInf.minTemps[i]))°")
                                 .fontSpoqaHanSansNeo(size: 10, weight: .bold)
                                 .foregroundColor(Color.white.opacity(0.7))
                                 .padding(.leading, i == coordinates.count - 1 ? xSteps[i] - 17 : xSteps[i] - 5)
@@ -206,7 +197,7 @@ struct LineChartView: View {
 
 struct LineChartView_Previews: PreviewProvider {
     static var previews: some View {
-        LineChartView()
+        LineChartView(temperatureChartInf: .constant(Dummy.shared.temperatureChartInf()))
     }
 }
 

@@ -134,4 +134,13 @@ final class Dummy {
             
         ]
     }
+    
+    func temperatureChartInf() -> TemperatureChartInf {
+        return .init(
+            minTemps: [22, 20, 23, 20, 23, 21, 22],
+            maxTemps: [27, 25, 27, 30, 32, 27, 28],
+            xList: ["월", "화", "수", "목", "금", "토", "일"],
+            yList: [15, 20, 25, 30, 35].reversed()
+        )
+    }
 }

@@ -98,8 +98,7 @@ struct Weather {
     }
 }
 
-// MARK: - About 위도, 경도 -> x, y 좌표
-
+/// 위도, 경도 -> x, y 좌표 (초단기, 단기 예보에 필요한 x,y)
 struct Gps2XY {
     
     struct LatXLngY {
@@ -117,7 +116,6 @@ struct Gps2XY {
 }
 
 enum TabBarType: CaseIterable {
-    
     case current,
         forecast,
         search,
@@ -127,3 +125,12 @@ enum TabBarType: CaseIterable {
 enum MidtermReqType {
     case temperature, skystate, news
 }
+
+struct TemperatureChartInf {
+    let minTemps: [CGFloat]
+    let maxTemps: [CGFloat]
+    let xList: [String] // x축 -> 요일
+    let yList: [Int] // y축 -> 온도 범위
+}
+
+
