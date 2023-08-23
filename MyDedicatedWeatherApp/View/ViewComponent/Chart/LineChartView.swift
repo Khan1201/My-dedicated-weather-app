@@ -22,17 +22,15 @@ struct LineChartView: View {
     
     let maxValues: [IdentifiableValue<CGFloat>] = [.init(value: 27), .init(value: 25), .init(value: 27), .init(value: 30), .init(value: 32), .init(value: 27), .init(value: 28)]
     
-    
-    let circleSize: CGSize = CGSize(width: 6, height: 6)
-    
     var minLineColor: Color = Color.blue.opacity(0.6)
     var maxLineColor: Color = Color.red.opacity(0.6)
     var lineWidth: CGFloat = 2.5
     
     var body: some View {
         let width: CGFloat = UIScreen.screenWidth - 80
-        let height: CGFloat = 300
-        
+        let height: CGFloat = width * 1.0333
+        let circleSize: CGSize = CGSize(width: 6, height: 6)
+
         var convertedMaxValues: [CGFloat] {
             let rangeMin: CGFloat = CGFloat(yList.min() ?? 0)
             let rangeMax: CGFloat = CGFloat(yList.max() ?? 0)
@@ -173,6 +171,7 @@ struct LineChartView: View {
                     ZStack(alignment: .bottomLeading) {
                         ForEach(coordinates.indices, id: \.self) { i in
                             Circle()
+                                .fill(Color.white)
                                 .frame(width: circleSize.width, height: circleSize.height)
                                 .padding(.leading, xSteps[i] - (circleSize.width / 2))
                                 .padding(.bottom, convertedMinValues[i] - (circleSize.height / 2))
