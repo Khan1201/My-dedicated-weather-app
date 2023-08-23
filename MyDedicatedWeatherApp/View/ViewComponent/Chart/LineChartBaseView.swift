@@ -16,7 +16,7 @@ struct LineChartBaseView: View {
     
     let width: CGFloat
     let height: CGFloat
-    let xList: [String]
+    let xList: [(String, String)]
     let yList: [Int]
     
     var lineHeight: CGFloat = 3
@@ -45,7 +45,7 @@ struct LineChartBaseView: View {
             .overlay(alignment: .bottom) {
                 HStack(alignment: .center, spacing: 0) {
                     ForEach(xList.indices, id: \.self) { i in
-                        Text("\(xList[i])")
+                        Text("\(xList[i].0)")
                             .font(.system(size: xItemFontSize, weight: fontWeight))
                             .foregroundColor(Color.white)
                             .getSize(size: $xTextSize)
@@ -58,6 +58,21 @@ struct LineChartBaseView: View {
                 }
                 .padding(.horizontal, -5)
                 .offset(y: xTextSize.height + 14)
+            }
+            .overlay(alignment: .bottom) {
+                HStack(alignment: .center, spacing: 0) {
+                    ForEach(xList.indices, id: \.self) { i in
+                        Text("\(xList[i].1)")
+                            .font(.system(size: xItemFontSize - 5))
+                            .foregroundColor(Color.white.opacity(0.7))
+                        
+                        if i != xList.count - 1 {
+                            Spacer()
+                        }
+                    }
+                }
+                .padding(.horizontal, -8)
+                .offset(y: xTextSize.height + 14 + xTextSize.height)
             }
             .overlay(alignment: .topLeading) {
                 VStack(alignment: .leading, spacing: 0) {
@@ -89,7 +104,7 @@ struct LineChartBaseView: View {
                 yStepSize: .constant(CGSize()),
                 width: 280,
                 height: 200,
-                xList: ["월", "화", "수", "목", "금", "토", "일"],
+                xList: [("월", "8/24"), ("화", "8/25"), ("수", "8/26"), ("목", "8/27"), ("금", "8/28"), ("토", "8/29"), ("일", "8/30")],
                 yList: [5, 4, 3, 2, 1]
             )
         }
