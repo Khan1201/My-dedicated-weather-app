@@ -282,4 +282,64 @@ struct MidTermForecastUtil {
             return "load_fail"
         }
     }
+    
+    func temperatureChartYList(maxTemp: Int) -> [Int] {
+        
+        switch maxTemp {
+            
+        case 30...35:
+            return fiveUnitRange(maxOfRange: 35)
+            
+        case 25...30:
+            return fiveUnitRange(maxOfRange: 30)
+
+        case 20...25:
+            return fiveUnitRange(maxOfRange: 25)
+
+        case 15...20:
+            return fiveUnitRange(maxOfRange: 20)
+
+        case 10...15:
+            return fiveUnitRange(maxOfRange: 15)
+
+        case 5...10:
+            return fiveUnitRange(maxOfRange: 10)
+
+        case 0...5:
+            return fiveUnitRange(maxOfRange: 5)
+
+        case -5...0:
+            return fiveUnitRange(maxOfRange: 0)
+
+        case -10 ... -5:
+            return fiveUnitRange(maxOfRange: -5)
+
+        case -15 ... -10:
+            return fiveUnitRange(maxOfRange: -10)
+
+        default:
+            CommonUtil.shared.printError(
+                funcTitle: "setTemperatureChartInformation()의 switch문",
+                description: "yList 범위를 지정할 수 없습니다."
+            )
+            return []
+        }
+        
+        func fiveUnitRange(maxOfRange: Int) -> [Int] {
+            var max: Int = maxOfRange
+            var yList: [Int] = []
+            
+            for i in 0..<5 {
+                if i == 0 {
+                    yList.append(max)
+                    
+                } else {
+                    max -= 5
+                    yList.append(max)
+                }
+            }
+            
+            return yList
+        }
+    }
 }

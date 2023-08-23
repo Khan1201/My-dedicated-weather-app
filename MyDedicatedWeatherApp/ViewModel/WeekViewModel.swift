@@ -9,6 +9,7 @@ import Foundation
 
 final class WeekViewModel: ObservableObject {
     @Published var weeklyWeatherInformations: [Weather.WeeklyWeatherInformation]
+    @Published var temperatureChartInformation: TemperatureChartInf = .init(minTemps: [], maxTemps: [], xList: [], yList: [])
     @Published var errorMessage: String = ""
     @Published var isWeeklyWeatherInformationsLoaded: Bool = false
 
@@ -160,6 +161,8 @@ extension WeekViewModel {
                 if let item = result.item?.first {
                     self.setWeatherImageAndRainfallPercentsByThreeToTenDay(by: item)
                     self.setWeeklyWeatherInformations()
+                    self.setTemperatureChartInformation()
+                    
                     let logicEndTime = CFAbsoluteTimeGetCurrent() - logicStartTime
                     print("주간 예보 - 중기 예보(하늘상태) req 호출 소요시간: \(reqEndTime)")
                     print("주간 예보 - 중기 예보(하늘상태) req 로직 소요시간: \(logicEndTime)")
@@ -350,6 +353,57 @@ extension WeekViewModel {
                     tommorowAndTwoDaysLaterInformations.count,
                     minMaxTemperaturesByThreeToTenDay.count,
                     weatherImageAndRainfallPercentsByThreeToTenDay.count
+                ]
+            )
+        }
+    }
+    
+    func setTemperatureChartInformation() {
+        if tommorowAndTwoDaysLaterInformations.count == 2 && minMaxTemperaturesByThreeToTenDay.count == 8 {
+            var minTemps: [CGFloat] = []
+            var maxTemps: [CGFloat] = []
+            var xList: [String] = []
+            var yList: [Int] = []
+
+            let currentDate: Date = Date()
+
+            
+            for i in 0..<tommorowAndTwoDaysLaterInformations.count { // 내일 ~ 모레
+                minTemps.append(CGFloat(tommorowAndTwoDaysLaterInformations[i].minTemperature.toInt))
+                maxTemps.append(CGFloat(tommorowAndTwoDaysLaterInformations[i].maxTemperature.toInt))
+            }
+            
+            for i in 0..<minMaxTemperaturesByThreeToTenDay.count { // 3일 후 ~ 10일 후
+                minTemps.append(CGFloat(minMaxTemperaturesByThreeToTenDay[i].0.toInt))
+                maxTemps.append(CGFloat(minMaxTemperaturesByThreeToTenDay[i].1.toInt))
+            }
+            
+            for i in 1...7 { // 내일 ~ 7일 후
+                xList.append(currentDate.toString(byAdding: i, format: "E"))
+            }
+            
+            guard let maxInMaxTemps = maxTemps.max()?.toInt else { return }
+            yList = midTermForecastUtil.temperatureChartYList(maxTemp: maxInMaxTemps)
+            
+            temperatureChartInformation = .init(
+                minTemps: minTemps,
+                maxTemps: maxTemps,
+                xList: xList,
+                yList: yList
+            )
+            
+        } else {
+            CommonUtil.shared.printError(
+                funcTitle: "setTemperatureChartInformation()",
+                description: """
+                온도 차트 정보 set 실패
+                tommorowAndTwoDaysLaterInformations,
+                minMaxTemperaturesByThreeToTenDay,
+                의 값이 제대로 들어있는지 확인하세요.
+                """,
+                values: [
+                    tommorowAndTwoDaysLaterInformations.count,
+                    minMaxTemperaturesByThreeToTenDay.count,
                 ]
             )
         }
