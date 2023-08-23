@@ -35,30 +35,30 @@ struct WeekViewController: View {
                     }
                     .padding(.horizontal, 24)
                     
-                    VStack(alignment: .leading, spacing: 0) {
-                        LineChartView()
-                            .frame(maxWidth: .infinity, alignment: .center)
-                            .padding(.leading, 30)
-                            .padding(.top, 16)
-                            .padding(.bottom, 50)
-                            .opacity(graphOpacity)
-                            .background {
-                                Color.black.opacity(0.2)
-                            }
-                            .cornerRadius(14)
-                            .onAppear {
-                                withAnimation(.easeOut(duration: 0.4)) {
-                                    graphOpacity = 1
+                    if viewModel.isWeeklyWeatherInformationsLoaded {
+                        VStack(alignment: .leading, spacing: 0) {
+                            LineChartView(temperatureChartInf: $viewModel.temperatureChartInformation)
+                                .frame(maxWidth: .infinity, alignment: .center)
+                                .padding(.leading, 30)
+                                .padding(.top, 16)
+                                .padding(.bottom, 50)
+                                .opacity(graphOpacity)
+                                .background {
+                                    Color.black.opacity(0.2)
                                 }
-                            }
+                                .cornerRadius(14)
+                                .onAppear {
+                                    withAnimation(.easeOut(duration: 0.4)) {
+                                        graphOpacity = 1
+                                    }
+                                }
+                        }
+                        .padding(.horizontal, 10)
+                        .padding(.top, 25)
+                        .padding(.bottom, 65)
                     }
-                    .padding(.horizontal, 10)
-                    .padding(.top, 25)
-                    .padding(.bottom, 65)
-                    
-                    
                 }
-                //                .loadingProgressLottie(isLoadingCompleted: viewModel.isWeeklyWeatherInformationsLoaded)
+                .loadingProgressLottie(isLoadingCompleted: viewModel.isWeeklyWeatherInformationsLoaded)
             }
             .padding(.top, 24)
         }
