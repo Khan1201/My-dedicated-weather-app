@@ -42,6 +42,7 @@ struct LineChartBaseView: View {
                     }
                 }
             }
+            // X축 요일
             .overlay(alignment: .bottom) {
                 HStack(alignment: .center, spacing: 0) {
                     ForEach(xList.indices, id: \.self) { i in
@@ -59,6 +60,7 @@ struct LineChartBaseView: View {
                 .padding(.horizontal, -5)
                 .offset(y: xTextSize.height + 14)
             }
+            // X축 날짜
             .overlay(alignment: .bottom) {
                 HStack(alignment: .center, spacing: 0) {
                     ForEach(xList.indices, id: \.self) { i in
@@ -72,8 +74,9 @@ struct LineChartBaseView: View {
                     }
                 }
                 .padding(.horizontal, -8)
-                .offset(y: xTextSize.height + 14 + xTextSize.height)
+                .offset(y: (xTextSize.height * 2) + 14)
             }
+            // y축 기온
             .overlay(alignment: .topLeading) {
                 VStack(alignment: .leading, spacing: 0) {
                     ForEach(yList, id: \.self) { y in
