@@ -135,7 +135,7 @@ final class Dummy {
         ]
     }
     
-    func temperatureChartInf() -> TemperatureChartInf {
+    func weeklyChartInformation() -> Weather.WeeklyChartInformation {
         return .init(
             minTemps: [22, 20, 23, 20, 23, 21, 22],
             maxTemps: [27, 25, 27, 30, 32, 27, 28],

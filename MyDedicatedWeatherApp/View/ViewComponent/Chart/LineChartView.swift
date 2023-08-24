@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct LineChartView: View {
-    @Binding var temperatureChartInf: TemperatureChartInf
+    @Binding var weeklyChartInformation: Weather.WeeklyChartInformation
 
     @State private var xTextSize: CGSize = CGSize()
     @State private var yTextSize: CGSize = CGSize()
@@ -24,12 +24,12 @@ struct LineChartView: View {
         let width: CGFloat = UIScreen.screenWidth - 80
         let height: CGFloat = width * 1.0333
         let circleSize: CGSize = CGSize(width: 6, height: 6)
-        let rangeMin: CGFloat = CGFloat(temperatureChartInf.yList.min() ?? 0)
-        let rangeMax: CGFloat = CGFloat(temperatureChartInf.yList.max() ?? 0)
+        let rangeMin: CGFloat = CGFloat(weeklyChartInformation.yList.min() ?? 0)
+        let rangeMax: CGFloat = CGFloat(weeklyChartInformation.yList.max() ?? 0)
         
         var convertedMaxValues: [CGFloat] {
             // 0 = 바꿀 range의 최소값, height = 바꿀 range의 최대값
-            return temperatureChartInf.maxTemps.map { temp in
+            return weeklyChartInformation.maxTemps.map { temp in
                 if temp == 0 {
                     return 0
                     
@@ -41,7 +41,7 @@ struct LineChartView: View {
         
         var convertedMinValues: [CGFloat] {
             // 0 = 바꿀 range의 최소값, height = 바꿀 range의 최대값
-            return temperatureChartInf.minTemps.map { temp in
+            return weeklyChartInformation.minTemps.map { temp in
                 if temp == 0 {
                     return 0
                     
@@ -55,7 +55,7 @@ struct LineChartView: View {
             var result: [CGFloat] = []
             var xStepSum: CGFloat = 0
             
-            for i in 0..<temperatureChartInf.maxTemps.count {
+            for i in 0..<weeklyChartInformation.maxTemps.count {
                 if i == 0 {
                     result.append(0)
                     
@@ -104,8 +104,8 @@ struct LineChartView: View {
                 yStepSize: $yStepSize,
                 width: width,
                 height: height,
-                xList: temperatureChartInf.xList,
-                yList: temperatureChartInf.yList
+                xList: weeklyChartInformation.xList,
+                yList: weeklyChartInformation.yList
             )
             // Max line
             .overlay(alignment: .bottomLeading) {
@@ -116,7 +116,7 @@ struct LineChartView: View {
                     path.move(to: CGPoint(x: 0, y: height - convertedMaxValues[0]))
                     coordinates.append((0, height - convertedMaxValues[0]))
                     
-                    for i in 1..<temperatureChartInf.maxTemps.count {
+                    for i in 1..<weeklyChartInformation.maxTemps.count {
                         path.addLine(to: CGPoint(x: xSteps[i], y: height - convertedMaxValues[i]))
                         coordinates.append((xSteps[i], height - convertedMaxValues[i]))
                     }
@@ -138,9 +138,9 @@ struct LineChartView: View {
                 .overlay(alignment: .bottomLeading) {
                     ZStack(alignment: .bottomLeading) {
                         ForEach(coordinates.indices, id: \.self) { i in
-                            Text("\(Int(temperatureChartInf.maxTemps[i]))°")
+                            Text("\(Int(weeklyChartInformation.maxTemps[i]))°")
                                 .fontSpoqaHanSansNeo(size: 10, weight: .bold)
-                                .foregroundColor(Int(temperatureChartInf.maxTemps[i]) >= 30 ? Color.red.opacity(0.7) : Color.white.opacity(0.7))
+                                .foregroundColor(Int(weeklyChartInformation.maxTemps[i]) >= 30 ? Color.red.opacity(0.7) : Color.white.opacity(0.7))
                                 .padding(.leading, i == coordinates.count - 1 ? xSteps[i] - 17 : xSteps[i] - 5)
                                 .padding(.bottom, convertedMaxValues[i] + 10)
                         }
@@ -153,12 +153,12 @@ struct LineChartView: View {
                         
                         ForEach(coordinates.indices, id: \.self) { i in
                             VStack(alignment: .center, spacing: 0) {
-                                Image(temperatureChartInf.imageAndRainPercents[i].0)
+                                Image(weeklyChartInformation.imageAndRainPercents[i].0)
                                     .resizable()
                                     .frame(width: imageWidth, height: imageWidth)
                                 
-                                if temperatureChartInf.imageAndRainPercents[i].1 != "0" {
-                                    Text("\(temperatureChartInf.imageAndRainPercents[i].1)%")
+                                if weeklyChartInformation.imageAndRainPercents[i].1 != "0" {
+                                    Text("\(weeklyChartInformation.imageAndRainPercents[i].1)%")
                                         .fontSpoqaHanSansNeo(size: 7, weight: .medium)
                                         .foregroundColor(CustomColor.lightBlue.toColor)
                                 }
@@ -180,7 +180,7 @@ struct LineChartView: View {
                     path.move(to: CGPoint(x: 0, y: height - convertedMinValues[0]))
                     coordinates.append((0, height - convertedMinValues[0]))
                     
-                    for i in 1..<temperatureChartInf.minTemps.count {
+                    for i in 1..<weeklyChartInformation.minTemps.count {
                         path.addLine(to: CGPoint(x: xSteps[i], y: height - convertedMinValues[i]))
                         coordinates.append((xSteps[i], height - convertedMinValues[i]))
                     }
@@ -202,7 +202,7 @@ struct LineChartView: View {
                 .overlay(alignment: .bottomLeading) {
                     ZStack(alignment: .bottomLeading) {
                         ForEach(coordinates.indices, id: \.self) { i in
-                            Text("\(Int(temperatureChartInf.minTemps[i]))°")
+                            Text("\(Int(weeklyChartInformation.minTemps[i]))°")
                                 .fontSpoqaHanSansNeo(size: 10, weight: .bold)
                                 .foregroundColor(Color.white.opacity(0.7))
                                 .padding(.leading, i == coordinates.count - 1 ? xSteps[i] - 17 : xSteps[i] - 5)
@@ -228,7 +228,7 @@ struct LineChartView: View {
 
 struct LineChartView_Previews: PreviewProvider {
     static var previews: some View {
-        LineChartView(temperatureChartInf: .constant(Dummy.shared.temperatureChartInf()))
+        LineChartView(weeklyChartInformation: .constant(Dummy.shared.weeklyChartInformation()))
     }
 }
 

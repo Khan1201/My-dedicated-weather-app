@@ -44,6 +44,14 @@ struct Weather {
         let minTemperature: String
         let maxTemperature: String
     }
+    
+    struct WeeklyChartInformation {
+        let minTemps: [CGFloat]
+        let maxTemps: [CGFloat]
+        let xList: [(String, String)] // x축 = (요일, 날짜)
+        let yList: [Int] // y축 = 온도 범위
+        let imageAndRainPercents: [(String, String)]
+    }
 
     enum SkyType: String {
         case sunny,
@@ -125,13 +133,4 @@ enum TabBarType: CaseIterable {
 enum MidtermReqType {
     case temperature, skystate, news
 }
-
-struct TemperatureChartInf {
-    let minTemps: [CGFloat]
-    let maxTemps: [CGFloat]
-    let xList: [(String, String)] // x축 = (요일, 날짜)
-    let yList: [Int] // y축 = 온도 범위
-    let imageAndRainPercents: [(String, String)]
-}
-
 

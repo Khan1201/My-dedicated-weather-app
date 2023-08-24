@@ -9,7 +9,7 @@ import Foundation
 
 final class WeekViewModel: ObservableObject {
     @Published var weeklyWeatherInformations: [Weather.WeeklyWeatherInformation]
-    @Published var temperatureChartInformation: TemperatureChartInf = .init(minTemps: [], maxTemps: [], xList: [], yList: [], imageAndRainPercents: [])
+    @Published var weeklyChartInformation: Weather.WeeklyChartInformation = .init(minTemps: [], maxTemps: [], xList: [], yList: [], imageAndRainPercents: [])
     @Published var errorMessage: String = ""
     @Published var isWeeklyWeatherInformationsLoaded: Bool = false
 
@@ -398,7 +398,7 @@ extension WeekViewModel {
             guard let maxInMaxTemps = maxTemps.max()?.toInt else { return }
             yList = midTermForecastUtil.temperatureChartYList(maxTemp: maxInMaxTemps)
             
-            temperatureChartInformation = .init(
+            weeklyChartInformation = .init(
                 minTemps: minTemps,
                 maxTemps: maxTemps,
                 xList: xList,
