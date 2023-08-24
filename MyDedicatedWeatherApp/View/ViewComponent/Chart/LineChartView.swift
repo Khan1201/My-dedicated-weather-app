@@ -107,6 +107,7 @@ struct LineChartView: View {
                 xList: temperatureChartInf.xList,
                 yList: temperatureChartInf.yList
             )
+            // Max line
             .overlay(alignment: .bottomLeading) {
                 
                 var coordinates: [(CGFloat, CGFloat)] = []
@@ -121,6 +122,7 @@ struct LineChartView: View {
                     }
                 }
                 .stroke(maxLineColor, lineWidth: lineWidth)
+                // Vertex
                 .overlay(alignment: .bottomLeading) {
                     ZStack(alignment: .bottomLeading) {
                         ForEach(coordinates.indices, id: \.self) { i in
@@ -132,6 +134,7 @@ struct LineChartView: View {
                         }
                     }
                 }
+                // Temperature
                 .overlay(alignment: .bottomLeading) {
                     ZStack(alignment: .bottomLeading) {
                         ForEach(coordinates.indices, id: \.self) { i in
@@ -143,7 +146,32 @@ struct LineChartView: View {
                         }
                     }
                 }
+                // Weather image and Rain percent
+                .overlay(alignment: .bottomLeading) {
+                    ZStack(alignment: .bottomLeading) {
+                        let imageWidth: CGFloat = 22
+                        
+                        ForEach(coordinates.indices, id: \.self) { i in
+                            VStack(alignment: .center, spacing: 0) {
+                                Image(temperatureChartInf.imageAndRainPercents[i].0)
+                                    .resizable()
+                                    .frame(width: imageWidth, height: imageWidth)
+                                
+                                if temperatureChartInf.imageAndRainPercents[i].1 != "0" {
+                                    Text("\(temperatureChartInf.imageAndRainPercents[i].1)%")
+                                        .fontSpoqaHanSansNeo(size: 7, weight: .medium)
+                                        .foregroundColor(CustomColor.lightBlue.toColor)
+                                }
+                            }
+                            .padding(.leading, i == coordinates.count - 1 ?
+                                     xSteps[i] - 17 : xSteps[i] - (imageWidth / 2)
+                            )
+                            .padding(.bottom, convertedMaxValues[i] + 30)
+                        }
+                    }
+                }
             }
+            // Min line
             .overlay(alignment: .bottomLeading) {
                 
                 var coordinates: [(CGFloat, CGFloat)] = []
@@ -158,6 +186,7 @@ struct LineChartView: View {
                     }
                 }
                 .stroke(minLineColor, lineWidth: lineWidth)
+                // Vertex
                 .overlay(alignment: .bottomLeading) {
                     ZStack(alignment: .bottomLeading) {
                         ForEach(coordinates.indices, id: \.self) { i in
@@ -169,6 +198,7 @@ struct LineChartView: View {
                         }
                     }
                 }
+                // Temperature
                 .overlay(alignment: .bottomLeading) {
                     ZStack(alignment: .bottomLeading) {
                         ForEach(coordinates.indices, id: \.self) { i in
@@ -180,6 +210,7 @@ struct LineChartView: View {
                         }
                     }
                 }
+                // X축 base line
                 .overlay(alignment: .bottomLeading) {
                     ZStack(alignment: .bottomLeading) {
                         ForEach(coordinates.indices, id: \.self) { i in
