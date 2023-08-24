@@ -25,6 +25,7 @@ final class WeekViewModel: ObservableObject {
     private let commonForecastUtil: CommonForecastUtil = CommonForecastUtil()
     private let midTermForecastUtil: MidTermForecastUtil = MidTermForecastUtil()
     
+    // Mock data 의존성 주입 위해
     init(weeklyWeatherInformations: [Weather.WeeklyWeatherInformation]) {
         self.weeklyWeatherInformations = weeklyWeatherInformations
     }
