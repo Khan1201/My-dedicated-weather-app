@@ -31,7 +31,7 @@ final class Dummy {
         )
     }
     
-    func todayWeatherInformations() -> [Weather.TodayWeatherInformation] {
+    func todayWeatherInformations() -> [Weather.TodayInformation] {
         return [
             .init(
                 time: "0000",

@@ -16,7 +16,7 @@ final class TodayViewModel: ObservableObject {
     @Published private(set) var currentFineDustTuple: Weather.DescriptionAndColor = .init(description: "", color: .clear)
     @Published private(set) var currentUltraFineDustTuple: Weather.DescriptionAndColor = .init(description: "", color: .clear)
     @Published private(set) var todayMinMaxTemperature: (String, String) = ("__", "__")
-    @Published private(set) var todayWeatherInformations: [Weather.TodayWeatherInformation] = Dummy.shared.todayWeatherInformations()
+    @Published private(set) var todayWeatherInformations: [Weather.TodayInformation] = Dummy.shared.todayWeatherInformations()
     
     @Published var subLocalityByKakaoAddress: String = "성수동 1가"
     
@@ -490,7 +490,7 @@ extension TodayViewModel {
                 isAnimationImage: false
             )
             
-            let todayWeather = Weather.TodayWeatherInformation(
+            let todayWeather = Weather.TodayInformation(
                 time: CommonUtil.shared.convertAMOrPMFromHHmm(items[tempIndex].fcstTime),
                 weatherImage: weatherImage.imageString,
                 precipitation: items[popIndex].fcstValue,
@@ -512,7 +512,7 @@ extension TodayViewModel {
      
      - parameter todayWeathers: [todayWeatherInformations] 오늘 날씨 정보 리스트
      */
-    func setTodayMinMaxTemperature(_ todayWeathers: [Weather.TodayWeatherInformation]) {
+    func setTodayMinMaxTemperature(_ todayWeathers: [Weather.TodayInformation]) {
         var maxTemp: Int = 0
         var minTemp: Int = 0
         

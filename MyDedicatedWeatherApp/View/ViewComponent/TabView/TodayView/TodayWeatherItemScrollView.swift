@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TodayWeatherItemScrollView: View {
     
-    let todayWeatherInformations: [Weather.TodayWeatherInformation]
+    let todayWeatherInformations: [Weather.TodayInformation]
     let isDayMode: Bool
     
     var body: some View {

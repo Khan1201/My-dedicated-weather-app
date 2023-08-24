@@ -21,7 +21,7 @@ struct Weather {
         let color: Color
     }
     
-    struct TodayWeatherInformation {
+    struct TodayInformation {
         let time: String
         let weatherImage: String
         let precipitation: String
