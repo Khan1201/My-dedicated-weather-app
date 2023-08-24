@@ -8,12 +8,12 @@
 import Foundation
 
 final class WeekViewModel: ObservableObject {
-    @Published var weeklyWeatherInformations: [Weather.WeeklyWeatherInformation]
+    @Published var weeklyWeatherInformations: [Weather.WeeklyInformation]
     @Published var weeklyChartInformation: Weather.WeeklyChartInformation = .init(minTemps: [], maxTemps: [], xList: [], yList: [], imageAndRainPercents: [])
     @Published var errorMessage: String = ""
     @Published var isWeeklyWeatherInformationsLoaded: Bool = false
 
-    var tommorowAndTwoDaysLaterInformations: [Weather.WeeklyWeatherInformation] = []
+    var tommorowAndTwoDaysLaterInformations: [Weather.WeeklyInformation] = []
     var minMaxTemperaturesByThreeToTenDay: [(String, String)] = []
     var weatherImageAndRainfallPercentsByThreeToTenDay: [(String, String)] = []
     
@@ -26,7 +26,7 @@ final class WeekViewModel: ObservableObject {
     private let midTermForecastUtil: MidTermForecastUtil = MidTermForecastUtil()
     
     // Mock data 의존성 주입 위해
-    init(weeklyWeatherInformations: [Weather.WeeklyWeatherInformation]) {
+    init(weeklyWeatherInformations: [Weather.WeeklyInformation]) {
         self.weeklyWeatherInformations = weeklyWeatherInformations
     }
 }
@@ -325,9 +325,9 @@ extension WeekViewModel {
         if tommorowAndTwoDaysLaterInformations.count == 2 && minMaxTemperaturesByThreeToTenDay.count == 8 && weatherImageAndRainfallPercentsByThreeToTenDay.count == 8 {
             weeklyWeatherInformations = []
             
-            var threeToTenDayInformations: [Weather.WeeklyWeatherInformation] = []
+            var threeToTenDayInformations: [Weather.WeeklyInformation] = []
             for i in 0..<8 {
-                let threeToTenDayInformation: Weather.WeeklyWeatherInformation = .init(
+                let threeToTenDayInformation: Weather.WeeklyInformation = .init(
                     weatherImage: weatherImageAndRainfallPercentsByThreeToTenDay[i].0,
                     rainfallPercent: weatherImageAndRainfallPercentsByThreeToTenDay[i].1,
                     minTemperature: minMaxTemperaturesByThreeToTenDay[i].0,

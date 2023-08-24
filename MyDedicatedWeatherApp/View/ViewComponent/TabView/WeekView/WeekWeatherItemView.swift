@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct WeekWeatherItemView: View {
-    let item: Weather.WeeklyWeatherInformation
+    let item: Weather.WeeklyInformation
     let day: String
     @State var recWidth: CGFloat = 0
     

@@ -12,7 +12,7 @@ final class TodayViewModel: ObservableObject {
     @Published private(set) var errorMessage: String = ""
     @Published private(set) var currentTemperature: String = "00"
     @Published private(set) var currentWeatherAnimationImg: String = ""
-    @Published private(set) var currentWeatherInformation: Weather.CurrentWeatherInformation = Dummy.shared.currentWeatherInformation()
+    @Published private(set) var currentWeatherInformation: Weather.CurrentInformation = Dummy.shared.currentWeatherInformation()
     @Published private(set) var currentFineDustTuple: Weather.DescriptionAndColor = .init(description: "", color: .clear)
     @Published private(set) var currentUltraFineDustTuple: Weather.DescriptionAndColor = .init(description: "", color: .clear)
     @Published private(set) var todayMinMaxTemperature: (String, String) = ("__", "__")
@@ -439,7 +439,7 @@ extension TodayViewModel {
             isAnimationImage: false
         )
         
-        currentWeatherInformation = Weather.CurrentWeatherInformation(
+        currentWeatherInformation = Weather.CurrentInformation(
             temperature: currentTemperature.fcstValue,
             windSpeed: commonForecastUtil.remakeWindSpeedValueByVeryShortTermOrShortTermForecast(
                 value: currentWindSpeed.fcstValue

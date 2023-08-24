@@ -10,9 +10,9 @@ import Foundation
 final class Dummy {
     static let shared = Dummy()
     
-    func currentWeatherInformation() -> Weather.CurrentWeatherInformation {
+    func currentWeatherInformation() -> Weather.CurrentInformation {
         
-        return Weather.CurrentWeatherInformation(
+        return Weather.CurrentInformation(
             temperature: "",
             windSpeed: ("", ""),
             wetPercent: ("", ""),
@@ -72,7 +72,7 @@ final class Dummy {
         ]
     }
     
-    func weeklyWeatherInformation() -> Weather.WeeklyWeatherInformation {
+    func weeklyWeatherInformation() -> Weather.WeeklyInformation {
         return .init(
             weatherImage: "weather_cloud_many",
             rainfallPercent: "40",
@@ -81,7 +81,7 @@ final class Dummy {
         )
     }
     
-    func weeklyWeatherInformations() -> [Weather.WeeklyWeatherInformation] {
+    func weeklyWeatherInformations() -> [Weather.WeeklyInformation] {
         return [
             .init(
                 weatherImage: "weather_cloud_many",
