@@ -131,6 +131,7 @@ struct TemperatureChartInf {
     let maxTemps: [CGFloat]
     let xList: [(String, String)] // x축 = (요일, 날짜)
     let yList: [Int] // y축 = 온도 범위
+    let imageAndRainPercents: [(String, String)]
 }
 
 
