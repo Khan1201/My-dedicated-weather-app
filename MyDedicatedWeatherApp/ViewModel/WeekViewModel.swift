@@ -9,7 +9,7 @@ import Foundation
 
 final class WeekViewModel: ObservableObject {
     @Published var weeklyWeatherInformations: [Weather.WeeklyWeatherInformation]
-    @Published var temperatureChartInformation: TemperatureChartInf = .init(minTemps: [], maxTemps: [], xList: [], yList: [])
+    @Published var temperatureChartInformation: TemperatureChartInf = .init(minTemps: [], maxTemps: [], xList: [], yList: [], imageAndRainPercents: [])
     @Published var errorMessage: String = ""
     @Published var isWeeklyWeatherInformationsLoaded: Bool = false
 
@@ -364,26 +364,37 @@ extension WeekViewModel {
             var maxTemps: [CGFloat] = []
             var xList: [(String, String)] = []
             var yList: [Int] = []
+            var imageAndRainPercents: [(String, String)] = []
 
             let currentDate: Date = Date()
-
             
+            // Min Max temps, imageAndRainPercents
             for i in 0..<tommorowAndTwoDaysLaterInformations.count { // 내일 ~ 모레
                 minTemps.append(CGFloat(tommorowAndTwoDaysLaterInformations[i].minTemperature.toInt))
                 maxTemps.append(CGFloat(tommorowAndTwoDaysLaterInformations[i].maxTemperature.toInt))
+                
+                let image = tommorowAndTwoDaysLaterInformations[i].weatherImage
+                let rainPercent = tommorowAndTwoDaysLaterInformations[i].rainfallPercent
+                imageAndRainPercents.append((image, rainPercent))
             }
             
             for i in 0..<minMaxTemperaturesByThreeToTenDay.count { // 3일 후 ~ 10일 후
                 minTemps.append(CGFloat(minMaxTemperaturesByThreeToTenDay[i].0.toInt))
                 maxTemps.append(CGFloat(minMaxTemperaturesByThreeToTenDay[i].1.toInt))
+                
+                let image = weatherImageAndRainfallPercentsByThreeToTenDay[i].0
+                let rainPercent = weatherImageAndRainfallPercentsByThreeToTenDay[i].1
+                imageAndRainPercents.append((image, rainPercent))
             }
             
+            // xList
             for i in 1...7 { // 내일 ~ 7일 후
                 let day = currentDate.toString(byAdding: i, format: "E")
                 let date = currentDate.toString(byAdding: i, format: "M/d")
                 xList.append((day, date))
             }
             
+            // yList
             guard let maxInMaxTemps = maxTemps.max()?.toInt else { return }
             yList = midTermForecastUtil.temperatureChartYList(maxTemp: maxInMaxTemps)
             
@@ -391,7 +402,8 @@ extension WeekViewModel {
                 minTemps: minTemps,
                 maxTemps: maxTemps,
                 xList: xList,
-                yList: yList
+                yList: yList,
+                imageAndRainPercents: imageAndRainPercents
             )
             
         } else {
