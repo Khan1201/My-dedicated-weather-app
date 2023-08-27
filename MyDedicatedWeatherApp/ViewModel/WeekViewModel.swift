@@ -321,6 +321,9 @@ extension WeekViewModel {
         }
     }
     
+    /**
+     Set `WeeklyWeatherInformations` (내일 ~ 10일까지 최저 및 최고기온, 날씨 image, 강수확률)
+     */
     func setWeeklyWeatherInformations() {
         if tommorowAndTwoDaysLaterInformations.count == 2 && minMaxTemperaturesByThreeToTenDay.count == 8 && weatherImageAndRainfallPercentsByThreeToTenDay.count == 8 {
             weeklyWeatherInformations = []
@@ -359,6 +362,9 @@ extension WeekViewModel {
         }
     }
     
+    /**
+     Set `temperatureChartInformation` (내일 ~ 7일 까지의 차트draw에 필요한 데이터 (최저 및 최고기온, 날씨 image, 강수확률 ))
+     */
     func setTemperatureChartInformation() {
         if tommorowAndTwoDaysLaterInformations.count == 2 && minMaxTemperaturesByThreeToTenDay.count == 8 {
             var minTemps: [CGFloat] = []
