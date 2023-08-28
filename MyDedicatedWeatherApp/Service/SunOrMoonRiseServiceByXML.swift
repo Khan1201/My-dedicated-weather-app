@@ -11,28 +11,22 @@ import Combine
 import Alamofire
 
 final class SunAndMoonRiseByXMLService: NSObject {
-    
     let queryItem: SunAndMoonriseReq
 
-    var result = PassthroughSubject<SunAndMoonriseBase, Never>()
-    
+    var result: SunAndMoonriseBase = Dummy.shared.SunAndMoonriseBase()
     var tempResult: SunAndMoonriseBase = Dummy.shared.SunAndMoonriseBase()
     var isLock: Bool = false
     var tagType: SunAndMoonriseBase.TagType = .none
     
-    init(queryItem: SunAndMoonriseReq) {
-        
+    init(queryItem: SunAndMoonriseReq) async throws {
         self.queryItem = queryItem
         super.init()
-        
         let url = URL(string: Route.GET_SUNRISE_SUNSET_TEMPERATURE.val)
-
-        AF.request(url!, method: .get, parameters: queryItem)
-            .response { data in
-                let parser = XMLParser(data: data.data!)
-                parser.delegate = self
-                parser.parse()
-            }
+        let data = try await AF.request(url!, method: .get, parameters: queryItem).serializingData().value
+        
+        let parser = XMLParser(data: data)
+        parser.delegate = self
+        parser.parse()
     }
 }
 
@@ -86,7 +80,7 @@ extension SunAndMoonRiseByXMLService: XMLParserDelegate {
     func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
         if elementName == "item" {
             isLock = false
-            result.send(tempResult)
+            result = tempResult
         }
     }
 }

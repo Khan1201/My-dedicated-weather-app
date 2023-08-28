@@ -379,28 +379,37 @@ extension TodayViewModel {
      - parameter lat: latitude(위도)
      */
     func requestSunAndMoonrise(long: String, lat: String) async {
-        
         let startTime = CFAbsoluteTimeGetCurrent()
-        SunAndMoonRiseByXMLService(
-            queryItem: .init(
-                serviceKey: Env.shared.openDataApiResponseKey,
-                locdate: Date().toString(format: "yyyyMMdd"),
-                longitude: long,
-                latitude: lat
+
+        do {
+            let parser = try await SunAndMoonRiseByXMLService(
+                queryItem: .init(
+                    serviceKey: Env.shared.openDataApiResponseKey,
+                    locdate: Date().toString(format: "yyyyMMdd"),
+                    longitude: long,
+                    latitude: lat
+                )
             )
-        ).result
-            .sink { [weak self] value in
-                guard let self = self else { return }
-                DispatchQueue.main.async {
-                    self.sunRiseAndSetHHmm = (value.sunrise, value.sunset)
-                    self.setIsDayMode(riseItem: value)
-                    self.isSunriseSunsetLoadCompleted = true
-                    
-                    let durationTime = CFAbsoluteTimeGetCurrent() - startTime
-                    print("일출 일몰 req 소요시간: \(durationTime)")
-                }
+            
+            DispatchQueue.main.async {
+                self.sunRiseAndSetHHmm = (parser.result.sunrise, parser.result.sunset)
+                self.setIsDayMode(riseItem: parser.result)
+                self.isSunriseSunsetLoadCompleted = true
             }
-            .store(in: &subscriptions)
+            
+            let durationTime = CFAbsoluteTimeGetCurrent() - startTime
+            print("일출 일몰 req 소요시간: \(durationTime)")
+            
+        } catch APIError.transportError {
+            
+            DispatchQueue.main.async {
+                self.errorMessage = "API 통신 에러"
+            }
+        } catch {
+            DispatchQueue.main.async {
+                self.errorMessage = "알 수 없는 오류"
+            }
+        }
     }
 }
 
