@@ -73,7 +73,7 @@ struct LineChartBaseView: View {
                         }
                     }
                 }
-                .padding(.horizontal, -8)
+                .padding(.horizontal, -10)
                 .offset(y: (xTextSize.height * 2) + 14)
             }
             // y축 기온
