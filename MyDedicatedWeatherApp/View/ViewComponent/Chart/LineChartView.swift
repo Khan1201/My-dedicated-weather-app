@@ -142,7 +142,7 @@ struct LineChartView: View {
                                 .fontSpoqaHanSansNeo(size: 10, weight: .bold)
                                 .foregroundColor(Int(weeklyChartInformation.maxTemps[i]) >= 30 ? Color.red.opacity(0.7) : Color.white.opacity(0.7))
                                 .padding(.leading, i == coordinates.count - 1 ? xSteps[i] - 17 : xSteps[i] - 5)
-                                .padding(.bottom, convertedMaxValues[i] + 10)
+                                .padding(.bottom, convertedMaxValues[i] - 5)
                         }
                     }
                 }
@@ -161,6 +161,7 @@ struct LineChartView: View {
                                     Text("\(weeklyChartInformation.imageAndRainPercents[i].1)%")
                                         .fontSpoqaHanSansNeo(size: 7, weight: .medium)
                                         .foregroundColor(CustomColor.lightBlue.toColor)
+                                        .offset(y: -2)
                                 }
                             }
                             .padding(.leading, i == coordinates.count - 1 ?
@@ -206,7 +207,7 @@ struct LineChartView: View {
                                 .fontSpoqaHanSansNeo(size: 10, weight: .bold)
                                 .foregroundColor(Color.white.opacity(0.7))
                                 .padding(.leading, i == coordinates.count - 1 ? xSteps[i] - 17 : xSteps[i] - 5)
-                                .padding(.bottom, convertedMinValues[i] + 10)
+                                .padding(.bottom, convertedMinValues[i] - 15)
                         }
                     }
                 }
