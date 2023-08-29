@@ -397,7 +397,7 @@ extension WeekViewModel {
             // xList
             for i in 1...7 { // 내일 ~ 7일 후
                 let day = currentDate.toString(byAdding: i, format: "E")
-                let date = currentDate.toString(byAdding: i, format: "M/d")
+                let date = currentDate.toString(byAdding: i, format: "MM/dd")
                 xList.append((day, date))
             }
             
