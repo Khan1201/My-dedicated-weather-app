@@ -12,9 +12,9 @@ struct CustomBottomTabBarView: View {
     @Binding var currentTab: TabBarType
     
     var body: some View {
-        
+        let isNotNocheDevice: Bool = CommonUtil.shared.isNotNocheDevice
+
         HStack(alignment: .bottom, spacing: 0) {
-            
             tabBarItemView(
                 imageString: "calender_today",
                 title: "현재 날씨",
@@ -50,10 +50,10 @@ struct CustomBottomTabBarView: View {
             )
         }
         .padding(.horizontal, 24)
-        .padding(.top, 15)
-        .padding(.bottom, 27)
+        .padding(.top, isNotNocheDevice ? 8 : 15)
+        .padding(.bottom, isNotNocheDevice ? 5 : 27)
         .background(.white)
-        .cornerRadius(25, corners: [.topLeft, .topRight])
+        .cornerRadius(isNotNocheDevice ? 0 : 25, corners: [.topLeft, .topRight])
     }
 }
 
@@ -73,21 +73,22 @@ extension CustomBottomTabBarView {
         currentTab: Binding<TabBarType>,
         tabValue: TabBarType
     ) -> some View{
+        let isNotNocheDevice: Bool = CommonUtil.shared.isNotNocheDevice
         
         return VStack(alignment: .center, spacing: 5) {
             
             Image(imageString)
                 .resizable()
-                .frame(width: 24, height: 24)
+                .frame(width: isNotNocheDevice ? 18 : 24, height: isNotNocheDevice ? 18 : 24)
             
             Text(title)
-                .font(.system(size: 10, weight: .medium))
+                .font(.system(size: isNotNocheDevice ? 8 : 10, weight: isNotNocheDevice ? .bold : .medium))
                 .foregroundColor(Color.black.opacity(0.6))
         }
         .overlay(alignment: .top) {
             Image("check_blue")
                 .resizable()
-                .frame(width: 20, height: 20)
+                .frame(width: isNotNocheDevice ? 16 : 20, height: isNotNocheDevice ? 16 : 20)
                 .opacity(currentTab.wrappedValue == tabValue ? 1 : 0)
                 .offset(y: -5)
         }

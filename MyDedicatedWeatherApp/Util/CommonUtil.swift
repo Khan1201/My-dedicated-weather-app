@@ -11,6 +11,8 @@ import SwiftUI
 final class CommonUtil {
     static let shared = CommonUtil()
     
+    var isNotNocheDevice: Bool = UIScreen.screenHeight < 812 // iphone X height
+    
     //MARK: - Common..
 
     /**
