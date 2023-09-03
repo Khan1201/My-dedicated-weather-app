@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CornerRadiusStyle: ViewModifier {
+struct CornerRadiusByCorner: ViewModifier {
     var radius: CGFloat
     var corners: UIRectCorner
     
@@ -30,6 +30,6 @@ struct CornerRadiusStyle: ViewModifier {
 
 extension View {
     func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
-        ModifiedContent(content: self, modifier: CornerRadiusStyle(radius: radius, corners: corners))
+        ModifiedContent(content: self, modifier: CornerRadiusByCorner(radius: radius, corners: corners))
     }
 }

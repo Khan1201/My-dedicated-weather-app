@@ -1,5 +1,5 @@
 //
-//  TodayViewController.swift
+//  CurrentWeatherView.swift
 //  MyDedicatedWeatherApp
 //
 //  Created by 윤형석 on 2023/04/30.
@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftUIPager
 
-struct TodayViewController: View {
+struct CurrentWeatherView: View {
     @StateObject var viewModel: CurrentWeatherVM = CurrentWeatherVM()
     @StateObject var locationDataManagerVM = LocationDataManagerVM()
     
@@ -87,15 +87,15 @@ struct TodayViewController: View {
     }
 }
 
-struct TodayViewController_Previews: PreviewProvider {
+struct CurrentWeatherView_Previews: PreviewProvider {
     static var previews: some View {
-        TodayViewController()
+        CurrentWeatherView()
     }
 }
 
 // MARK: - Supporting Views..
 
-extension TodayViewController {
+extension CurrentWeatherView {
     
     var topView: some View {
         

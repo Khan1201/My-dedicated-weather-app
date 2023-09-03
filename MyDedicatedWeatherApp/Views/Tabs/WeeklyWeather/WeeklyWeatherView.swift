@@ -1,5 +1,5 @@
 //
-//  WeekViewController.swift
+//  WeeklyWeatherView.swift
 //  MyDedicatedWeatherApp
 //
 //  Created by 윤형석 on 2023/07/24.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct WeekViewController: View {
+struct WeeklyWeatherView: View {
     @StateObject var viewModel: WeeklyWeatherVM = WeeklyWeatherVM(weeklyWeatherInformations: Dummy().weeklyWeatherInformations())
     @State private var graphOpacity: CGFloat = 0
     
@@ -75,6 +75,6 @@ struct WeekViewController: View {
 
 struct WeekViewController_Previews: PreviewProvider {
     static var previews: some View {
-        WeekViewController(viewModel: WeeklyWeatherVM(weeklyWeatherInformations: Dummy.shared.weeklyWeatherInformations()))
+        WeeklyWeatherView(viewModel: WeeklyWeatherVM(weeklyWeatherInformations: Dummy.shared.weeklyWeatherInformations()))
     }
 }
