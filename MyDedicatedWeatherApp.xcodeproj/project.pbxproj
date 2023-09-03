@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BC2419B12AA4A79D0035EDBE /* MidTermForecastSkyStateBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC2419AF2AA4A79D0035EDBE /* MidTermForecastSkyStateBase.swift */; };
+		BC2419B22AA4A79D0035EDBE /* MidTermForecastTemperatureBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC2419B02AA4A79D0035EDBE /* MidTermForecastTemperatureBase.swift */; };
 		BC251F292A76A18F004CE9CF /* LoadingProgressLottie.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC251F282A76A18F004CE9CF /* LoadingProgressLottie.swift */; };
 		BC251F2B2A76A2F8004CE9CF /* LoadingLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BC251F2A2A76A2F8004CE9CF /* LoadingLottie.json */; };
 		BC307E1E2A7934B60008800A /* BackgroundRainyLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BC307E1D2A7934B60008800A /* BackgroundRainyLottie.json */; };
@@ -17,7 +19,6 @@
 		BC37A6002A3ED7BC00C16278 /* DustForecastStationBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC37A5FF2A3ED7BC00C16278 /* DustForecastStationBase.swift */; };
 		BC37A6022A3ED7CD00C16278 /* DustForecastStationXYBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC37A6012A3ED7CD00C16278 /* DustForecastStationXYBase.swift */; };
 		BC37A6042A3F094E00C16278 /* CustomTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC37A6032A3F094E00C16278 /* CustomTypes.swift */; };
-		BC4975892A83E01600FD5D87 /* MidTermForecastSkyStateBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4975882A83E01600FD5D87 /* MidTermForecastSkyStateBase.swift */; };
 		BC4DDA282A72B4F1000376C0 /* TodayViewControllerBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4DDA272A72B4F1000376C0 /* TodayViewControllerBackground.swift */; };
 		BC4DDA2F2A72B9B8000376C0 /* LineDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4DDA2E2A72B9B8000376C0 /* LineDivider.swift */; };
 		BC4DDA312A72BA4F000376C0 /* TodayWeatherItemScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4DDA302A72BA4F000376C0 /* TodayWeatherItemScrollView.swift */; };
@@ -51,7 +52,6 @@
 		BCA30F8129FE203B0078D0B1 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BCA30F8029FE203B0078D0B1 /* Preview Assets.xcassets */; };
 		BCA30F8C29FE25280078D0B1 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = BCA30F8B29FE25280078D0B1 /* Alamofire */; };
 		BCA30F9129FE265B0078D0B1 /* Route.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30F9029FE265B0078D0B1 /* Route.swift */; };
-		BCA30F9329FE28F20078D0B1 /* MidTermForecastTemperatureBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30F9229FE28F20078D0B1 /* MidTermForecastTemperatureBase.swift */; };
 		BCA30F9529FE39BC0078D0B1 /* Env.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30F9429FE39BC0078D0B1 /* Env.swift */; };
 		BCA30F9729FE3A190078D0B1 /* CommonUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30F9629FE3A190078D0B1 /* CommonUtil.swift */; };
 		BCA30F9A29FE49FE0078D0B1 /* OpenDataRes.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30F9929FE49FE0078D0B1 /* OpenDataRes.swift */; };
@@ -144,6 +144,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		BC2419AF2AA4A79D0035EDBE /* MidTermForecastSkyStateBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MidTermForecastSkyStateBase.swift; sourceTree = "<group>"; };
+		BC2419B02AA4A79D0035EDBE /* MidTermForecastTemperatureBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MidTermForecastTemperatureBase.swift; sourceTree = "<group>"; };
 		BC251F282A76A18F004CE9CF /* LoadingProgressLottie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingProgressLottie.swift; sourceTree = "<group>"; };
 		BC251F2A2A76A2F8004CE9CF /* LoadingLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LoadingLottie.json; sourceTree = "<group>"; };
 		BC307E1D2A7934B60008800A /* BackgroundRainyLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BackgroundRainyLottie.json; sourceTree = "<group>"; };
@@ -154,7 +156,6 @@
 		BC37A5FF2A3ED7BC00C16278 /* DustForecastStationBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DustForecastStationBase.swift; sourceTree = "<group>"; };
 		BC37A6012A3ED7CD00C16278 /* DustForecastStationXYBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DustForecastStationXYBase.swift; sourceTree = "<group>"; };
 		BC37A6032A3F094E00C16278 /* CustomTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTypes.swift; sourceTree = "<group>"; };
-		BC4975882A83E01600FD5D87 /* MidTermForecastSkyStateBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidTermForecastSkyStateBase.swift; sourceTree = "<group>"; };
 		BC4DDA272A72B4F1000376C0 /* TodayViewControllerBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewControllerBackground.swift; sourceTree = "<group>"; };
 		BC4DDA2E2A72B9B8000376C0 /* LineDivider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineDivider.swift; sourceTree = "<group>"; };
 		BC4DDA302A72BA4F000376C0 /* TodayWeatherItemScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayWeatherItemScrollView.swift; sourceTree = "<group>"; };
@@ -186,7 +187,6 @@
 		BCA30F7D29FE203A0078D0B1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BCA30F8029FE203B0078D0B1 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		BCA30F9029FE265B0078D0B1 /* Route.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Route.swift; sourceTree = "<group>"; };
-		BCA30F9229FE28F20078D0B1 /* MidTermForecastTemperatureBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidTermForecastTemperatureBase.swift; sourceTree = "<group>"; };
 		BCA30F9429FE39BC0078D0B1 /* Env.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Env.swift; sourceTree = "<group>"; };
 		BCA30F9629FE3A190078D0B1 /* CommonUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonUtil.swift; sourceTree = "<group>"; };
 		BCA30F9929FE49FE0078D0B1 /* OpenDataRes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenDataRes.swift; sourceTree = "<group>"; };
@@ -408,15 +408,6 @@
 			path = ExternalFiles;
 			sourceTree = "<group>";
 		};
-		BC2419A02AA4A48A0035EDBE /* MidTermForecast */ = {
-			isa = PBXGroup;
-			children = (
-				BC4975882A83E01600FD5D87 /* MidTermForecastSkyStateBase.swift */,
-				BCA30F9229FE28F20078D0B1 /* MidTermForecastTemperatureBase.swift */,
-			);
-			path = MidTermForecast;
-			sourceTree = "<group>";
-		};
 		BC2419A12AA4A4A60035EDBE /* VeryShortOrShortTermForecast */ = {
 			isa = PBXGroup;
 			children = (
@@ -441,6 +432,15 @@
 				BCCA26262A514609005BB1B5 /* SunOrMoonRiseBase.swift */,
 			);
 			path = SunMoonRiseSet;
+			sourceTree = "<group>";
+		};
+		BC2419AE2AA4A7840035EDBE /* MidTermForecast */ = {
+			isa = PBXGroup;
+			children = (
+				BC2419AF2AA4A79D0035EDBE /* MidTermForecastSkyStateBase.swift */,
+				BC2419B02AA4A79D0035EDBE /* MidTermForecastTemperatureBase.swift */,
+			);
+			path = MidTermForecast;
 			sourceTree = "<group>";
 		};
 		BC307E232A79406B0008800A /* OnChange */ = {
@@ -638,7 +638,7 @@
 				BC2419A42AA4A50E0035EDBE /* SunMoonRiseSet */,
 				BC2419A32AA4A4FA0035EDBE /* DustForecast */,
 				BC2419A12AA4A4A60035EDBE /* VeryShortOrShortTermForecast */,
-				BC2419A02AA4A48A0035EDBE /* MidTermForecast */,
+				BC2419AE2AA4A7840035EDBE /* MidTermForecast */,
 				BCA30F9929FE49FE0078D0B1 /* OpenDataRes.swift */,
 			);
 			path = OpenData;
@@ -935,6 +935,7 @@
 				BC251F292A76A18F004CE9CF /* LoadingProgressLottie.swift in Sources */,
 				BCA30F9529FE39BC0078D0B1 /* Env.swift in Sources */,
 				BCA2C1B72A603B6900BBEBE2 /* GetHeight.swift in Sources */,
+				BC2419B22AA4A79D0035EDBE /* MidTermForecastTemperatureBase.swift in Sources */,
 				BCCD80682A07A59800501BEA /* LocationDataManagerVM.swift in Sources */,
 				BCBA40102A7C01B400B6EFD2 /* ShortTermForecastUtil.swift in Sources */,
 				BCA30FA529FE73C90078D0B1 /* CurrentWeatherView.swift in Sources */,
@@ -951,13 +952,12 @@
 				BC6EF8BF2A10C0DC0072A2DE /* RealTimeFindDustForecastBase.swift in Sources */,
 				BC85A94E2A02570E00C4CC48 /* VeryShortOrShortTermForecastBase.swift in Sources */,
 				BC37A6002A3ED7BC00C16278 /* DustForecastStationBase.swift in Sources */,
+				BC2419B12AA4A79D0035EDBE /* MidTermForecastSkyStateBase.swift in Sources */,
 				BCA30F7A29FE203A0078D0B1 /* MyDedicatedWeatherAppApp.swift in Sources */,
 				BC76923A2A431CC8005F4D7B /* CustomBottomTabBarView.swift in Sources */,
 				BCA30FAA29FFDC580078D0B1 /* Dummy.swift in Sources */,
 				BCBA40162A7C032400B6EFD2 /* CommonForecastUtil.swift in Sources */,
-				BCA30F9329FE28F20078D0B1 /* MidTermForecastTemperatureBase.swift in Sources */,
 				BC4DDA362A72C3DE000376C0 /* TodaySunriseSunsetView.swift in Sources */,
-				BC4975892A83E01600FD5D87 /* MidTermForecastSkyStateBase.swift in Sources */,
 				BCBA40192A7C06EE00B6EFD2 /* FineDustLookUpUtil.swift in Sources */,
 				BC4DDA332A72BD40000376C0 /* LeftOrRightAnimationView.swift in Sources */,
 				BC91FD542A4483CA00D3E665 /* LoadingProgress.swift in Sources */,
