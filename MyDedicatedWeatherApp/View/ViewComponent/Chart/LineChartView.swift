@@ -107,119 +107,116 @@ struct LineChartView: View {
                 xList: weeklyChartInformation.xList,
                 yList: weeklyChartInformation.yList
             )
+            // MARK: - About Max Values
+            
             // Max line
             .overlay(alignment: .bottomLeading) {
-                
-                var coordinates: [(CGFloat, CGFloat)] = []
-                
+                                
                 Path { path in
                     path.move(to: CGPoint(x: 0, y: height - convertedMaxValues[0]))
-                    coordinates.append((0, height - convertedMaxValues[0]))
                     
                     for i in 1..<weeklyChartInformation.maxTemps.count {
                         path.addLine(to: CGPoint(x: xSteps[i], y: height - convertedMaxValues[i]))
-                        coordinates.append((xSteps[i], height - convertedMaxValues[i]))
                     }
                 }
                 .stroke(maxLineColor, lineWidth: lineWidth)
-                // Vertex
-                .overlay(alignment: .bottomLeading) {
-                    ZStack(alignment: .bottomLeading) {
-                        ForEach(coordinates.indices, id: \.self) { i in
-                            Circle()
-                                .fill(Color.white)
-                                .frame(width: circleSize.width, height: circleSize.height)
-                                .padding(.leading, xSteps[i] - (circleSize.width / 2))
-                                .padding(.bottom, convertedMaxValues[i] - (circleSize.height / 2))
-                        }
-                    }
-                }
-                // Temperature
-                .overlay(alignment: .bottomLeading) {
-                    ZStack(alignment: .bottomLeading) {
-                        ForEach(coordinates.indices, id: \.self) { i in
-                            Text("\(Int(weeklyChartInformation.maxTemps[i]))°")
-                                .fontSpoqaHanSansNeo(size: 10, weight: .bold)
-                                .foregroundColor(Int(weeklyChartInformation.maxTemps[i]) >= 30 ? Color.red.opacity(0.7) : Color.white.opacity(0.7))
-                                .padding(.leading, i == coordinates.count - 1 ? xSteps[i] - 17 : xSteps[i] - 5)
-                                .padding(.bottom, convertedMaxValues[i] - 5)
-                        }
-                    }
-                }
-                // Weather image and Rain percent
-                .overlay(alignment: .bottomLeading) {
-                    ZStack(alignment: .bottomLeading) {
-                        let imageWidth: CGFloat = 22
-                        
-                        ForEach(coordinates.indices, id: \.self) { i in
-                            VStack(alignment: .center, spacing: 0) {
-                                Image(weeklyChartInformation.imageAndRainPercents[i].0)
-                                    .resizable()
-                                    .frame(width: imageWidth, height: imageWidth)
-                                
-                                if weeklyChartInformation.imageAndRainPercents[i].1 != "0" {
-                                    Text("\(weeklyChartInformation.imageAndRainPercents[i].1)%")
-                                        .fontSpoqaHanSansNeo(size: 7, weight: .medium)
-                                        .foregroundColor(CustomColor.lightBlue.toColor)
-                                        .offset(y: -2)
-                                }
-                            }
-                            .padding(.leading, i == coordinates.count - 1 ?
-                                     xSteps[i] - 17 : xSteps[i] - (imageWidth / 2)
-                            )
-                            .padding(.bottom, convertedMaxValues[i] + 30)
-                        }
+            }
+            // Vertex
+            .overlay(alignment: .bottomLeading) {
+                ZStack(alignment: .bottomLeading) {
+                    ForEach(weeklyChartInformation.maxTemps.indices, id: \.self) { i in
+                        Circle()
+                            .fill(Color.white)
+                            .frame(width: circleSize.width, height: circleSize.height)
+                            .padding(.leading, xSteps[i] - (circleSize.width / 2))
+                            .padding(.bottom, convertedMaxValues[i] - (circleSize.height / 2))
                     }
                 }
             }
+            // Temperature
+            .overlay(alignment: .bottomLeading) {
+                ZStack(alignment: .bottomLeading) {
+                    ForEach(weeklyChartInformation.maxTemps.indices, id: \.self) { i in
+                        Text("\(Int(weeklyChartInformation.maxTemps[i]))°")
+                            .fontSpoqaHanSansNeo(size: 10, weight: .bold)
+                            .foregroundColor(Int(weeklyChartInformation.maxTemps[i]) >= 30 ? Color.red.opacity(0.7) : Color.white.opacity(0.7))
+                            .padding(.leading, i == weeklyChartInformation.maxTemps.count - 1 ? xSteps[i] - 17 : xSteps[i] - 5)
+                            .padding(.bottom, convertedMaxValues[i])
+                    }
+                }
+            }
+            // Weather image and Rain percent
+            .overlay(alignment: .bottomLeading) {
+                ZStack(alignment: .bottomLeading) {
+                    let imageWidth: CGFloat = 22
+                    
+                    ForEach(weeklyChartInformation.imageAndRainPercents.indices, id: \.self) { i in
+                        VStack(alignment: .center, spacing: 0) {
+                            Image(weeklyChartInformation.imageAndRainPercents[i].0)
+                                .resizable()
+                                .frame(width: imageWidth, height: imageWidth)
+                            
+                            if weeklyChartInformation.imageAndRainPercents[i].1 != "0" {
+                                Text("\(weeklyChartInformation.imageAndRainPercents[i].1)%")
+                                    .fontSpoqaHanSansNeo(size: 7, weight: .medium)
+                                    .foregroundColor(CustomColor.lightBlue.toColor)
+                                    .offset(y: -2)
+                            }
+                        }
+                        .padding(.leading, i == weeklyChartInformation.imageAndRainPercents.count - 1 ?
+                                 xSteps[i] - 17 : xSteps[i] - (imageWidth / 2)
+                        )
+                        .padding(.bottom, convertedMaxValues[i] + 35)
+                    }
+                }
+            }
+            
+            // MARK: - About Min Values
+            
             // Min line
             .overlay(alignment: .bottomLeading) {
-                
-                var coordinates: [(CGFloat, CGFloat)] = []
-                
+                                
                 Path { path in
                     path.move(to: CGPoint(x: 0, y: height - convertedMinValues[0]))
-                    coordinates.append((0, height - convertedMinValues[0]))
                     
                     for i in 1..<weeklyChartInformation.minTemps.count {
                         path.addLine(to: CGPoint(x: xSteps[i], y: height - convertedMinValues[i]))
-                        coordinates.append((xSteps[i], height - convertedMinValues[i]))
                     }
                 }
                 .stroke(minLineColor, lineWidth: lineWidth)
-                // Vertex
-                .overlay(alignment: .bottomLeading) {
-                    ZStack(alignment: .bottomLeading) {
-                        ForEach(coordinates.indices, id: \.self) { i in
-                            Circle()
-                                .fill(Color.white)
-                                .frame(width: circleSize.width, height: circleSize.height)
-                                .padding(.leading, xSteps[i] - (circleSize.width / 2))
-                                .padding(.bottom, convertedMinValues[i] - (circleSize.height / 2))
-                        }
+            }
+            // Vertex
+            .overlay(alignment: .bottomLeading) {
+                ZStack(alignment: .bottomLeading) {
+                    ForEach(weeklyChartInformation.minTemps.indices, id: \.self) { i in
+                        Circle()
+                            .fill(Color.white)
+                            .frame(width: circleSize.width, height: circleSize.height)
+                            .padding(.leading, xSteps[i] - (circleSize.width / 2))
+                            .padding(.bottom, convertedMinValues[i] - (circleSize.height / 2))
                     }
                 }
-                // Temperature
-                .overlay(alignment: .bottomLeading) {
-                    ZStack(alignment: .bottomLeading) {
-                        ForEach(coordinates.indices, id: \.self) { i in
-                            Text("\(Int(weeklyChartInformation.minTemps[i]))°")
-                                .fontSpoqaHanSansNeo(size: 10, weight: .bold)
-                                .foregroundColor(Color.white.opacity(0.7))
-                                .padding(.leading, i == coordinates.count - 1 ? xSteps[i] - 17 : xSteps[i] - 5)
-                                .padding(.bottom, convertedMinValues[i] - 15)
-                        }
+            }
+            // Temperature
+            .overlay(alignment: .bottomLeading) {
+                ZStack(alignment: .bottomLeading) {
+                    ForEach(weeklyChartInformation.minTemps.indices, id: \.self) { i in
+                        Text("\(Int(weeklyChartInformation.minTemps[i]))°")
+                            .fontSpoqaHanSansNeo(size: 10, weight: .bold)
+                            .foregroundColor(Color.white.opacity(0.7))
+                            .padding(.leading, i == weeklyChartInformation.minTemps.count - 1 ? xSteps[i] - 17 : xSteps[i] - 5)
+                            .padding(.bottom, convertedMinValues[i] + 8)
                     }
                 }
-                // X축 base line
-                .overlay(alignment: .bottomLeading) {
-                    ZStack(alignment: .bottomLeading) {
-                        ForEach(coordinates.indices, id: \.self) { i in
-                            Rectangle()
-                                .fill(Color.white.opacity(0.1))
-                                .frame(width: 1, height: height)
-                                .padding(.leading, xSteps[i])
-                        }
+            }
+            // X축 base line
+            .overlay(alignment: .bottomLeading) {
+                ZStack(alignment: .bottomLeading) {
+                    ForEach(weeklyChartInformation.minTemps.indices, id: \.self) { i in
+                        Rectangle()
+                            .fill(Color.white.opacity(0.1))
+                            .frame(width: 1, height: height)
+                            .padding(.leading, xSteps[i])
                     }
                 }
             }
