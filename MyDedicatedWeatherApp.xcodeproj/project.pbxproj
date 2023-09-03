@@ -27,7 +27,7 @@
 		BC4DDA3A2A72C69E000376C0 /* CurrentTempAndMinMaxTempView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4DDA392A72C69E000376C0 /* CurrentTempAndMinMaxTempView.swift */; };
 		BC4DDA3C2A72C86D000376C0 /* CurrentWeatherInfItemPagerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4DDA3B2A72C86D000376C0 /* CurrentWeatherInfItemPagerView.swift */; };
 		BC5386522A6EC18500D8E085 /* WeekViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5386512A6EC18500D8E085 /* WeekViewController.swift */; };
-		BC5386542A6EC19700D8E085 /* WeekViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5386532A6EC19700D8E085 /* WeekViewModel.swift */; };
+		BC5386542A6EC19700D8E085 /* WeeklyWeatherVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5386532A6EC19700D8E085 /* WeeklyWeatherVM.swift */; };
 		BC6EF8BD2A10AAB30072A2DE /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6EF8BC2A10AAB30072A2DE /* Extensions.swift */; };
 		BC6EF8BF2A10C0DC0072A2DE /* RealTimeFindDustForecastBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6EF8BE2A10C0DC0072A2DE /* RealTimeFindDustForecastBase.swift */; };
 		BC7692372A431C69005F4D7B /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC7692362A431C69005F4D7B /* MainTabView.swift */; };
@@ -165,7 +165,7 @@
 		BC4DDA392A72C69E000376C0 /* CurrentTempAndMinMaxTempView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentTempAndMinMaxTempView.swift; sourceTree = "<group>"; };
 		BC4DDA3B2A72C86D000376C0 /* CurrentWeatherInfItemPagerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeatherInfItemPagerView.swift; sourceTree = "<group>"; };
 		BC5386512A6EC18500D8E085 /* WeekViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekViewController.swift; sourceTree = "<group>"; };
-		BC5386532A6EC19700D8E085 /* WeekViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekViewModel.swift; sourceTree = "<group>"; };
+		BC5386532A6EC19700D8E085 /* WeeklyWeatherVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyWeatherVM.swift; sourceTree = "<group>"; };
 		BC6EF8BC2A10AAB30072A2DE /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		BC6EF8BE2A10C0DC0072A2DE /* RealTimeFindDustForecastBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealTimeFindDustForecastBase.swift; sourceTree = "<group>"; };
 		BC7692362A431C69005F4D7B /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
@@ -322,6 +322,7 @@
 			isa = PBXGroup;
 			children = (
 				BC2419952AA49F010035EDBE /* CurrentWeather */,
+				BC2419972AA49FAA0035EDBE /* WeeklyWeather */,
 			);
 			path = OneToOneByView;
 			sourceTree = "<group>";
@@ -332,6 +333,14 @@
 				BCA30FA629FE73D70078D0B1 /* CurrentWeatherVM.swift */,
 			);
 			path = CurrentWeather;
+			sourceTree = "<group>";
+		};
+		BC2419972AA49FAA0035EDBE /* WeeklyWeather */ = {
+			isa = PBXGroup;
+			children = (
+				BC5386532A6EC19700D8E085 /* WeeklyWeatherVM.swift */,
+			);
+			path = WeeklyWeather;
 			sourceTree = "<group>";
 		};
 		BC307E232A79406B0008800A /* OnChange */ = {
@@ -600,7 +609,6 @@
 			children = (
 				BC2419942AA49EC20035EDBE /* OneToOneByView */,
 				BC2419932AA49E6D0035EDBE /* Independent */,
-				BC5386532A6EC19700D8E085 /* WeekViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -921,7 +929,7 @@
 				BC7C6B4F2A8BC1D0009D2A0F /* WeekViewControllerBackground.swift in Sources */,
 				BC4DDA3C2A72C86D000376C0 /* CurrentWeatherInfItemPagerView.swift in Sources */,
 				BCE489CD2A4EA4CE00A18B2B /* SpoqaHanSansNeoFont.swift in Sources */,
-				BC5386542A6EC19700D8E085 /* WeekViewModel.swift in Sources */,
+				BC5386542A6EC19700D8E085 /* WeeklyWeatherVM.swift in Sources */,
 				BC37A6022A3ED7CD00C16278 /* DustForecastStationXYBase.swift in Sources */,
 				BC4DDA282A72B4F1000376C0 /* TodayViewControllerBackground.swift in Sources */,
 				BCE489D12A4EAD5F00A18B2B /* CurrentWeatherInformationItemView.swift in Sources */,

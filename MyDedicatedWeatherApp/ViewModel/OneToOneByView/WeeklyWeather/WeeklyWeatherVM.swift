@@ -1,5 +1,5 @@
 //
-//  WeekViewModel.swift
+//  WeeklyWeatherVM.swift
 //  MyDedicatedWeatherApp
 //
 //  Created by 윤형석 on 2023/07/24.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class WeekViewModel: ObservableObject {
+final class WeeklyWeatherVM: ObservableObject {
     @Published var weeklyWeatherInformations: [Weather.WeeklyInformation]
     @Published var weeklyChartInformation: Weather.WeeklyChartInformation = .init(minTemps: [], maxTemps: [], xList: [], yList: [], imageAndRainPercents: [])
     @Published var errorMessage: String = ""
@@ -33,7 +33,7 @@ final class WeekViewModel: ObservableObject {
 
 // MARK: - Request funcs..
 
-extension WeekViewModel {
+extension WeeklyWeatherVM {
     /**
      Request 단기예보 Items
      
@@ -193,7 +193,7 @@ extension WeekViewModel {
 
 // MARK: - Set funcs..
 
-extension WeekViewModel {
+extension WeeklyWeatherVM {
     /**
      Set `tommorowAndTwoDaysLaterInformations`(오늘 ~ 내일까지의 최저, 최고 온도 및 하늘정보 image, 강수확률 데이터)
      - parameter items: requestShortForecastItems() 결과 데이터

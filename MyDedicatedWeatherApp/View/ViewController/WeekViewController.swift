@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct WeekViewController: View {
-    @StateObject var viewModel: WeekViewModel = WeekViewModel(weeklyWeatherInformations: Dummy().weeklyWeatherInformations())
+    @StateObject var viewModel: WeeklyWeatherVM = WeeklyWeatherVM(weeklyWeatherInformations: Dummy().weeklyWeatherInformations())
     @State private var graphOpacity: CGFloat = 0
     
     var body: some View {
@@ -75,6 +75,6 @@ struct WeekViewController: View {
 
 struct WeekViewController_Previews: PreviewProvider {
     static var previews: some View {
-        WeekViewController(viewModel: WeekViewModel(weeklyWeatherInformations: Dummy.shared.weeklyWeatherInformations()))
+        WeekViewController(viewModel: WeeklyWeatherVM(weeklyWeatherInformations: Dummy.shared.weeklyWeatherInformations()))
     }
 }
