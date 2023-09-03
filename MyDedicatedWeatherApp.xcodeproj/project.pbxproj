@@ -59,7 +59,7 @@
 		BCA30FA029FE6D690078D0B1 /* ErrorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30F9F29FE6D690078D0B1 /* ErrorType.swift */; };
 		BCA30FA229FE6FC30078D0B1 /* JsonRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30FA129FE6FC30078D0B1 /* JsonRequest.swift */; };
 		BCA30FA529FE73C90078D0B1 /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30FA429FE73C90078D0B1 /* TodayViewController.swift */; };
-		BCA30FA729FE73D70078D0B1 /* TodayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30FA629FE73D70078D0B1 /* TodayViewModel.swift */; };
+		BCA30FA729FE73D70078D0B1 /* CurrentWeatherVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30FA629FE73D70078D0B1 /* CurrentWeatherVM.swift */; };
 		BCA30FAA29FFDC580078D0B1 /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30FA929FFDC580078D0B1 /* Dummy.swift */; };
 		BCB16E2D2A4C717D00AACFF0 /* Validate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB16E2C2A4C717D00AACFF0 /* Validate.swift */; };
 		BCB16E302A4DC66300AACFF0 /* KakaoAddressBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB16E2F2A4DC66300AACFF0 /* KakaoAddressBase.swift */; };
@@ -195,7 +195,7 @@
 		BCA30F9F29FE6D690078D0B1 /* ErrorType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorType.swift; sourceTree = "<group>"; };
 		BCA30FA129FE6FC30078D0B1 /* JsonRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JsonRequest.swift; sourceTree = "<group>"; };
 		BCA30FA429FE73C90078D0B1 /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
-		BCA30FA629FE73D70078D0B1 /* TodayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewModel.swift; sourceTree = "<group>"; };
+		BCA30FA629FE73D70078D0B1 /* CurrentWeatherVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeatherVM.swift; sourceTree = "<group>"; };
 		BCA30FA829FE7D780078D0B1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		BCA30FA929FFDC580078D0B1 /* Dummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummy.swift; sourceTree = "<group>"; };
 		BCB16E2C2A4C717D00AACFF0 /* Validate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validate.swift; sourceTree = "<group>"; };
@@ -308,6 +308,30 @@
 				BCB532102A75114100DC2B33 /* ThunderRainLottie.json */,
 			);
 			path = LottieAnimation;
+			sourceTree = "<group>";
+		};
+		BC2419932AA49E6D0035EDBE /* Independent */ = {
+			isa = PBXGroup;
+			children = (
+				BCCD80672A07A59800501BEA /* LocationDataManagerVM.swift */,
+			);
+			path = Independent;
+			sourceTree = "<group>";
+		};
+		BC2419942AA49EC20035EDBE /* OneToOneByView */ = {
+			isa = PBXGroup;
+			children = (
+				BC2419952AA49F010035EDBE /* CurrentWeather */,
+			);
+			path = OneToOneByView;
+			sourceTree = "<group>";
+		};
+		BC2419952AA49F010035EDBE /* CurrentWeather */ = {
+			isa = PBXGroup;
+			children = (
+				BCA30FA629FE73D70078D0B1 /* CurrentWeatherVM.swift */,
+			);
+			path = CurrentWeather;
 			sourceTree = "<group>";
 		};
 		BC307E232A79406B0008800A /* OnChange */ = {
@@ -574,8 +598,8 @@
 		BCA30FA329FE72DF0078D0B1 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				BCA30FA629FE73D70078D0B1 /* TodayViewModel.swift */,
-				BCCD80672A07A59800501BEA /* LocationDataManagerVM.swift */,
+				BC2419942AA49EC20035EDBE /* OneToOneByView */,
+				BC2419932AA49E6D0035EDBE /* Independent */,
 				BC5386532A6EC19700D8E085 /* WeekViewModel.swift */,
 			);
 			path = ViewModel;
@@ -871,7 +895,7 @@
 				BCA30FA529FE73C90078D0B1 /* TodayViewController.swift in Sources */,
 				BCA30F9729FE3A190078D0B1 /* CommonUtil.swift in Sources */,
 				BC76923D2A4329DC005F4D7B /* CornerRadiusStyle.swift in Sources */,
-				BCA30FA729FE73D70078D0B1 /* TodayViewModel.swift in Sources */,
+				BCA30FA729FE73D70078D0B1 /* CurrentWeatherVM.swift in Sources */,
 				BCCA26292A51481B005BB1B5 /* SunOrMoonRiseServiceByXML.swift in Sources */,
 				BC37A6042A3F094E00C16278 /* CustomTypes.swift in Sources */,
 				BC6EF8BD2A10AAB30072A2DE /* Extensions.swift in Sources */,

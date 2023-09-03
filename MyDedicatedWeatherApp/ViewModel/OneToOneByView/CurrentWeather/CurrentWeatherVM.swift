@@ -1,5 +1,5 @@
 //
-//  TodayViewModel.swift
+//  CurrentWeatherVM.swift
 //  MyDedicatedWeatherApp
 //
 //  Created by 윤형석 on 2023/04/30.
@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-final class TodayViewModel: ObservableObject {
+final class CurrentWeatherVM: ObservableObject {
     @Published private(set) var errorMessage: String = ""
     @Published private(set) var currentTemperature: String = "00"
     @Published private(set) var currentWeatherAnimationImg: String = ""
@@ -51,7 +51,7 @@ final class TodayViewModel: ObservableObject {
 
 // MARK: - Request HTTP..
 
-extension TodayViewModel {
+extension CurrentWeatherVM {
     
     /**
      Request 초 단기예보 Items
@@ -76,7 +76,7 @@ extension TodayViewModel {
     func requestVeryShortForecastItems(xy: Gps2XY.LatXLngY) async {
         let startTime = CFAbsoluteTimeGetCurrent()
 
-        TodayViewModel.xy = xy
+        CurrentWeatherVM.xy = xy
         let baseTime = veryShortTermForecastUtil.requestBaseTime()
         let baseDate = veryShortTermForecastUtil.requestBaseDate(baseTime: baseTime)
         
@@ -415,7 +415,7 @@ extension TodayViewModel {
 
 // MARK: - Set Variables..
 
-extension TodayViewModel {
+extension CurrentWeatherVM {
     
     /**
      Set 초 단기예보 Items -> `currentTemperature`(현재 기온) varialbe
@@ -596,7 +596,7 @@ extension TodayViewModel {
 
 // MARK: - View On Appear, Task Actions..
 
-extension TodayViewModel {
+extension CurrentWeatherVM {
     
     func todayViewControllerLocationManagerUpdatedAction(
         xy: Gps2XY.LatXLngY,

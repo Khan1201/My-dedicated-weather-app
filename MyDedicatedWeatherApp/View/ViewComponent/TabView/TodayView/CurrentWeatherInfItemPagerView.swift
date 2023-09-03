@@ -10,7 +10,7 @@ import SwiftUIPager
 
 struct CurrentWeatherInfItemPagerView: View {
     
-    @ObservedObject var viewModel: TodayViewModel
+    @ObservedObject var viewModel: CurrentWeatherVM
     @Binding var pageIndex: Int
     let page: Page
     let isLoadCompleted: Bool
@@ -47,7 +47,7 @@ struct CurrentWeatherInfItemPagerView: View {
 struct CurrentWeatherInfItemPagerView_Previews: PreviewProvider {
     static var previews: some View {
         CurrentWeatherInfItemPagerView(
-            viewModel: TodayViewModel(),
+            viewModel: CurrentWeatherVM(),
             pageIndex: .constant(1),
             page: .first(),
             isLoadCompleted: true

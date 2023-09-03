@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct OnChangeAtTodayViewController: ViewModifier {
-    @EnvironmentObject var viewModel: TodayViewModel
+    @EnvironmentObject var viewModel: CurrentWeatherVM
     @EnvironmentObject var locationDataManagerVM: LocationDataManagerVM
     
     func body(content: Content) -> some View {

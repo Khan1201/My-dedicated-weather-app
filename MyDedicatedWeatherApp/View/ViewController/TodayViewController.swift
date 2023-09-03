@@ -9,7 +9,7 @@ import SwiftUI
 import SwiftUIPager
 
 struct TodayViewController: View {
-    @StateObject var viewModel: TodayViewModel = TodayViewModel()
+    @StateObject var viewModel: CurrentWeatherVM = CurrentWeatherVM()
     @StateObject var locationDataManagerVM = LocationDataManagerVM()
     
     @State private var pagerHeight: CGFloat = 0
