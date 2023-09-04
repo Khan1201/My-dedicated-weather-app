@@ -77,6 +77,11 @@ extension CurrentWeatherVM {
         let startTime = CFAbsoluteTimeGetCurrent()
 
         CurrentWeatherVM.xy = xy
+        
+        // Widget에 공유 위해
+        UserDefaults.shared.set(String(xy.x), forKey: "x")
+        UserDefaults.shared.set(String(xy.y), forKey: "y")
+        
         let baseTime = veryShortTermForecastUtil.requestBaseTime()
         let baseDate = veryShortTermForecastUtil.requestBaseDate(baseTime: baseTime)
         
@@ -214,6 +219,9 @@ extension CurrentWeatherVM {
             serviceKey: Env.shared.openDataApiResponseKey,
             stationName: ForDustStationRequest.stationName
         )
+        
+        /// Widget에 공유하기 위해
+        UserDefaults.shared.set(parameters.stationName, forKey: "dustStationName")
         
         do {
             let result = try await JsonRequest.shared.newRequest(

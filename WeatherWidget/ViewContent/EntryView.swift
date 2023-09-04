@@ -17,6 +17,10 @@ struct WeatherWidgetEntryView : View {
             Image("weather_rain")
                 .resizable()
                 .frame(width: 24, height: 24)
+            Text(UserDefaults.shared.string(forKey: "dustStationName") ?? "")
+            Text(UserDefaults.shared.string(forKey: "x") ?? "")
+            Text(UserDefaults.shared.string(forKey: "y") ?? "")
+
         }
     }
 }
