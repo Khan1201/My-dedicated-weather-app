@@ -6,6 +6,7 @@
 //
 
 import WidgetKit
+import Alamofire
 
 struct Provider: TimelineProvider {
     func placeholder(in context: Context) -> SimpleEntry {
@@ -51,35 +52,17 @@ struct Provider: TimelineProvider {
             nx: x,
             ny: y
         )
-        var urlComponents = URLComponents(string: Route.GET_WEATHER_VERY_SHORT_TERM_FORECAST.val)!
-        urlComponents.queryItems = [
-            URLQueryItem(name: "serviceKey", value: parameters.serviceKey),
-            URLQueryItem(name: "pageNo", value: parameters.pageNo),
-            URLQueryItem(name: "numOfRows", value: parameters.numOfRows),
-            URLQueryItem(name: "dataType", value: parameters.dataType),
-            URLQueryItem(name: "base_date", value: parameters.baseDate),
-            URLQueryItem(name: "base_time", value: parameters.baseTime),
-            URLQueryItem(name: "nx", value: parameters.nx),
-            URLQueryItem(name: "ny", value: parameters.ny)
-        ]
-        urlComponents.percentEncodedQuery = urlComponents.percentEncodedQuery?.replacingOccurrences(of: "+", with: "%2B")
+        
+        AF.request(Route.GET_WEATHER_VERY_SHORT_TERM_FORECAST.val, method: .get, parameters: parameters)
+            .responseDecodable(of: OpenDataRes<VeryShortOrShortTermForecastBase<VeryShortTermForecastCategory>>.self) { response in
+                switch response.result {
+                case .success:
+                    print("성공")
 
-        
-        let urlRequest = URLRequest(url: urlComponents.url!)
-        print(urlComponents.url!)
-        
-        URLSession.shared.dataTask(with: urlRequest) { data, response, error in
-            
-            do {
-                let dataTask = try JSONDecoder().decode(OpenDataRes<VeryShortOrShortTermForecastBase<VeryShortTermForecastCategory>>.self, from: data ?? Data())
-                print("아이템: \(dataTask.item)")
-                print("아이템: \(dataTask.items)")
-    
-            } catch {
-                print(error)
+                case .failure(let error):
+                    print(error)
+                }
             }
-            
-        }.resume()
         
     }
     
