@@ -19,6 +19,7 @@
 		BC15D44F2AA61052006DC537 /* OpenDataRes.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30F9929FE49FE0078D0B1 /* OpenDataRes.swift */; };
 		BC15D4502AA61165006DC537 /* MidTermForecastTemperatureBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC2419B02AA4A79D0035EDBE /* MidTermForecastTemperatureBase.swift */; };
 		BC15D4512AA6116A006DC537 /* MidTermForecastSkyStateBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC2419AF2AA4A79D0035EDBE /* MidTermForecastSkyStateBase.swift */; };
+		BC1A35462AA776120096CF83 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = BC1A35452AA776120096CF83 /* Alamofire */; };
 		BC2419B12AA4A79D0035EDBE /* MidTermForecastSkyStateBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC2419AF2AA4A79D0035EDBE /* MidTermForecastSkyStateBase.swift */; };
 		BC2419B22AA4A79D0035EDBE /* MidTermForecastTemperatureBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC2419B02AA4A79D0035EDBE /* MidTermForecastTemperatureBase.swift */; };
 		BC251F292A76A18F004CE9CF /* LoadingProgressLottie.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC251F282A76A18F004CE9CF /* LoadingProgressLottie.swift */; };
@@ -292,6 +293,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BC1A35462AA776120096CF83 /* Alamofire in Frameworks */,
 				BCFB3EE62A9F90860043C26B /* SwiftUI.framework in Frameworks */,
 				BCFB3EE42A9F90860043C26B /* WidgetKit.framework in Frameworks */,
 			);
@@ -833,6 +835,9 @@
 			dependencies = (
 			);
 			name = WeatherWidgetExtension;
+			packageProductDependencies = (
+				BC1A35452AA776120096CF83 /* Alamofire */,
+			);
 			productName = WeatherWidgetExtension;
 			productReference = BCFB3EE12A9F90860043C26B /* WeatherWidgetExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
@@ -1340,6 +1345,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		BC1A35452AA776120096CF83 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BCA30F8A29FE25280078D0B1 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
 		BC78251A2A5EE15900930FD6 /* SwiftUIPager */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = BC7825192A5EE15900930FD6 /* XCRemoteSwiftPackageReference "SwiftUIPager" */;
