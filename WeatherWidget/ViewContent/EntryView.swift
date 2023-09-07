@@ -17,18 +17,172 @@ struct WeatherWidgetEntryView : View {
         switch family {
             
         case .systemSmall:
+            
+            ZStack {
+                Color.init(hexCode: "#000080")
+                    .opacity(0.3)
+                
+                VStack(alignment: .leading, spacing: 0) {
+                    HStack(alignment: .center, spacing: 4) {
+                        Image(systemName: "mappin.and.ellipse")
+                            .resizable()
+                            .frame(width: 17, height: 17)
+                            .padding(.leading, 6)
+                        
+                        Text("서울특별시")
+                            .font(.system(size: 10, weight: .medium))
+                            .foregroundColor(Color.white)
+                            .padding(.top, 3)
+                        
+                        Spacer()
+                        
+                        VStack(alignment: .leading, spacing: 1) {
+                            Text("Updated")
+                            Text(entry.date, style: .time)
+                        }
+                        .font(.system(size: 7, weight: .regular))
+                        .foregroundColor(Color.white)
+                        .padding(.top, 2)
+                        .padding(.trailing, 12)
+                    }
+                    .padding(.leading, 10)
+                    
+                    HStack(alignment: .center, spacing: 15) {
+                        Image("weather_rain")
+                            .resizable()
+                            .frame(width: 38, height: 38)
+                            .padding(.leading, 15)
+                        
+                        VStack(alignment: .leading, spacing: 1) {
+                            Text("26°")
+                                .font(.system(size: 25, weight: .bold))
+                                .foregroundColor(Color.white)
+                            
+                            HStack(alignment: .bottom, spacing: 0) {
+                                Image(systemName: "arrow.down")
+                                    .resizable()
+                                    .renderingMode(.template)
+                                    .frame(width: 10, height: 10)
+                                    .foregroundColor(Color.blue.opacity(0.3))
+                                
+                                Text("26°")
+                                    .font(.system(size: 10, weight: .regular))
+                                    .foregroundColor(Color.white)
+                                    .padding(.leading, 2)
+                                                    
+                                Image(systemName: "arrow.up")
+                                    .resizable()
+                                    .renderingMode(.template)
+                                    .frame(width: 10, height: 10)
+                                    .foregroundColor(Color.red.opacity(0.3))
+                                    .padding(.leading, 5)
+                                
+                                Text("30°")
+                                    .font(.system(size: 10, weight: .regular))
+                                    .foregroundColor(Color.white)
+                                    .padding(.leading, 2)
+                            }
+                        }
+                    }
+                    .padding(.top, 3)
+                    .padding(.leading, 8)
+                    
+                    Divider()
+                        .padding(.top, 8)
+                    
+                    HStack(alignment: .center, spacing: 10) {
+                        VStack(alignment: .leading, spacing: 0) {
+                            HStack(alignment: .center, spacing: 10) {
+                                Image("precipitation")
+                                    .resizable()
+                                    .renderingMode(.template)
+                                    .foregroundColor(Color.blue.opacity(0.5))
+                                    .frame(width: 15, height: 15)
+                                
+                                Text("비 없음")
+                                    .font(.system(size: 9, weight: .medium))
+                            }
+                            
+                            HStack(alignment: .center, spacing: 10) {
+                                Image("wind")
+                                    .resizable()
+                                    .renderingMode(.template)
+                                    .foregroundColor(Color.red.opacity(0.5))
+                                    .frame(width: 15, height: 15)
+                                
+                                Text("약한 바람")
+                                    .font(.system(size: 9, weight: .medium))
+                            }
+                            .padding(.top, 5)
+                            
+                            HStack(alignment: .center, spacing: 10) {
+                                Image("wet")
+                                    .resizable()
+                                    .renderingMode(.template)
+                                    .foregroundColor(Color.blue.opacity(0.3))
+                                    .frame(width: 15, height: 15)
+                                
+                                Text("50%")
+                                    .font(.system(size: 9, weight: .medium))
+                            }
+                            .padding(.top, 5)
+                        }
+                        .padding(.leading, 10)
+                        
+                        VStack(alignment: .center, spacing: 10) {
+                            HStack(alignment: .center, spacing: 8) {
+                                Image("fine_dust")
+                                    .resizable()
+                                    .renderingMode(.template)
+                                    .foregroundColor(Color.gray)
+                                    .frame(width: 16, height: 16)
+                                
+                                Text("좋음")
+                                    .font(.system(size: 9, weight: .medium))
+                                    .foregroundColor(Color.white)
+                                    .padding(.top, 2)
+                            }
+                            .padding(.horizontal, 6)
+                            .padding(.vertical, 2)
+                            .background(Color.green.opacity(0.2))
+                            .cornerRadius(10)
+                                                        
+                            HStack(alignment: .center, spacing: 8) {
+                                Image("fine_dust")
+                                    .resizable()
+                                    .renderingMode(.template)
+                                    .foregroundColor(Color.red.opacity(0.5))
+                                    .frame(width: 16, height: 16)
+                                
+                                Text("좋음")
+                                    .font(.system(size: 9, weight: .medium))
+                                    .foregroundColor(Color.white)
+                                    .padding(.top, 2)
+                            }
+                            .padding(.horizontal, 6)
+                            .padding(.vertical, 2)
+                            .background(Color.green.opacity(0.2))
+                            .cornerRadius(10)
+                        }
+                    }
+                    .padding(.top, 5)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            
+        case .systemMedium:
             VStack(alignment: .leading, spacing: 0) {
                 HStack(alignment: .center, spacing: 4) {
                     Image(systemName: "mappin.and.ellipse")
                         .resizable()
-                        .frame(width: 17, height: 17)
-                        .padding(.top, 10)
+                        .frame(width: 15, height: 15)
                         .padding(.leading, 6)
                     
                     Text("서울특별시")
                         .font(.system(size: 10, weight: .medium))
                         .foregroundColor(Color.white)
-                        .padding(.top, 10)
+                        .padding(.top, 3)
                 }
                 .padding(.leading, 10)
                 .padding(.top, 5)
@@ -38,7 +192,6 @@ struct WeatherWidgetEntryView : View {
                     Image("weather_rain")
                         .resizable()
                         .frame(width: 40, height: 40)
-                        .padding(.top, 10)
                         .padding(.leading, 20)
                     
                     Text("26°")
@@ -74,9 +227,6 @@ struct WeatherWidgetEntryView : View {
 
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            
-        case .systemMedium:
-            EmptyView()
             
         case .systemLarge:
             EmptyView()
