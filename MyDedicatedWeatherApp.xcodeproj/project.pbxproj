@@ -121,6 +121,10 @@
 		BCE489CD2A4EA4CE00A18B2B /* SpoqaHanSansNeoFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCE489CC2A4EA4CE00A18B2B /* SpoqaHanSansNeoFont.swift */; };
 		BCE489CF2A4EA78000A18B2B /* CustomColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCE489CE2A4EA78000A18B2B /* CustomColor.swift */; };
 		BCE489D12A4EAD5F00A18B2B /* CurrentWeatherInformationItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCE489D02A4EAD5F00A18B2B /* CurrentWeatherInformationItemView.swift */; };
+		BCFA10EA2AB09B0100D1BDE3 /* LineChartBaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCFA10E92AB09B0100D1BDE3 /* LineChartBaseView.swift */; };
+		BCFA10EC2AB09B1200D1BDE3 /* LineChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCFA10EB2AB09B1200D1BDE3 /* LineChartView.swift */; };
+		BCFA10F02AB09D7C00D1BDE3 /* GetSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCFA10EF2AB09D7C00D1BDE3 /* GetSize.swift */; };
+		BCFA10F22AB0A60300D1BDE3 /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCFA10F12AB0A60300D1BDE3 /* Types.swift */; };
 		BCFB3EE42A9F90860043C26B /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCFB3EE32A9F90860043C26B /* WidgetKit.framework */; };
 		BCFB3EE62A9F90860043C26B /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCFB3EE52A9F90860043C26B /* SwiftUI.framework */; };
 		BCFB3EE92A9F90860043C26B /* WeatherWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCFB3EE82A9F90860043C26B /* WeatherWidgetBundle.swift */; };
@@ -266,6 +270,10 @@
 		BCE489CC2A4EA4CE00A18B2B /* SpoqaHanSansNeoFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpoqaHanSansNeoFont.swift; sourceTree = "<group>"; };
 		BCE489CE2A4EA78000A18B2B /* CustomColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomColor.swift; sourceTree = "<group>"; };
 		BCE489D02A4EAD5F00A18B2B /* CurrentWeatherInformationItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeatherInformationItemView.swift; sourceTree = "<group>"; };
+		BCFA10E92AB09B0100D1BDE3 /* LineChartBaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineChartBaseView.swift; sourceTree = "<group>"; };
+		BCFA10EB2AB09B1200D1BDE3 /* LineChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineChartView.swift; sourceTree = "<group>"; };
+		BCFA10EF2AB09D7C00D1BDE3 /* GetSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetSize.swift; sourceTree = "<group>"; };
+		BCFA10F12AB0A60300D1BDE3 /* Types.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Types.swift; sourceTree = "<group>"; };
 		BCFB3EE12A9F90860043C26B /* WeatherWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = WeatherWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCFB3EE32A9F90860043C26B /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		BCFB3EE52A9F90860043C26B /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
@@ -329,6 +337,7 @@
 			isa = PBXGroup;
 			children = (
 				BC15D43F2AA60B3C006DC537 /* ExtensionsForWidget.swift */,
+				BCFA10F12AB0A60300D1BDE3 /* Types.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -755,6 +764,22 @@
 			path = CustomFont;
 			sourceTree = "<group>";
 		};
+		BCFA10ED2AB09D6A00D1BDE3 /* Component */ = {
+			isa = PBXGroup;
+			children = (
+				BCFA10EE2AB09D7100D1BDE3 /* Modifier */,
+			);
+			path = Component;
+			sourceTree = "<group>";
+		};
+		BCFA10EE2AB09D7100D1BDE3 /* Modifier */ = {
+			isa = PBXGroup;
+			children = (
+				BCFA10EF2AB09D7C00D1BDE3 /* GetSize.swift */,
+			);
+			path = Modifier;
+			sourceTree = "<group>";
+		};
 		BCFB3EE22A9F90860043C26B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -767,6 +792,7 @@
 		BCFB3EE72A9F90860043C26B /* WeatherWidget */ = {
 			isa = PBXGroup;
 			children = (
+				BCFA10ED2AB09D6A00D1BDE3 /* Component */,
 				BC15D43E2AA60B2C006DC537 /* Common */,
 				BCFB3EEA2A9F90860043C26B /* WeatherWidget.swift */,
 				BCFB3EF72A9F949A0043C26B /* ViewContent */,
@@ -791,6 +817,8 @@
 			isa = PBXGroup;
 			children = (
 				BCFB3EFE2A9F96410043C26B /* EntryView.swift */,
+				BCFA10E92AB09B0100D1BDE3 /* LineChartBaseView.swift */,
+				BCFA10EB2AB09B1200D1BDE3 /* LineChartView.swift */,
 			);
 			path = ViewContent;
 			sourceTree = "<group>";
@@ -1016,16 +1044,20 @@
 				BCFB3EFD2A9F962B0043C26B /* Entry.swift in Sources */,
 				BC15D44D2AA60F1A006DC537 /* ErrorType.swift in Sources */,
 				BC15D4452AA60C85006DC537 /* ExtensionsForWidget.swift in Sources */,
+				BCFA10F22AB0A60300D1BDE3 /* Types.swift in Sources */,
 				BC15D44A2AA60EB5006DC537 /* VeryShortOrShortTermForecastBase.swift in Sources */,
 				BC15D44E2AA60FAC006DC537 /* Route.swift in Sources */,
+				BCFA10EC2AB09B1200D1BDE3 /* LineChartView.swift in Sources */,
 				BC15D4462AA60E47006DC537 /* VeryShortTermForecastUtil.swift in Sources */,
 				BC15D4482AA60E6A006DC537 /* Extensions.swift in Sources */,
 				BCFB3EEB2A9F90860043C26B /* WeatherWidget.swift in Sources */,
 				BC15D4512AA6116A006DC537 /* MidTermForecastSkyStateBase.swift in Sources */,
 				BC15D44F2AA61052006DC537 /* OpenDataRes.swift in Sources */,
+				BCFA10F02AB09D7C00D1BDE3 /* GetSize.swift in Sources */,
 				BC15D4492AA60E75006DC537 /* CommonUtil.swift in Sources */,
 				BCFB3F002A9F96440043C26B /* EntryView.swift in Sources */,
 				BC15D4502AA61165006DC537 /* MidTermForecastTemperatureBase.swift in Sources */,
+				BCFA10EA2AB09B0100D1BDE3 /* LineChartBaseView.swift in Sources */,
 				BCFB3EFA2A9F95D40043C26B /* Provider.swift in Sources */,
 				BCFB3EE92A9F90860043C26B /* WeatherWidgetBundle.swift in Sources */,
 				BC15D44B2AA60EC1006DC537 /* Env.swift in Sources */,
