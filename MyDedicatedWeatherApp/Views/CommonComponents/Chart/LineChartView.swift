@@ -145,31 +145,6 @@ struct LineChartView: View {
                     }
                 }
             }
-            // Weather image and Rain percent
-            .overlay(alignment: .bottomLeading) {
-                ZStack(alignment: .bottomLeading) {
-                    let imageWidth: CGFloat = 22
-                    
-                    ForEach(weeklyChartInformation.imageAndRainPercents.indices, id: \.self) { i in
-                        VStack(alignment: .center, spacing: 0) {
-                            Image(weeklyChartInformation.imageAndRainPercents[i].0)
-                                .resizable()
-                                .frame(width: imageWidth, height: imageWidth)
-                            
-                            if weeklyChartInformation.imageAndRainPercents[i].1 != "0" {
-                                Text("\(weeklyChartInformation.imageAndRainPercents[i].1)%")
-                                    .fontSpoqaHanSansNeo(size: 7, weight: .medium)
-                                    .foregroundColor(CustomColor.lightBlue.toColor)
-                                    .offset(y: -2)
-                            }
-                        }
-                        .padding(.leading, i == weeklyChartInformation.imageAndRainPercents.count - 1 ?
-                                 xSteps[i] - 17 : xSteps[i] - (imageWidth / 2)
-                        )
-                        .padding(.bottom, convertedMaxValues[i] + 35)
-                    }
-                }
-            }
             
             // MARK: - About Min Values
             
@@ -205,7 +180,7 @@ struct LineChartView: View {
                             .fontSpoqaHanSansNeo(size: 10, weight: .bold)
                             .foregroundColor(Color.white.opacity(0.7))
                             .padding(.leading, i == weeklyChartInformation.minTemps.count - 1 ? xSteps[i] - 17 : xSteps[i] - 5)
-                            .padding(.bottom, convertedMinValues[i] + 8)
+                            .padding(.bottom, convertedMinValues[i])
                     }
                 }
             }
@@ -217,6 +192,31 @@ struct LineChartView: View {
                             .fill(Color.white.opacity(0.1))
                             .frame(width: 1, height: height)
                             .padding(.leading, xSteps[i])
+                    }
+                }
+            }
+            // Weather image and Rain percent
+            .overlay(alignment: .bottomLeading) {
+                ZStack(alignment: .bottomLeading) {
+                    let imageWidth: CGFloat = 22
+
+                    ForEach(weeklyChartInformation.imageAndRainPercents.indices, id: \.self) { i in
+                        VStack(alignment: .center, spacing: 0) {
+                            Image(weeklyChartInformation.imageAndRainPercents[i].0)
+                                .resizable()
+                                .frame(width: imageWidth, height: imageWidth)
+
+                            if weeklyChartInformation.imageAndRainPercents[i].1 != "0" {
+                                Text("\(weeklyChartInformation.imageAndRainPercents[i].1)%")
+                                    .fontSpoqaHanSansNeo(size: 7, weight: .medium)
+                                    .foregroundColor(CustomColor.lightBlue.toColor)
+                                    .offset(y: -2)
+                            }
+                        }
+                        .padding(.leading, i == weeklyChartInformation.imageAndRainPercents.count - 1 ?
+                                 xSteps[i] - 17 : xSteps[i] - (imageWidth / 2)
+                        )
+                        .padding(.bottom, convertedMinValues[i] - 60)
                     }
                 }
             }
