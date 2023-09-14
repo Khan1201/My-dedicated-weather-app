@@ -686,10 +686,8 @@ struct WeatherWidgetEntryView : View {
                         .padding(.horizontal, 14)
                     
                     VStack(alignment: .center, spacing: 0) {
-                        Rectangle()
-                            .fill(Color.blue)
-                            .frame(width: 290, height: 150)
-                            .cornerRadius(12)
+                        LineChartView(weeklyChartInformation: .constant(Dummy.weeklyChartInformation()))
+                            .frame(width: 260, height: 130)
                     }
                     .frame(maxWidth: .infinity, alignment: .center)
                     

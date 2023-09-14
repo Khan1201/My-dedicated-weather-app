@@ -98,6 +98,7 @@
 		BCCD80682A07A59800501BEA /* LocationDataManagerVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCCD80672A07A59800501BEA /* LocationDataManagerVM.swift */; };
 		BCDBC6272AB34D6D000D7F43 /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30FA929FFDC580078D0B1 /* Dummy.swift */; };
 		BCDBC6282AB34D76000D7F43 /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCDBC6242AB34D08000D7F43 /* Dummy.swift */; };
+		BCDBC62B2AB35D8F000D7F43 /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCDBC6292AB35D4E000D7F43 /* TestView.swift */; };
 		BCE4899C2A4EA32400A18B2B /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = BCE489962A4EA32200A18B2B /* LICENSE */; };
 		BCE4899D2A4EA32400A18B2B /* SpoqaHanSansNeo-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = BCE489972A4EA32200A18B2B /* SpoqaHanSansNeo-Light.otf */; };
 		BCE4899E2A4EA32400A18B2B /* SpoqaHanSansNeo-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = BCE489982A4EA32300A18B2B /* SpoqaHanSansNeo-Bold.otf */; };
@@ -242,6 +243,7 @@
 		BCCA26282A51481B005BB1B5 /* SunOrMoonRiseServiceByXML.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunOrMoonRiseServiceByXML.swift; sourceTree = "<group>"; };
 		BCCD80672A07A59800501BEA /* LocationDataManagerVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDataManagerVM.swift; sourceTree = "<group>"; };
 		BCDBC6242AB34D08000D7F43 /* Dummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummy.swift; sourceTree = "<group>"; };
+		BCDBC6292AB35D4E000D7F43 /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
 		BCE489962A4EA32200A18B2B /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		BCE489972A4EA32200A18B2B /* SpoqaHanSansNeo-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SpoqaHanSansNeo-Light.otf"; sourceTree = "<group>"; };
 		BCE489982A4EA32300A18B2B /* SpoqaHanSansNeo-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SpoqaHanSansNeo-Bold.otf"; sourceTree = "<group>"; };
@@ -822,6 +824,7 @@
 				BCFB3EFE2A9F96410043C26B /* EntryView.swift */,
 				BCFA10E92AB09B0100D1BDE3 /* LineChartBaseView.swift */,
 				BCFA10EB2AB09B1200D1BDE3 /* LineChartView.swift */,
+				BCDBC6292AB35D4E000D7F43 /* TestView.swift */,
 			);
 			path = ViewContent;
 			sourceTree = "<group>";
@@ -1046,6 +1049,7 @@
 			files = (
 				BCFB3EFD2A9F962B0043C26B /* Entry.swift in Sources */,
 				BCDBC6282AB34D76000D7F43 /* Dummy.swift in Sources */,
+				BCDBC62B2AB35D8F000D7F43 /* TestView.swift in Sources */,
 				BC15D44D2AA60F1A006DC537 /* ErrorType.swift in Sources */,
 				BC15D4452AA60C85006DC537 /* ExtensionsForWidget.swift in Sources */,
 				BCFA10F22AB0A60300D1BDE3 /* Types.swift in Sources */,

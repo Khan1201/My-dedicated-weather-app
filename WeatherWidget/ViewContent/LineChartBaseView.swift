@@ -20,18 +20,18 @@ struct LineChartBaseView: View {
     let xList: [(String, String)]
     let yList: [Int]
     
-    var lineHeight: CGFloat = 3
+    var lineHeight: CGFloat = 2
     var xItemFontSize: CGFloat = 8
     var yItemFontSize: CGFloat = 7
     var fontWeight: Font.Weight = .bold
     
     var body: some View {
         ZStack {
-            
-            Color.blue.opacity(0.3)
+            Color.init(hexCode: "#000080")
+                .opacity(0.3)
             
             Rectangle()
-                .fill(Color.red.opacity(0.7))
+                .fill(Color.white.opacity(0.08))
                 .frame(width: width, height: height)
                 .overlay {
                     VStack(alignment: .leading, spacing: 0) {
@@ -62,7 +62,7 @@ struct LineChartBaseView: View {
                             }
                         }
                     }
-                    .offset(y: xTextSize.height + 14)
+                    .offset(x: -3, y: xTextSize.height + 4)
                 }
                 // X축 날짜
                 .overlay(alignment: .bottom) {
@@ -78,7 +78,7 @@ struct LineChartBaseView: View {
                         }
                     }
                     .padding(.horizontal, -2)
-                    .offset(y: (xTextSize.height * 2) + 22)
+                    .offset(x: -3, y: xTextSize.height + 10)
                 }
                 // y축 기온
                 .overlay(alignment: .topLeading) {
@@ -95,7 +95,8 @@ struct LineChartBaseView: View {
                             }
                         }
                     }
-                    .offset(x: -yTextSize.width - 16)
+                    .offset(x: -yTextSize.width - 10)
+
                 }
         }
         
@@ -110,7 +111,7 @@ struct LineChartBaseView: View {
                 xStepSize: .constant(CGSize()),
                 yTextSize: .constant(CGSize()),
                 yStepSize: .constant(CGSize()),
-                width: 270,
+                width: 260,
                 height: 130,
                 xList: [("월", "8/24"), ("화", "8/25"), ("수", "8/26"), ("목", "8/27"), ("금", "8/28"), ("토", "8/29"), ("일", "8/30")],
                 yList: [30, 25, 20, 15, 10]

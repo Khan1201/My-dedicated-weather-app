@@ -11,19 +11,19 @@ import WidgetKit
 struct LineChartView: View {
     @Binding var weeklyChartInformation: Weather.WeeklyChartInformation
 
-    @State private var xTextSize: CGSize = CGSize(width: 10, height: 10)
-    @State private var yTextSize: CGSize = CGSize(width: 10, height: 10)
-    @State private var xStepSize: CGSize = CGSize(width: 42, height: 0)
-    @State private var yStepSize: CGSize = CGSize(width: 0, height: 32.5)
+    @State private var xTextSize: CGSize = CGSize()
+    @State private var yTextSize: CGSize = CGSize()
+    @State private var xStepSize: CGSize = CGSize()
+    @State private var yStepSize: CGSize = CGSize()
     @State private var lineStepSize: CGSize = CGSize()
 
     var minLineColor: Color = Color.blue.opacity(0.6)
     var maxLineColor: Color = Color.red.opacity(0.6)
     var lineWidth: CGFloat = 1
-    var temperatureFontSize: CGFloat = 7
+    var temperatureFontSize: CGFloat = 6
     
     var body: some View {
-        let width: CGFloat = 270
+        let width: CGFloat = 260
         let height: CGFloat = 130
         let circleSize: CGSize = CGSize(width: 3, height: 3)
         let rangeMin: CGFloat = CGFloat(weeklyChartInformation.yList.min() ?? 0)
@@ -70,36 +70,10 @@ struct LineChartView: View {
             return result
         }
         ZStack {
-            Color.red.opacity(0.3)
+            Color.init(hexCode: "#000080")
+                .opacity(0.7)
             
             VStack(alignment: .leading, spacing: 16) {
-                
-                VStack(alignment: .leading, spacing: 10) {
-                    
-                    HStack(alignment: .center, spacing: 3) {
-                        Rectangle()
-                            .fill(maxLineColor)
-                            .frame(width: 20, height: 6)
-                            .cornerRadius(12)
-                        
-                        Text("최대 기온")
-                            .font(.system(size: 9))
-                            .foregroundColor(Color.white)
-                    }
-                    
-                    HStack(alignment: .center, spacing: 3) {
-                        Rectangle()
-                            .fill(minLineColor)
-                            .frame(width: 20, height: 6)
-                            .cornerRadius(12)
-                        
-                        Text("최저 기온")
-                            .font(.system(size: 9))
-                            .foregroundColor(Color.white)
-                    }
-                }
-                .padding(.leading, -yTextSize.width)
-                
                 LineChartBaseView(
                     lineStepSize: $lineStepSize,
                     xTextSize: $xTextSize,
@@ -145,8 +119,8 @@ struct LineChartView: View {
                             Text("\(Int(weeklyChartInformation.maxTemps[i]))°")
                                 .font(.system(size: temperatureFontSize, weight: .bold))
                                 .foregroundColor(Int(weeklyChartInformation.maxTemps[i]) >= 30 ? Color.red.opacity(0.7) : Color.white.opacity(0.7))
-                                .padding(.leading, i == weeklyChartInformation.maxTemps.count - 1 ? xSteps[i] - 17 : xSteps[i] - 5)
-                                .padding(.bottom, convertedMaxValues[i] + 8)
+                                .padding(.leading, i == 0 ? xSteps[i] : xSteps[i] - 5)
+                                .padding(.bottom, convertedMaxValues[i] + 5)
                         }
                     }
                 }
@@ -184,8 +158,8 @@ struct LineChartView: View {
                             Text("\(Int(weeklyChartInformation.minTemps[i]))°")
                                 .font(.system(size: temperatureFontSize, weight: .bold))
                                 .foregroundColor(Color.white.opacity(0.7))
-                                .padding(.leading, i == weeklyChartInformation.minTemps.count - 1 ? xSteps[i] - 17 : xSteps[i] - 5)
-                                .padding(.bottom, convertedMinValues[i])
+                                .padding(.leading, i == 0 ? xSteps[i] : xSteps[i] - 5)
+                                .padding(.bottom, convertedMinValues[i] + 5)
                         }
                     }
                 }
@@ -214,12 +188,12 @@ struct LineChartView: View {
                                 if weeklyChartInformation.imageAndRainPercents[i].1 != "0" {
                                     Text("\(weeklyChartInformation.imageAndRainPercents[i].1)%")
                                         .font(.system(size: 6, weight: .medium))
-                                        .foregroundColor(Color.blue.opacity(0.3))
+                                        .foregroundColor(Color.blue.opacity(0.9))
                                         .offset(y: -2)
                                 }
                             }
-                            .padding(.leading, i == weeklyChartInformation.imageAndRainPercents.count - 1 ?
-                                     xSteps[i] - 17 : xSteps[i] - (imageWidth / 2)
+                            .padding(.leading, i == 0 ?
+                                     xSteps[i] - 4 : xSteps[i] - (imageWidth / 2)
                             )
                             .padding(.bottom, convertedMinValues[i] - 30)
                         }
