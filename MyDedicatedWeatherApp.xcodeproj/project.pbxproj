@@ -72,7 +72,6 @@
 		BCA30FA229FE6FC30078D0B1 /* JsonRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30FA129FE6FC30078D0B1 /* JsonRequest.swift */; };
 		BCA30FA529FE73C90078D0B1 /* CurrentWeatherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30FA429FE73C90078D0B1 /* CurrentWeatherView.swift */; };
 		BCA30FA729FE73D70078D0B1 /* CurrentWeatherVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30FA629FE73D70078D0B1 /* CurrentWeatherVM.swift */; };
-		BCA30FAA29FFDC580078D0B1 /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30FA929FFDC580078D0B1 /* Dummy.swift */; };
 		BCB16E2D2A4C717D00AACFF0 /* Validate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB16E2C2A4C717D00AACFF0 /* Validate.swift */; };
 		BCB16E302A4DC66300AACFF0 /* KakaoAddressBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB16E2F2A4DC66300AACFF0 /* KakaoAddressBase.swift */; };
 		BCB532132A75114100DC2B33 /* CloudManyNightLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BCB532062A75114100DC2B33 /* CloudManyNightLottie.json */; };
@@ -97,6 +96,8 @@
 		BCCA26272A514609005BB1B5 /* SunOrMoonRiseBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCCA26262A514609005BB1B5 /* SunOrMoonRiseBase.swift */; };
 		BCCA26292A51481B005BB1B5 /* SunOrMoonRiseServiceByXML.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCCA26282A51481B005BB1B5 /* SunOrMoonRiseServiceByXML.swift */; };
 		BCCD80682A07A59800501BEA /* LocationDataManagerVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCCD80672A07A59800501BEA /* LocationDataManagerVM.swift */; };
+		BCDBC6272AB34D6D000D7F43 /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30FA929FFDC580078D0B1 /* Dummy.swift */; };
+		BCDBC6282AB34D76000D7F43 /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCDBC6242AB34D08000D7F43 /* Dummy.swift */; };
 		BCE4899C2A4EA32400A18B2B /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = BCE489962A4EA32200A18B2B /* LICENSE */; };
 		BCE4899D2A4EA32400A18B2B /* SpoqaHanSansNeo-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = BCE489972A4EA32200A18B2B /* SpoqaHanSansNeo-Light.otf */; };
 		BCE4899E2A4EA32400A18B2B /* SpoqaHanSansNeo-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = BCE489982A4EA32300A18B2B /* SpoqaHanSansNeo-Bold.otf */; };
@@ -240,6 +241,7 @@
 		BCCA26262A514609005BB1B5 /* SunOrMoonRiseBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunOrMoonRiseBase.swift; sourceTree = "<group>"; };
 		BCCA26282A51481B005BB1B5 /* SunOrMoonRiseServiceByXML.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunOrMoonRiseServiceByXML.swift; sourceTree = "<group>"; };
 		BCCD80672A07A59800501BEA /* LocationDataManagerVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDataManagerVM.swift; sourceTree = "<group>"; };
+		BCDBC6242AB34D08000D7F43 /* Dummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummy.swift; sourceTree = "<group>"; };
 		BCE489962A4EA32200A18B2B /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		BCE489972A4EA32200A18B2B /* SpoqaHanSansNeo-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SpoqaHanSansNeo-Light.otf"; sourceTree = "<group>"; };
 		BCE489982A4EA32300A18B2B /* SpoqaHanSansNeo-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SpoqaHanSansNeo-Bold.otf"; sourceTree = "<group>"; };
@@ -338,6 +340,7 @@
 			children = (
 				BC15D43F2AA60B3C006DC537 /* ExtensionsForWidget.swift */,
 				BCFA10F12AB0A60300D1BDE3 /* Types.swift */,
+				BCDBC6242AB34D08000D7F43 /* Dummy.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -1000,6 +1003,7 @@
 				BCA30FA529FE73C90078D0B1 /* CurrentWeatherView.swift in Sources */,
 				BCA30F9729FE3A190078D0B1 /* CommonUtil.swift in Sources */,
 				BC76923D2A4329DC005F4D7B /* CornerRadiusByCorner.swift in Sources */,
+				BCDBC6272AB34D6D000D7F43 /* Dummy.swift in Sources */,
 				BCA30FA729FE73D70078D0B1 /* CurrentWeatherVM.swift in Sources */,
 				BCCA26292A51481B005BB1B5 /* SunOrMoonRiseServiceByXML.swift in Sources */,
 				BC37A6042A3F094E00C16278 /* CustomTypes.swift in Sources */,
@@ -1015,7 +1019,6 @@
 				BC2419B12AA4A79D0035EDBE /* MidTermForecastSkyStateBase.swift in Sources */,
 				BCA30F7A29FE203A0078D0B1 /* MyDedicatedWeatherAppApp.swift in Sources */,
 				BC76923A2A431CC8005F4D7B /* CustomBottomTabBarView.swift in Sources */,
-				BCA30FAA29FFDC580078D0B1 /* Dummy.swift in Sources */,
 				BCBA40162A7C032400B6EFD2 /* CommonForecastUtil.swift in Sources */,
 				BC4DDA362A72C3DE000376C0 /* TodaySunriseSunsetView.swift in Sources */,
 				BCBA40192A7C06EE00B6EFD2 /* FineDustLookUpUtil.swift in Sources */,
@@ -1042,6 +1045,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BCFB3EFD2A9F962B0043C26B /* Entry.swift in Sources */,
+				BCDBC6282AB34D76000D7F43 /* Dummy.swift in Sources */,
 				BC15D44D2AA60F1A006DC537 /* ErrorType.swift in Sources */,
 				BC15D4452AA60C85006DC537 /* ExtensionsForWidget.swift in Sources */,
 				BCFA10F22AB0A60300D1BDE3 /* Types.swift in Sources */,
