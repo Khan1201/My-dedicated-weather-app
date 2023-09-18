@@ -180,7 +180,7 @@ struct LineChartView: View {
                             .fontSpoqaHanSansNeo(size: 10, weight: .bold)
                             .foregroundColor(Color.white.opacity(0.7))
                             .padding(.leading, i == weeklyChartInformation.minTemps.count - 1 ? xSteps[i] - 17 : xSteps[i] - 5)
-                            .padding(.bottom, convertedMinValues[i])
+                            .padding(.bottom, convertedMinValues[i] + 5)
                     }
                 }
             }
