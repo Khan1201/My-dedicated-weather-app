@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct WeatherWidgetSmallView: View {
+    let entry: SimpleEntry
+    
     var body: some View {
         ZStack {
             Color.init(hexCode: "#000080")
@@ -16,18 +18,19 @@ struct WeatherWidgetSmallView: View {
             VStack(alignment: .leading, spacing: 10) {
                 CurrentWeatherTemperatureView(
                     location: "서울특별시",
+//                    location: test,
                     updatedDate: Date(),
-                    weatherImage: "weather_rain",
-                    currentTemperature: "22",
-                    minTemperature: "14",
-                    maxTemperature: "23"
+                    weatherImage: entry.smallFamilyData.currentWeatherItem.weatherImage,
+                    currentTemperature: entry.smallFamilyData.currentWeatherItem.currentTemperature,
+                    minTemperature: entry.smallFamilyData.currentWeatherItem.minMaxTemperature.0,
+                    maxTemperature: entry.smallFamilyData.currentWeatherItem.minMaxTemperature.1
                 )
                 
                 CurrentWeatherInformationView(
-                    precipitation: "비 없음",
-                    wind: "약한 바람",
-                    wet: "50",
-                    dust: ("좋음", "좋음")
+                    precipitation: entry.smallFamilyData.currentWeatherItem.precipitation,
+                    wind: entry.smallFamilyData.currentWeatherItem.wind,
+                    wet: entry.smallFamilyData.currentWeatherItem.wetPercent,
+                    dust: entry.smallFamilyData.currentWeatherItem.findDust
                 )
             }
         }
@@ -36,6 +39,6 @@ struct WeatherWidgetSmallView: View {
 
 struct WeatherWidgetSmallView_Previews: PreviewProvider {
     static var previews: some View {
-        WeatherWidgetSmallView()
+        WeatherWidgetSmallView(entry: Dummy.simpleEntry())
     }
 }

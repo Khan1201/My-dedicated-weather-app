@@ -14,6 +14,8 @@
 		BC0857C32ACFC60300D0AE33 /* WeatherWidgetSmallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC0857C22ACFC60300D0AE33 /* WeatherWidgetSmallView.swift */; };
 		BC0857C52ACFC60F00D0AE33 /* WeatherWidgetMediumView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC0857C42ACFC60F00D0AE33 /* WeatherWidgetMediumView.swift */; };
 		BC0857C72ACFC61B00D0AE33 /* WeatherWidgetLargeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC0857C62ACFC61B00D0AE33 /* WeatherWidgetLargeView.swift */; };
+		BC0857C92ACFD1C500D0AE33 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC0857C82ACFD1C500D0AE33 /* Util.swift */; };
+		BC0857CA2ACFEC5000D0AE33 /* ShortTermForecastUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCBA400F2A7C01B400B6EFD2 /* ShortTermForecastUtil.swift */; };
 		BC15D4442AA60C77006DC537 /* ExtensionsForWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC15D43F2AA60B3C006DC537 /* ExtensionsForWidget.swift */; };
 		BC15D4452AA60C85006DC537 /* ExtensionsForWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC15D43F2AA60B3C006DC537 /* ExtensionsForWidget.swift */; };
 		BC15D4462AA60E47006DC537 /* VeryShortTermForecastUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCBA40112A7C01C300B6EFD2 /* VeryShortTermForecastUtil.swift */; };
@@ -174,6 +176,7 @@
 		BC0857C22ACFC60300D0AE33 /* WeatherWidgetSmallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherWidgetSmallView.swift; sourceTree = "<group>"; };
 		BC0857C42ACFC60F00D0AE33 /* WeatherWidgetMediumView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherWidgetMediumView.swift; sourceTree = "<group>"; };
 		BC0857C62ACFC61B00D0AE33 /* WeatherWidgetLargeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherWidgetLargeView.swift; sourceTree = "<group>"; };
+		BC0857C82ACFD1C500D0AE33 /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
 		BC15D43C2AA60AC8006DC537 /* MyDedicatedWeatherApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MyDedicatedWeatherApp.entitlements; sourceTree = "<group>"; };
 		BC15D43D2AA60B00006DC537 /* WeatherWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WeatherWidgetExtension.entitlements; sourceTree = "<group>"; };
 		BC15D43F2AA60B3C006DC537 /* ExtensionsForWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionsForWidget.swift; sourceTree = "<group>"; };
@@ -362,6 +365,7 @@
 				BC15D43F2AA60B3C006DC537 /* ExtensionsForWidget.swift */,
 				BCFA10F12AB0A60300D1BDE3 /* Types.swift */,
 				BCDBC6242AB34D08000D7F43 /* Dummy.swift */,
+				BC0857C82ACFD1C500D0AE33 /* Util.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -1077,10 +1081,12 @@
 				BC15D44E2AA60FAC006DC537 /* Route.swift in Sources */,
 				BC0857BB2ACFB21E00D0AE33 /* TodayWeatherItemView.swift in Sources */,
 				BC15D4462AA60E47006DC537 /* VeryShortTermForecastUtil.swift in Sources */,
+				BC0857C92ACFD1C500D0AE33 /* Util.swift in Sources */,
 				BC15D4482AA60E6A006DC537 /* Extensions.swift in Sources */,
 				BCFB3EEB2A9F90860043C26B /* WeatherWidget.swift in Sources */,
 				BC15D4512AA6116A006DC537 /* MidTermForecastSkyStateBase.swift in Sources */,
 				BC15D44F2AA61052006DC537 /* OpenDataRes.swift in Sources */,
+				BC0857CA2ACFEC5000D0AE33 /* ShortTermForecastUtil.swift in Sources */,
 				BCFA10F02AB09D7C00D1BDE3 /* GetSize.swift in Sources */,
 				BC0857C12ACFB68600D0AE33 /* CurrentWeatherInformationView.swift in Sources */,
 				BC0857C52ACFC60F00D0AE33 /* WeatherWidgetMediumView.swift in Sources */,

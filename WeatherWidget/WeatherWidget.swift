@@ -22,7 +22,7 @@ struct WeatherWidget: Widget {
 
 struct WeatherWidget_Previews: PreviewProvider {
     static var previews: some View {
-        WeatherWidgetEntryView(entry: SimpleEntry(date: Date()))
+        WeatherWidgetEntryView(entry: Dummy.simpleEntry())
             .previewContext(WidgetPreviewContext(family: .systemSmall))
     }
 }

@@ -9,13 +9,13 @@
 import SwiftUI
 
 struct WeatherWidgetEntryView : View {
-    var entry: Provider.Entry
+    let entry: Provider.Entry
     @Environment(\.widgetFamily) var family
 
     var body: some View {
         
         if family == .systemSmall {
-            WeatherWidgetSmallView()
+            WeatherWidgetSmallView(entry: entry)
             
         } else if family == .systemMedium {
             WeatherWidgetMediumView()
