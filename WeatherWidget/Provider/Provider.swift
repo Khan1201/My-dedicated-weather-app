@@ -33,7 +33,6 @@ struct Provider: TimelineProvider {
                 let result = await performWidgetData()
                 entries.append(result)
             }
-            
             let timeline = Timeline(entries: entries, policy: .atEnd)
             completion(timeline)
         }
@@ -84,7 +83,10 @@ struct Provider: TimelineProvider {
         switch result {
             
         case .success(let result):
-            CommonUtil.shared.printSuccess(funcTitle: "requestVeryShortItems()", values: result.item ?? [])
+            CommonUtil.shared.printSuccess(
+                funcTitle: "requestVeryShortItems()",
+                value: "\(result.item?.count ?? 0)개의 초단기 예보 데이터 get"
+            )
             return result.item ?? []
             
         case .failure(_):
@@ -94,13 +96,7 @@ struct Provider: TimelineProvider {
     
     /**
      Request 단기예보 Items
-     
-     - parameter xy: 공공데이터 값으로 변환된 X, Y
-     - parameter baseTime: Request param 의 `baseTime`
-     
-     `baseTime` == nil -> 앱 첫 진입 시 자동 계산되어 호출
-     `baseTime` != nil -> 앱 첫 진입 시 호출이 아닌, 수동 호출
-     
+
      Response:
      - 1시간 별 데이터 12개 (13:00 -> 12개, 14:00 -> 12개)
      - 요청 basetime 별 response 값이 다름
@@ -150,15 +146,17 @@ struct Provider: TimelineProvider {
             Route.GET_WEATHER_SHORT_TERM_FORECAST.val,
             method: .get,
             parameters: parameters
-        )
-            .serializingDecodable(OpenDataRes<VeryShortOrShortTermForecastBase<ShortTermForecastCategory>>.self)
+        ).serializingDecodable(OpenDataRes<VeryShortOrShortTermForecastBase<ShortTermForecastCategory>>.self)
         
         let result = await dataTask.result
         
         switch result {
             
         case .success(let result):
-            CommonUtil.shared.printSuccess(funcTitle: "requestShortItems()", values: result.item ?? [])
+            CommonUtil.shared.printSuccess(
+                funcTitle: "requestShortItems()",
+                value: "\(result.item?.count ?? 0)개의 단기 예보 데이터 get"
+            )
             return result.item ?? []
             
         case .failure(_):
@@ -189,8 +187,25 @@ struct Provider: TimelineProvider {
                 skyState: skyState
             )
             
+            CommonUtil.shared.printSuccess(
+                funcTitle: "applyVeryShortForecastData",
+                value: """
+                현재 온도: \(currentTemperature),
+                현재 바람: \(Util.remakeWindSpeedValueForToString(value: currentWindSpeed).0),
+                현재 습도: \(Util.remakePrecipitationValueForToString(value: currentOneHourPrecipitation).0),
+                현재 강수량: \(currentOneHourPrecipitation)
+                현재 날씨 image: \(Util.remakeRainStateAndSkyStateForWeatherImage(
+                rainState: rainState,
+                skyState: skyState)
+                )
+                """
+            )
+            
         } else {
-            print("items의 개수가 55개를 넘지 못합니다. index 접근 불가")
+            CommonUtil.shared.printError(
+                funcTitle: "applyVeryShortForecastData",
+                description: "초단기예보 데이터 세팅에 items의 55개의 데이터가 필요합니다. items의 개수가 55개를 넘지 못하므로, index 접근 불가"
+            )
             return
         }
     }
@@ -199,6 +214,20 @@ struct Provider: TimelineProvider {
         _ items: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>],
         to result: inout SimpleEntry
     ) {
+        func setMinMaxTemperature(i: Int) {
+            if i == 0 {
+                minTemperature = items[tempIndex].fcstValue.toInt
+                maxTemperature = items[tempIndex].fcstValue.toInt
+            }
+            
+            if items[tempIndex].fcstValue.toInt < minTemperature {
+                minTemperature = items[tempIndex].fcstValue.toInt
+                
+            } else if items[tempIndex].fcstValue.toInt > maxTemperature {
+                maxTemperature = items[tempIndex].fcstValue.toInt
+            }
+        }
+        
         var tempIndex = 0
         var skyIndex = 5
         var ptyIndex = 6
@@ -212,67 +241,64 @@ struct Provider: TimelineProvider {
         
         if items.count >= step * loopCount {
             
+            // 각 index 해당하는 값(시간에 해당하는 값) append
+            for i in 0..<loopCount {
+                
+                // 1시간 별 데이터 중 TMX(최고온도), TMN(최저온도) 가 있는지
+                // 존재하면 1시간 별 데이터 기존 12개 -> 13이 됨
+                let isExistTmxOrTmn = items[tempIndex + 12].category == .TMX ||
+                items[tempIndex + 12].category == .TMN
+                
+                step = isExistTmxOrTmn ? 13 : 12
+                setMinMaxTemperature(i: i)
+                
+                if i <= 5 {
+                    let time = CommonUtil.shared.convertAMOrPMFromHHmm(items[tempIndex].fcstTime)
+                    
+                    let weatherImage = Util.remakeRainStateAndSkyStateForWeatherImage(
+                        rainState: items[ptyIndex].fcstValue,
+                        skyState: items[skyIndex].fcstValue
+                    )
+                    let precipitation = items[popIndex].fcstValue
+                    let temperature = items[tempIndex].fcstValue
+                    
+                    result.mediumFamilyData.todayWeatherItems.append(
+                        .init(
+                            time: time,
+                            image: weatherImage,
+                            precipitation: precipitation,
+                            temperature: temperature
+                        )
+                    )
+                    
+                    skyIndex += step
+                    ptyIndex += step
+                    popIndex += step
+                }
+                
+                tempIndex += step
+            }
+            
+            result.smallFamilyData.currentWeatherItem.minMaxTemperature = (
+                String(minTemperature), String(maxTemperature)
+            )
+            
+            CommonUtil.shared.printSuccess(
+                funcTitle: "applyShortForecastData",
+                value: """
+                최저온도: \(minTemperature),
+                최대온도: \(maxTemperature),
+                todayWeatherItems:
+                \(result.mediumFamilyData.todayWeatherItems)
+                set 완료
+                """
+            )
+            
         } else {
             CommonUtil.shared.printError(
                 funcTitle: "applyShortForecastData()",
                 description: "현재 날씨에서 +1 ~ 24시간까지의 데이터가 존재하지 않습니다."
             )
-        }
-        
-        // 각 index 해당하는 값(시간에 해당하는 값) append
-        for i in 0..<loopCount {
-            
-            // 1시간 별 데이터 중 TMX(최고온도), TMN(최저온도) 가 있는지
-            // 존재하면 1시간 별 데이터 기존 12개 -> 13이 됨
-            let isExistTmxOrTmn = items[tempIndex + 12].category == .TMX ||
-            items[tempIndex + 12].category == .TMN
-            
-            step = isExistTmxOrTmn ? 13 : 12
-            setMinMaxTemperature(i: i)
-            
-            if i <= 5 {
-                let time = CommonUtil.shared.convertAMOrPMFromHHmm(items[tempIndex].fcstTime)
-                
-                let weatherImage = Util.remakeRainStateAndSkyStateForWeatherImage(
-                    rainState: items[ptyIndex].fcstValue,
-                    skyState: items[skyIndex].fcstValue
-                )
-                let precipitation = items[popIndex].fcstValue
-                let temperature = items[tempIndex].fcstValue
-                
-                result.mediumFamilyData.todayWeatherItems.append(
-                    .init(
-                        time: time,
-                        image: weatherImage,
-                        precipitation: precipitation,
-                        temperature: temperature
-                    )
-                )
-                
-                skyIndex += step
-                ptyIndex += step
-                popIndex += step
-            }
-            
-            tempIndex += step
-        }
-        
-        result.smallFamilyData.currentWeatherItem.minMaxTemperature = (
-            String(minTemperature), String(maxTemperature)
-        )
-        
-        func setMinMaxTemperature(i: Int) {
-            if i == 0 {
-                minTemperature = items[tempIndex].fcstValue.toInt
-                maxTemperature = items[tempIndex].fcstValue.toInt
-            }
-            
-            if items[tempIndex].fcstValue.toInt < minTemperature {
-                minTemperature = items[tempIndex].fcstValue.toInt
-                
-            } else if items[tempIndex].fcstValue.toInt > maxTemperature {
-                maxTemperature = items[tempIndex].fcstValue.toInt
-            }
         }
     }
 }
