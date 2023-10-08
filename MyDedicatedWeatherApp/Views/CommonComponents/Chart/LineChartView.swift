@@ -216,7 +216,7 @@ struct LineChartView: View {
                         .padding(.leading, i == weeklyChartInformation.imageAndRainPercents.count - 1 ?
                                  xSteps[i] - 17 : xSteps[i] - (imageWidth / 2)
                         )
-                        .padding(.bottom, convertedMinValues[i] - 60)
+                        .padding(.bottom, convertedMinValues[i] + ((convertedMaxValues[i] - convertedMinValues[i]) / 2))
                     }
                 }
             }
