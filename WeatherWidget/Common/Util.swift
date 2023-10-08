@@ -78,13 +78,16 @@ struct Util {
      */
     public static func remakeRainStateAndSkyStateForWeatherImage(
         rainState: String,
-        skyState: String
+        skyState: String,
+        hhMM: String,
+        sunrise: String,
+        sunset: String
     ) -> String {
         if rainState != "0" {
-            return remakeRainStateForWeatherImage(rainState)
+            return remakeRainStateForWeatherImage(rainState, hhMM: hhMM, sunrise: sunrise, sunset: sunset)
             
         } else {
-            return remakeSkyStateForWeatherImage(skyState)
+            return remakeSkyStateForWeatherImage(skyState, hhMM: hhMM, sunrise: sunrise, sunset: sunset)
         }
     }
     
@@ -94,7 +97,10 @@ struct Util {
      - parameter value: 예보 조회 response 강수 값
      */
     public static func remakeRainStateForWeatherImage(
-        _ value: String
+        _ value: String,
+        hhMM: String,
+        sunrise: String,
+        sunset: String
     ) -> String {
         
         switch value {
@@ -131,21 +137,89 @@ struct Util {
      - parameter value: 예보 조회 response 하늘상태 값,
      */
     public static func remakeSkyStateForWeatherImage(
-        _ value: String
+        _ value: String,
+        hhMM: String,
+        sunrise: String,
+        sunset: String
     ) -> String {
         
         switch value {
         case "1":
-            return "weather_sunny"
+            return isDayMode(targetHHmm: hhMM, sunrise: sunrise, sunset: sunset) ? "weather_sunny" : "weather_sunny_night"
             
         case "3":
-            return "weather_cloud_many"
+            return isDayMode(targetHHmm: hhMM, sunrise: sunrise, sunset: sunset) ? "weather_cloud_many" : "weather_cloud_many_night"
             
         case "4":
             return "weather_blur"
             
         default:
             return "load_fail"
+        }
+    }
+    
+    /**
+    타겟 시간과 일출, 일몰 시간을 비교 -> return day or night (`Bool`)
+     */
+    
+    public static func isDayMode(targetHHmm: String, sunrise: String, sunset: String) -> Bool {
+        let targetHHmmToInt = Int(targetHHmm) ?? 0
+        let sunriseToInt = Int(sunrise) ?? 0
+        let sunsetToInt = Int(sunset) ?? 0
+        
+        if targetHHmmToInt > sunriseToInt && targetHHmmToInt < sunsetToInt {
+            return true
+            
+        } else  {
+            return false
+        }
+    }
+    
+    /**
+     미세먼지 api response value 값 ->  값 String (`String`)
+     
+     - parameter value: api response 미세먼지 값
+     */
+    public static func remakeFindDustValue(value: String) -> String { // 미세먼지
+        
+        let valueToInt: Int = Int(value) ?? 0
+        
+        switch valueToInt {
+            
+        case 0...30:
+            return "좋음"
+        case 31...81:
+            return "보통"
+        case 81...150:
+            return "나쁨"
+        case _ where valueToInt >= 151:
+            return "매우 나쁨"
+        default:
+            return "알 수 없음"
+        }
+    }
+    
+    /**
+     초 미세먼지 api response value 값 ->  값 String (`String`)
+
+     - parameter value: api response 초미세먼지 값
+     */
+    public static func remakeUltraFindDustValue(value: String) -> String { // 초 미세먼지
+        
+        let valueToInt: Int = Int(value) ?? 0
+        
+        switch valueToInt {
+            
+        case 0...15:
+            return "좋음"
+        case 16...35:
+            return "보통"
+        case 36...75:
+            return "나쁨"
+        case _ where valueToInt >= 76:
+            return "매우 나쁨"
+        default:
+            return "알 수 없음"
         }
     }
 }

@@ -13,12 +13,14 @@ struct WeatherWidgetEntryView : View {
     @Environment(\.widgetFamily) var family
 
     var body: some View {
+        let location: String = UserDefaults.shared.string(forKey: "locality") ?? ""
+
         
         if family == .systemSmall {
-            WeatherWidgetSmallView(entry: entry)
+            WeatherWidgetSmallView(entry: entry, location: location)
             
         } else if family == .systemMedium {
-            WeatherWidgetMediumView()
+            WeatherWidgetMediumView(entry: entry, location: location)
             
         } else if family == .systemLarge {
             WeatherWidgetLargeView()

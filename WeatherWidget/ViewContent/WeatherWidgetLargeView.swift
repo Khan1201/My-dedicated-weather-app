@@ -43,37 +43,43 @@ struct WeatherWidgetLargeView: View {
                     TodayWeatherItemView(
                         time: "11PM",
                         image: "weather_sunny_night",
-                        temperature: "23"
+                        temperature: "23",
+                        rainPercent: "20"
                     )
                     
                     TodayWeatherItemView(
                         time: "11PM",
                         image: "weather_sunny_night",
-                        temperature: "23"
+                        temperature: "23",
+                        rainPercent: "20"
                     )
                     
                     TodayWeatherItemView(
                         time: "11PM",
                         image: "weather_sunny_night",
-                        temperature: "23"
+                        temperature: "23",
+                        rainPercent: "20"
                     )
                     
                     TodayWeatherItemView(
                         time: "11PM",
                         image: "weather_sunny_night",
-                        temperature: "23"
+                        temperature: "23",
+                        rainPercent: "20"
                     )
                     
                     TodayWeatherItemView(
                         time: "11PM",
                         image: "weather_sunny_night",
-                        temperature: "23"
+                        temperature: "23",
+                        rainPercent: "20"
                     )
                     
                     TodayWeatherItemView(
                         time: "11PM",
                         image: "weather_sunny_night",
-                        temperature: "23"
+                        temperature: "23",
+                        rainPercent: "20"
                     )
                 }
                 .frame(maxWidth: .infinity, alignment: .center)

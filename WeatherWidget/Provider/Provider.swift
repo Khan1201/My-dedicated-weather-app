@@ -26,14 +26,12 @@ struct Provider: TimelineProvider {
         
         Task {
             var entries: [SimpleEntry] = []
+            let reloadDate = Calendar.current.date(byAdding: .hour, value: 1, to: Date())!
             
-            let currentDate = Date()
-            for hourOffset in 0 ..< 5 {
-                let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
-                let result = await performWidgetData()
-                entries.append(result)
-            }
-            let timeline = Timeline(entries: entries, policy: .atEnd)
+            let result = await performWidgetData()
+            entries.append(result)
+            
+            let timeline = Timeline(entries: entries, policy: .after(reloadDate))
             completion(timeline)
         }
         
@@ -48,14 +46,19 @@ struct Provider: TimelineProvider {
         var result: SimpleEntry = Dummy.simpleEntry()
         let veryShortForecastItems = await requestVeryShortItems()
         let shortForecastItems = await requestShortForecastItems()
-        applyVeryShortForecastData(veryShortForecastItems, to: &result)
-        applyShortForecastData(shortForecastItems, to: &result)
+        let sunriseAndSunset = await requestSunriseSunset()
+        let realTimefindDustItems = await requestRealTimeFindDustAndUltraFindDustItems()
+        
+        applyVeryShortForecastData(veryShortForecastItems, to: &result, sunrise: sunriseAndSunset.0, sunset: sunriseAndSunset.1)
+        applyShortForecastData(shortForecastItems, to: &result, sunrise: sunriseAndSunset.0, sunset: sunriseAndSunset.1)
+        applyRealTimeFindDustAndUltraFindDustItems(realTimefindDustItems, to: &result)
         
         return result
     }
     
+    
+    /// Return 초단기예보 items
     func requestVeryShortItems() async -> [VeryShortOrShortTermForecastBase<VeryShortTermForecastCategory>] {
-        
         let veryShortTermForecastUtil = VeryShortTermForecastUtil()
         let baseTime = veryShortTermForecastUtil.requestBaseTime()
         let baseDate = veryShortTermForecastUtil.requestBaseDate(baseTime: baseTime)
@@ -94,37 +97,7 @@ struct Provider: TimelineProvider {
         }
     }
     
-    /**
-     Request 단기예보 Items
-
-     Response:
-     - 1시간 별 데이터 12개 (13:00 -> 12개, 14:00 -> 12개)
-     - 요청 basetime 별 response 값이 다름
-     
-     시간 별 Index:
-     - 0: TMP (온도)
-     - 1: UUU (풍속 동서성분)
-     - 2: VVV (풍속 남북성분)
-     - 3: VEC (풍향)
-     - 4: WSD (풍속)
-     - 5: SKY (하늘 상태)
-     - 6: PTY (강수 형태)
-     - 7: POP (강수 확률)
-     - 8: WAV (파고)
-     - 9: PCP (1시간 강수량)
-     - 10: REH (습도)
-     - 11: SNO (1시간 신적설)
-     
-     요청 basetime 별 데이터 크기:
-     - 0200: '+1시간' ~ '+70시간'
-     - 0500: '+1시간' ~ '+67시간'
-     - 0800: '+1시간' ~ '+64시간'
-     - 1100: '+1시간' ~ '+61시간'
-     - 1400: '+1시간' ~ '+58시간' (0200 ~ 1400 : 오늘 ~ 모레까지)
-     - 1700: '+1시간' ~ '+79시간'
-     - 2000: '+1시간' ~ '+76시간'
-     - 2300: '+1시간' ~ '+73시간' (17:00 ~ 2300: 오늘 ~ 모레+1일 까지)
-     */
+    /// Return 단기예보 items
     func requestShortForecastItems() async -> [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>] {
         
         let shortTermForecastUtil: ShortTermForecastUtil = ShortTermForecastUtil()
@@ -164,9 +137,86 @@ struct Provider: TimelineProvider {
         }
     }
     
+    /// Return (일출시간, 일몰시간)
+    func requestSunriseSunset() async -> (String, String) {
+        let latitude = UserDefaults.shared.string(forKey: "latitude") ?? ""
+        let longitude = UserDefaults.shared.string(forKey: "longitude") ?? ""
+        
+        do {
+            let parser = try await SunriseAndSunsetGetService(
+                queryItem: .init(
+                    serviceKey: Env.shared.openDataApiResponseKey,
+                    locdate: Date().toString(format: "yyyyMMdd"),
+                    longitude: longitude,
+                    latitude: latitude
+                )
+            )
+            
+            CommonUtil.shared.printSuccess(
+                funcTitle: "requestSunriseSunset()",
+                value: """
+                일출시간: \(parser.result.sunrise)
+                일몰시간: \(parser.result.sunset)
+                """
+            )
+            
+            return (parser.result.sunrise, parser.result.sunset)
+            
+        } catch {
+            CommonUtil.shared.printError(
+                funcTitle: "requestSunriseSunset()",
+                description: "일출 일물 시간 request 실패"
+            )
+            
+            return ("", "")
+        }
+    }
+    
+    /// Return 미세먼지 및 초미세먼지 items
+    func requestRealTimeFindDustAndUltraFindDustItems() async -> [RealTimeFindDustForecastBase] {
+        
+        let stationName: String = UserDefaults.shared.string(forKey: "dustStationName") ?? ""
+        
+        let parameters: RealTimeFindDustForecastReq = RealTimeFindDustForecastReq(
+            serviceKey: Env.shared.openDataApiResponseKey,
+            stationName: stationName
+        )
+        
+        let dataTask = AF.request(
+            Route.GET_REAL_TIME_FIND_DUST_FORECAST.val,
+            method: .get,
+            parameters: parameters
+        ).serializingDecodable(OpenDataRes<RealTimeFindDustForecastBase>.self)
+        
+        let result = await dataTask.result
+        
+        switch result {
+            
+        case .success(let result):
+            CommonUtil.shared.printSuccess(
+                funcTitle: "requestRealTimeFindDustAndUltraFindDustItems()",
+                value: "\(result.items?.count ?? 0)개의 미세먼지, 초 미세먼지 데이터 get"
+            )
+            return result.items ?? []
+            
+        case .failure(_):
+            return []
+        }
+    }
+    
+    func requestMidTermForecastTempItems() {
+        
+    }
+    
+    func requestMidTermForecastSkyStateItems() {
+        
+    }
+    
     func applyVeryShortForecastData(
         _ items: [VeryShortOrShortTermForecastBase<VeryShortTermForecastCategory>],
-        to result: inout SimpleEntry
+        to result: inout SimpleEntry,
+        sunrise: String,
+        sunset: String
     ) {
         
         if items.count > 55 {
@@ -175,6 +225,7 @@ struct Provider: TimelineProvider {
             let currentWetPercent = items[30].fcstValue
             let currentOneHourPrecipitation = items[12].fcstValue
             
+            let targetTime = items[6].fcstTime // 날씨 이미지 day or night 인지 구분위한 target time
             let rainState = items[6].fcstValue
             let skyState = items[18].fcstValue
             
@@ -182,21 +233,22 @@ struct Provider: TimelineProvider {
             result.smallFamilyData.currentWeatherItem.wind = Util.remakeWindSpeedValueForToString(value: currentWindSpeed).0
             result.smallFamilyData.currentWeatherItem.wetPercent = currentWetPercent
             result.smallFamilyData.currentWeatherItem.precipitation = Util.remakePrecipitationValueForToString(value: currentOneHourPrecipitation).0
-            result.smallFamilyData.currentWeatherItem.weatherImage = Util.remakeRainStateAndSkyStateForWeatherImage(
-                rainState: rainState,
-                skyState: skyState
-            )
+            result.smallFamilyData.currentWeatherItem.weatherImage =
+            Util.remakeRainStateAndSkyStateForWeatherImage(rainState: rainState, skyState: skyState, hhMM: targetTime, sunrise: sunrise, sunset: sunset)
             
             CommonUtil.shared.printSuccess(
                 funcTitle: "applyVeryShortForecastData",
                 value: """
                 현재 온도: \(currentTemperature),
                 현재 바람: \(Util.remakeWindSpeedValueForToString(value: currentWindSpeed).0),
-                현재 습도: \(Util.remakePrecipitationValueForToString(value: currentOneHourPrecipitation).0),
-                현재 강수량: \(currentOneHourPrecipitation)
+                현재 습도: \(currentWetPercent),
+                현재 강수량: \(Util.remakePrecipitationValueForToString(value: currentOneHourPrecipitation).0)
                 현재 날씨 image: \(Util.remakeRainStateAndSkyStateForWeatherImage(
                 rainState: rainState,
-                skyState: skyState)
+                skyState: skyState,
+                hhMM: targetTime,
+                sunrise: sunrise,
+                sunset: sunset)
                 )
                 """
             )
@@ -212,7 +264,9 @@ struct Provider: TimelineProvider {
     
     func applyShortForecastData(
         _ items: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>],
-        to result: inout SimpleEntry
+        to result: inout SimpleEntry,
+        sunrise: String,
+        sunset: String
     ) {
         func setMinMaxTemperature(i: Int) {
             if i == 0 {
@@ -236,6 +290,7 @@ struct Provider: TimelineProvider {
         var step = 12
         let loopCount = 24
         
+        var tempResult: [MediumFamilyData.TodayWeatherItem] = []
         var minTemperature: Int = 0
         var maxTemperature: Int = 0
         
@@ -257,12 +312,15 @@ struct Provider: TimelineProvider {
                     
                     let weatherImage = Util.remakeRainStateAndSkyStateForWeatherImage(
                         rainState: items[ptyIndex].fcstValue,
-                        skyState: items[skyIndex].fcstValue
+                        skyState: items[skyIndex].fcstValue,
+                        hhMM: items[ptyIndex].fcstTime, // // 날씨 이미지 day or night 인지 구분위한 target time
+                        sunrise: sunrise,
+                        sunset: sunset
                     )
                     let precipitation = items[popIndex].fcstValue
                     let temperature = items[tempIndex].fcstValue
                     
-                    result.mediumFamilyData.todayWeatherItems.append(
+                    tempResult.append(
                         .init(
                             time: time,
                             image: weatherImage,
@@ -282,6 +340,7 @@ struct Provider: TimelineProvider {
             result.smallFamilyData.currentWeatherItem.minMaxTemperature = (
                 String(minTemperature), String(maxTemperature)
             )
+            result.mediumFamilyData.todayWeatherItems = tempResult
             
             CommonUtil.shared.printSuccess(
                 funcTitle: "applyShortForecastData",
@@ -300,5 +359,30 @@ struct Provider: TimelineProvider {
                 description: "현재 날씨에서 +1 ~ 24시간까지의 데이터가 존재하지 않습니다."
             )
         }
+    }
+    
+    func applyRealTimeFindDustAndUltraFindDustItems(
+        _ items: [RealTimeFindDustForecastBase],
+        to result: inout SimpleEntry
+    ) {
+        guard let item = items.first else {
+            CommonUtil.shared.printError(
+                funcTitle: "applyRealTimeFindDustAndUltraFindDustItems()",
+                description: "items가 존재하지 않습니다."
+            )
+            return
+            
+        }
+        let findDust: String = Util.remakeFindDustValue(value: item.pm10Value)
+        let ultraFindDust: String = Util.remakeUltraFindDustValue(value: item.pm25Value)
+        result.smallFamilyData.currentWeatherItem.findDust = (findDust, ultraFindDust)
+        
+        CommonUtil.shared.printSuccess(
+            funcTitle: "applyRealTimeFindDustAndUltraFindDustItems()",
+            value: """
+            미세먼지: \(findDust),
+            초미세먼지: \(ultraFindDust),
+            """
+        )
     }
 }

@@ -8,7 +8,6 @@
 import Foundation
 
 struct SunAndMoonriseBase: Decodable {
-    
     var sunrise: String
     var sunset: String
     var moonrise: String

@@ -89,6 +89,10 @@ extension LocationDataManagerVM: CLLocationManagerDelegate {
             latitude: locationManager.location?.coordinate.latitude ?? 0,
             longitude: locationManager.location?.coordinate.longitude ?? 0
         )
+        // Widget에 공유 위해
+        UserDefaults.shared.set(locationManager.location?.coordinate.latitude ?? 0, forKey: "latitude")
+        UserDefaults.shared.set(locationManager.location?.coordinate.longitude ?? 0, forKey: "longitude")
+        
         let geoCoder: CLGeocoder = CLGeocoder()
         let local: Locale = Locale(identifier: "Ko-KR") // Korea
         
@@ -98,6 +102,7 @@ extension LocationDataManagerVM: CLLocationManagerDelegate {
                 self.currentLocation = address.administrativeArea ?? ""
                 self.isLocationUpdated = true
                 UserDefaults.standard.set(self.currentLocation, forKey: "locality")
+                UserDefaults.shared.set(self.currentLocation, forKey: "locality")
             }
         }
     }

@@ -13,7 +13,26 @@ struct CurrentWeatherInformationView: View {
     let wet: String
     let dust: (String, String)
     
+    func dustBackgroundColor(_ value: String) -> Color {
+        if value == "좋음" {
+            return .blue.opacity(0.45)
+            
+        } else if value == "보통" {
+            return .green.opacity(0.45)
+            
+        } else if value == "나쁨" {
+            return .orange.opacity(0.45)
+            
+        } else if value == "매우 나쁨" {
+            return .red.opacity(0.45)
+            
+        } else {
+            return .clear
+        }
+    }
+    
     var body: some View {
+        
         HStack(alignment: .center, spacing: 10) {
             VStack(alignment: .leading, spacing: 5) {
                 HStack(alignment: .center, spacing: 10) {
@@ -65,14 +84,14 @@ struct CurrentWeatherInformationView: View {
                         .foregroundColor(Color.gray)
                         .frame(width: 16, height: 16)
                     
-                    Text("좋음")
+                    Text(dust.0)
                         .font(.system(size: 9, weight: .medium))
                         .foregroundColor(Color.white)
                         .padding(.top, 1)
                 }
                 .padding(.horizontal, 6)
                 .padding(.vertical, 3)
-                .background(Color.green.opacity(0.2))
+                .background(dustBackgroundColor(dust.0))
                 .cornerRadius(10)
                                             
                 HStack(alignment: .center, spacing: 8) {
@@ -82,14 +101,14 @@ struct CurrentWeatherInformationView: View {
                         .foregroundColor(Color.red.opacity(0.5))
                         .frame(width: 16, height: 16)
                     
-                    Text("좋음")
+                    Text(dust.1)
                         .font(.system(size: 9, weight: .medium))
                         .foregroundColor(Color.white)
                         .padding(.top, 1)
                 }
                 .padding(.horizontal, 6)
                 .padding(.vertical, 3)
-                .background(Color.green.opacity(0.2))
+                .background(dustBackgroundColor(dust.1))
                 .cornerRadius(10)
             }
         }

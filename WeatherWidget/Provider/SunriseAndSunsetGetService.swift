@@ -1,18 +1,18 @@
 //
-//  SunOrMoonRiseServiceByXML.swift
-//  MyDedicatedWeatherApp
+//  SunriseAndSunsetGetService.swift
+//  WeatherWidgetExtension
 //
-//  Created by 윤형석 on 2023/07/02.
+//  Created by 윤형석 on 2023/10/08.
 //
 
 import Foundation
 import Alamofire
 
-final class SunAndMoonRiseByXMLService: NSObject {
+final class SunriseAndSunsetGetService: NSObject {
     let queryItem: SunAndMoonriseReq
 
-    var result: SunAndMoonriseBase = Dummy.shared.SunAndMoonriseBase()
-    var tempResult: SunAndMoonriseBase = Dummy.shared.SunAndMoonriseBase()
+    var result: SunAndMoonriseBase = Dummy.SunAndMoonriseBase()
+    var tempResult: SunAndMoonriseBase = Dummy.SunAndMoonriseBase()
     var isLock: Bool = false
     var tagType: SunAndMoonriseBase.TagType = .none
     
@@ -28,7 +28,7 @@ final class SunAndMoonRiseByXMLService: NSObject {
     }
 }
 
-extension SunAndMoonRiseByXMLService: XMLParserDelegate {
+extension SunriseAndSunsetGetService: XMLParserDelegate {
     
     // XML 시작 태그 파싱 <>
     func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
@@ -82,3 +82,4 @@ extension SunAndMoonRiseByXMLService: XMLParserDelegate {
         }
     }
 }
+
