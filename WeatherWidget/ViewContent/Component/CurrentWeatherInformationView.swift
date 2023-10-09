@@ -39,7 +39,7 @@ struct CurrentWeatherInformationView: View {
                     Image("precipitation")
                         .resizable()
                         .renderingMode(.template)
-                        .foregroundColor(Color.blue.opacity(0.5))
+                        .foregroundColor(Color.blue.opacity(0.8))
                         .frame(width: 15, height: 15)
                     
                     Text(precipitation)
@@ -51,7 +51,7 @@ struct CurrentWeatherInformationView: View {
                     Image("wind")
                         .resizable()
                         .renderingMode(.template)
-                        .foregroundColor(Color.red.opacity(0.5))
+                        .foregroundColor(Color.red.opacity(0.8))
                         .frame(width: 15, height: 15)
                     
                     Text(wind)
@@ -63,7 +63,7 @@ struct CurrentWeatherInformationView: View {
                     Image("wet")
                         .resizable()
                         .renderingMode(.template)
-                        .foregroundColor(Color.blue.opacity(0.3))
+                        .foregroundColor(Color.blue.opacity(0.8))
                         .frame(width: 15, height: 15)
                     
                     Text("\(wet)%")

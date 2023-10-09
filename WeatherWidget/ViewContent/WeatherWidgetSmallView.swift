@@ -13,27 +13,22 @@ struct WeatherWidgetSmallView: View {
     
     var body: some View {
         
-        ZStack {
-            Color.init(hexCode: "#000080")
-                .opacity(0.3)
+        VStack(alignment: .leading, spacing: 10) {
+            CurrentWeatherTemperatureView(
+                location: location,
+                updatedDate: Date(),
+                weatherImage: entry.smallFamilyData.currentWeatherItem.weatherImage,
+                currentTemperature: entry.smallFamilyData.currentWeatherItem.currentTemperature,
+                minTemperature: entry.smallFamilyData.currentWeatherItem.minMaxTemperature.0,
+                maxTemperature: entry.smallFamilyData.currentWeatherItem.minMaxTemperature.1
+            )
             
-            VStack(alignment: .leading, spacing: 10) {
-                CurrentWeatherTemperatureView(
-                    location: location,
-                    updatedDate: Date(),
-                    weatherImage: entry.smallFamilyData.currentWeatherItem.weatherImage,
-                    currentTemperature: entry.smallFamilyData.currentWeatherItem.currentTemperature,
-                    minTemperature: entry.smallFamilyData.currentWeatherItem.minMaxTemperature.0,
-                    maxTemperature: entry.smallFamilyData.currentWeatherItem.minMaxTemperature.1
-                )
-                
-                CurrentWeatherInformationView(
-                    precipitation: entry.smallFamilyData.currentWeatherItem.precipitation,
-                    wind: entry.smallFamilyData.currentWeatherItem.wind,
-                    wet: entry.smallFamilyData.currentWeatherItem.wetPercent,
-                    dust: entry.smallFamilyData.currentWeatherItem.findDust
-                )
-            }
+            CurrentWeatherInformationView(
+                precipitation: entry.smallFamilyData.currentWeatherItem.precipitation,
+                wind: entry.smallFamilyData.currentWeatherItem.wind,
+                wet: entry.smallFamilyData.currentWeatherItem.wetPercent,
+                dust: entry.smallFamilyData.currentWeatherItem.findDust
+            )
         }
     }
 }

@@ -1,8 +1,8 @@
 //
-//  Extensions.swift
-//  MyDedicatedWeatherApp
+//  WidgetShareExtensions.swift
+//  WeatherWidgetExtension
 //
-//  Created by 윤형석 on 2023/09/04.
+//  Created by 윤형석 on 10/9/23.
 //
 
 import Foundation
@@ -13,5 +13,4 @@ extension UserDefaults {
         return UserDefaults(suiteName: appGroupId)!
     }
 }
-
 

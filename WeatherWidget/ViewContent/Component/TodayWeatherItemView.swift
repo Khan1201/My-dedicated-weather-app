@@ -24,11 +24,11 @@ struct TodayWeatherItemView: View {
                 .frame(width: 24, height: 24)
                 .if(rainPercent != "0") { view in
                     view
-                        .overlay(alignment: .trailing) {
+                        .overlay(alignment: .topTrailing) {
                             Text(rainPercent + "%")
-                                .font(.system(size: 8))
+                                .font(.system(size: 7, weight: .bold))
                                 .foregroundColor(Color.init(hexCode: "81CFFA"))
-                                .offset(x: 8)
+                                .offset(x: 13)
                         }
                 }
             

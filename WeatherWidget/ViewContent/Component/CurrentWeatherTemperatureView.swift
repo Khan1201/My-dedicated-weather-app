@@ -53,7 +53,7 @@ struct CurrentWeatherTemperatureView: View {
                                 .resizable()
                                 .renderingMode(.template)
                                 .frame(width: 10, height: 10)
-                                .foregroundColor(Color.blue.opacity(0.6))
+                                .foregroundColor(Color.blue.opacity(0.8))
                             
                             Text("\(minTemperature)°")
                                 .font(.system(size: 12, weight: .regular))
@@ -65,7 +65,7 @@ struct CurrentWeatherTemperatureView: View {
                                 .resizable()
                                 .renderingMode(.template)
                                 .frame(width: 10, height: 10)
-                                .foregroundColor(Color.red.opacity(0.6))
+                                .foregroundColor(Color.red.opacity(0.8))
                             
                             Text("\(maxTemperature)°")
                                 .font(.system(size: 12, weight: .regular))

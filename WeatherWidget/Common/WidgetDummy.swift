@@ -12,6 +12,7 @@ final class Dummy {
     public static func simpleEntry() -> SimpleEntry {
         .init(
             date: Date(),
+            isDayMode: true,
             smallFamilyData: SmallFamilyData.init(
                 currentWeatherItem: .init(
                     location: "서울특별시",

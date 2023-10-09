@@ -9,6 +9,7 @@ import WidgetKit
 
 struct SimpleEntry: TimelineEntry {
     var date: Date
+    var isDayMode: Bool
     var smallFamilyData: SmallFamilyData
     var mediumFamilyData: MediumFamilyData
     var largeFamilyData: LargeFamilyData

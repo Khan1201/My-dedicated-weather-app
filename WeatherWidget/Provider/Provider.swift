@@ -86,7 +86,7 @@ struct Provider: TimelineProvider {
         switch result {
             
         case .success(let result):
-            CommonUtil.shared.printSuccess(
+            Util.printSuccess(
                 funcTitle: "requestVeryShortItems()",
                 value: "\(result.item?.count ?? 0)개의 초단기 예보 데이터 get"
             )
@@ -126,7 +126,7 @@ struct Provider: TimelineProvider {
         switch result {
             
         case .success(let result):
-            CommonUtil.shared.printSuccess(
+            Util.printSuccess(
                 funcTitle: "requestShortItems()",
                 value: "\(result.item?.count ?? 0)개의 단기 예보 데이터 get"
             )
@@ -152,7 +152,7 @@ struct Provider: TimelineProvider {
                 )
             )
             
-            CommonUtil.shared.printSuccess(
+            Util.printSuccess(
                 funcTitle: "requestSunriseSunset()",
                 value: """
                 일출시간: \(parser.result.sunrise)
@@ -163,7 +163,7 @@ struct Provider: TimelineProvider {
             return (parser.result.sunrise, parser.result.sunset)
             
         } catch {
-            CommonUtil.shared.printError(
+            Util.printError(
                 funcTitle: "requestSunriseSunset()",
                 description: "일출 일물 시간 request 실패"
             )
@@ -193,7 +193,7 @@ struct Provider: TimelineProvider {
         switch result {
             
         case .success(let result):
-            CommonUtil.shared.printSuccess(
+            Util.printSuccess(
                 funcTitle: "requestRealTimeFindDustAndUltraFindDustItems()",
                 value: "\(result.items?.count ?? 0)개의 미세먼지, 초 미세먼지 데이터 get"
             )
@@ -235,26 +235,27 @@ struct Provider: TimelineProvider {
             result.smallFamilyData.currentWeatherItem.precipitation = Util.remakePrecipitationValueForToString(value: currentOneHourPrecipitation).0
             result.smallFamilyData.currentWeatherItem.weatherImage =
             Util.remakeRainStateAndSkyStateForWeatherImage(rainState: rainState, skyState: skyState, hhMM: targetTime, sunrise: sunrise, sunset: sunset)
+            result.isDayMode = Util.isDayMode(
+                targetHHmm: Date().toString(format: "HHmm"),
+                sunrise: sunrise,
+                sunset: sunset
+            )
+            print("시간은:  \(Date().toString(format: "HHmm"))")
             
-            CommonUtil.shared.printSuccess(
+            Util.printSuccess(
                 funcTitle: "applyVeryShortForecastData",
                 value: """
-                현재 온도: \(currentTemperature),
-                현재 바람: \(Util.remakeWindSpeedValueForToString(value: currentWindSpeed).0),
-                현재 습도: \(currentWetPercent),
-                현재 강수량: \(Util.remakePrecipitationValueForToString(value: currentOneHourPrecipitation).0)
-                현재 날씨 image: \(Util.remakeRainStateAndSkyStateForWeatherImage(
-                rainState: rainState,
-                skyState: skyState,
-                hhMM: targetTime,
-                sunrise: sunrise,
-                sunset: sunset)
-                )
+                현재 온도: \(result.smallFamilyData.currentWeatherItem.currentTemperature),
+                현재 바람: \(result.smallFamilyData.currentWeatherItem.wind),
+                현재 습도: \(result.smallFamilyData.currentWeatherItem.wetPercent),
+                현재 강수량: \(result.smallFamilyData.currentWeatherItem.precipitation)
+                현재 날씨 image: \(result.smallFamilyData.currentWeatherItem.weatherImage)
+                현재 dayMode: \(result.isDayMode)
                 """
             )
             
         } else {
-            CommonUtil.shared.printError(
+            Util.printError(
                 funcTitle: "applyVeryShortForecastData",
                 description: "초단기예보 데이터 세팅에 items의 55개의 데이터가 필요합니다. items의 개수가 55개를 넘지 못하므로, index 접근 불가"
             )
@@ -308,7 +309,7 @@ struct Provider: TimelineProvider {
                 setMinMaxTemperature(i: i)
                 
                 if i <= 5 {
-                    let time = CommonUtil.shared.convertAMOrPMFromHHmm(items[tempIndex].fcstTime)
+                    let time = Util.convertAMOrPMFromHHmm(items[tempIndex].fcstTime)
                     
                     let weatherImage = Util.remakeRainStateAndSkyStateForWeatherImage(
                         rainState: items[ptyIndex].fcstValue,
@@ -342,7 +343,7 @@ struct Provider: TimelineProvider {
             )
             result.mediumFamilyData.todayWeatherItems = tempResult
             
-            CommonUtil.shared.printSuccess(
+            Util.printSuccess(
                 funcTitle: "applyShortForecastData",
                 value: """
                 최저온도: \(minTemperature),
@@ -354,7 +355,7 @@ struct Provider: TimelineProvider {
             )
             
         } else {
-            CommonUtil.shared.printError(
+            Util.printError(
                 funcTitle: "applyShortForecastData()",
                 description: "현재 날씨에서 +1 ~ 24시간까지의 데이터가 존재하지 않습니다."
             )
@@ -366,7 +367,7 @@ struct Provider: TimelineProvider {
         to result: inout SimpleEntry
     ) {
         guard let item = items.first else {
-            CommonUtil.shared.printError(
+            Util.printError(
                 funcTitle: "applyRealTimeFindDustAndUltraFindDustItems()",
                 description: "items가 존재하지 않습니다."
             )
@@ -377,7 +378,7 @@ struct Provider: TimelineProvider {
         let ultraFindDust: String = Util.remakeUltraFindDustValue(value: item.pm25Value)
         result.smallFamilyData.currentWeatherItem.findDust = (findDust, ultraFindDust)
         
-        CommonUtil.shared.printSuccess(
+        Util.printSuccess(
             funcTitle: "applyRealTimeFindDustAndUltraFindDustItems()",
             value: """
             미세먼지: \(findDust),
