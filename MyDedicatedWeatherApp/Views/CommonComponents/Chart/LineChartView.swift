@@ -141,7 +141,7 @@ struct LineChartView: View {
                             .fontSpoqaHanSansNeo(size: 10, weight: .bold)
                             .foregroundColor(Int(weeklyChartInformation.maxTemps[i]) >= 30 ? Color.red.opacity(0.7) : Color.white.opacity(0.7))
                             .padding(.leading, i == weeklyChartInformation.maxTemps.count - 1 ? xSteps[i] - 17 : xSteps[i] - 5)
-                            .padding(.bottom, convertedMaxValues[i] + 8)
+                            .padding(.bottom, convertedMaxValues[i])
                     }
                 }
             }
@@ -180,7 +180,7 @@ struct LineChartView: View {
                             .fontSpoqaHanSansNeo(size: 10, weight: .bold)
                             .foregroundColor(Color.white.opacity(0.7))
                             .padding(.leading, i == weeklyChartInformation.minTemps.count - 1 ? xSteps[i] - 17 : xSteps[i] - 5)
-                            .padding(.bottom, convertedMinValues[i] + 5)
+                            .padding(.bottom, convertedMinValues[i] + 7)
                     }
                 }
             }
