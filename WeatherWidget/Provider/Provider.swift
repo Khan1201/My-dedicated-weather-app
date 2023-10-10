@@ -26,7 +26,7 @@ struct Provider: TimelineProvider {
         
         Task {
             var entries: [SimpleEntry] = []
-            let reloadDate = Calendar.current.date(byAdding: .hour, value: 1, to: Date())!
+            let reloadDate = Calendar.current.date(byAdding: .minute, value: 30, to: Date())!
             
             let result = await performWidgetData()
             entries.append(result)
