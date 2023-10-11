@@ -8,6 +8,10 @@
 import Foundation
 import SwiftUI
 
+enum MidtermReqType {
+    case temperature, skystate, news
+}
+
 //struct Weather {
 //    
 //    struct DescriptionAndSkyTypeAndImageString {
