@@ -24,7 +24,7 @@ struct WeatherWidgetEntryView : View {
                     WeatherWidgetMediumView(entry: entry, location: location)
                     
                 } else if family == .systemLarge {
-                    WeatherWidgetLargeView()
+                    WeatherWidgetLargeView(entry: entry, location: location)
                     
                 } else {
                     EmptyView()
@@ -52,7 +52,7 @@ struct WeatherWidgetEntryView : View {
                         WeatherWidgetMediumView(entry: entry, location: location)
                         
                     } else if family == .systemLarge {
-                        WeatherWidgetLargeView()
+                        WeatherWidgetLargeView(entry: entry, location: location)
                         
                     } else {
                         EmptyView()

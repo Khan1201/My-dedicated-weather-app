@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct WeatherWidgetLargeView: View {
+    let entry: SimpleEntry
+    let location: String
+    
     var body: some View {
         
         VStack(alignment: .leading, spacing: 0) {
@@ -15,69 +18,37 @@ struct WeatherWidgetLargeView: View {
             HStack(alignment: .center, spacing: 0) {
                 
                 CurrentWeatherTemperatureView(
-                    location: "서울특별시",
+                    location: location,
                     updatedDate: Date(),
-                    weatherImage: "weather_rain",
-                    currentTemperature: "22",
-                    minTemperature: "13",
-                    maxTemperature: "26"
+                    weatherImage: entry.smallFamilyData.currentWeatherItem.weatherImage,
+                    currentTemperature: entry.smallFamilyData.currentWeatherItem.currentTemperature,
+                    minTemperature: entry.smallFamilyData.currentWeatherItem.minMaxTemperature.0,
+                    maxTemperature: entry.smallFamilyData.currentWeatherItem.minMaxTemperature.1
                 )
+                
                 Rectangle()
                     .frame(width: 1, height: 55)
                     .foregroundColor(Color.white.opacity(0.7))
                     .padding(.horizontal, 15)
                 
                 CurrentWeatherInformationView(
-                    precipitation: "비 없음",
-                    wind: "약한 바람",
-                    wet: "50",
-                    dust: ("나쁨", "보통")
+                    precipitation: entry.smallFamilyData.currentWeatherItem.precipitation,
+                    wind: entry.smallFamilyData.currentWeatherItem.wind,
+                    wet: entry.smallFamilyData.currentWeatherItem.wetPercent,
+                    dust: entry.smallFamilyData.currentWeatherItem.findDust
                 )
             }
             .padding(.leading, 10)
             
             HStack(alignment: .center, spacing: 25) {
-                TodayWeatherItemView(
-                    time: "11PM",
-                    image: "weather_sunny_night",
-                    temperature: "23",
-                    rainPercent: "20"
-                )
-                
-                TodayWeatherItemView(
-                    time: "11PM",
-                    image: "weather_sunny_night",
-                    temperature: "23",
-                    rainPercent: "20"
-                )
-                
-                TodayWeatherItemView(
-                    time: "11PM",
-                    image: "weather_sunny_night",
-                    temperature: "23",
-                    rainPercent: "20"
-                )
-                
-                TodayWeatherItemView(
-                    time: "11PM",
-                    image: "weather_sunny_night",
-                    temperature: "23",
-                    rainPercent: "20"
-                )
-                
-                TodayWeatherItemView(
-                    time: "11PM",
-                    image: "weather_sunny_night",
-                    temperature: "23",
-                    rainPercent: "20"
-                )
-                
-                TodayWeatherItemView(
-                    time: "11PM",
-                    image: "weather_sunny_night",
-                    temperature: "23",
-                    rainPercent: "20"
-                )
+                ForEach(entry.mediumFamilyData.todayWeatherItems, id: \.time) { item in
+                    TodayWeatherItemView(
+                        time: item.time,
+                        image: item.image,
+                        temperature: item.temperature,
+                        rainPercent: item.precipitation
+                    )
+                }
             }
             .frame(maxWidth: .infinity, alignment: .center)
             .padding(.top, 14)
@@ -89,50 +60,16 @@ struct WeatherWidgetLargeView: View {
                 .padding(.horizontal, 14)
             
             VStack(alignment: .leading, spacing: 10) {
-                WeeklyWeatherItemView(
-                    weekDay: "월요일",
-                    dateString: "10/6",
-                    image: "weather_rain",
-                    precipitation: "20",
-                    minTemperature: "13",
-                    maxTemperature: "20"
-                )
                 
-                WeeklyWeatherItemView(
-                    weekDay: "월요일",
-                    dateString: "10/6",
-                    image: "weather_rain",
-                    precipitation: "20",
-                    minTemperature: "13",
-                    maxTemperature: "20"
-                )
-                
-                WeeklyWeatherItemView(
-                    weekDay: "월요일",
-                    dateString: "10/6",
-                    image: "weather_rain",
-                    precipitation: "20",
-                    minTemperature: "13",
-                    maxTemperature: "20"
-                )
-                
-                WeeklyWeatherItemView(
-                    weekDay: "월요일",
-                    dateString: "10/6",
-                    image: "weather_rain",
-                    precipitation: "20",
-                    minTemperature: "13",
-                    maxTemperature: "20"
-                )
-                
-                WeeklyWeatherItemView(
-                    weekDay: "월요일",
-                    dateString: "10/6",
-                    image: "weather_rain",
-                    precipitation: "20",
-                    minTemperature: "13",
-                    maxTemperature: "20"
-                )
+                ForEach(entry.largeFamilyData.weeklyWeatherItems, id: \.dateString) { item in
+                    WeeklyWeatherItemView(
+                        weekDay: item.weekDay,
+                        dateString: item.dateString,
+                        image: item.image,
+                        precipitation: item.rainPercent,
+                        minTemperature: item.minMaxTemperature.0,
+                        maxTemperature: item.minMaxTemperature.1)
+                }
             }
             .padding(.top, 5)
         }
@@ -142,6 +79,6 @@ struct WeatherWidgetLargeView: View {
 
 struct WeatherWidgetLargeView_Previews: PreviewProvider {
     static var previews: some View {
-        WeatherWidgetLargeView()
+        WeatherWidgetLargeView(entry: Dummy.simpleEntry(), location: "")
     }
 }
