@@ -35,11 +35,14 @@ struct WeeklyWeatherItemView: View {
             Image(image)
                 .resizable()
                 .frame(width: 23, height: 23)
-                .overlay(alignment: .topTrailing) {
-                    Text("\(precipitation)%")
-                        .font(.system(size: 7, weight: .bold))
-                        .foregroundColor(Color.init(hexCode: "81CFFA"))
-                        .offset(x: 15)
+                .if(precipitation != "0") { view in
+                    view
+                        .overlay(alignment: .topTrailing) {
+                            Text("\(precipitation)%")
+                                .font(.system(size: 7, weight: .bold))
+                                .foregroundColor(Color.init(hexCode: "81CFFA"))
+                                .offset(x: 15)
+                        }
                 }
             
             Spacer()
