@@ -362,6 +362,9 @@ extension CurrentWeatherVM {
                 self.subLocalityByKakaoAddress = result.documents[0].address.subLocality
                 self.isKakaoAddressLoadCompleted = true
                 UserDefaults.standard.set(self.subLocalityByKakaoAddress, forKey: "subLocality")
+                
+                /// For Widget
+                UserDefaults.shared.set(self.subLocalityByKakaoAddress, forKey: "subLocality")
 
                 let durationTime = CFAbsoluteTimeGetCurrent() - startTime
                 print("카카오 주소 req 소요시간: \(durationTime)")
