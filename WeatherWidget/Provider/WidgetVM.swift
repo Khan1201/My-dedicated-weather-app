@@ -68,6 +68,10 @@ extension WidgetVM {
             return result.item ?? []
             
         case .failure(_):
+            Util.printError(
+                funcTitle: "requestVeryShortItems()",
+                description: "초단기예보 request 실패"
+            )
             return []
         }
     }
@@ -108,6 +112,10 @@ extension WidgetVM {
             return result.item ?? []
             
         case .failure(_):
+            Util.printError(
+                funcTitle: "requestShortForecastItems()",
+                description: "단기예보 request 실패"
+            )
             return []
         }
     }
@@ -175,6 +183,10 @@ extension WidgetVM {
             return result.items ?? []
             
         case .failure(_):
+            Util.printError(
+                funcTitle: "requestRealTimeFindDustAndUltraFindDustItems()",
+                description: "미세먼지 request 실패"
+            )
             return []
         }
     }
@@ -214,6 +226,10 @@ extension WidgetVM {
             return result.item ?? []
             
         case .failure(_):
+            Util.printError(
+                funcTitle: "requestMidTermForecastTempItems()",
+                description: "중기예보 온도 request 실패"
+            )
             return []
         }
     }
@@ -250,6 +266,10 @@ extension WidgetVM {
             return result.item ?? []
             
         case .failure(_):
+            Util.printError(
+                funcTitle: "requestMidTermForecastSkyStateItems()",
+                description: "중기예보 하늘상태 request 실패"
+            )
             return []
         }
     }
