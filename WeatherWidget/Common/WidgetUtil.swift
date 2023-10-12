@@ -223,6 +223,102 @@ struct Util {
         }
     }
     
+    /// Return base time (초단기예보 requst parameter에 필요)
+    public static func veryShortTermReqBaseTime() -> String {
+        let currentDate: Date = Date()
+        let currentHour: String = currentDate.toString(format: "HH")
+        let currentMinute: String = currentDate.toString(format: "mm")
+        let currentMinuteToInt: Int = Int(currentMinute) ?? 0
+        
+        if currentMinuteToInt < 30 {
+            if currentHour == "00" {
+                return "2330"
+                
+            } else {
+                let currentHourToInt = Int(currentHour) ?? 0
+                let currentHourMinusOneHour = currentHourToInt - 1
+                var toString = String(currentHourMinusOneHour)
+                
+                if toString.count == 1 {
+                    toString.insert("0", at: toString.startIndex)
+                }
+                
+                return toString + "30"
+            }
+            
+        } else { // currentMinute >= 30
+            return currentHour + "30"
+        }
+    }
+    
+    /// Return base date (초단기예보 requst parameter에 필요)
+    public static func veryShortTermReqBaseDate(baseTime: String) -> String {
+        return Date().toString(
+            byAdding: baseTime == "2330" ? -1 : 0,
+            format: "yyyyMMdd"
+        )
+    }
+    
+    /// Return base time (단기예보 requst parameter에 필요)
+    public static func shortTermReqBaseTime() -> String {
+        let dateFormatterHourMinute = DateFormatter()
+        dateFormatterHourMinute.dateFormat = "HHmm"
+        
+        let todayDate: Date = Date()
+        let currentHourMinute: Int = Int(dateFormatterHourMinute.string(from: todayDate)) ?? 0
+        
+        switch currentHourMinute {
+            
+        case 0000...0159:
+            return "2300"
+            
+        case 0200...0459:
+            return "0200"
+            
+        case 0500...0759:
+            return "0500"
+            
+        case 0800...1059:
+            return "0800"
+            
+        case 1100...1359:
+            return "1100"
+            
+        case 1400...1659:
+            return "1400"
+            
+        case 1700...1959:
+            return "1700"
+            
+        case 2000...2259:
+            return "2000"
+            
+        case 2300...2359:
+            return "2300"
+            
+        default:
+            return "알 수 없음"
+        }
+    }
+    
+    /// Return base date (단기예보 requst parameter에 필요)
+    public static func shortTermReqBaseDate() -> String {
+        let currentDate: Date = Date()
+        let currentYearMonthDay = currentDate.toString(format: "yyyyMMdd")
+        let currentHour = currentDate.toString(format: "HH")
+        
+        let currentYearMonthDayToInt = Int(currentYearMonthDay) ?? 0
+        let currentHourToInt = Int(currentHour) ?? 0
+        
+        switch currentHourToInt {
+            
+        case 00...02:
+            return String(currentYearMonthDayToInt - 1)
+        default:
+            return currentYearMonthDay
+        }
+    }
+    
     /// Return 지역정보 코드
     /// RegId: 기온, 육상예보 조회
     /// StnId: 전망 조회 (뉴스)
