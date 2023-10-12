@@ -1,5 +1,5 @@
 //
-//  WidgetVM.swift
+//  WeatherWidgetVM.swift
 //  WeatherWidgetExtension
 //
 //  Created by 윤형석 on 10/12/23.
@@ -8,9 +8,9 @@
 import Foundation
 import Alamofire
 
-struct WidgetVM {
+struct WeatherWidgetVM {
     
-    func performWidgetData() async -> SimpleEntry {
+    func performWidgeEntrySetting() async -> SimpleEntry {
         var result: SimpleEntry = Dummy.simpleEntry()
         let veryShortForecastItems = await requestVeryShortItems()
         let shortForecastItems = await requestShortForecastItems()
@@ -30,7 +30,7 @@ struct WidgetVM {
 
 // MARK: - Reqeust funcs..
 
-extension WidgetVM {
+extension WeatherWidgetVM {
     
     /// Return 초단기예보 items
     func requestVeryShortItems() async -> [VeryShortOrShortTermForecastBase<VeryShortTermForecastCategory>] {
@@ -277,7 +277,7 @@ extension WidgetVM {
 
 // MARK: - Apply funcs..
 
-extension WidgetVM {
+extension WeatherWidgetVM {
     
     func applyVeryShortForecastData(
         _ items: [VeryShortOrShortTermForecastBase<VeryShortTermForecastCategory>],
@@ -470,7 +470,7 @@ extension WidgetVM {
 
 // MARK: - Return funcs..
 
-extension WidgetVM {
+extension WeatherWidgetVM {
     
     /// Return +3 ~ 5일의 weekly weather items
     func weeklyWeatherItemsByThreeToFiveDays(

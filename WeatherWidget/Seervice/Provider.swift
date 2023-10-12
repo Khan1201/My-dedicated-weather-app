@@ -10,7 +10,7 @@ import Alamofire
 
 struct Provider: TimelineProvider {
     
-    let widgetVM: WidgetVM = WidgetVM()
+    let widgetVM: WeatherWidgetVM = WeatherWidgetVM()
     
     func placeholder(in context: Context) -> SimpleEntry {
         Dummy.simpleEntry()
@@ -18,7 +18,7 @@ struct Provider: TimelineProvider {
     
     func getSnapshot(in context: Context, completion: @escaping (SimpleEntry) -> ()) {
         Task {
-            let result = await widgetVM.performWidgetData()
+            let result = await widgetVM.performWidgeEntrySetting()
             completion(result)
         }
         
@@ -29,7 +29,7 @@ struct Provider: TimelineProvider {
             var entries: [SimpleEntry] = []
             let reloadDate = Calendar.current.date(byAdding: .minute, value: 30, to: Date())!
             
-            let result = await widgetVM.performWidgetData()
+            let result = await widgetVM.performWidgeEntrySetting()
             entries.append(result)
             
             let timeline = Timeline(entries: entries, policy: .after(reloadDate))

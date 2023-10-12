@@ -1,5 +1,5 @@
 //
-//  Entry.swift
+//  SimpleEntry.swift
 //  MyDedicatedWeatherApp
 //
 //  Created by 윤형석 on 2023/08/31.
