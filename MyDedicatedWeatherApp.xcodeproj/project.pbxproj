@@ -15,11 +15,8 @@
 		BC0857C52ACFC60F00D0AE33 /* WeatherWidgetMediumView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC0857C42ACFC60F00D0AE33 /* WeatherWidgetMediumView.swift */; };
 		BC0857C72ACFC61B00D0AE33 /* WeatherWidgetLargeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC0857C62ACFC61B00D0AE33 /* WeatherWidgetLargeView.swift */; };
 		BC0857C92ACFD1C500D0AE33 /* WidgetUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC0857C82ACFD1C500D0AE33 /* WidgetUtil.swift */; };
-		BC0857CA2ACFEC5000D0AE33 /* ShortTermForecastUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCBA400F2A7C01B400B6EFD2 /* ShortTermForecastUtil.swift */; };
-		BC15D4462AA60E47006DC537 /* VeryShortTermForecastUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCBA40112A7C01C300B6EFD2 /* VeryShortTermForecastUtil.swift */; };
 		BC15D44A2AA60EB5006DC537 /* VeryShortOrShortTermForecastBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC85A94D2A02570E00C4CC48 /* VeryShortOrShortTermForecastBase.swift */; };
 		BC15D44B2AA60EC1006DC537 /* Env.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30F9429FE39BC0078D0B1 /* Env.swift */; };
-		BC15D44D2AA60F1A006DC537 /* ErrorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30F9F29FE6D690078D0B1 /* ErrorType.swift */; };
 		BC15D44E2AA60FAC006DC537 /* Route.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30F9029FE265B0078D0B1 /* Route.swift */; };
 		BC15D44F2AA61052006DC537 /* OpenDataRes.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30F9929FE49FE0078D0B1 /* OpenDataRes.swift */; };
 		BC15D4502AA61165006DC537 /* MidTermForecastTemperatureBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC2419B02AA4A79D0035EDBE /* MidTermForecastTemperatureBase.swift */; };
@@ -1107,21 +1104,18 @@
 				BCFB3EFD2A9F962B0043C26B /* SimpleEntry.swift in Sources */,
 				BCDBC6282AB34D76000D7F43 /* WidgetDummy.swift in Sources */,
 				BC1E9E312AD2898200ECE71C /* RealTimeFindDustForecastBase.swift in Sources */,
-				BC15D44D2AA60F1A006DC537 /* ErrorType.swift in Sources */,
 				BCFA10F22AB0A60300D1BDE3 /* WidgetTypes.swift in Sources */,
 				BC0857C72ACFC61B00D0AE33 /* WeatherWidgetLargeView.swift in Sources */,
 				BC15D44A2AA60EB5006DC537 /* VeryShortOrShortTermForecastBase.swift in Sources */,
 				BC3145242AD3CF4500439CBA /* WidgetExtensions.swift in Sources */,
 				BC15D44E2AA60FAC006DC537 /* Route.swift in Sources */,
 				BC0857BB2ACFB21E00D0AE33 /* TodayWeatherItemView.swift in Sources */,
-				BC15D4462AA60E47006DC537 /* VeryShortTermForecastUtil.swift in Sources */,
 				BC0857C92ACFD1C500D0AE33 /* WidgetUtil.swift in Sources */,
 				BCFB3EEB2A9F90860043C26B /* WeatherWidget.swift in Sources */,
 				BC9A9DCF2AD7E96000603D0C /* WeatherWidgetVM.swift in Sources */,
 				BC15D4512AA6116A006DC537 /* MidTermForecastSkyStateBase.swift in Sources */,
 				BC15D44F2AA61052006DC537 /* OpenDataRes.swift in Sources */,
 				BC3145262AD3D0F800439CBA /* WidgetShareExtensions.swift in Sources */,
-				BC0857CA2ACFEC5000D0AE33 /* ShortTermForecastUtil.swift in Sources */,
 				BCFA10F02AB09D7C00D1BDE3 /* GetSize.swift in Sources */,
 				BC0857C12ACFB68600D0AE33 /* CurrentWeatherInformationView.swift in Sources */,
 				BC1E9E372AD293B200ECE71C /* SunriseAndSunsetGetService.swift in Sources */,
