@@ -12,7 +12,7 @@ import UIKit
 final class LocationDataManagerVM: NSObject, ObservableObject {
     
     private var locationManager = CLLocationManager()
-    @Published var currentLocation: String = "서울특별시" // 서울특별시, 대구광역시
+    @Published var currentLocation: String = "" // 서울특별시, 대구광역시
     @Published var locationPermissonType: PermissionType = .notAllow
     
     var longitudeAndLatitude: (String, String) {
