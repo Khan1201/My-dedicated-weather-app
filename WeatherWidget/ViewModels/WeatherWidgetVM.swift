@@ -34,9 +34,8 @@ extension WeatherWidgetVM {
     
     /// Return 초단기예보 items
     func requestVeryShortItems() async -> [VeryShortOrShortTermForecastBase<VeryShortTermForecastCategory>] {
-        let veryShortTermForecastUtil = VeryShortTermForecastUtil()
-        let baseTime = veryShortTermForecastUtil.requestBaseTime()
-        let baseDate = veryShortTermForecastUtil.requestBaseDate(baseTime: baseTime)
+        let baseTime = Util.veryShortTermReqBaseTime()
+        let baseDate = Util.veryShortTermReqBaseDate(baseTime: baseTime)
         let x = UserDefaults.shared.string(forKey: "x") ?? ""
         let y = UserDefaults.shared.string(forKey: "y") ?? ""
         
@@ -78,10 +77,8 @@ extension WeatherWidgetVM {
     
     /// Return 단기예보 items
     func requestShortForecastItems() async -> [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>] {
-        
-        let shortTermForecastUtil: ShortTermForecastUtil = ShortTermForecastUtil()
-        let baseDate = shortTermForecastUtil.requestBaseDate()
-        let baseTime = shortTermForecastUtil.requestBaseTime()
+        let baseDate = Util.shortTermReqBaseDate()
+        let baseTime = Util.shortTermReqBaseTime()
         let x = UserDefaults.shared.string(forKey: "x") ?? ""
         let y = UserDefaults.shared.string(forKey: "y") ?? ""
         
