@@ -170,8 +170,8 @@ extension CurrentWeatherVM {
             serviceKey: Env.shared.openDataApiResponseKey,
             numOfRows: "300",
             baseDate: shortTermForecastUtil.requestBaseDate(),
-            baseTime: baseTime != nil ? baseTime! : shortTermForecastUtil.requestBaseTime(),
             /// baseTime != nil -> 앱 구동 시 호출이 아닌, 수동 호출
+            baseTime: baseTime != nil ? baseTime! : shortTermForecastUtil.requestBaseTime(),
             nx: String(xy.x),
             ny: String(xy.y)
         )
@@ -485,14 +485,17 @@ extension CurrentWeatherVM {
     func setTodayWeatherInformations(items: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>]) {
         todayWeatherInformations = []
         
-        var tempIndex = 0
-        var skyIndex = 5
-        var ptyIndex = 6
-        var popIndex = 7
+        let skipValue = shortTermForecastUtil.todayWeatherIndexSkipValue()
+        
+        var tempIndex = 0 + skipValue
+        var skyIndex = 5 + skipValue
+        var ptyIndex = 6 + skipValue
+        var popIndex = 7 + skipValue
         var step = 12
+        let loopCount = shortTermForecastUtil.todayWeatherLoopCount()
         
         // 각 index 해당하는 값(시간에 해당하는 값) append
-        for _ in 0...23 {
+        for _ in 0..<loopCount {
             
             // 1시간 별 데이터 중 TMX(최고온도), TMN(최저온도) 가 있는지
             // 존재하면 1시간 별 데이터 기존 12개 -> 13이 됨
@@ -500,7 +503,7 @@ extension CurrentWeatherVM {
             items[tempIndex + 12].category == .TMN
             
             step = isExistTmxOrTmn ? 13 : 12
-            
+
             let weatherImage: Weather.DescriptionAndSkyTypeAndImageString = commonForecastUtil.veryShortOrShortTermForecastWeatherDescriptionAndSkyTypeAndImageString(
                 ptyValue: items[ptyIndex].fcstValue,
                 skyValue: items[skyIndex].fcstValue,
