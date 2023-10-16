@@ -41,7 +41,7 @@ struct WeeklyWeatherView: View {
                                 .frame(maxWidth: .infinity, alignment: .center)
                                 .padding(.leading, 30)
                                 .padding(.top, 16)
-                                .padding(.bottom, 60)
+                                .padding(.bottom, 70)
                                 .opacity(graphOpacity)
                                 .background {
                                     Color.black.opacity(0.2)
