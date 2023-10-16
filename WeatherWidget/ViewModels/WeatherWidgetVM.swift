@@ -346,14 +346,17 @@ extension WeatherWidgetVM {
             }
         }
         
-        var tempIndex = 0
-        var skyIndex = 5
-        var ptyIndex = 6
-        var popIndex = 7
+        
+        let skipValue = Util.todayWeatherIndexSkipValue()
+
+        var tempIndex = 0 + skipValue
+        var skyIndex = 5 + skipValue
+        var ptyIndex = 6 + skipValue
+        var popIndex = 7 + skipValue
         
         var step = 12
-        let loopCount = 24
-        
+        let loopCount = Util.todayWeatherLoopCount()
+
         var tempResult: [MediumFamilyData.TodayWeatherItem] = []
         var minTemperature: Int = 0
         var maxTemperature: Int = 0
