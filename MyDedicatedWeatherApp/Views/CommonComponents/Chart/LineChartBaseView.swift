@@ -58,7 +58,7 @@ struct LineChartBaseView: View {
                     }
                 }
                 .padding(.horizontal, -5)
-                .offset(y: xTextSize.height + 14)
+                .offset(y: xTextSize.height + 24)
             }
             // X축 날짜
             .overlay(alignment: .bottom) {
@@ -74,7 +74,7 @@ struct LineChartBaseView: View {
                     }
                 }
                 .padding(.horizontal, -10)
-                .offset(y: (xTextSize.height * 2) + 14)
+                .offset(y: (xTextSize.height * 2) + 24)
             }
             // y축 기온
             .overlay(alignment: .topLeading) {
