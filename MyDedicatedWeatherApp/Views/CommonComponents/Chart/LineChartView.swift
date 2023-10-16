@@ -22,7 +22,7 @@ struct LineChartView: View {
     
     var body: some View {
         let width: CGFloat = UIScreen.screenWidth - 80
-        let height: CGFloat = width * 1.0333
+        let height: CGFloat = width * 1.1
         let circleSize: CGSize = CGSize(width: 6, height: 6)
         let rangeMin: CGFloat = CGFloat(weeklyChartInformation.yList.min() ?? 0)
         let rangeMax: CGFloat = CGFloat(weeklyChartInformation.yList.max() ?? 0)
@@ -142,7 +142,7 @@ struct LineChartView: View {
                             .fontSpoqaHanSansNeo(size: 10, weight: .bold)
                             .foregroundColor(Int(weeklyChartInformation.maxTemps[i]) >= 30 ? Color.red.opacity(0.7) : Color.white.opacity(0.7))
                             .padding(.leading, i == weeklyChartInformation.maxTemps.count - 1 ? xSteps[i] - 17 : xSteps[i] - 5)
-                            .padding(.bottom, convertedMaxValues[i])
+                            .padding(.bottom, convertedMaxValues[i] + 3)
                     }
                 }
             }
@@ -170,6 +170,9 @@ struct LineChartView: View {
                             .frame(width: circleSize.width, height: circleSize.height)
                             .padding(.leading, xSteps[i] - (circleSize.width / 2))
                             .padding(.bottom, convertedMinValues[i] - (circleSize.height / 2))
+                            .onAppear {
+                                print("\(i): \(convertedMinValues[i] - (circleSize.height / 2))")
+                            }
                     }
                 }
             }
@@ -181,7 +184,7 @@ struct LineChartView: View {
                             .fontSpoqaHanSansNeo(size: 10, weight: .bold)
                             .foregroundColor(Color.white.opacity(0.7))
                             .padding(.leading, i == weeklyChartInformation.minTemps.count - 1 ? xSteps[i] - 17 : xSteps[i] - 5)
-                            .padding(.bottom, convertedMinValues[i] + 7)
+                            .padding(.bottom, convertedMinValues[i] + 3)
                     }
                 }
             }
@@ -217,7 +220,7 @@ struct LineChartView: View {
                         .padding(.leading, i == weeklyChartInformation.imageAndRainPercents.count - 1 ?
                                  xSteps[i] - 17 : xSteps[i] - (imageWidth / 2)
                         )
-                        .padding(.bottom, convertedMinValues[i] + ((convertedMaxValues[i] - convertedMinValues[i]) / 2))
+                        .padding(.bottom, convertedMinValues[i] + ((convertedMaxValues[i] - convertedMinValues[i]) / 2) - (imageWidth / 2))
                     }
                 }
             }
