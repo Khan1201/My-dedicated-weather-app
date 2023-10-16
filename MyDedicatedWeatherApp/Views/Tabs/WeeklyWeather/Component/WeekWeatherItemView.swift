@@ -12,8 +12,10 @@ struct WeekWeatherItemView: View {
     let day: String
     @State var recWidth: CGFloat = 0
     
+    @State private var twoDigitTempSize: CGSize = CGSize()
+
     var body: some View {
-        
+
         HStack(alignment: .center, spacing: 0) {
             Text(day)
                 .fontSpoqaHanSansNeo(size: 16, weight: .medium)
@@ -36,6 +38,7 @@ struct WeekWeatherItemView: View {
             Text("\(item.minTemperature)°")
                 .fontSpoqaHanSansNeo(size: 18, weight: .bold)
                 .foregroundColor(Color.white.opacity(0.5))
+                .frame(maxWidth: twoDigitTempSize.width)
                 .padding(.leading, 12)
                         
             VStack(alignment: .leading, spacing: 0) {
@@ -49,8 +52,16 @@ struct WeekWeatherItemView: View {
             Text("\(item.maxTemperature)°")
                 .fontSpoqaHanSansNeo(size: 18, weight: .bold)
                 .foregroundColor(Color.white)
+                .frame(maxWidth: twoDigitTempSize.width)
                 .padding(.leading, 12)
             
+        }
+        /// 2자리수 온도  width get 위해
+        .overlay {
+            Text("00°")
+                .fontSpoqaHanSansNeo(size: 18, weight: .bold)
+                .getSize(size: $twoDigitTempSize)
+                .opacity(0)
         }
         .frame(maxWidth: UIScreen.screenWidth - 70)
         .padding(.horizontal, 14)
