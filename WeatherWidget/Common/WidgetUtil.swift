@@ -676,4 +676,68 @@ struct Util {
             }
         }
     }
+    
+    /// Return 오늘 날씨 조회 인덱스 스킵 값
+    /// baseTime: 02:00이고 현재 time: 03:00 일 때, 04:00 ~ 부터 set 위해 skip 지정
+    public static func todayWeatherIndexSkipValue() -> Int {
+        let currentHH: Int = Date().toString(format: "HH").toInt
+        let allBaseTimeHHs: [Int] = [02, 05, 08, 11, 14, 17, 20, 23]
+        
+        var result: Int = 0
+        
+        allBaseTimeHHs.forEach {
+           
+            // 현재 시각이 01이면, 23 + 1 = 24가 아닌 01로 나와야 하므로
+            if $0 == 23 {
+                if $0 + 1 == 24 && currentHH == 0 {
+                    result += 12
+
+                } else if $0 + 2 == 25 && currentHH == 1 {
+                    result += 24
+                }
+                
+            } else {
+                if $0 + 1 == currentHH {
+                    result += 12
+
+                } else if $0 + 2 == currentHH {
+                    result += 24
+                }
+            }
+        }
+        
+        return result
+    }
+    
+    /// Return 오늘 날씨 조회 loop 횟수
+    /// baseTime: 02:00이고 현재 time: 03:00 일 때, 04:00 ~ 부터 set 위해 기존 24에서 -
+    public static func todayWeatherLoopCount() -> Int {
+        let currentHH: Int = Date().toString(format: "HH").toInt
+        let allBaseTimeHHs: [Int] = [02, 05, 08, 11, 14, 17, 20, 23]
+        
+        var result: Int = 24
+        
+        allBaseTimeHHs.forEach {
+            
+            // 현재 시각이 01이면, 23 + 1 = 24가 아닌 01로 나와야 하므로
+            if $0 == 23 {
+                if $0 + 1 == 24 && currentHH == 0 {
+                    result = result - 1
+                    
+                } else if $0 + 2 == 25 && currentHH == 1 {
+                    result = result - 2
+                }
+                
+            } else {
+                if $0 + 1 == currentHH {
+                    result = result - 1
+                    
+                } else if $0 + 2 == currentHH {
+                    result = result - 2
+                }
+            }
+        }
+        
+        return result
+    }
 }
