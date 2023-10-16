@@ -46,7 +46,8 @@ struct LineChartView: View {
                     return 0
                     
                 } else {
-                    return (temp - rangeMin) * (CGFloat(height) - 0) / (rangeMax - rangeMin) + 0
+                    let result = (temp - rangeMin) * (CGFloat(height) - 0) / (rangeMax - rangeMin) + 0
+                    return result < 0 ? 0 : result
                 }
             }
         }
