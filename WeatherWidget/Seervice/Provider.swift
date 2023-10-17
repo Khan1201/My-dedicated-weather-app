@@ -27,7 +27,7 @@ struct Provider: TimelineProvider {
     func getTimeline(in context: Context, completion: @escaping (Timeline<SimpleEntry>) -> ()) {
         Task {
             var entries: [SimpleEntry] = []
-            let reloadDate = Calendar.current.date(byAdding: .minute, value: 30, to: Date())!
+            let reloadDate = Calendar.current.date(byAdding: .minute, value: 10, to: Date())!
             
             let result = await widgetVM.performWidgeEntrySetting()
             entries.append(result)
