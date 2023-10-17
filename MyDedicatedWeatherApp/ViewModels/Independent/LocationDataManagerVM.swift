@@ -71,12 +71,10 @@ extension LocationDataManagerVM: CLLocationManagerDelegate {
         case .authorizedAlways, .authorizedWhenInUse:
             manager.startUpdatingLocation()
             locationPermissonType = .allow
-        case .restricted:
-            ()
-        case .denied:
-            ()
-        case .notDetermined:
+            
+        case .restricted, .denied, .notDetermined:
             manager.requestWhenInUseAuthorization()
+            
         default:
             ()
         }
