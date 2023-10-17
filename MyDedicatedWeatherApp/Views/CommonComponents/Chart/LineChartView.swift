@@ -170,9 +170,6 @@ struct LineChartView: View {
                             .frame(width: circleSize.width, height: circleSize.height)
                             .padding(.leading, xSteps[i] - (circleSize.width / 2))
                             .padding(.bottom, convertedMinValues[i] - (circleSize.height / 2))
-                            .onAppear {
-                                print("\(i): \(convertedMinValues[i] - (circleSize.height / 2))")
-                            }
                     }
                 }
             }
@@ -220,7 +217,7 @@ struct LineChartView: View {
                         .padding(.leading, i == weeklyChartInformation.imageAndRainPercents.count - 1 ?
                                  xSteps[i] - 17 : xSteps[i] - (imageWidth / 2)
                         )
-                        .padding(.bottom, convertedMinValues[i] + ((convertedMaxValues[i] - convertedMinValues[i]) / 2) - (imageWidth / 2))
+                        .padding(.bottom, convertedMinValues[i] + ((convertedMaxValues[i] - convertedMinValues[i]) / 2) - imageWidth)
                     }
                 }
             }
