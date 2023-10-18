@@ -9,6 +9,7 @@ import SwiftUI
 import SwiftUIPager
 
 struct CurrentWeatherView: View {
+    @Binding var disableTabBarTouch: Bool
     @StateObject var viewModel: CurrentWeatherVM = CurrentWeatherVM()
     @StateObject var locationDataManagerVM = LocationDataManagerVM()
     
@@ -59,7 +60,7 @@ struct CurrentWeatherView: View {
                 isAllLoadCompleted: viewModel.isAllLoadCompleted,
                 skyType: viewModel.currentWeatherInformation.skyType
             )
-            .onChangeAtTodayViewController()
+            .onChangeAtTodayViewController(disableTabBarTouch: $disableTabBarTouch)
             .environmentObject(viewModel)
             .environmentObject(locationDataManagerVM)
             
@@ -89,7 +90,7 @@ struct CurrentWeatherView: View {
 
 struct CurrentWeatherView_Previews: PreviewProvider {
     static var previews: some View {
-        CurrentWeatherView()
+        CurrentWeatherView(disableTabBarTouch: .constant(false))
     }
 }
 
