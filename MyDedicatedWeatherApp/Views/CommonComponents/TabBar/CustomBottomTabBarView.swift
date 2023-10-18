@@ -10,6 +10,8 @@ import SwiftUI
 struct CustomBottomTabBarView: View {
     
     @Binding var currentTab: TabBarType
+    @Binding var disableTabBarTouch: Bool
+    let itemOnTapGesture: ((TabBarType) -> Void)
     
     var body: some View {
         let isNotNocheDevice: Bool = CommonUtil.shared.isNotNocheDevice
@@ -19,7 +21,8 @@ struct CustomBottomTabBarView: View {
                 imageString: "calender_today",
                 title: "현재 날씨",
                 currentTab: $currentTab,
-                tabValue: .current
+                tabValue: .current, 
+                onTapGesture: itemOnTapGesture
             )
             
             Spacer()
@@ -28,7 +31,8 @@ struct CustomBottomTabBarView: View {
                 imageString: "calender_forecast",
                 title: "주간 예보",
                 currentTab: $currentTab,
-                tabValue: .forecast
+                tabValue: .forecast, 
+                onTapGesture: itemOnTapGesture
             )
             
             Spacer()
@@ -37,7 +41,8 @@ struct CustomBottomTabBarView: View {
                 imageString: "search",
                 title: "검색",
                 currentTab: $currentTab,
-                tabValue: .search
+                tabValue: .search, 
+                onTapGesture: itemOnTapGesture
             )
             
             Spacer()
@@ -46,7 +51,8 @@ struct CustomBottomTabBarView: View {
                 imageString: "gear",
                 title: "설정",
                 currentTab: $currentTab,
-                tabValue: .setting
+                tabValue: .setting, 
+                onTapGesture: itemOnTapGesture
             )
         }
         .padding(.horizontal, 24)
@@ -59,7 +65,7 @@ struct CustomBottomTabBarView: View {
 
 struct CustomBottomTabBarView_Previews: PreviewProvider {
     static var previews: some View {
-        CustomBottomTabBarView(currentTab: .constant(.current))
+        CustomBottomTabBarView(currentTab: .constant(.current), disableTabBarTouch: .constant(false), itemOnTapGesture: { _ in })
     }
 }
 
@@ -71,7 +77,8 @@ extension CustomBottomTabBarView {
         imageString: String,
         title: String,
         currentTab: Binding<TabBarType>,
-        tabValue: TabBarType
+        tabValue: TabBarType,
+        onTapGesture: @escaping ((TabBarType) -> Void)
     ) -> some View{
         let isNotNocheDevice: Bool = CommonUtil.shared.isNotNocheDevice
         
@@ -93,7 +100,7 @@ extension CustomBottomTabBarView {
                 .offset(y: -5)
         }
         .onTapGesture {
-            currentTab.wrappedValue = tabValue
+            onTapGesture(tabValue)
         }
     }
 }
