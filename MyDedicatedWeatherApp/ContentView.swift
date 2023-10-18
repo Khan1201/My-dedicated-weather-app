@@ -8,8 +8,20 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State var currentTab: TabBarType = .current
-    @State var isLoading: Bool = true
+    @State private var currentTab: TabBarType = .current
+    @State private var isLoading: Bool = true
+    @State private var disableTabBarTouch: Bool = true
+    @State private var showNoticePopup: Bool = false
+    
+    func tabBarItemOnTapGesture(_ type: TabBarType) {
+        
+        if disableTabBarTouch {
+            showNoticePopup = true
+            
+        } else {
+            currentTab = type
+        }
+    }
     
     var body: some View {
                 
@@ -26,7 +38,7 @@ struct ContentView: View {
                 }
                 
                 TabView(selection: $currentTab) {
-                    CurrentWeatherView()
+                    CurrentWeatherView(disableTabBarTouch: $disableTabBarTouch)
                         .tag(TabBarType.current)
                     
                     WeeklyWeatherView()
@@ -34,9 +46,15 @@ struct ContentView: View {
 
                 }
                 .overlay(alignment: .bottom) {
-                    CustomBottomTabBarView(currentTab: $currentTab)
+                    CustomBottomTabBarView(currentTab: $currentTab, disableTabBarTouch: $disableTabBarTouch, itemOnTapGesture: tabBarItemOnTapGesture(_:))
                 }
                 .opacity(isLoading ? 0 : 1)
+                .bottomNoticeFloater(
+                    isPresented: $showNoticePopup,
+                    view: BottomNoticeFloaterView(
+                        title: "현재 날씨 로딩후에 접근 가능합니다."
+                    )
+                )
             }
             
         }
