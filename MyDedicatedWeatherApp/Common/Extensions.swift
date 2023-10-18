@@ -22,6 +22,10 @@ extension Color {
         
         self.init(uiColor: UIColor(hexCode: hexCode, alpha: alpha))
     }
+    
+    init(_ red: CGFloat, _ green: CGFloat, _ blue: CGFloat) {
+        self.init(red: CGFloat(red/255.0), green: CGFloat(green/255.0), blue: CGFloat(blue/255.0))
+    }
 }
 
 extension UIColor {
