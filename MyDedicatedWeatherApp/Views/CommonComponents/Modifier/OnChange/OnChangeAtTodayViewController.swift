@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct OnChangeAtTodayViewController: ViewModifier {
+    @Binding var disableTabBarTouch: Bool
     @EnvironmentObject var viewModel: CurrentWeatherVM
     @EnvironmentObject var locationDataManagerVM: LocationDataManagerVM
     
@@ -35,12 +36,13 @@ struct OnChangeAtTodayViewController: ViewModifier {
                       viewModel.isTodayWeatherInformationLoadCompleted
             ) { newValue in
                 viewModel.setIsAllLoadCompleted()
+                disableTabBarTouch = false
             }
     }
 }
 
 extension View {
-    func onChangeAtTodayViewController() -> some View {
-        modifier(OnChangeAtTodayViewController())
+    func onChangeAtTodayViewController(disableTabBarTouch: Binding<Bool>) -> some View {
+        modifier(OnChangeAtTodayViewController(disableTabBarTouch: disableTabBarTouch))
     }
 }
