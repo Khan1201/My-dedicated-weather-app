@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BC0852772AE032ED00CFB877 /* PopupView in Frameworks */ = {isa = PBXBuildFile; productRef = BC0852762AE032ED00CFB877 /* PopupView */; };
 		BC0857B82ACFA98F00D0AE33 /* WeeklyWeatherItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC0857B72ACFA98F00D0AE33 /* WeeklyWeatherItemView.swift */; };
 		BC0857BB2ACFB21E00D0AE33 /* TodayWeatherItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC0857BA2ACFB21E00D0AE33 /* TodayWeatherItemView.swift */; };
 		BC0857BF2ACFB5C000D0AE33 /* CurrentWeatherTemperatureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC0857BE2ACFB5C000D0AE33 /* CurrentWeatherTemperatureView.swift */; };
@@ -41,6 +42,8 @@
 		BC3145272AD3D11300439CBA /* WidgetShareExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3145252AD3D0F800439CBA /* WidgetShareExtensions.swift */; };
 		BC37A6002A3ED7BC00C16278 /* DustForecastStationBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC37A5FF2A3ED7BC00C16278 /* DustForecastStationBase.swift */; };
 		BC37A6022A3ED7CD00C16278 /* DustForecastStationXYBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC37A6012A3ED7CD00C16278 /* DustForecastStationXYBase.swift */; };
+		BC4BE18C2AE02B2B000EAA47 /* BottomNoticeFloaterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4BE18B2AE02B2B000EAA47 /* BottomNoticeFloaterView.swift */; };
+		BC4BE1922AE030B5000EAA47 /* BottomNoticeFloater.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4BE1912AE030B5000EAA47 /* BottomNoticeFloater.swift */; };
 		BC4DDA282A72B4F1000376C0 /* TodayViewControllerBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4DDA272A72B4F1000376C0 /* TodayViewControllerBackground.swift */; };
 		BC4DDA2F2A72B9B8000376C0 /* LineDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4DDA2E2A72B9B8000376C0 /* LineDivider.swift */; };
 		BC4DDA312A72BA4F000376C0 /* TodayWeatherItemScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4DDA302A72BA4F000376C0 /* TodayWeatherItemScrollView.swift */; };
@@ -194,6 +197,8 @@
 		BC37A5FF2A3ED7BC00C16278 /* DustForecastStationBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DustForecastStationBase.swift; sourceTree = "<group>"; };
 		BC37A6012A3ED7CD00C16278 /* DustForecastStationXYBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DustForecastStationXYBase.swift; sourceTree = "<group>"; };
 		BC37A6032A3F094E00C16278 /* CustomTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTypes.swift; sourceTree = "<group>"; };
+		BC4BE18B2AE02B2B000EAA47 /* BottomNoticeFloaterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomNoticeFloaterView.swift; sourceTree = "<group>"; };
+		BC4BE1912AE030B5000EAA47 /* BottomNoticeFloater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomNoticeFloater.swift; sourceTree = "<group>"; };
 		BC4DDA272A72B4F1000376C0 /* TodayViewControllerBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewControllerBackground.swift; sourceTree = "<group>"; };
 		BC4DDA2E2A72B9B8000376C0 /* LineDivider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineDivider.swift; sourceTree = "<group>"; };
 		BC4DDA302A72BA4F000376C0 /* TodayWeatherItemScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayWeatherItemScrollView.swift; sourceTree = "<group>"; };
@@ -309,6 +314,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BC0852772AE032ED00CFB877 /* PopupView in Frameworks */,
 				BCA30F8C29FE25280078D0B1 /* Alamofire in Frameworks */,
 				BC7D33E22A12788E00B1012F /* Lottie in Frameworks */,
 				BC78251B2A5EE15900930FD6 /* SwiftUIPager in Frameworks */,
@@ -517,6 +523,22 @@
 			path = OnChange;
 			sourceTree = "<group>";
 		};
+		BC4BE18A2AE02B08000EAA47 /* PopupContents */ = {
+			isa = PBXGroup;
+			children = (
+				BC4BE18B2AE02B2B000EAA47 /* BottomNoticeFloaterView.swift */,
+			);
+			path = PopupContents;
+			sourceTree = "<group>";
+		};
+		BC4BE1902AE0308D000EAA47 /* Popup */ = {
+			isa = PBXGroup;
+			children = (
+				BC4BE1912AE030B5000EAA47 /* BottomNoticeFloater.swift */,
+			);
+			path = Popup;
+			sourceTree = "<group>";
+		};
 		BC4DDA262A72B4DD000376C0 /* Background */ = {
 			isa = PBXGroup;
 			children = (
@@ -619,6 +641,7 @@
 		BC91FD522A44839900D3E665 /* Modifier */ = {
 			isa = PBXGroup;
 			children = (
+				BC4BE1902AE0308D000EAA47 /* Popup */,
 				BC2419982AA4A1090035EDBE /* CornerRadius */,
 				BC307E232A79406B0008800A /* OnChange */,
 				BC4DDA262A72B4DD000376C0 /* Background */,
@@ -769,6 +792,7 @@
 		BCA30FAB29FFE35B0078D0B1 /* CommonComponents */ = {
 			isa = PBXGroup;
 			children = (
+				BC4BE18A2AE02B08000EAA47 /* PopupContents */,
 				BC7B76582A938C420004BF8B /* Chart */,
 				BC4DDA2D2A72B9A0000376C0 /* Divider */,
 				BC91FD522A44839900D3E665 /* Modifier */,
@@ -905,6 +929,7 @@
 				BCA30F8B29FE25280078D0B1 /* Alamofire */,
 				BC7D33E12A12788E00B1012F /* Lottie */,
 				BC78251A2A5EE15900930FD6 /* SwiftUIPager */,
+				BC0852762AE032ED00CFB877 /* PopupView */,
 			);
 			productName = MyDedicatedWeatherApp;
 			productReference = BCA30F7629FE20390078D0B1 /* MyDedicatedWeatherApp.app */;
@@ -961,6 +986,7 @@
 				BCA30F8A29FE25280078D0B1 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				BC7D33E02A12788E00B1012F /* XCRemoteSwiftPackageReference "lottie-ios" */,
 				BC7825192A5EE15900930FD6 /* XCRemoteSwiftPackageReference "SwiftUIPager" */,
+				BC0852752AE032ED00CFB877 /* XCRemoteSwiftPackageReference "PopupView" */,
 			);
 			productRefGroup = BCA30F7729FE20390078D0B1 /* Products */;
 			projectDirPath = "";
@@ -1058,9 +1084,11 @@
 				BCCD80682A07A59800501BEA /* LocationDataManagerVM.swift in Sources */,
 				BCBA40102A7C01B400B6EFD2 /* ShortTermForecastUtil.swift in Sources */,
 				BCA30FA529FE73C90078D0B1 /* CurrentWeatherView.swift in Sources */,
+				BC4BE18C2AE02B2B000EAA47 /* BottomNoticeFloaterView.swift in Sources */,
 				BCA30F9729FE3A190078D0B1 /* CommonUtil.swift in Sources */,
 				BC76923D2A4329DC005F4D7B /* CornerRadiusByCorner.swift in Sources */,
 				BCDBC6272AB34D6D000D7F43 /* Dummy.swift in Sources */,
+				BC4BE1922AE030B5000EAA47 /* BottomNoticeFloater.swift in Sources */,
 				BCA30FA729FE73D70078D0B1 /* CurrentWeatherVM.swift in Sources */,
 				BC6EF8BD2A10AAB30072A2DE /* Extensions.swift in Sources */,
 				BC4DDA382A72C4D5000376C0 /* CurrentLocationAndDateView.swift in Sources */,
@@ -1418,6 +1446,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		BC0852752AE032ED00CFB877 /* XCRemoteSwiftPackageReference "PopupView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/exyte/PopupView";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.7.0;
+			};
+		};
 		BC7825192A5EE15900930FD6 /* XCRemoteSwiftPackageReference "SwiftUIPager" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/fermoya/SwiftUIPager.git";
@@ -1445,6 +1481,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		BC0852762AE032ED00CFB877 /* PopupView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BC0852752AE032ED00CFB877 /* XCRemoteSwiftPackageReference "PopupView" */;
+			productName = PopupView;
+		};
 		BC1A35452AA776120096CF83 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = BCA30F8A29FE25280078D0B1 /* XCRemoteSwiftPackageReference "Alamofire" */;
