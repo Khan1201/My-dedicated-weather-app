@@ -9,10 +9,11 @@ import SwiftUI
 
 struct CurrentWeatherInformationItemView: View {
     
+    let loadCompleted: Bool
     let imageString: String
     let imageColor: Color
     let title: String
-    let value: (String, String)
+    let value: (String, String) // (약한 비, 5mm)
     let isDayMode: Bool
     var backgroundColor: Color?
     
@@ -67,6 +68,15 @@ struct CurrentWeatherInformationItemView: View {
                 }
             }
             .padding(.trailing, 17)
+            /// 위 HStack에 modifier로 loading animation으로 하면, default value가 빈 값이므로, loading animation사이즈가 너무 작게 나옴.
+            .overlay(alignment: .trailing) {
+                EmptyView()
+                    .loadingProgressLottie(
+                        isLoadingCompleted: loadCompleted,
+                        width: 70,
+                        height: 70
+                    )
+            }
             
         }
         .padding(.horizontal, 11)
@@ -80,6 +90,6 @@ struct CurrentWeatherInformationItemView: View {
 
 struct CurrentWeatherInformationItem_Previews: PreviewProvider {
     static var previews: some View {
-        CurrentWeatherInformationItemView(imageString: "fine_dust", imageColor: .red.opacity(0.7), title: "미세먼지", value: ("나쁨", ""), isDayMode: true)
+        CurrentWeatherInformationItemView(loadCompleted: true, imageString: "fine_dust", imageColor: .red.opacity(0.7), title: "미세먼지", value: ("나쁨", ""), isDayMode: true)
     }
 }
