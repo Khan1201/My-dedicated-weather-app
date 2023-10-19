@@ -58,9 +58,13 @@ struct CurrentWeatherInfItemPagerView_Previews: PreviewProvider {
 // MARK: - Supporint Views..
 
 extension CurrentWeatherInfItemPagerView {
+    
+    /// 강수량, 바람, 습도 정보 view에는 loading animation 사용하지 않으므로 .constant(true)
+    /// 미세먼지 정보 view에는 loading animation 사용하므로 바인딩
     var currentWeatherInfPagerFirstView: some View {
         VStack(alignment: .leading, spacing: 10) {
             CurrentWeatherInformationItemView(
+                loadCompleted: true,
                 imageString: "precipitation",
                 imageColor: Color.blue,
                 title: "강수량",
@@ -69,6 +73,7 @@ extension CurrentWeatherInfItemPagerView {
             )
             
             CurrentWeatherInformationItemView(
+                loadCompleted: true,
                 imageString: "wind",
                 imageColor: Color.red.opacity(0.7),
                 title: "바람",
@@ -77,6 +82,7 @@ extension CurrentWeatherInfItemPagerView {
             )
             
             CurrentWeatherInformationItemView(
+                loadCompleted: true,
                 imageString: "wet",
                 imageColor: Color.blue.opacity(0.7),
                 title: "습도",
@@ -92,6 +98,7 @@ extension CurrentWeatherInfItemPagerView {
     var currentWeatherInfPagerSecondView: some View {
         VStack(alignment: .leading, spacing: 10) {
             CurrentWeatherInformationItemView(
+                loadCompleted: viewModel.isFineDustLoadCompleted,
                 imageString: "fine_dust",
                 imageColor: Color.black.opacity(0.7),
                 title: "미세먼지",
@@ -101,6 +108,7 @@ extension CurrentWeatherInfItemPagerView {
             )
             
             CurrentWeatherInformationItemView(
+                loadCompleted: viewModel.isFineDustLoadCompleted,
                 imageString: "fine_dust",
                 imageColor: Color.red.opacity(0.7),
                 title: "초미세먼지",
