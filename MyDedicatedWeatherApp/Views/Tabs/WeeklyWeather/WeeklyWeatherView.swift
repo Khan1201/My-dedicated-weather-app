@@ -58,7 +58,7 @@ struct WeeklyWeatherView: View {
                         .padding(.bottom, 65)
                     }
                 }
-                .loadingProgressLottie(isLoadingCompleted: viewModel.isWeeklyWeatherInformationsLoaded)
+                .loadingProgressLottie(isLoadingCompleted: viewModel.isWeeklyWeatherInformationsLoaded, height: 400)
             }
             .padding(.top, 24)
         }
