@@ -28,7 +28,7 @@ struct CurrentWeatherView: View {
             VStack(alignment: .leading, spacing: 0) {
                 
                 VStack(alignment: .leading, spacing: 15) {
-                    topView
+                    currentWeatherTopView
                     
                     CurrentWeatherInfItemPagerView(
                         viewModel: viewModel,
@@ -98,7 +98,7 @@ struct CurrentWeatherView_Previews: PreviewProvider {
 
 extension CurrentWeatherView {
     
-    var topView: some View {
+    var currentWeatherTopView: some View {
         
         let animationWidth: CGFloat = UIScreen.screenWidth / 2.5
         let animationHeight: CGFloat = UIScreen.screenHeight / 5.41
