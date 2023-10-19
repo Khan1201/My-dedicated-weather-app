@@ -25,7 +25,7 @@ struct CurrentWeatherInformationItemView: View {
             return CustomColor.lightNavy.toColor.opacity(0.2)
             
         } else {
-            return Color.white.opacity(0.08)
+            return .defaultAreaColor
         }
     }
     

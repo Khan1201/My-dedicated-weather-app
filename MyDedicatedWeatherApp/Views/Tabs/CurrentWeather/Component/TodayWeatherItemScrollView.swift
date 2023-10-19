@@ -33,7 +33,7 @@ struct TodayWeatherItemScrollView: View {
             .padding(.vertical, 10)
         }
         .background {
-            isDayMode ? CustomColor.lightNavy.toColor.opacity(0.2) : Color.white.opacity(0.08)
+            isDayMode ? CustomColor.lightNavy.toColor.opacity(0.2) : .defaultAreaColor
         }
         .cornerRadius(16)
     }
