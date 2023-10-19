@@ -26,6 +26,11 @@ extension Color {
     init(_ red: CGFloat, _ green: CGFloat, _ blue: CGFloat) {
         self.init(red: CGFloat(red/255.0), green: CGFloat(green/255.0), blue: CGFloat(blue/255.0))
     }
+    
+    /// 기본 묶음 view background
+    static var defaultAreaColor: Color {
+        return Color.white.opacity(0.08)
+    }
 }
 
 extension UIColor {
