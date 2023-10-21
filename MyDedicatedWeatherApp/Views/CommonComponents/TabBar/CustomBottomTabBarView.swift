@@ -13,6 +13,8 @@ struct CustomBottomTabBarView: View {
     @Binding var disableTabBarTouch: Bool
     let itemOnTapGesture: ((TabBarType) -> Void)
     
+    @State private var tabBarItemSize: CGSize = CGSize()
+    
     var body: some View {
         let isNotNocheDevice: Bool = CommonUtil.shared.isNotNocheDevice
 
@@ -24,6 +26,7 @@ struct CustomBottomTabBarView: View {
                 tabValue: .current, 
                 onTapGesture: itemOnTapGesture
             )
+            .getSize(size: $tabBarItemSize)
             
             Spacer()
             
@@ -34,16 +37,7 @@ struct CustomBottomTabBarView: View {
                 tabValue: .forecast, 
                 onTapGesture: itemOnTapGesture
             )
-            
-            Spacer()
-            
-            tabBarItemView(
-                imageString: "search",
-                title: "검색",
-                currentTab: $currentTab,
-                tabValue: .search, 
-                onTapGesture: itemOnTapGesture
-            )
+            .frame(maxWidth: tabBarItemSize.width)
             
             Spacer()
             
@@ -54,8 +48,10 @@ struct CustomBottomTabBarView: View {
                 tabValue: .setting, 
                 onTapGesture: itemOnTapGesture
             )
+            .frame(maxWidth: tabBarItemSize.width)
+
         }
-        .padding(.horizontal, 24)
+        .padding(.horizontal, 35)
         .padding(.top, isNotNocheDevice ? 8 : 15)
         .padding(.bottom, isNotNocheDevice ? 5 : 27)
         .background(.white)
