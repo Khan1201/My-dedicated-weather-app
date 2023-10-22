@@ -9,14 +9,14 @@ import Foundation
 import Alamofire
 
 final class SunriseAndSunsetGetService: NSObject {
-    let queryItem: SunAndMoonriseReq
+    let queryItem: SunOrMoonTimeReq
 
     var result: SunAndMoonriseBase = Dummy.SunAndMoonriseBase()
     var tempResult: SunAndMoonriseBase = Dummy.SunAndMoonriseBase()
     var isLock: Bool = false
     var tagType: SunAndMoonriseBase.TagType = .none
     
-    init(queryItem: SunAndMoonriseReq) async throws {
+    init(queryItem: SunOrMoonTimeReq) async throws {
         self.queryItem = queryItem
         super.init()
         let url = URL(string: Route.GET_SUNRISE_SUNSET_TEMPERATURE.val)
