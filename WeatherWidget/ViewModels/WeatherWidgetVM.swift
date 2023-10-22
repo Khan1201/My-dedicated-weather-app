@@ -53,7 +53,7 @@ extension WeatherWidgetVM {
             method: .get,
             parameters: parameters
         )
-            .serializingDecodable(OpenDataRes<VeryShortOrShortTermForecastBase<VeryShortTermForecastCategory>>.self)
+            .serializingDecodable(PublicDataRes<VeryShortOrShortTermForecastBase<VeryShortTermForecastCategory>>.self)
         
         let result = await dataTask.result
         
@@ -95,7 +95,7 @@ extension WeatherWidgetVM {
             Route.GET_WEATHER_SHORT_TERM_FORECAST.val,
             method: .get,
             parameters: parameters
-        ).serializingDecodable(OpenDataRes<VeryShortOrShortTermForecastBase<ShortTermForecastCategory>>.self)
+        ).serializingDecodable(PublicDataRes<VeryShortOrShortTermForecastBase<ShortTermForecastCategory>>.self)
         
         let result = await dataTask.result
         
@@ -166,7 +166,7 @@ extension WeatherWidgetVM {
             Route.GET_REAL_TIME_FIND_DUST_FORECAST.val,
             method: .get,
             parameters: parameters
-        ).serializingDecodable(OpenDataRes<RealTimeFindDustForecastBase>.self)
+        ).serializingDecodable(PublicDataRes<RealTimeFindDustForecastBase>.self)
         
         let result = await dataTask.result
         
@@ -209,7 +209,7 @@ extension WeatherWidgetVM {
             Route.GET_WEATHER_MID_TERM_FORECAST_TEMP.val,
             method: .get,
             parameters: parameters
-        ).serializingDecodable(OpenDataRes<MidTermForecastTemperatureBase>.self)
+        ).serializingDecodable(PublicDataRes<MidTermForecastTemperatureBase>.self)
         
         let result = await dataTask.result
         
@@ -249,7 +249,7 @@ extension WeatherWidgetVM {
             Route.GET_WEATHER_MID_TERM_FORECAST_SKYSTATE.val,
             method: .get,
             parameters: parameters
-        ).serializingDecodable(OpenDataRes<MidTermForecastSkyStateBase>.self)
+        ).serializingDecodable(PublicDataRes<MidTermForecastSkyStateBase>.self)
         
         let result = await dataTask.result
         

@@ -57,7 +57,7 @@ extension WeeklyWeatherVM {
                 method: .get,
                 parameters: parameters,
                 headers: nil,
-                resultType: OpenDataRes<VeryShortOrShortTermForecastBase<ShortTermForecastCategory>>.self,
+                resultType: PublicDataRes<VeryShortOrShortTermForecastBase<ShortTermForecastCategory>>.self,
                 requestName: "requestShortForecastItems(xy:)"
             )
             let reqEndTime = CFAbsoluteTimeGetCurrent() - reqStartTime
@@ -104,7 +104,7 @@ extension WeeklyWeatherVM {
                 method: .get,
                 parameters: parameters,
                 headers: nil,
-                resultType: OpenDataRes<MidTermForecastTemperatureBase>.self,
+                resultType: PublicDataRes<MidTermForecastTemperatureBase>.self,
                 requestName: "requestMidTermForecastTempItems()"
             )
             
@@ -151,7 +151,7 @@ extension WeeklyWeatherVM {
                 method: .get,
                 parameters: parameters,
                 headers: nil,
-                resultType: OpenDataRes<MidTermForecastSkyStateBase>.self,
+                resultType: PublicDataRes<MidTermForecastSkyStateBase>.self,
                 requestName: "requestMidTermForecastSkyStateItems()"
             )
             
