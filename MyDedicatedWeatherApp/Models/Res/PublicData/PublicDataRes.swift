@@ -1,5 +1,5 @@
 //
-//  OpenDataRes.swift
+//  PublicDataRes.swift
 //  MyDedicatedWeatherApp
 //
 //  Created by 윤형석 on 2023/04/30.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct OpenDataRes<T>: Decodable where T: Decodable {
+struct PublicDataRes<T>: Decodable where T: Decodable {
     
     var item: [T]?
     var items: [T]?
@@ -37,7 +37,7 @@ struct OpenDataRes<T>: Decodable where T: Decodable {
         self.item = nil
         self.items = nil
         
-        // 초단기 or 단기 예보 or 중기 예보
+        // 초단기 or 단기 예보 or 중기 예보(온도, 하늘 상태) request 일 때, items가 아닌 item[]으로 result 들어옴
         if T.Type.self == VeryShortOrShortTermForecastBase<VeryShortTermForecastCategory>.Type.self ||
             T.Type.self == VeryShortOrShortTermForecastBase<ShortTermForecastCategory>.Type.self ||
             T.Type.self == MidTermForecastTemperatureBase.Type.self ||

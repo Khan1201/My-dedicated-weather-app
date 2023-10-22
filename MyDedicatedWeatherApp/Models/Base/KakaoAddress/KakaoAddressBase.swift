@@ -29,12 +29,6 @@ struct KakaoAddressBase: Encodable {
         let road_address: KakaoAddressBase?
         let address: KakaoAddressBase
     }
-    
-    // Req
-    struct Req: Encodable {
-        let x: String
-        let y: String
-    }
 }
 
 extension KakaoAddressBase: Decodable {
