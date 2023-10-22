@@ -100,7 +100,7 @@ extension CurrentWeatherVM {
                 method: .get,
                 parameters: parameters,
                 headers: nil,
-                resultType: OpenDataRes<VeryShortOrShortTermForecastBase<VeryShortTermForecastCategory>>.self,
+                resultType: PublicDataRes<VeryShortOrShortTermForecastBase<VeryShortTermForecastCategory>>.self,
                 requestName: "requestVeryShortForecastItems(xy:)"
             )
             DispatchQueue.main.async {
@@ -182,7 +182,7 @@ extension CurrentWeatherVM {
                 method: .get,
                 parameters: parameters,
                 headers: nil,
-                resultType: OpenDataRes<VeryShortOrShortTermForecastBase<ShortTermForecastCategory>>.self,
+                resultType: PublicDataRes<VeryShortOrShortTermForecastBase<ShortTermForecastCategory>>.self,
                 requestName: "requestShortForecastItems(xy:)"
             )
             let reqEndTime = CFAbsoluteTimeGetCurrent() - reqStartTime
@@ -229,7 +229,7 @@ extension CurrentWeatherVM {
                 method: .get,
                 parameters: parameters,
                 headers: nil,
-                resultType: OpenDataRes<RealTimeFindDustForecastBase>.self,
+                resultType: PublicDataRes<RealTimeFindDustForecastBase>.self,
                 requestName: "requestRealTimeFindDustForecastItems()"
             )
             
@@ -273,7 +273,7 @@ extension CurrentWeatherVM {
                 method: .get,
                 parameters: param,
                 headers: nil,
-                resultType: OpenDataRes<DustForecastStationXYBase>.self,
+                resultType: PublicDataRes<DustForecastStationXYBase>.self,
                 requestName: "requestDustForecastStationXY(umdName:, locality:)"
             )
             
@@ -314,7 +314,7 @@ extension CurrentWeatherVM {
                 method: .get,
                 parameters: param,
                 headers: nil,
-                resultType: OpenDataRes<DustForecastStationBase>.self,
+                resultType: PublicDataRes<DustForecastStationBase>.self,
                 requestName: "requestDustForecastStation()"
             )
             
@@ -345,7 +345,7 @@ extension CurrentWeatherVM {
     func requestKaKaoAddressBy(longitude: String, latitude: String) async {
         let startTime = CFAbsoluteTimeGetCurrent()
 
-        let param = KakaoAddressBase.Req(x: longitude, y: latitude)
+        let param = KakaoAddressReq(x: longitude, y: latitude)
         let header = Validate().kakaoHeader()
         
         do {
