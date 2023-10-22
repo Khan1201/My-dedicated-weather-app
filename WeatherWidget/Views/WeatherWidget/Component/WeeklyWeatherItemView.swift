@@ -16,6 +16,8 @@ struct WeeklyWeatherItemView: View {
     let minTemperature: String
     let maxTemperature: String
     
+    @State private var twoDigitTempSize: CGSize = CGSize()
+    
     var body: some View {
         
         HStack(alignment: .center, spacing: 0) {
@@ -51,14 +53,23 @@ struct WeeklyWeatherItemView: View {
                 Text("\(minTemperature)°")
                     .font(.system(size: 13, weight: .medium))
                     .foregroundColor(Color.white.opacity(0.7))
+                    .frame(maxWidth: twoDigitTempSize.width)
                 
                 Text("\(maxTemperature)°")
                     .font(.system(size: 13, weight: .bold))
                     .foregroundColor(Color.white)
+                    .frame(maxWidth: twoDigitTempSize.width)
                 
             }
         }
         .padding(.horizontal, 24)
+        /// 2자리수 온도  width get 위해
+        .overlay {
+            Text("00°")
+                .font(.system(size: 13, weight: .bold))
+                .getSize(size: $twoDigitTempSize)
+                .opacity(0)
+        }
         
     }
 }
