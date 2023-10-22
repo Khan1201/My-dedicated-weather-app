@@ -34,7 +34,7 @@ struct CustomBottomTabBarView: View {
                 imageString: "calender_forecast",
                 title: "주간 예보",
                 currentTab: $currentTab,
-                tabValue: .forecast, 
+                tabValue: .week,
                 onTapGesture: itemOnTapGesture
             )
             .frame(maxWidth: tabBarItemSize.width)
