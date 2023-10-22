@@ -19,7 +19,7 @@ struct BottomNoticeFloater<T: View>: ViewModifier {
     content
       .popup(isPresented: $isPresented) {
         view
-          .padding(.horizontal, 24)
+          .padding(.horizontal, 20)
           .padding(.bottom, bottomPadding)
           .onAppear {
             DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
