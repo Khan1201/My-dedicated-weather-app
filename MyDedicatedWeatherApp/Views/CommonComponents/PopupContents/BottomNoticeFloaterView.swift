@@ -24,7 +24,7 @@ struct BottomNoticeFloaterView: View {
                 .padding(.leading, 16)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color.init(53, 53, 53).opacity(0.5))
+        .background(Color.init(53, 53, 53).opacity(0.8))
         .cornerRadius(8)
         
     }
