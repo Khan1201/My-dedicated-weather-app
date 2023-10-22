@@ -42,7 +42,7 @@ struct ContentView: View {
                         .tag(TabBarType.current)
                     
                     WeeklyWeatherView()
-                        .tag(TabBarType.forecast)
+                        .tag(TabBarType.week)
 
                 }
                 .overlay(alignment: .bottom) {
