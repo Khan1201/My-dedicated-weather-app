@@ -24,8 +24,12 @@ struct BottomNoticeFloaterView: View {
                 .padding(.leading, 16)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color.init(53, 53, 53).opacity(0.8))
+        .background(Color.init(53, 53, 53).opacity(1))
         .cornerRadius(8)
+        .overlay {
+            RoundedRectangle(cornerRadius: 8)
+                .strokeBorder(Color.gray.opacity(0.2))
+        }
         
     }
 }
