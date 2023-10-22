@@ -55,6 +55,9 @@ struct ContentView: View {
                         title: "현재 날씨 로딩후에 접근 가능합니다."
                     )
                 )
+                .onAppear {
+                    UITabBar.appearance().barTintColor = .clear
+                }
             }
             
         }
