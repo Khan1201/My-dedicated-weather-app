@@ -6,3 +6,8 @@
 //
 
 import Foundation
+
+struct KakaoAddressReq: Encodable {
+    let x: String
+    let y: String
+}
