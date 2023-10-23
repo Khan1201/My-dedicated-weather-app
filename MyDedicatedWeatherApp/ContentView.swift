@@ -8,37 +8,23 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var currentTab: TabBarType = .current
-    @State private var isLoading: Bool = true
-    @State private var disableTabBarTouch: Bool = true
-    @State private var showNoticePopup: Bool = false
     
-    func tabBarItemOnTapGesture(_ type: TabBarType) {
-        
-        if disableTabBarTouch {
-            showNoticePopup = true
-            
-        } else {
-            currentTab = type
-        }
-    }
+    @StateObject var vm: ContentVM = ContentVM()
     
     var body: some View {
                 
         VStack(alignment: .leading, spacing: 0) {
             
             ZStack(alignment: .center) {
-                if isLoading {
+                if vm.isLoading {
                     Text("로딩중 입니다.")
                         .onAppear {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
-                                isLoading = false
-                            }
+                            vm.loadingOnAppearAction()
                         }
                 }
                 
-                TabView(selection: $currentTab) {
-                    CurrentWeatherView(disableTabBarTouch: $disableTabBarTouch)
+                TabView(selection: $vm.currentTab) {
+                    CurrentWeatherView(disableTabBarTouch: $vm.disableTabBarTouch)
                         .tag(TabBarType.current)
                     
                     WeeklyWeatherView()
@@ -46,11 +32,15 @@ struct ContentView: View {
 
                 }
                 .overlay(alignment: .bottom) {
-                    CustomBottomTabBarView(currentTab: $currentTab, disableTabBarTouch: $disableTabBarTouch, itemOnTapGesture: tabBarItemOnTapGesture(_:))
+                    CustomBottomTabBarView(
+                        currentTab: $vm.currentTab,
+                        disableTabBarTouch: $vm.disableTabBarTouch,
+                        itemOnTapGesture: vm.tabBarItemOnTapGesture(_:)
+                    )
                 }
-                .opacity(isLoading ? 0 : 1)
+                .opacity(vm.isLoading ? 0 : 1)
                 .bottomNoticeFloater(
-                    isPresented: $showNoticePopup,
+                    isPresented: $vm.showNoticePopup,
                     view: BottomNoticeFloaterView(
                         title: "현재 날씨 로딩후에 접근 가능합니다."
                     )
