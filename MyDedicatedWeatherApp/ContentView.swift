@@ -12,15 +12,16 @@ struct ContentView: View {
     @StateObject var vm: ContentVM = ContentVM()
     
     var body: some View {
-                
+        
         VStack(alignment: .leading, spacing: 0) {
             
             ZStack(alignment: .center) {
                 if vm.isLoading {
-                    Text("로딩중 입니다.")
+                    LaunchScreen()
                         .onAppear {
                             vm.loadingOnAppearAction()
                         }
+                    
                 }
                 
                 TabView(selection: $vm.currentTab) {
