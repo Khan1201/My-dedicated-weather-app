@@ -32,7 +32,7 @@ struct CurrentTempAndMinMaxTempView: View {
                 Image(systemName: "arrow.down")
                     .resizable()
                     .renderingMode(.template)
-                    .foregroundColor(Color.blue.opacity(isDayMode ? 0.8 : 0.6))
+                    .foregroundColor(Color.blue.opacity(isDayMode ? 1 : 0.6))
                     .frame(width: 15, height: 15)
                 
                 Text(minMaxTemp.0)
@@ -43,7 +43,7 @@ struct CurrentTempAndMinMaxTempView: View {
                 Image(systemName: "arrow.up")
                     .resizable()
                     .renderingMode(.template)
-                    .foregroundColor(Color.red.opacity(isDayMode ? 0.8 : 0.6))
+                    .foregroundColor(Color.red.opacity(isDayMode ? 1 : 0.6))
                     .frame(width: 15, height: 15)
                     .padding(.leading, 10)
                 
