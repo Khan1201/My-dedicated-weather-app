@@ -9,6 +9,7 @@ import SwiftUI
 
 struct TodayViewControllerBackground: ViewModifier {
     let isDayMode: Bool
+    let isSunriseSunsetLoadCompleted: Bool
     let isAllLoadCompleted: Bool
     let skyType: Weather.SkyType
     
@@ -73,15 +74,16 @@ struct TodayViewControllerBackground: ViewModifier {
         content
             .background {
                 VStack(alignment: .leading, spacing: 0) {
-                    if isDayMode {
+                    if isDayMode && isSunriseSunsetLoadCompleted {
                         Image("background_weather_\(skyType.backgroundImageKeyword)")
                             .resizable()
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                             .overlay {
-                                Color.black.opacity(0.2)
+                                Color.black.opacity(0.3)
                             }
+                            .transition(AnyTransition.opacity.animation(.easeInOut(duration: 2)))
                         
-                    } else {
+                    } else if !isDayMode && isSunriseSunsetLoadCompleted {
                         LinearGradient(
                             colors: [Color(red: 0.07, green: 0.1, blue: 0.14),
                                      Color(red: 0.17, green: 0.19, blue: 0.26)],
@@ -99,6 +101,10 @@ struct TodayViewControllerBackground: ViewModifier {
                                 .resizable()
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                         }
+                        .transition(AnyTransition.opacity.animation(.easeInOut(duration: 2)))
+
+                    } else {
+                        Color.blue.opacity(0.3)
                     }
                 }
                 .if(isAllLoadCompleted) { view in
@@ -119,11 +125,13 @@ struct TodayViewControllerBackground: ViewModifier {
 extension View {
     func todayViewControllerBackground(
         isDayMode: Bool,
+        isSunriseSunsetLoadCompleted: Bool,
         isAllLoadCompleted: Bool,
         skyType: Weather.SkyType
     ) -> some View {
         modifier(TodayViewControllerBackground(
-            isDayMode: isDayMode,
+            isDayMode: isDayMode, 
+            isSunriseSunsetLoadCompleted: isSunriseSunsetLoadCompleted,
             isAllLoadCompleted: isAllLoadCompleted,
             skyType: skyType)
         )
