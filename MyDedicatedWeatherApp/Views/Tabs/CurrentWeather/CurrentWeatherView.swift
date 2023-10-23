@@ -56,7 +56,8 @@ struct CurrentWeatherView: View {
             .padding(.top, 25)
             .frame(height: UIScreen.screenHeight, alignment: .center)
             .todayViewControllerBackground(
-                isDayMode: viewModel.isDayMode,
+                isDayMode: viewModel.isDayMode, 
+                isSunriseSunsetLoadCompleted: viewModel.isSunriseSunsetLoadCompleted,
                 isAllLoadCompleted: viewModel.isAllLoadCompleted,
                 skyType: viewModel.currentWeatherInformation.skyType
             )
