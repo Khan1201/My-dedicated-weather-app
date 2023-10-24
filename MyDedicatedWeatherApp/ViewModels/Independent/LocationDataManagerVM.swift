@@ -43,6 +43,14 @@ final class LocationDataManagerVM: NSObject, ObservableObject {
         locationManager.requestLocation()
     }
     
+    func startUpdaitingLocation() {
+        locationManager.startUpdatingLocation()
+    }
+    
+    func initializeStates() {
+        isLocationUpdated = false
+    }
+    
     func convertLocationToXYForVeryShortForecast() -> Gps2XY.LatXLngY {
         let xy: Gps2XY.LatXLngY = commonForecastUtil.convertGPS2XY(
             mode: .toXY,
