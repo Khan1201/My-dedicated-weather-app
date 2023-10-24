@@ -18,6 +18,7 @@ struct WeeklyWeatherView: View {
             CurrentLocationAndDateView(
                 location: UserDefaults.standard.string(forKey: "locality") ?? "",
                 subLocation: UserDefaults.standard.string(forKey: "subLocality") ?? "", 
+                showRefreshButton: $viewModel.isWeeklyWeatherInformationsLoaded, 
                 refreshButtonOnTapGesture: viewModel.refreshButtonOnTapGesture
             )
             .padding(.leading, 24)
