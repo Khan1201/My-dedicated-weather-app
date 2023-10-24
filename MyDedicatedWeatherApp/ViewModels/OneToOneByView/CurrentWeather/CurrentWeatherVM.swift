@@ -17,6 +17,7 @@ final class CurrentWeatherVM: ObservableObject {
     @Published private(set) var currentUltraFineDustTuple: Weather.DescriptionAndColor = .init(description: "", color: .defaultAreaColor)
     @Published private(set) var todayMinMaxTemperature: (String, String) = ("__", "__")
     @Published private(set) var todayWeatherInformations: [Weather.TodayInformation] = Dummy.shared.todayWeatherInformations()
+    @Published var isStartRefresh: Bool = false
     
     @Published var subLocalityByKakaoAddress: String = "성수동 1가"
     
@@ -633,5 +634,33 @@ extension CurrentWeatherVM {
             await requestDustForecastStation(tmXAndtmY: ForDustStationRequest.tmXAndtmY)
             await requestRealTimeFindDustForecastItems()
         }
+    }
+}
+
+// MARK: - On tap gestures..
+
+extension CurrentWeatherVM {
+    
+    func refreshButtonOnTapGesture() {
+        isStartRefresh = true
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.isStartRefresh = false
+        }
+    }
+}
+
+// MARK: - ETC funcs..
+
+extension CurrentWeatherVM {
+    
+    func initializeStates() {
+        isCurrentWeatherInformationLoadCompleted = false
+        isCurrentWeatherAnimationSetCompleted = false
+        isFineDustLoadCompleted = false
+        isKakaoAddressLoadCompleted = false
+        isMinMaxTempLoadCompleted = false
+        isSunriseSunsetLoadCompleted = false
+        isTodayWeatherInformationLoadCompleted = false
     }
 }
