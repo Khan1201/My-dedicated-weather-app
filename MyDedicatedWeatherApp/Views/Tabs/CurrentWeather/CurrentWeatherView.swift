@@ -109,7 +109,8 @@ extension CurrentWeatherView {
             HStack(alignment: .center, spacing: 50) {
                 CurrentLocationAndDateView(
                     location: locationDataManagerVM.currentLocation,
-                    subLocation: viewModel.subLocalityByKakaoAddress, 
+                    subLocation: viewModel.subLocalityByKakaoAddress,
+                    showRefreshButton: .constant(true), 
                     refreshButtonOnTapGesture: viewModel.refreshButtonOnTapGesture
                 )
                 .padding(.leading, 40)
