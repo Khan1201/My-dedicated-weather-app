@@ -38,6 +38,13 @@ struct OnChangeAtTodayViewController: ViewModifier {
                 viewModel.setIsAllLoadCompleted()
                 disableTabBarTouch = false
             }
+            .onChange(of: viewModel.isStartRefresh) { newValue in
+                if newValue {
+                    locationDataManagerVM.initializeStates()
+                    viewModel.initializeStates()
+                    locationDataManagerVM.startUpdaitingLocation()
+                }
+            }
     }
 }
 
