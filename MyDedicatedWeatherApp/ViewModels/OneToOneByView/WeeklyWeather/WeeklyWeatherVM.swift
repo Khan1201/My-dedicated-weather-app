@@ -12,6 +12,7 @@ final class WeeklyWeatherVM: ObservableObject {
     @Published var weeklyChartInformation: Weather.WeeklyChartInformation = .init(minTemps: [], maxTemps: [], xList: [], yList: [], imageAndRainPercents: [])
     @Published var errorMessage: String = ""
     @Published var isWeeklyWeatherInformationsLoaded: Bool = false
+    @Published var isStartRefresh: Bool = false
 
     var tommorowAndTwoDaysLaterInformations: [Weather.WeeklyInformation] = []
     var minMaxTemperaturesByThreeToTenDay: [(String, String)] = []
@@ -428,5 +429,26 @@ extension WeeklyWeatherVM {
                 ]
             )
         }
+    }
+}
+
+// MARK: - On tap gestures..
+
+extension WeeklyWeatherVM {
+    
+    func refreshButtonOnTapGesture() {
+        initializeStates()
+        Task {
+            await performWeekRequests()
+        }
+    }
+}
+
+// MARK: - ETC funcs..
+
+extension WeeklyWeatherVM {
+    
+    func initializeStates() {
+        isWeeklyWeatherInformationsLoaded = false
     }
 }
