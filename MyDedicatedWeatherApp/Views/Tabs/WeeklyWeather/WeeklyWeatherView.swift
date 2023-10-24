@@ -17,7 +17,8 @@ struct WeeklyWeatherView: View {
         VStack(alignment: .leading, spacing: 0) {
             CurrentLocationAndDateView(
                 location: UserDefaults.standard.string(forKey: "locality") ?? "",
-                subLocation: UserDefaults.standard.string(forKey: "subLocality") ?? ""
+                subLocation: UserDefaults.standard.string(forKey: "subLocality") ?? "", 
+                refreshButtonOnTapGesture: viewModel.refreshButtonOnTapGesture
             )
             .padding(.leading, 24)
             .padding(.top, 35)

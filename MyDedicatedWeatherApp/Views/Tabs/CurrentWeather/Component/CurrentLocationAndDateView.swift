@@ -11,6 +11,7 @@ struct CurrentLocationAndDateView: View {
     
     let location: String
     let subLocation: String
+    let refreshButtonOnTapGesture: () -> Void
     
     var body: some View {
         
@@ -31,11 +32,20 @@ struct CurrentLocationAndDateView: View {
             .font(.system(size: 14))
             .foregroundColor(.white)
         }
+        .overlay(alignment: .bottomTrailing) {
+            Image("refresh.green")
+                .resizable()
+                .frame(width: 25, height: 25)
+                .offset(x: 13)
+                .onTapGesture {
+                    refreshButtonOnTapGesture()
+                }
+        }
     }
 }
 
 struct CurrentLocationAndDateView_Previews: PreviewProvider {
     static var previews: some View {
-        CurrentLocationAndDateView(location: "", subLocation: "")
+        CurrentLocationAndDateView(location: "", subLocation: "", refreshButtonOnTapGesture: {})
     }
 }
