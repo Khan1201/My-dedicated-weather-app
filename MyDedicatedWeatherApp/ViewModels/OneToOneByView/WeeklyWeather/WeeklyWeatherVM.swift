@@ -12,7 +12,6 @@ final class WeeklyWeatherVM: ObservableObject {
     @Published var weeklyChartInformation: Weather.WeeklyChartInformation = .init(minTemps: [], maxTemps: [], xList: [], yList: [], imageAndRainPercents: [])
     @Published var errorMessage: String = ""
     @Published var isWeeklyWeatherInformationsLoaded: Bool = false
-    @Published var isStartRefresh: Bool = false
 
     var tommorowAndTwoDaysLaterInformations: [Weather.WeeklyInformation] = []
     var minMaxTemperaturesByThreeToTenDay: [(String, String)] = []
