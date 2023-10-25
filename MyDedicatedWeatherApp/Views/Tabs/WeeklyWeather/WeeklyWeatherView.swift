@@ -8,7 +8,10 @@
 import SwiftUI
 
 struct WeeklyWeatherView: View {
+    
     @StateObject var viewModel: WeeklyWeatherVM = WeeklyWeatherVM(weeklyWeatherInformations: Dummy().weeklyWeatherInformations())
+    @EnvironmentObject var contentVM: ContentVM
+    
     @State private var graphOpacity: CGFloat = 0
     
     var body: some View {
@@ -69,6 +72,9 @@ struct WeeklyWeatherView: View {
             isDayMode: UserDefaults.standard.bool(forKey: "isDayMode"),
             skyKeyword: UserDefaults.standard.string(forKey: "skyKeyword") ?? ""
         )
+        .onChange(of: contentVM.isRefreshed) { newValue in
+            viewModel.isRefreshedOnChangeAction(newValue)
+        }
         .task {
             await viewModel.performWeekRequests()
         }
