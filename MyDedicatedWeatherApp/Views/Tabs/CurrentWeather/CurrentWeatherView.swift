@@ -10,6 +10,7 @@ import SwiftUIPager
 
 struct CurrentWeatherView: View {
     @Binding var disableTabBarTouch: Bool
+    
     @StateObject var viewModel: CurrentWeatherVM = CurrentWeatherVM()
     @StateObject var locationDataManagerVM = LocationDataManagerVM()
     
