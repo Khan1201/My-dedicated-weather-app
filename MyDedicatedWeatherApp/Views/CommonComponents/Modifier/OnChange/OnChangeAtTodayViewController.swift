@@ -11,6 +11,7 @@ struct OnChangeAtTodayViewController: ViewModifier {
     @Binding var disableTabBarTouch: Bool
     @EnvironmentObject var viewModel: CurrentWeatherVM
     @EnvironmentObject var locationDataManagerVM: LocationDataManagerVM
+    @EnvironmentObject var contentVM: ContentVM
     
     func body(content: Content) -> some View {
         content
@@ -43,6 +44,7 @@ struct OnChangeAtTodayViewController: ViewModifier {
                     locationDataManagerVM.initializeStates()
                     viewModel.initializeStates()
                     locationDataManagerVM.startUpdaitingLocation()
+                    contentVM.setIsRefreshedActionWhenRefreshStart()
                 }
             }
     }
