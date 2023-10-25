@@ -49,6 +49,7 @@ struct ContentView: View {
                 .onAppear {
                     UITabBar.appearance().barTintColor = .clear
                 }
+                .environmentObject(vm)
             }
             
         }
