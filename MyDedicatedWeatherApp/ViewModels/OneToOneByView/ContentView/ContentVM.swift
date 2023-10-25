@@ -13,6 +13,7 @@ final class ContentVM: ObservableObject {
     @Published var isLoading: Bool = true
     @Published var disableTabBarTouch: Bool = false
     @Published var showNoticePopup: Bool = false
+    @Published var isRefreshed: Bool = false
 }
 
 
@@ -35,6 +36,19 @@ extension ContentVM {
     func loadingOnAppearAction() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
             self.isLoading = false
+        }
+    }
+}
+
+// MARK: - Set funcs..
+
+extension ContentVM {
+    
+    func setIsRefreshedActionWhenRefreshStart() {
+        isRefreshed = true
+        
+        DispatchQueue.main.asyncAfter(wallDeadline: .now() + 0.5) {
+            self.isRefreshed = false
         }
     }
 }
