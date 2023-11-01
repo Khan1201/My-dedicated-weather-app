@@ -42,6 +42,7 @@
 		BC3145272AD3D11300439CBA /* WidgetShareExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3145252AD3D0F800439CBA /* WidgetShareExtensions.swift */; };
 		BC37A6002A3ED7BC00C16278 /* DustForecastStationBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC37A5FF2A3ED7BC00C16278 /* DustForecastStationBase.swift */; };
 		BC37A6022A3ED7CD00C16278 /* DustForecastStationXYBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC37A6012A3ED7CD00C16278 /* DustForecastStationXYBase.swift */; };
+		BC436B782AF294DF006AFFC1 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC436B772AF294DF006AFFC1 /* SettingView.swift */; };
 		BC4BE18C2AE02B2B000EAA47 /* BottomNoticeFloaterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4BE18B2AE02B2B000EAA47 /* BottomNoticeFloaterView.swift */; };
 		BC4BE1922AE030B5000EAA47 /* BottomNoticeFloater.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4BE1912AE030B5000EAA47 /* BottomNoticeFloater.swift */; };
 		BC4DDA282A72B4F1000376C0 /* TodayViewControllerBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4DDA272A72B4F1000376C0 /* TodayViewControllerBackground.swift */; };
@@ -211,6 +212,7 @@
 		BC37A5FF2A3ED7BC00C16278 /* DustForecastStationBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DustForecastStationBase.swift; sourceTree = "<group>"; };
 		BC37A6012A3ED7CD00C16278 /* DustForecastStationXYBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DustForecastStationXYBase.swift; sourceTree = "<group>"; };
 		BC37A6032A3F094E00C16278 /* CustomTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTypes.swift; sourceTree = "<group>"; };
+		BC436B772AF294DF006AFFC1 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		BC4BE18B2AE02B2B000EAA47 /* BottomNoticeFloaterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomNoticeFloaterView.swift; sourceTree = "<group>"; };
 		BC4BE1912AE030B5000EAA47 /* BottomNoticeFloater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomNoticeFloater.swift; sourceTree = "<group>"; };
 		BC4DDA272A72B4F1000376C0 /* TodayViewControllerBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewControllerBackground.swift; sourceTree = "<group>"; };
@@ -489,6 +491,7 @@
 		BC24199E2AA4A3560035EDBE /* Tabs */ = {
 			isa = PBXGroup;
 			children = (
+				BC436B762AF294D3006AFFC1 /* Setting */,
 				BC24199A2AA4A1A00035EDBE /* WeeklyWeather */,
 				BC2419992AA4A1970035EDBE /* CurrentWeather */,
 			);
@@ -510,6 +513,14 @@
 				BC307E242A7940950008800A /* OnChangeAtTodayViewController.swift */,
 			);
 			path = OnChange;
+			sourceTree = "<group>";
+		};
+		BC436B762AF294D3006AFFC1 /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				BC436B772AF294DF006AFFC1 /* SettingView.swift */,
+			);
+			path = Setting;
 			sourceTree = "<group>";
 		};
 		BC4BE18A2AE02B08000EAA47 /* PopupContents */ = {
@@ -1193,6 +1204,7 @@
 				BCA30F9A29FE49FE0078D0B1 /* PublicDataRes.swift in Sources */,
 				BCB16E2D2A4C717D00AACFF0 /* Validate.swift in Sources */,
 				BCA30F7C29FE203A0078D0B1 /* ContentView.swift in Sources */,
+				BC436B782AF294DF006AFFC1 /* SettingView.swift in Sources */,
 				BC86DB1C2A877F85004631D3 /* WeekWeatherItemView.swift in Sources */,
 				BC4DDA312A72BA4F000376C0 /* TodayWeatherItemScrollView.swift in Sources */,
 				BC307E252A7940950008800A /* OnChangeAtTodayViewController.swift in Sources */,
