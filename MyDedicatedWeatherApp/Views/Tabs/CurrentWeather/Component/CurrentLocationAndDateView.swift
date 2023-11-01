@@ -23,7 +23,7 @@ struct CurrentLocationAndDateView: View {
             \(subLocation)
             """
             )
-            .fontSpoqaHanSansNeo(size: 26, weight: .medium)
+            .fontSpoqaHanSansNeo(size: 26, weight: .bold)
             .foregroundColor(.white)
             .lineSpacing(2)
 
