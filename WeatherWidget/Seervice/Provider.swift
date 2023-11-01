@@ -18,8 +18,19 @@ struct Provider: TimelineProvider {
     
     func getSnapshot(in context: Context, completion: @escaping (SimpleEntry) -> ()) {
         Task {
-            let result = await widgetVM.performWidgeEntrySetting()
-            completion(result)
+            switch context.family {
+                
+            case .systemSmall, .systemMedium:
+                let result = await widgetVM.performSmallOrMediumWidgetEntrySetting()
+                completion(result)
+
+            case .systemLarge:
+                let result = await widgetVM.performLargeWidgetEntrySetting()
+                completion(result)
+
+            default:
+                ()
+            }
         }
         
     }
@@ -28,10 +39,21 @@ struct Provider: TimelineProvider {
         Task {
             var entries: [SimpleEntry] = []
             let reloadDate = Calendar.current.date(byAdding: .minute, value: 10, to: Date())!
-            
-            let result = await widgetVM.performWidgeEntrySetting()
-            entries.append(result)
-            
+                        
+            switch context.family {
+                
+            case .systemSmall, .systemMedium:
+                let result = await widgetVM.performSmallOrMediumWidgetEntrySetting()
+                entries.append(result)
+                
+            case .systemLarge:
+                let result = await widgetVM.performLargeWidgetEntrySetting()
+                entries.append(result)
+           
+            default:
+                ()
+            }
+
             let timeline = Timeline(entries: entries, policy: .after(reloadDate))
             completion(timeline)
         }

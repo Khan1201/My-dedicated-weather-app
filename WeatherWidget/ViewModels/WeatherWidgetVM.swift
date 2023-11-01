@@ -10,7 +10,21 @@ import Alamofire
 
 struct WeatherWidgetVM {
     
-    func performWidgeEntrySetting() async -> SimpleEntry {
+    func performSmallOrMediumWidgetEntrySetting() async -> SimpleEntry {
+        var result: SimpleEntry = Dummy.simpleEntry()
+        let veryShortForecastItems = await requestVeryShortItems()
+        let shortForecastItems = await requestShortForecastItems()
+        let sunriseAndSunset = await requestSunriseSunset()
+        let realTimefindDustItems = await requestRealTimeFindDustAndUltraFindDustItems()
+        
+        applyVeryShortForecastData(veryShortForecastItems, to: &result, sunrise: sunriseAndSunset.0, sunset: sunriseAndSunset.1)
+        applyShortForecastData(shortForecastItems, to: &result, sunrise: sunriseAndSunset.0, sunset: sunriseAndSunset.1)
+        applyRealTimeFindDustAndUltraFindDustItems(realTimefindDustItems, to: &result)
+        
+        return result
+    }
+    
+    func performLargeWidgetEntrySetting() async -> SimpleEntry {
         var result: SimpleEntry = Dummy.simpleEntry()
         let veryShortForecastItems = await requestVeryShortItems()
         let shortForecastItems = await requestShortForecastItems()
