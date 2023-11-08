@@ -537,8 +537,8 @@ extension CurrentWeatherVM {
      - parameter todayWeathers: [todayWeatherInformations] 오늘 날씨 정보 리스트
      */
     func setTodayMinMaxTemperature(_ todayWeathers: [Weather.TodayInformation]) {
-        var maxTemp: Int = 0
-        var minTemp: Int = 0
+        var maxTemp: Int = currentTemperature.toInt
+        var minTemp: Int = currentTemperature.toInt
         
         for (index, todayWeather) in todayWeatherInformations.enumerated() {
             
