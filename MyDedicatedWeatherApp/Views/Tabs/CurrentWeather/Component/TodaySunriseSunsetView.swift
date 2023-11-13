@@ -17,12 +17,6 @@ struct TodaySunriseSunsetView: View {
         VStack(alignment: .leading, spacing: 0) {
             
             HStack(alignment: .center, spacing: 4) {
-                Image(systemName: "arrow.up")
-                    .resizable()
-                    .renderingMode(.template)
-                    .frame(width: 11, height: 11)
-                    .foregroundColor(Color.red.opacity(0.7))
-                
                 Image("sunrise")
                     .resizable()
                     .frame(width: 20, height: 20)
@@ -39,12 +33,6 @@ struct TodaySunriseSunsetView: View {
             }
             
             HStack(alignment: .center, spacing: 4) {
-                Image(systemName: "arrow.down")
-                    .resizable()
-                    .renderingMode(.template)
-                    .frame(width: 11, height: 11)
-                    .foregroundColor(Color.red.opacity(0.7))
-
                 Image("sunset")
                     .resizable()
                     .frame(width: 20, height: 20)
