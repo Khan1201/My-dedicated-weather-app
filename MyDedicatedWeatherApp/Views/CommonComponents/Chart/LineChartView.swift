@@ -30,25 +30,28 @@ struct LineChartView: View {
         var convertedMaxValues: [CGFloat] {
             // 0 = 바꿀 range의 최소값, height = 바꿀 range의 최대값
             return weeklyChartInformation.maxTemps.map { temp in
-                if temp == 0 {
-                    return 0
-                    
-                } else {
-                    return (temp - rangeMin) * (CGFloat(height) - 0) / (rangeMax - rangeMin) + 0
-                }
+//                if temp == 0 {
+//                    return 0
+//                    
+//                } else {
+//                    return (temp - rangeMin) * (CGFloat(height) - 0) / (rangeMax - rangeMin) + 0
+//                }
+                return (temp - rangeMin) * (CGFloat(height) - 0) / (rangeMax - rangeMin) + 0
             }
         }
         
         var convertedMinValues: [CGFloat] {
             // 0 = 바꿀 range의 최소값, height = 바꿀 range의 최대값
             return weeklyChartInformation.minTemps.map { temp in
-                if temp == 0 {
-                    return 0
-                    
-                } else {
-                    let result = (temp - rangeMin) * (CGFloat(height) - 0) / (rangeMax - rangeMin) + 0
-                    return result < 0 ? 0 : result
-                }
+//                if temp == 0 {
+//                    return 0
+//                    
+//                } else {
+//                    let result = (temp - rangeMin) * (CGFloat(height) - 0) / (rangeMax - rangeMin) + 0
+//                    return result < 0 ? 0 : result
+//                }
+                let result = (temp - rangeMin) * (CGFloat(height) - 0) / (rangeMax - rangeMin) + 0
+                return result < 0 ? 0 : result
             }
         }
         
@@ -202,6 +205,9 @@ struct LineChartView: View {
                     let imageWidth: CGFloat = 22
 
                     ForEach(weeklyChartInformation.imageAndRainPercents.indices, id: \.self) { i in
+                        let isOverFourTemperature: Bool = weeklyChartInformation.maxTemps[i] - weeklyChartInformation.minTemps[i] >= 4
+                        let weatherImageBottomPadding: CGFloat = isOverFourTemperature ? convertedMinValues[i] + ((convertedMaxValues[i] - convertedMinValues[i]) / 2) - imageWidth : convertedMaxValues[i] + 10
+
                         VStack(alignment: .center, spacing: 0) {
                             Image(weeklyChartInformation.imageAndRainPercents[i].0)
                                 .resizable()
@@ -217,7 +223,7 @@ struct LineChartView: View {
                         .padding(.leading, i == weeklyChartInformation.imageAndRainPercents.count - 1 ?
                                  xSteps[i] - 17 : xSteps[i] - (imageWidth / 2)
                         )
-                        .padding(.bottom, convertedMinValues[i] + ((convertedMaxValues[i] - convertedMinValues[i]) / 2) - imageWidth)
+                        .padding(.bottom, weatherImageBottomPadding)
                     }
                 }
             }
