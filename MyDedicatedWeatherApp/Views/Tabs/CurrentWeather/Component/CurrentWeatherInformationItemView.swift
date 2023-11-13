@@ -20,7 +20,7 @@ struct CurrentWeatherInformationItemView: View {
     func currentBackgroundColor() -> Color {
         
         if backgroundColor != nil {
-            return backgroundColor!.opacity(0.45)
+            return backgroundColor!.opacity(0.6)
             
         } else if isDayMode {
             return CustomColor.lightNavy.toColor.opacity(0.2)

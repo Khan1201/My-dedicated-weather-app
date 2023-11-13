@@ -67,7 +67,7 @@ struct WeekWeatherItemView: View {
         .padding(.horizontal, 14)
         .padding(.vertical, 8)
         .background {
-            UserDefaults.standard.bool(forKey: "isDayMode") ? CustomColor.lightNavy.toColor.opacity(0.2) : .defaultAreaColor
+            Color.defaultAreaColor
         }
         .cornerRadius(14)
         .onAppear {

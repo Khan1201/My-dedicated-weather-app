@@ -78,9 +78,6 @@ struct TodayViewControllerBackground: ViewModifier {
                         Image("background_weather_\(skyType.backgroundImageKeyword)")
                             .resizable()
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
-                            .overlay {
-                                Color.black.opacity(0.3)
-                            }
                             .transition(AnyTransition.opacity.animation(.easeInOut(duration: 2)))
                         
                     } else if !isDayMode && isSunriseSunsetLoadCompleted {
