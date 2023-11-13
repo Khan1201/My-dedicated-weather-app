@@ -16,7 +16,7 @@ struct CurrentLocationAndDateView: View {
     
     var body: some View {
         
-        VStack(alignment: .leading, spacing: 10) {
+        VStack(alignment: .leading, spacing: 6) {
             Text(
             """
             \(location),
@@ -26,22 +26,23 @@ struct CurrentLocationAndDateView: View {
             .fontSpoqaHanSansNeo(size: 26, weight: .bold)
             .foregroundColor(.white)
             .lineSpacing(2)
-
-            Text(
-                Date().toString(format: "EE요일, M월 d일")
-            )
-            .font(.system(size: 14))
-            .foregroundColor(.white)
-        }
-        .overlay(alignment: .bottomTrailing) {
-            Image("refresh.green")
-                .resizable()
-                .frame(width: 25, height: 25)
-                .offset(x: 13)
-                .onTapGesture {
-                    refreshButtonOnTapGesture()
-                }
-                .opacity(showRefreshButton ? 1 : 0)
+            
+            HStack(alignment: .bottom, spacing: 4) {
+                Text(
+                    Date().toString(format: "EE요일, M월 d일")
+                )
+                .font(.system(size: 14))
+                .foregroundColor(.white)
+                
+                Image("refresh.green")
+                    .resizable()
+                    .frame(width: 25, height: 25)
+                    .offset(x: 13)
+                    .onTapGesture {
+                        refreshButtonOnTapGesture()
+                    }
+                    .opacity(showRefreshButton ? 1 : 0)
+            }
         }
     }
 }
