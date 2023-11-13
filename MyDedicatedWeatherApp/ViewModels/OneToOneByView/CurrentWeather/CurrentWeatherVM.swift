@@ -540,14 +540,9 @@ extension CurrentWeatherVM {
         var maxTemp: Int = currentTemperature.toInt
         var minTemp: Int = currentTemperature.toInt
         
-        for (index, todayWeather) in todayWeatherInformations.enumerated() {
+        for (_, todayWeather) in todayWeatherInformations.enumerated() {
             
             let tempToInt: Int = Int(todayWeather.temperature) ?? 0
-            
-            if index == 0 {
-                maxTemp = tempToInt
-                minTemp = tempToInt
-            }
             
             if tempToInt > maxTemp {
                 maxTemp = tempToInt
