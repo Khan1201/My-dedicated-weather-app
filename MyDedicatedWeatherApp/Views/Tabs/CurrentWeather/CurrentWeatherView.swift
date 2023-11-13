@@ -107,7 +107,7 @@ extension CurrentWeatherView {
         
         return VStack(alignment: .leading, spacing: 8) {
             
-            HStack(alignment: .center, spacing: 50) {
+            HStack(alignment: .center, spacing: 0) {
                 CurrentLocationAndDateView(
                     location: locationDataManagerVM.currentLocation,
                     subLocation: viewModel.subLocalityByKakaoAddress,
@@ -117,11 +117,14 @@ extension CurrentWeatherView {
                 .padding(.leading, 40)
                 .loadingProgressLottie(isLoadingCompleted: viewModel.isKakaoAddressLoadCompleted)
                                 
+                Spacer()
+                
                 TodaySunriseSunsetView(
                     sunriseTime: viewModel.sunRiseAndSetHHmm.0,
                     sunsetTime: viewModel.sunRiseAndSetHHmm.1,
                     isDayMode: viewModel.isDayMode
                 )
+                .padding(.trailing, 40)
                 .loadingProgressLottie(isLoadingCompleted: viewModel.isSunriseSunsetLoadCompleted)
             }
             
