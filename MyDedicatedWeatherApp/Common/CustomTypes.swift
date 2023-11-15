@@ -24,7 +24,8 @@ struct Weather {
         let color: Color
     }
     
-    struct TodayInformation {
+    struct TodayInformation: Identifiable {
+        let id = UUID()
         let time: String
         let weatherImage: String
         let precipitation: String
