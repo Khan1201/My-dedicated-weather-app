@@ -44,6 +44,11 @@
 		BC3145272AD3D11300439CBA /* WidgetShareExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3145252AD3D0F800439CBA /* WidgetShareExtensions.swift */; };
 		BC37A6002A3ED7BC00C16278 /* DustForecastStationBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC37A5FF2A3ED7BC00C16278 /* DustForecastStationBase.swift */; };
 		BC37A6022A3ED7CD00C16278 /* DustForecastStationXYBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC37A6012A3ED7CD00C16278 /* DustForecastStationXYBase.swift */; };
+		BC3C200D2B04FC7C0016E7D4 /* RootNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3C200C2B04FC7C0016E7D4 /* RootNavigationView.swift */; };
+		BC3C20102B04FEF10016E7D4 /* NavToNextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3C200F2B04FEF10016E7D4 /* NavToNextView.swift */; };
+		BC3C20142B0503500016E7D4 /* OpenSourceListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3C20132B0503500016E7D4 /* OpenSourceListView.swift */; };
+		BC3C20162B05035B0016E7D4 /* OpenSourceDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3C20152B05035B0016E7D4 /* OpenSourceDetailView.swift */; };
+		BC3C201B2B0505620016E7D4 /* CustomNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3C201A2B0505620016E7D4 /* CustomNavigationBar.swift */; };
 		BC436B782AF294DF006AFFC1 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC436B772AF294DF006AFFC1 /* SettingView.swift */; };
 		BC4BE18C2AE02B2B000EAA47 /* BottomNoticeFloaterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4BE18B2AE02B2B000EAA47 /* BottomNoticeFloaterView.swift */; };
 		BC4BE1922AE030B5000EAA47 /* BottomNoticeFloater.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4BE1912AE030B5000EAA47 /* BottomNoticeFloater.swift */; };
@@ -216,6 +221,11 @@
 		BC37A5FF2A3ED7BC00C16278 /* DustForecastStationBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DustForecastStationBase.swift; sourceTree = "<group>"; };
 		BC37A6012A3ED7CD00C16278 /* DustForecastStationXYBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DustForecastStationXYBase.swift; sourceTree = "<group>"; };
 		BC37A6032A3F094E00C16278 /* CustomTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTypes.swift; sourceTree = "<group>"; };
+		BC3C200C2B04FC7C0016E7D4 /* RootNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootNavigationView.swift; sourceTree = "<group>"; };
+		BC3C200F2B04FEF10016E7D4 /* NavToNextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavToNextView.swift; sourceTree = "<group>"; };
+		BC3C20132B0503500016E7D4 /* OpenSourceListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenSourceListView.swift; sourceTree = "<group>"; };
+		BC3C20152B05035B0016E7D4 /* OpenSourceDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenSourceDetailView.swift; sourceTree = "<group>"; };
+		BC3C201A2B0505620016E7D4 /* CustomNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationBar.swift; sourceTree = "<group>"; };
 		BC436B772AF294DF006AFFC1 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		BC4BE18B2AE02B2B000EAA47 /* BottomNoticeFloaterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomNoticeFloaterView.swift; sourceTree = "<group>"; };
 		BC4BE1912AE030B5000EAA47 /* BottomNoticeFloater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomNoticeFloater.swift; sourceTree = "<group>"; };
@@ -528,6 +538,48 @@
 			path = OnChange;
 			sourceTree = "<group>";
 		};
+		BC3C200B2B04FC6E0016E7D4 /* Navigation */ = {
+			isa = PBXGroup;
+			children = (
+				BC3C200C2B04FC7C0016E7D4 /* RootNavigationView.swift */,
+				BC3C201A2B0505620016E7D4 /* CustomNavigationBar.swift */,
+			);
+			path = Navigation;
+			sourceTree = "<group>";
+		};
+		BC3C200E2B04FEB40016E7D4 /* Navigation */ = {
+			isa = PBXGroup;
+			children = (
+				BC3C200F2B04FEF10016E7D4 /* NavToNextView.swift */,
+			);
+			path = Navigation;
+			sourceTree = "<group>";
+		};
+		BC3C20112B05032D0016E7D4 /* Pages */ = {
+			isa = PBXGroup;
+			children = (
+				BC3C20122B0503400016E7D4 /* OpenSource */,
+			);
+			path = Pages;
+			sourceTree = "<group>";
+		};
+		BC3C20122B0503400016E7D4 /* OpenSource */ = {
+			isa = PBXGroup;
+			children = (
+				BC3C20172B05038F0016E7D4 /* Component */,
+				BC3C20132B0503500016E7D4 /* OpenSourceListView.swift */,
+				BC3C20152B05035B0016E7D4 /* OpenSourceDetailView.swift */,
+			);
+			path = OpenSource;
+			sourceTree = "<group>";
+		};
+		BC3C20172B05038F0016E7D4 /* Component */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Component;
+			sourceTree = "<group>";
+		};
 		BC436B762AF294D3006AFFC1 /* Setting */ = {
 			isa = PBXGroup;
 			children = (
@@ -804,6 +856,7 @@
 		BC91FD522A44839900D3E665 /* Modifier */ = {
 			isa = PBXGroup;
 			children = (
+				BC3C200E2B04FEB40016E7D4 /* Navigation */,
 				BC4BE1902AE0308D000EAA47 /* Popup */,
 				BC2419982AA4A1090035EDBE /* CornerRadius */,
 				BC307E232A79406B0008800A /* OnChange */,
@@ -895,6 +948,7 @@
 			isa = PBXGroup;
 			children = (
 				BC24199E2AA4A3560035EDBE /* Tabs */,
+				BC3C20112B05032D0016E7D4 /* Pages */,
 				BCA30FAB29FFE35B0078D0B1 /* CommonComponents */,
 			);
 			path = Views;
@@ -945,6 +999,7 @@
 		BCA30FAB29FFE35B0078D0B1 /* CommonComponents */ = {
 			isa = PBXGroup;
 			children = (
+				BC3C200B2B04FC6E0016E7D4 /* Navigation */,
 				BC4BE18A2AE02B08000EAA47 /* PopupContents */,
 				BC7B76582A938C420004BF8B /* Chart */,
 				BC4DDA2D2A72B9A0000376C0 /* Divider */,
@@ -1225,9 +1280,11 @@
 				BC4DDA2F2A72B9B8000376C0 /* LineDivider.swift in Sources */,
 				BCB16E302A4DC66300AACFF0 /* KakaoAddressBase.swift in Sources */,
 				BC251F292A76A18F004CE9CF /* LoadingProgressLottie.swift in Sources */,
+				BC3C20102B04FEF10016E7D4 /* NavToNextView.swift in Sources */,
 				BCA30F9529FE39BC0078D0B1 /* Env.swift in Sources */,
 				BCA2C1B72A603B6900BBEBE2 /* GetHeight.swift in Sources */,
 				BC2419B22AA4A79D0035EDBE /* MidTermForecastTemperatureBase.swift in Sources */,
+				BC3C200D2B04FC7C0016E7D4 /* RootNavigationView.swift in Sources */,
 				BC25FDA42AFBBA9C00928D7C /* MailView.swift in Sources */,
 				BCCD80682A07A59800501BEA /* LocationDataManagerVM.swift in Sources */,
 				BCBA40102A7C01B400B6EFD2 /* ShortTermForecastUtil.swift in Sources */,
@@ -1248,6 +1305,8 @@
 				BCA30FA229FE6FC30078D0B1 /* JsonRequest.swift in Sources */,
 				BC6EF8BF2A10C0DC0072A2DE /* RealTimeFindDustForecastBase.swift in Sources */,
 				BC8C94F72AE5508700865CCB /* DustForecastStationXYReq.swift in Sources */,
+				BC3C20142B0503500016E7D4 /* OpenSourceListView.swift in Sources */,
+				BC3C20162B05035B0016E7D4 /* OpenSourceDetailView.swift in Sources */,
 				BC85A94E2A02570E00C4CC48 /* VeryShortOrShortTermForecastBase.swift in Sources */,
 				BC8C94F12AE54F2500865CCB /* MidTermForecastReq.swift in Sources */,
 				BC37A6002A3ED7BC00C16278 /* DustForecastStationBase.swift in Sources */,
@@ -1276,6 +1335,7 @@
 				BCE489D12A4EAD5F00A18B2B /* CurrentWeatherInformationItemView.swift in Sources */,
 				BC4DDA3A2A72C69E000376C0 /* CurrentTempAndMinMaxTempView.swift in Sources */,
 				BCBA40122A7C01C300B6EFD2 /* VeryShortTermForecastUtil.swift in Sources */,
+				BC3C201B2B0505620016E7D4 /* CustomNavigationBar.swift in Sources */,
 				BC5386522A6EC18500D8E085 /* WeeklyWeatherView.swift in Sources */,
 				BCBA40142A7C022100B6EFD2 /* MidTermForecastUtil.swift in Sources */,
 				BCCA26272A514609005BB1B5 /* SunOrMoonRiseBase.swift in Sources */,
