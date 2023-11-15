@@ -25,7 +25,7 @@ struct SettingView: View {
                         HStack(alignment: .center, spacing: 20)  {
                             Image(systemName: vm.images[index])
                                 .resizable()
-                                .frame(width: 25, height: 25)
+                                .frame(width: 30, height: 30)
                                 .foregroundStyle(Color.white)
                             
                             VStack(alignment: .leading, spacing: 5) {
@@ -40,10 +40,13 @@ struct SettingView: View {
                             
                             Spacer()
                             
-                            Image(systemName: "chevron.right")
-                                .resizable()
-                                .frame(width: 8, height: 10)
-                                .foregroundStyle(Color.white)
+                            if vm.showRightIcon(index) {
+                                Image(systemName: "chevron.right")
+                                    .resizable()
+                                    .frame(width: 8, height: 10)
+                                    .foregroundStyle(Color.white)
+                                    .padding(.trailing, 14)
+                            }
                         }
                         
                         if index != vm.menus.count - 1 {
@@ -68,6 +71,15 @@ struct SettingView: View {
         .sheet(isPresented: $vm.openMailView) {
             MailView(isPresented: $vm.openMailView)
         }
+        .navToNextView(
+            isPresented: $vm.navOpenSourceView,
+            view: OpenSourceListView(
+                isPresented: $vm.navOpenSourceView,
+                titles: vm.openSourceTitles,
+                links: vm.openSourceLinks,
+                descriptions: Dummy.shared.openSourceDescriptions()
+            )
+        )
     }
 }
 
