@@ -7,12 +7,25 @@
 
 import SwiftUI
 
-struct RootNavigationView: View {
+struct RootNavigationView<Content: View>: View {
+    let view: Content
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        
+        if #available(iOS 16.0, *) {
+            NavigationStack {
+                view
+                    .navigationBarBackButtonHidden()
+            }
+        } else {
+            NavigationView {
+                view
+                    .navigationBarHidden(true)
+            }
+        }
     }
 }
 
 #Preview {
-    RootNavigationView()
+    RootNavigationView(view: EmptyView())
 }
