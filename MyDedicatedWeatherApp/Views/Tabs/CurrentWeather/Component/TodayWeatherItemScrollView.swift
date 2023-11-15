@@ -18,7 +18,7 @@ struct TodayWeatherItemScrollView: View {
             
             HStack(alignment: .center, spacing: 24) {
                 
-                ForEach(todayWeatherInformations, id: \.time) { item in
+                ForEach(todayWeatherInformations, id: \.id) { item in
                     TodayWeatherItemView(
                         time: item.time,
                         weatherImage: item.weatherImage,
