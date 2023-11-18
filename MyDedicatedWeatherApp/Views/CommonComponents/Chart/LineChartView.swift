@@ -23,39 +23,13 @@ struct LineChartView: View {
     var body: some View {
         let width: CGFloat = UIScreen.screenWidth - 80
         let height: CGFloat = width * 1.1
-        let circleSize: CGSize = CGSize(width: 6, height: 6)
+        let vertexSize: CGSize = CGSize(width: 6, height: 6)
+        let weatherImageSize: CGFloat = 22
         let rangeMin: CGFloat = CGFloat(weeklyChartInformation.yList.min() ?? 0)
         let rangeMax: CGFloat = CGFloat(weeklyChartInformation.yList.max() ?? 0)
         
-        var convertedMaxValues: [CGFloat] {
-            // 0 = 바꿀 range의 최소값, height = 바꿀 range의 최대값
-            return weeklyChartInformation.maxTemps.map { temp in
-//                if temp == 0 {
-//                    return 0
-//                    
-//                } else {
-//                    return (temp - rangeMin) * (CGFloat(height) - 0) / (rangeMax - rangeMin) + 0
-//                }
-                return (temp - rangeMin) * (CGFloat(height) - 0) / (rangeMax - rangeMin) + 0
-            }
-        }
-        
-        var convertedMinValues: [CGFloat] {
-            // 0 = 바꿀 range의 최소값, height = 바꿀 range의 최대값
-            return weeklyChartInformation.minTemps.map { temp in
-//                if temp == 0 {
-//                    return 0
-//                    
-//                } else {
-//                    let result = (temp - rangeMin) * (CGFloat(height) - 0) / (rangeMax - rangeMin) + 0
-//                    return result < 0 ? 0 : result
-//                }
-                let result = (temp - rangeMin) * (CGFloat(height) - 0) / (rangeMax - rangeMin) + 0
-                return result < 0 ? 0 : result
-            }
-        }
-        
-        var xSteps: [CGFloat] {
+        // Line
+        var lineXValues: [CGFloat] {
             var result: [CGFloat] = []
             var xStepSum: CGFloat = 0
             
@@ -71,6 +45,55 @@ struct LineChartView: View {
             
             return result
         }
+        
+        var maxTempLineYValues: [CGFloat] {
+            // 0 = 바꿀 range의 최소값, height = 바꿀 range의 최대값
+            return weeklyChartInformation.maxTemps.map { temp in
+                return height - ((temp - rangeMin) * (CGFloat(height) - 0) / (rangeMax - rangeMin) + 0)
+            }
+        }
+        
+        var minTempLineYValues: [CGFloat] {
+            // 0 = 바꿀 range의 최소값, height = 바꿀 range의 최대값
+            return weeklyChartInformation.minTemps.map { temp in
+                let result = (temp - rangeMin) * (CGFloat(height) - 0) / (rangeMax - rangeMin) + 0
+                return result < 0 ? 0 : height - result
+            }
+        }
+        
+        // Vertex
+        var vertexLeadingPaddings: [CGFloat] {
+            var result: [CGFloat] = []
+            var xStepSum: CGFloat = 0
+            
+            for i in 0..<weeklyChartInformation.maxTemps.count {
+                if i == 0 {
+                    result.append(0)
+                    
+                } else {
+                    xStepSum += xStepSize.width + xTextSize.width
+                    result.append(xStepSum - 3)
+                }
+            }
+            
+            return result
+        }
+        
+        var maxTempVertexBottomPaddings: [CGFloat] {
+            // 0 = 바꿀 range의 최소값, height = 바꿀 range의 최대값
+            return weeklyChartInformation.maxTemps.map { temp in
+                return (temp - rangeMin) * (CGFloat(height) - 0) / (rangeMax - rangeMin) + 0 - (vertexSize.height / 2)
+            }
+        }
+        
+        var minTempVertexBottomPaddings: [CGFloat] {
+            // 0 = 바꿀 range의 최소값, height = 바꿀 range의 최대값
+            return weeklyChartInformation.minTemps.map { temp in
+                return (temp - rangeMin) * (CGFloat(height) - 0) / (rangeMax - rangeMin) + 0 - (vertexSize.height / 2)
+            }
+        }
+        
+        // MARK: - View
         
         VStack(alignment: .leading, spacing: 16) {
             
@@ -117,10 +140,18 @@ struct LineChartView: View {
             .overlay(alignment: .bottomLeading) {
                                 
                 Path { path in
-                    path.move(to: CGPoint(x: 0, y: height - convertedMaxValues[0]))
+                    path.move(to: CGPoint(x: 0, y: maxTempLineYValues[0]))
                     
-                    for i in 1..<weeklyChartInformation.maxTemps.count {
-                        path.addLine(to: CGPoint(x: xSteps[i], y: height - convertedMaxValues[i]))
+                    guard weeklyChartInformation.maxTemps.count >= 6 else {
+                        CommonUtil.shared.printError(
+                            funcTitle: "LineChartView - Max line draw",
+                            description: "weeklyChartInformation.maxTemps.count >= 6이 아닙니다."
+                        )
+                        
+                        return
+                    }
+                    for i in 1...6 {
+                        path.addLine(to: CGPoint(x: lineXValues[i], y: maxTempLineYValues[i]))
                     }
                 }
                 .stroke(maxLineColor, lineWidth: lineWidth)
@@ -129,23 +160,20 @@ struct LineChartView: View {
             .overlay(alignment: .bottomLeading) {
                 ZStack(alignment: .bottomLeading) {
                     ForEach(weeklyChartInformation.maxTemps.indices, id: \.self) { i in
-                        Circle()
-                            .fill(Color.white)
-                            .frame(width: circleSize.width, height: circleSize.height)
-                            .padding(.leading, xSteps[i] - (circleSize.width / 2))
-                            .padding(.bottom, convertedMaxValues[i] - (circleSize.height / 2))
-                    }
-                }
-            }
-            // Temperature
-            .overlay(alignment: .bottomLeading) {
-                ZStack(alignment: .bottomLeading) {
-                    ForEach(weeklyChartInformation.maxTemps.indices, id: \.self) { i in
-                        Text("\(Int(weeklyChartInformation.maxTemps[i]))°")
-                            .fontSpoqaHanSansNeo(size: 10, weight: .bold)
-                            .foregroundColor(Int(weeklyChartInformation.maxTemps[i]) >= 30 ? Color.red.opacity(0.7) : Color.white.opacity(0.7))
-                            .padding(.leading, i == weeklyChartInformation.maxTemps.count - 1 ? xSteps[i] - 17 : xSteps[i] - 5)
-                            .padding(.bottom, convertedMaxValues[i] + 3)
+                        if i <= 6 {
+                            Circle()
+                                .fill(Color.white)
+                                .frame(width: vertexSize.width, height: vertexSize.height)
+                                .padding(.leading, vertexLeadingPaddings[i])
+                                .padding(.bottom, maxTempVertexBottomPaddings[i])
+                                .overlay(alignment: .topTrailing) {
+                                    Text("\(Int(weeklyChartInformation.maxTemps[i]))°")
+                                        .fontSpoqaHanSansNeo(size: 10, weight: .bold)
+                                        .foregroundColor(Int(weeklyChartInformation.maxTemps[i]) >= 30 ? Color.red.opacity(0.7) : Color.white.opacity(0.7))
+                                        .offset(x: vertexSize.width, y: -vertexSize.width * 2.5)
+                                        .fixedSize()
+                                }
+                        }
                     }
                 }
             }
@@ -156,10 +184,19 @@ struct LineChartView: View {
             .overlay(alignment: .bottomLeading) {
                                 
                 Path { path in
-                    path.move(to: CGPoint(x: 0, y: height - convertedMinValues[0]))
+                    path.move(to: CGPoint(x: 0, y: minTempLineYValues[0]))
                     
-                    for i in 1..<weeklyChartInformation.minTemps.count {
-                        path.addLine(to: CGPoint(x: xSteps[i], y: height - convertedMinValues[i]))
+                    guard weeklyChartInformation.minTemps.count >= 6 else {
+                        CommonUtil.shared.printError(
+                            funcTitle: "LineChartView - Min line draw",
+                            description: "weeklyChartInformation.minTemps.count >= 6이 아닙니다."
+                        )
+                        
+                        return
+                    }
+                    
+                    for i in 1...6 {
+                        path.addLine(to: CGPoint(x: lineXValues[i], y: minTempLineYValues[i]))
                     }
                 }
                 .stroke(minLineColor, lineWidth: lineWidth)
@@ -168,23 +205,20 @@ struct LineChartView: View {
             .overlay(alignment: .bottomLeading) {
                 ZStack(alignment: .bottomLeading) {
                     ForEach(weeklyChartInformation.minTemps.indices, id: \.self) { i in
-                        Circle()
-                            .fill(Color.white)
-                            .frame(width: circleSize.width, height: circleSize.height)
-                            .padding(.leading, xSteps[i] - (circleSize.width / 2))
-                            .padding(.bottom, convertedMinValues[i] - (circleSize.height / 2))
-                    }
-                }
-            }
-            // Temperature
-            .overlay(alignment: .bottomLeading) {
-                ZStack(alignment: .bottomLeading) {
-                    ForEach(weeklyChartInformation.minTemps.indices, id: \.self) { i in
-                        Text("\(Int(weeklyChartInformation.minTemps[i]))°")
-                            .fontSpoqaHanSansNeo(size: 10, weight: .bold)
-                            .foregroundColor(Color.white.opacity(0.7))
-                            .padding(.leading, i == weeklyChartInformation.minTemps.count - 1 ? xSteps[i] - 17 : xSteps[i] - 5)
-                            .padding(.bottom, convertedMinValues[i] + 3)
+                        if i <= 6 {
+                            Circle()
+                                .fill(Color.white)
+                                .frame(width: vertexSize.width, height: vertexSize.height)
+                                .padding(.leading, vertexLeadingPaddings[i])
+                                .padding(.bottom, minTempVertexBottomPaddings[i])
+                                .overlay(alignment: .topTrailing) {
+                                    Text("\(Int(weeklyChartInformation.minTemps[i]))°")
+                                        .fontSpoqaHanSansNeo(size: 10, weight: .bold)
+                                        .foregroundColor(Int(weeklyChartInformation.maxTemps[i]) >= 30 ? Color.red.opacity(0.7) : Color.white.opacity(0.7))
+                                        .offset(x: vertexSize.width, y: -vertexSize.width * 2.5)
+                                        .fixedSize()
+                                }
+                        }
                     }
                 }
             }
@@ -195,23 +229,27 @@ struct LineChartView: View {
                         Rectangle()
                             .fill(Color.white.opacity(0.1))
                             .frame(width: 1, height: height)
-                            .padding(.leading, xSteps[i])
+                            .padding(.leading, lineXValues[i])
                     }
                 }
             }
             // Weather image and Rain percent
             .overlay(alignment: .bottomLeading) {
                 ZStack(alignment: .bottomLeading) {
-                    let imageWidth: CGFloat = 22
 
                     ForEach(weeklyChartInformation.imageAndRainPercents.indices, id: \.self) { i in
-                        let isOverFourTemperature: Bool = weeklyChartInformation.maxTemps[i] - weeklyChartInformation.minTemps[i] >= 4
-                        let weatherImageBottomPadding: CGFloat = isOverFourTemperature ? convertedMinValues[i] + ((convertedMaxValues[i] - convertedMinValues[i]) / 2) - imageWidth : convertedMaxValues[i] + 10
+                        let isFiveTemperatureDifference: Bool = weeklyChartInformation.maxTemps[i] - weeklyChartInformation.minTemps[i] >= 5
+                        let weatherImageBottomPadding: CGFloat = isFiveTemperatureDifference ? minTempVertexBottomPaddings[i] + ((maxTempVertexBottomPaddings[i] - minTempVertexBottomPaddings[i]) / 2) : MidTermForecastUtil.isWeatherImageUnderMinTemperatureLocated(
+                            currentMin: weeklyChartInformation.minTemps[i],
+                            yAxisMin: rangeMin,
+                            currentMax: weeklyChartInformation.maxTemps[i],
+                            yAxisMax: rangeMax
+                        )  ? minTempVertexBottomPaddings[i] - 50  : maxTempVertexBottomPaddings[i] + 50
 
                         VStack(alignment: .center, spacing: 0) {
                             Image(weeklyChartInformation.imageAndRainPercents[i].0)
                                 .resizable()
-                                .frame(width: imageWidth, height: imageWidth)
+                                .frame(width: weatherImageSize, height: weatherImageSize)
 
                             if weeklyChartInformation.imageAndRainPercents[i].1 != "0" {
                                 Text("\(weeklyChartInformation.imageAndRainPercents[i].1)%")
@@ -220,9 +258,7 @@ struct LineChartView: View {
                                     .offset(y: -2)
                             }
                         }
-                        .padding(.leading, i == weeklyChartInformation.imageAndRainPercents.count - 1 ?
-                                 xSteps[i] - 17 : xSteps[i] - (imageWidth / 2)
-                        )
+                        .padding(.leading, vertexLeadingPaddings[i] - (weatherImageSize / 2.5))
                         .padding(.bottom, weatherImageBottomPadding)
                     }
                 }
