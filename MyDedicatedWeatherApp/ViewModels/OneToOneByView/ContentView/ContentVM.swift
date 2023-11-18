@@ -11,7 +11,7 @@ final class ContentVM: ObservableObject {
     
     @Published var currentTab: TabBarType = .current
     @Published var isLoading: Bool = true
-    @Published var disableTabBarTouch: Bool = false
+    @Published var disableTabBarTouch: Bool = true
     @Published var showNoticePopup: Bool = false
     @Published var isRefreshed: Bool = false
 }
