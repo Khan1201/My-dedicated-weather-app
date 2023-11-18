@@ -66,7 +66,7 @@ struct ShortTermForecastUtil {
         
         switch currentHourToInt {
             
-        case 00...02:
+        case 00...01:
             return String(currentYearMonthDayToInt - 1)
         default:
             return currentYearMonthDay
