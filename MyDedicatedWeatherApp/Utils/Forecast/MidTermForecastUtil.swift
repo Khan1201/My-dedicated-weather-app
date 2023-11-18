@@ -287,35 +287,38 @@ struct MidTermForecastUtil {
         
         switch maxTemp {
             
-        case 30...35:
+        case 31...35:
             return fiveUnitRange(maxOfRange: 35)
             
-        case 25...30:
+        case 26...30:
             return fiveUnitRange(maxOfRange: 30)
 
-        case 20...25:
+        case 21...25:
             return fiveUnitRange(maxOfRange: 25)
 
-        case 15...20:
+        case 16...20:
             return fiveUnitRange(maxOfRange: 20)
 
-        case 10...15:
+        case 11...15:
             return fiveUnitRange(maxOfRange: 15)
 
-        case 5...10:
+        case 6...10:
             return fiveUnitRange(maxOfRange: 10)
 
-        case 0...5:
+        case 1...5:
             return fiveUnitRange(maxOfRange: 5)
 
-        case -5...0:
+        case -4...0:
             return fiveUnitRange(maxOfRange: 0)
 
-        case -10 ... -5:
+        case -9 ... -5:
             return fiveUnitRange(maxOfRange: -5)
 
-        case -15 ... -10:
+        case -14 ... -10:
             return fiveUnitRange(maxOfRange: -10)
+            
+        case -19 ... -15:
+            return fiveUnitRange(maxOfRange: -15)
 
         default:
             CommonUtil.shared.printError(
@@ -341,5 +344,22 @@ struct MidTermForecastUtil {
             
             return yList
         }
+    }
+    
+    
+    /// 주간 예보 - 차트 안 날씨 이미지 - 최저 온도 밑 ? or 최대 온도 위 ?
+    public static func isWeatherImageUnderMinTemperatureLocated(currentMin: CGFloat, yAxisMin: CGFloat, currentMax: CGFloat, yAxisMax: CGFloat) -> Bool {
+        var minCount: Int = 0
+        var maxCount: Int = 0
+        
+        for _ in yAxisMin.toInt...currentMin.toInt {
+            minCount += 1
+        }
+        
+        for _ in currentMax.toInt...yAxisMax.toInt {
+            maxCount += 1
+        }
+        
+        return minCount > maxCount
     }
 }

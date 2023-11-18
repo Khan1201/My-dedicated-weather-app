@@ -11,6 +11,7 @@ final class WeeklyWeatherVM: ObservableObject {
     @Published var weeklyWeatherInformations: [Weather.WeeklyInformation]
     @Published var weeklyChartInformation: Weather.WeeklyChartInformation = .init(minTemps: [], maxTemps: [], xList: [], yList: [], imageAndRainPercents: [])
     @Published var errorMessage: String = ""
+    @Published var isApiRequestProceeding: Bool = false
     @Published var isWeeklyWeatherInformationsLoaded: Bool = false
 
     var tommorowAndTwoDaysLaterInformations: [Weather.WeeklyInformation] = []
@@ -160,6 +161,7 @@ extension WeeklyWeatherVM {
             
             DispatchQueue.main.async {
                 if let item = result.item?.first {
+                    self.isApiRequestProceeding = false
                     self.setWeatherImageAndRainfallPercentsByThreeToTenDay(by: item)
                     self.setWeeklyWeatherInformations()
                     self.setTemperatureChartInformation()
@@ -183,7 +185,10 @@ extension WeeklyWeatherVM {
     }
     
     func performWeekRequests() async {
-        if !isWeeklyWeatherInformationsLoaded {
+        if !isWeeklyWeatherInformationsLoaded && !isApiRequestProceeding {
+            DispatchQueue.main.async {
+                self.isApiRequestProceeding = true
+            }
             await requestShortForecastItems()
             await requestMidTermForecastTempItems()
             await requestMidTermForecastSkyStateItems()
