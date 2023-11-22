@@ -94,6 +94,9 @@
 		BC91FD542A4483CA00D3E665 /* LoadingProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC91FD532A4483CA00D3E665 /* LoadingProgress.swift */; };
 		BC98BB622B0CFCC000B39F48 /* KoreaLocationList.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC98BB612B0CFCC000B39F48 /* KoreaLocationList.swift */; };
 		BC9A9DCF2AD7E96000603D0C /* WeatherWidgetVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC9A9DCE2AD7E96000603D0C /* WeatherWidgetVM.swift */; };
+		BCA2B1572B0E536C00B669BD /* AdditionalLocationLocalityListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA2B1562B0E536C00B669BD /* AdditionalLocationLocalityListView.swift */; };
+		BCA2B1592B0E538900B669BD /* AdditionalLocationGuListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA2B1582B0E538900B669BD /* AdditionalLocationGuListView.swift */; };
+		BCA2B15B2B0E53EB00B669BD /* AdditionalLocationSubLocalityListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA2B15A2B0E53EB00B669BD /* AdditionalLocationSubLocalityListView.swift */; };
 		BCA2C1B72A603B6900BBEBE2 /* GetHeight.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA2C1B62A603B6900BBEBE2 /* GetHeight.swift */; };
 		BCA30F7A29FE203A0078D0B1 /* MyDedicatedWeatherAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30F7929FE203A0078D0B1 /* MyDedicatedWeatherAppApp.swift */; };
 		BCA30F7C29FE203A0078D0B1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30F7B29FE203A0078D0B1 /* ContentView.swift */; };
@@ -265,6 +268,9 @@
 		BC91FD532A4483CA00D3E665 /* LoadingProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingProgress.swift; sourceTree = "<group>"; };
 		BC98BB612B0CFCC000B39F48 /* KoreaLocationList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KoreaLocationList.swift; sourceTree = "<group>"; };
 		BC9A9DCE2AD7E96000603D0C /* WeatherWidgetVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherWidgetVM.swift; sourceTree = "<group>"; };
+		BCA2B1562B0E536C00B669BD /* AdditionalLocationLocalityListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdditionalLocationLocalityListView.swift; sourceTree = "<group>"; };
+		BCA2B1582B0E538900B669BD /* AdditionalLocationGuListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdditionalLocationGuListView.swift; sourceTree = "<group>"; };
+		BCA2B15A2B0E53EB00B669BD /* AdditionalLocationSubLocalityListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdditionalLocationSubLocalityListView.swift; sourceTree = "<group>"; };
 		BCA2C1B62A603B6900BBEBE2 /* GetHeight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetHeight.swift; sourceTree = "<group>"; };
 		BCA30F7629FE20390078D0B1 /* MyDedicatedWeatherApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyDedicatedWeatherApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCA30F7929FE203A0078D0B1 /* MyDedicatedWeatherAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDedicatedWeatherAppApp.swift; sourceTree = "<group>"; };
@@ -560,6 +566,7 @@
 		BC3C20112B05032D0016E7D4 /* Pages */ = {
 			isa = PBXGroup;
 			children = (
+				BCA2B1532B0E4F6E00B669BD /* AdditionalLocation */,
 				BC3C20122B0503400016E7D4 /* OpenSource */,
 			);
 			path = Pages;
@@ -868,6 +875,16 @@
 				BCA2C1B32A603B3C00BBEBE2 /* GeometryReader */,
 			);
 			path = Modifier;
+			sourceTree = "<group>";
+		};
+		BCA2B1532B0E4F6E00B669BD /* AdditionalLocation */ = {
+			isa = PBXGroup;
+			children = (
+				BCA2B1562B0E536C00B669BD /* AdditionalLocationLocalityListView.swift */,
+				BCA2B1582B0E538900B669BD /* AdditionalLocationGuListView.swift */,
+				BCA2B15A2B0E53EB00B669BD /* AdditionalLocationSubLocalityListView.swift */,
+			);
+			path = AdditionalLocation;
 			sourceTree = "<group>";
 		};
 		BCA2C1B32A603B3C00BBEBE2 /* GeometryReader */ = {
@@ -1308,6 +1325,7 @@
 				BCA30FA229FE6FC30078D0B1 /* JsonRequest.swift in Sources */,
 				BC6EF8BF2A10C0DC0072A2DE /* RealTimeFindDustForecastBase.swift in Sources */,
 				BC8C94F72AE5508700865CCB /* DustForecastStationXYReq.swift in Sources */,
+				BCA2B15B2B0E53EB00B669BD /* AdditionalLocationSubLocalityListView.swift in Sources */,
 				BC3C20142B0503500016E7D4 /* OpenSourceListView.swift in Sources */,
 				BC3C20162B05035B0016E7D4 /* OpenSourceDetailView.swift in Sources */,
 				BC85A94E2A02570E00C4CC48 /* VeryShortOrShortTermForecastBase.swift in Sources */,
@@ -1322,6 +1340,7 @@
 				BCBA40192A7C06EE00B6EFD2 /* FineDustLookUpUtil.swift in Sources */,
 				BC4DDA332A72BD40000376C0 /* LeftOrRightAnimationView.swift in Sources */,
 				BC91FD542A4483CA00D3E665 /* LoadingProgress.swift in Sources */,
+				BCA2B1592B0E538900B669BD /* AdditionalLocationGuListView.swift in Sources */,
 				BC25FDA22AFBB7F400928D7C /* SettingVM.swift in Sources */,
 				BC1E9E382AD2945000ECE71C /* SunOrMoonRiseServiceByXML.swift in Sources */,
 				BC7B765A2A938C580004BF8B /* LineChartView.swift in Sources */,
@@ -1329,6 +1348,7 @@
 				BC4DDA3C2A72C86D000376C0 /* CurrentWeatherInfItemPagerView.swift in Sources */,
 				BC5EF9052AE6AF7300636A95 /* LaunchScreen.swift in Sources */,
 				BC98BB622B0CFCC000B39F48 /* KoreaLocationList.swift in Sources */,
+				BCA2B1572B0E536C00B669BD /* AdditionalLocationLocalityListView.swift in Sources */,
 				BC8C94FB2AE550D900865CCB /* RealTimeFindDustForecastReq.swift in Sources */,
 				BC3145272AD3D11300439CBA /* WidgetShareExtensions.swift in Sources */,
 				BCE489CD2A4EA4CE00A18B2B /* SpoqaHanSansNeoFont.swift in Sources */,
