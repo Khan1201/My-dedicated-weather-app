@@ -26,6 +26,16 @@ struct CurrentLocationAndDateView: View {
             .fontSpoqaHanSansNeo(size: 26, weight: .bold)
             .foregroundColor(.white)
             .lineSpacing(2)
+            .overlay(alignment: .topLeading) {
+                Image(systemName: "plus.message")
+                    .resizable()
+                    .frame(width: 24, height: 24)
+                    .foregroundStyle(Color.white)
+                    .offset(y: -30)
+                    .onTapGesture {
+                        openAdditionalLocationView = true
+                    }
+            }
             
             HStack(alignment: .bottom, spacing: 4) {
                 Text(
