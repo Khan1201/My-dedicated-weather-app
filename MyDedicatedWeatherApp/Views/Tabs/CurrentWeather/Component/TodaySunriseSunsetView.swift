@@ -23,7 +23,7 @@ struct TodaySunriseSunsetView: View {
                 
                 Text("오전 \(sunriseTime.hhMMtoKRhhMM(isSunset: false))")
                     .fontSpoqaHanSansNeo(size: 10, weight: .medium)
-                    .foregroundColor(.white.opacity(0.8))
+                    .foregroundStyle(Color.white)
             }
             .padding(.bottom, 5)
             .overlay(alignment: .bottom) {
@@ -39,15 +39,14 @@ struct TodaySunriseSunsetView: View {
                 
                 Text("오후 \(sunsetTime.hhMMtoKRhhMM(isSunset: true))")
                     .fontSpoqaHanSansNeo(size: 10, weight: .medium)
-                    .foregroundColor(.white.opacity(0.8))
+                    .foregroundStyle(Color.white)
             }
             .padding(.top, 5)
         }
         .padding(.vertical, 6)
         .padding(.horizontal, 12)
         .background {
-            LinearGradient(colors: [Color.red.opacity(0.9), Color.black.opacity(0.5)], startPoint: .top, endPoint: .bottom)
-                .opacity(isDayMode ? 0.6 : 0.4)
+            Color.defaultAreaColor
         }
         .cornerRadius(14)
     }
