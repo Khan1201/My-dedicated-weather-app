@@ -57,12 +57,19 @@ struct CurrentWeatherView: View {
             .padding(.top, 25)
             .frame(height: UIScreen.screenHeight, alignment: .center)
             .todayViewControllerBackground(
-                isDayMode: viewModel.isDayMode, 
+                isDayMode: viewModel.isDayMode,
                 isSunriseSunsetLoadCompleted: viewModel.isSunriseSunsetLoadCompleted,
                 isAllLoadCompleted: viewModel.isAllLoadCompleted,
                 skyType: viewModel.currentWeatherInformation.skyType
             )
             .onChangeAtTodayViewController(disableTabBarTouch: $disableTabBarTouch)
+            .sheet(isPresented: $viewModel.openAdditionalLocationView) {
+                RootNavigationView(
+                    view: AdditionalLocationLocalityListView(
+                        isPresented: $viewModel.openAdditionalLocationView
+                    )
+                )
+            }
             .environmentObject(viewModel)
             .environmentObject(locationDataManagerVM)
             
@@ -112,6 +119,7 @@ extension CurrentWeatherView {
                     location: locationDataManagerVM.currentLocation,
                     subLocation: viewModel.subLocalityByKakaoAddress,
                     showRefreshButton: .constant(true), 
+                    openAdditionalLocationView: $viewModel.openAdditionalLocationView,
                     refreshButtonOnTapGesture: viewModel.refreshButtonOnTapGesture
                 )
                 .padding(.leading, 40)

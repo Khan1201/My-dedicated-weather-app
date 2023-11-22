@@ -18,6 +18,7 @@ final class CurrentWeatherVM: ObservableObject {
     @Published private(set) var todayMinMaxTemperature: (String, String) = ("__", "__")
     @Published private(set) var todayWeatherInformations: [Weather.TodayInformation] = Dummy.shared.todayWeatherInformations()
     @Published var isStartRefresh: Bool = false
+    @Published var openAdditionalLocationView: Bool = false
     
     @Published var subLocalityByKakaoAddress: String = "성수동 1가"
     
