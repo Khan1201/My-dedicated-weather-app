@@ -47,6 +47,9 @@ struct OnChangeAtTodayViewController: ViewModifier {
                     contentVM.setIsRefreshedActionWhenRefreshStart()
                 }
             }
+            .onChange(of: viewModel.locality) { newValue in
+                locationDataManagerVM.setLocality(newValue)
+            }
     }
 }
 

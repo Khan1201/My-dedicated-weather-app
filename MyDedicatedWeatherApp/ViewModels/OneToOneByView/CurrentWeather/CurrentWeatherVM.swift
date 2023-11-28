@@ -20,7 +20,8 @@ final class CurrentWeatherVM: ObservableObject {
     @Published var isStartRefresh: Bool = false
     @Published var openAdditionalLocationView: Bool = false
     
-    @Published var subLocalityByKakaoAddress: String = "성수동 1가"
+    @Published var locality: String = ""
+    @Published var subLocalityByKakaoAddress: String = ""
     
     static private(set) var xy: Gps2XY.LatXLngY = .init(lat: 0, lng: 0, x: 0, y: 0)
     
@@ -642,6 +643,32 @@ extension CurrentWeatherVM {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             self.isStartRefresh = false
+        }
+    }
+    
+    func additionalAddressSubLocalityOnTapGesture(fullAddress: String, locality: String, subLocality: String) {
+        
+        LocationDataManagerVM.getLatitudeAndLongitude(address: fullAddress) { [weak self] latitude, longitude in
+            guard let self = self else { return }
+            self.locality = locality
+            
+            let xy: Gps2XY.LatXLngY = self.commonForecastUtil.convertGPS2XY(mode: .toXY, lat_X: latitude, lng_Y: longitude)
+
+            Task {
+                await self.requestSunAndMoonrise(long: String(longitude), lat: String(latitude)) // Must first called
+                await self.requestVeryShortForecastItems(xy: xy)
+                await self.requestShortForecastItems(xy: xy)
+                await self.requestKaKaoAddressBy(longitude: String(longitude), latitude: String(latitude))
+                await self.requestDustForecastStationXY(
+                    subLocality: subLocality,
+                    locality: locality
+                )
+                await self.requestDustForecastStation(tmXAndtmY: ForDustStationRequest.tmXAndtmY)
+                await self.requestRealTimeFindDustForecastItems()
+                DispatchQueue.main.async {
+                    self.openAdditionalLocationView = false
+                }
+            }
         }
     }
 }

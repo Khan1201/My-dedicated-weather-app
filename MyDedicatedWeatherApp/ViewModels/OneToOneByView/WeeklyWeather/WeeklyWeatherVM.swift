@@ -18,9 +18,10 @@ final class WeeklyWeatherVM: ObservableObject {
     var minMaxTemperaturesByThreeToTenDay: [(String, String)] = []
     var weatherImageAndRainfallPercentsByThreeToTenDay: [(String, String)] = []
     
-    private let locality: String = UserDefaults.standard.string(forKey: "locality") ?? ""
-    private let subLocality: String = UserDefaults.standard.string(forKey: "subLocality") ?? ""
-    private let xy: (Int, Int) = (UserDefaults.standard.integer(forKey: "x"), UserDefaults.standard.integer(forKey: "y"))
+    private let xy: (String, String) = (
+        UserDefaults.shared.string(forKey: "x") ?? "",
+        UserDefaults.shared.string(forKey: "y") ?? ""
+    )
     
     private let shortTermForecastUtil: ShortTermForecastUtil = ShortTermForecastUtil()
     private let commonForecastUtil: CommonForecastUtil = CommonForecastUtil()
@@ -42,14 +43,18 @@ extension WeeklyWeatherVM {
      */
     func requestShortForecastItems() async {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
-
+        let xy: (String, String) = (
+            UserDefaults.shared.string(forKey: "x") ?? "",
+            UserDefaults.shared.string(forKey: "y") ?? ""
+        )
+        
         let parameters = VeryShortOrShortTermForecastReq(
             serviceKey: Env.shared.openDataApiResponseKey,
             numOfRows: "737",
             baseDate: shortTermForecastUtil.requestBaseDate(),
             baseTime: shortTermForecastUtil.requestBaseTime(),
-            nx: String(xy.0),
-            ny: String(xy.1)
+            nx: xy.0,
+            ny: xy.1
         )
         
         do {
@@ -91,7 +96,9 @@ extension WeeklyWeatherVM {
      */
     func requestMidTermForecastTempItems() async {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
-
+        let locality: String = UserDefaults.standard.string(forKey: "locality") ?? ""
+        let subLocality: String = UserDefaults.standard.string(forKey: "subLocality") ?? ""
+        
         let parameters: MidTermForecastReq = MidTermForecastReq(
             serviceKey: Env.shared.openDataApiResponseKey,
             regId: midTermForecastUtil.requestRegOrStnId(locality: locality, reqType: .temperature, subLocality: subLocality),
@@ -138,7 +145,8 @@ extension WeeklyWeatherVM {
      */
     func requestMidTermForecastSkyStateItems() async {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
-
+        let locality: String = UserDefaults.standard.string(forKey: "locality") ?? ""
+        
         let parameters: MidTermForecastReq = MidTermForecastReq(
             serviceKey: Env.shared.openDataApiResponseKey,
             regId: midTermForecastUtil.requestRegOrStnId(locality: locality, reqType: .skystate),

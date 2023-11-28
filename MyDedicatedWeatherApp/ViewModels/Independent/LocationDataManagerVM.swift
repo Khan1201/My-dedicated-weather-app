@@ -70,6 +70,22 @@ final class LocationDataManagerVM: NSObject, ObservableObject {
             UIApplication.shared.open(settingURL)
         }
     }
+    
+    func setLocality(_ newValue: String) {
+        currentLocation = newValue
+        UserDefaults.standard.set(currentLocation, forKey: "locality")
+    }
+    
+    static func getLatitudeAndLongitude(address: String, completion: @escaping (Double, Double) -> Void) {
+        let geocoder = CLGeocoder()
+            geocoder.geocodeAddressString(address) { (placemarks, error) in
+                guard let placemarks = placemarks,
+                let location = placemarks.first?.location?.coordinate else {
+                    return
+                }
+                completion(location.latitude, location.longitude)
+            }
+    }
 }
 
 extension LocationDataManagerVM: CLLocationManagerDelegate {

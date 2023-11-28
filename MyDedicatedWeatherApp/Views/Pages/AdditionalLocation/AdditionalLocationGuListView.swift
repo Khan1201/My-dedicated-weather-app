@@ -10,7 +10,8 @@ import SwiftUI
 struct AdditionalLocationGuListView: View {
     @Binding var isPresented: Bool
     let selectedLocality: String
-    
+    let subLocalityOnTapGesture: (String, String, String) -> Void
+
     @State private var navNextView: Bool = false
     @State private var selectedLocalityAndGu: String = ""
     
@@ -36,8 +37,10 @@ struct AdditionalLocationGuListView: View {
         .navToNextView(
             isPresented: $navNextView,
             view: AdditionalLocationSubLocalityListView(
-                isPresented: $isPresented,
-                selectedLocalityAndGu: selectedLocalityAndGu
+                isPresented: $isPresented, 
+                selectedLocality: selectedLocality,
+                selectedLocalityAndGu: selectedLocalityAndGu,
+                subLocalityOnTapGesture: subLocalityOnTapGesture
             )
         )
     }
@@ -46,6 +49,7 @@ struct AdditionalLocationGuListView: View {
 #Preview {
     AdditionalLocationGuListView(
         isPresented: .constant(true),
-        selectedLocality: ""
+        selectedLocality: "",
+        subLocalityOnTapGesture: {_, _, _ in }
     )
 }

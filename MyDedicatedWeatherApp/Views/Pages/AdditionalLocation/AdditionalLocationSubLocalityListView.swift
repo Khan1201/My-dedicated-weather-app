@@ -9,8 +9,10 @@ import SwiftUI
 
 struct AdditionalLocationSubLocalityListView: View {
     @Binding var isPresented: Bool
+    let selectedLocality: String
     let selectedLocalityAndGu: String
-
+    let subLocalityOnTapGesture: (String, String, String) -> Void
+    
     var body: some View {
         let filtedData: [String] = KoreaLocationList.allDatas.filter { $0.contains(selectedLocalityAndGu) }
         
@@ -26,7 +28,9 @@ struct AdditionalLocationSubLocalityListView: View {
                     let index = data.index(data.startIndex, offsetBy: selectedLocalityAndGu.count)
                     Text(data[index...])
                         .onTapGesture {
-                            isPresented = false
+                            let subLocality: String = String(data[index...])
+                            let fullAddress: String = selectedLocalityAndGu + subLocality
+                            subLocalityOnTapGesture(fullAddress, selectedLocality, subLocality)
                         }
                 }
             }
@@ -38,6 +42,8 @@ struct AdditionalLocationSubLocalityListView: View {
 #Preview {
     AdditionalLocationSubLocalityListView(
         isPresented: .constant(true),
-        selectedLocalityAndGu: ""
+        selectedLocality: "",
+        selectedLocalityAndGu: "",
+        subLocalityOnTapGesture: {_, _, _ in }
     )
 }
