@@ -76,14 +76,15 @@ final class LocationDataManagerVM: NSObject, ObservableObject {
         UserDefaults.standard.set(currentLocation, forKey: "locality")
     }
     
-    static func getLatitudeAndLongitude(address: String, completion: @escaping (Double, Double) -> Void) {
+//    static func getLatitudeAndLongitude(address: String, completion: @escaping (Double, Double) -> Void) {
+    static func getLatitudeAndLongitude(address: String, completion: @escaping (Result<(Double, Double), Error>) -> Void) {
         let geocoder = CLGeocoder()
             geocoder.geocodeAddressString(address) { (placemarks, error) in
                 guard let placemarks = placemarks,
                 let location = placemarks.first?.location?.coordinate else {
-                    return
+                    return completion(.failure(LocationError.notFound))
                 }
-                completion(location.latitude, location.longitude)
+                completion(.success((location.latitude, location.longitude)))
             }
     }
 }

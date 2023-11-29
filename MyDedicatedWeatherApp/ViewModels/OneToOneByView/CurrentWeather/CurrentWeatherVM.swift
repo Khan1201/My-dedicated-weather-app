@@ -19,7 +19,7 @@ final class CurrentWeatherVM: ObservableObject {
     @Published private(set) var todayWeatherInformations: [Weather.TodayInformation] = Dummy.shared.todayWeatherInformations()
     @Published var isStartRefresh: Bool = false
     @Published var openAdditionalLocationView: Bool = false
-    
+    @Published var additionalLocationProgress: AdditionalLocationProgress = .none
     @Published var locality: String = ""
     @Published var subLocalityByKakaoAddress: String = ""
     
@@ -368,6 +368,7 @@ extension CurrentWeatherVM {
                 
                 /// For Widget
                 UserDefaults.shared.set(self.subLocalityByKakaoAddress, forKey: "subLocality")
+                UserDefaults.shared.set(result.documents[0].address.fullAddress, forKey: "fullAddress")
 
                 let durationTime = CFAbsoluteTimeGetCurrent() - startTime
                 print("카카오 주소 req 소요시간: \(durationTime)")
@@ -648,25 +649,40 @@ extension CurrentWeatherVM {
     
     func additionalAddressSubLocalityOnTapGesture(fullAddress: String, locality: String, subLocality: String) {
         
-        LocationDataManagerVM.getLatitudeAndLongitude(address: fullAddress) { [weak self] latitude, longitude in
+        LocationDataManagerVM.getLatitudeAndLongitude(address: fullAddress) { [weak self] result in
             guard let self = self else { return }
             self.locality = locality
             
-            let xy: Gps2XY.LatXLngY = self.commonForecastUtil.convertGPS2XY(mode: .toXY, lat_X: latitude, lng_Y: longitude)
-
-            Task {
-                await self.requestSunAndMoonrise(long: String(longitude), lat: String(latitude)) // Must first called
-                await self.requestVeryShortForecastItems(xy: xy)
-                await self.requestShortForecastItems(xy: xy)
-                await self.requestKaKaoAddressBy(longitude: String(longitude), latitude: String(latitude))
-                await self.requestDustForecastStationXY(
-                    subLocality: subLocality,
-                    locality: locality
-                )
-                await self.requestDustForecastStation(tmXAndtmY: ForDustStationRequest.tmXAndtmY)
-                await self.requestRealTimeFindDustForecastItems()
+            switch result {
+                
+            case .success(let success):
+                let latitude: Double = success.0
+                let longitude: Double = success.1
+                let xy: Gps2XY.LatXLngY = self.commonForecastUtil.convertGPS2XY(mode: .toXY, lat_X: latitude, lng_Y: longitude)
+                
+                additionalLocationProgress = .loading
+                Task {
+                    await self.requestSunAndMoonrise(long: String(longitude), lat: String(latitude)) // Must first called
+                    await self.requestVeryShortForecastItems(xy: xy)
+                    await self.requestShortForecastItems(xy: xy)
+                    await self.requestKaKaoAddressBy(longitude: String(longitude), latitude: String(latitude))
+                    await self.requestDustForecastStationXY(
+                        subLocality: subLocality,
+                        locality: locality
+                    )
+                    await self.requestDustForecastStation(tmXAndtmY: ForDustStationRequest.tmXAndtmY)
+                    await self.requestRealTimeFindDustForecastItems()
+                    
+                    DispatchQueue.main.async {
+                        self.additionalLocationProgress = .completed
+                        self.openAdditionalLocationView = false
+                    }
+                    UserDefaults.shared.set(fullAddress, forKey: "fullAddress")
+                }
+                
+            case .failure(_):
                 DispatchQueue.main.async {
-                    self.openAdditionalLocationView = false
+                    self.additionalLocationProgress = .notFound
                 }
             }
         }
