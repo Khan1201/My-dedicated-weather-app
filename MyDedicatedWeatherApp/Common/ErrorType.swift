@@ -11,3 +11,8 @@ enum APIError: Error {
     
     case transportError
 }
+
+enum LocationError: Error {
+    
+    case notFound
+}
