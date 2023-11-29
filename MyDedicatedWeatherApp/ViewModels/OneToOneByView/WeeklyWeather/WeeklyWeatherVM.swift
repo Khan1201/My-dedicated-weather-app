@@ -96,12 +96,11 @@ extension WeeklyWeatherVM {
      */
     func requestMidTermForecastTempItems() async {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
-        let locality: String = UserDefaults.standard.string(forKey: "locality") ?? ""
-        let subLocality: String = UserDefaults.standard.string(forKey: "subLocality") ?? ""
+        let fullAddress: String = UserDefaults.shared.string(forKey: "fullAddress") ?? ""
         
         let parameters: MidTermForecastReq = MidTermForecastReq(
             serviceKey: Env.shared.openDataApiResponseKey,
-            regId: midTermForecastUtil.requestRegOrStnId(locality: locality, reqType: .temperature, subLocality: subLocality),
+            regId: midTermForecastUtil.requestRegOrStnId(fullAddress: fullAddress, reqType: .temperature),
             stnId: nil,
             tmFc: midTermForecastUtil.requestTmFc()
         )
@@ -145,11 +144,11 @@ extension WeeklyWeatherVM {
      */
     func requestMidTermForecastSkyStateItems() async {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
-        let locality: String = UserDefaults.standard.string(forKey: "locality") ?? ""
-        
+        let fullAddress: String = UserDefaults.shared.string(forKey: "fullAddress") ?? ""
+
         let parameters: MidTermForecastReq = MidTermForecastReq(
             serviceKey: Env.shared.openDataApiResponseKey,
-            regId: midTermForecastUtil.requestRegOrStnId(locality: locality, reqType: .skystate),
+            regId: midTermForecastUtil.requestRegOrStnId(fullAddress: fullAddress, reqType: .skystate),
             stnId: nil,
             tmFc: midTermForecastUtil.requestTmFc()
         )
