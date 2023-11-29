@@ -66,7 +66,8 @@ struct CurrentWeatherView: View {
             .sheet(isPresented: $viewModel.openAdditionalLocationView) {
                 RootNavigationView(
                     view: AdditionalLocationLocalityListView(
-                        isPresented: $viewModel.openAdditionalLocationView, 
+                        isPresented: $viewModel.openAdditionalLocationView,
+                        progress: $viewModel.additionalLocationProgress,
                         subLocalityOnTapGesture: viewModel.additionalAddressSubLocalityOnTapGesture(fullAddress:locality:subLocality:)
                     )
                 )
