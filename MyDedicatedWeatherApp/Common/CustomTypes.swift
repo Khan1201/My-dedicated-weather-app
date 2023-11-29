@@ -175,3 +175,9 @@ enum ShortTermForecastCategory: String, Codable {
          VEC, // 풍향 (사용 x)
          WSD // 풍속
 }
+
+// MARK: - 추가 위치 설정 진행 상태 State
+
+enum AdditionalLocationProgress {
+    case loading, completed, notFound, none
+}
