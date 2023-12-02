@@ -18,8 +18,8 @@ struct AdditionalLocationLocalityListView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             CustomNavigationBar(
-                isPresented: $isPresented,
-                isNavigationUsed: false
+                isPresented: .constant(false),
+                isNavigationUsed: true
             )
             .padding(.top, 10)
 
