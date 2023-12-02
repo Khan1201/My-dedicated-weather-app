@@ -65,7 +65,7 @@ struct CurrentWeatherView: View {
             .onChangeAtTodayViewController(disableTabBarTouch: $disableTabBarTouch)
             .sheet(isPresented: $viewModel.openAdditionalLocationView) {
                 RootNavigationView(
-                    view: AdditionalLocationLocalityListView(
+                    view: AdditionalLocationView(
                         isPresented: $viewModel.openAdditionalLocationView,
                         progress: $viewModel.additionalLocationProgress,
                         subLocalityOnTapGesture: viewModel.additionalAddressSubLocalityOnTapGesture(fullAddress:locality:subLocality:)
