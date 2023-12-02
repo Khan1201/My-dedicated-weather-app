@@ -56,6 +56,12 @@ struct Weather {
         let yList: [Int] // y축 = 온도 범위
         let imageAndRainPercents: [(String, String)]
     }
+    
+    struct WeatherImageAndMinMax {
+        let weatherImage: String
+        let currentTemp: String
+        let minMaxTemp: (String, String)
+    }
 
     enum SkyType: String {
         case sunny,
