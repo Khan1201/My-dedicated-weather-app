@@ -647,6 +647,8 @@ extension CurrentWeatherVM {
         }
     }
     
+//    func additinalAddressSavedItemOnTapGesture(fullAddress)
+    
     func additionalAddressSubLocalityOnTapGesture(fullAddress: String, locality: String, subLocality: String) {
         
         LocationDataManagerVM.getLatitudeAndLongitude(address: fullAddress) { [weak self] result in
@@ -677,7 +679,15 @@ extension CurrentWeatherVM {
                         self.additionalLocationProgress = .completed
                         self.openAdditionalLocationView = false
                     }
+                    
                     UserDefaults.shared.set(fullAddress, forKey: "fullAddress")
+                    
+                    guard var saved = UserDefaults.shared.array(forKey: "fullAddresses") as? [String] else { 
+                        UserDefaults.shared.set([fullAddress], forKey: "fullAddresses")
+                        return
+                    }
+                    saved.append(fullAddress)
+                    UserDefaults.shared.set(saved, forKey: "fullAddresses")
                 }
                 
             case .failure(_):
