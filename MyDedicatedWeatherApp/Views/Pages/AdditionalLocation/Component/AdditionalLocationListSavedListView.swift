@@ -39,7 +39,7 @@ struct AdditionalLocationSavedListView: View {
         localities: [],
         subLocalities: [],
         tempItems: [],
-        itemOnTapGesture: { _, _, _, _ in }, 
+        itemOnTapGesture: { _, _, _, _ in },
         itemDeleteAction: {_, _, _ in }
     )
 }
@@ -64,24 +64,25 @@ struct AdditionalLocationSavedListItemView: View {
             
             Spacer()
             
-            Image(tempItem.weatherImage)
-                .resizable()
-                .frame(width: 34, height: 34)
-                .loadingProgressLottie(isLoadingCompleted: tempItem.weatherImage != "")
-            
-            VStack(alignment: .leading, spacing: 2) {
-                Text(" \(tempItem.currentTemp)°")
-                    .fontSpoqaHanSansNeo(size: 18, weight: .medium)
-                    .foregroundStyle(Color.white)
+            HStack(alignment: .center, spacing: 0) {
+                Image(tempItem.weatherImage)
+                    .resizable()
+                    .frame(width: 34, height: 34)
                 
-                Text("\(tempItem.minMaxTemp.0)°/\(tempItem.minMaxTemp.1)°")
-                    .fontSpoqaHanSansNeo(size: 12, weight: .regular)
-                    .foregroundStyle(Color.white.opacity(0.7))
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(" \(tempItem.currentTemp)°")
+                        .fontSpoqaHanSansNeo(size: 18, weight: .medium)
+                        .foregroundStyle(Color.white)
+                    
+                    Text("\(tempItem.minMaxTemp.0)°/\(tempItem.minMaxTemp.1)°")
+                        .fontSpoqaHanSansNeo(size: 12, weight: .regular)
+                        .foregroundStyle(Color.white.opacity(0.7))
+                }
             }
             .padding(.vertical, 12)
             .padding(.leading, 5)
             .padding(.trailing, 15)
-            .loadingProgressLottie(isLoadingCompleted: tempItem.currentTemp != "" && tempItem.minMaxTemp != ("", ""))
+            .loadingProgressLottie(isLoadingCompleted: tempItem.currentTemp != "" && tempItem.minMaxTemp != ("", "") && tempItem.weatherImage != "")
             
             if isDeleteMode {
                 VStack(alignment: .leading, spacing: 0) {
