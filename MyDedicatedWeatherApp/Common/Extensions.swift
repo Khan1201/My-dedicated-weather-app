@@ -149,3 +149,24 @@ extension View {
         }
     }
 }
+
+extension UserDefaults {
+    
+    func setUserDefaultsStringArray(value: String, key: String) {
+        guard var arrays = self.array(forKey: key) as? [String] else {
+            self.set([value], forKey: key)
+            return
+        }
+        arrays.append(value)
+        self.set(arrays, forKey: key)
+    }
+    
+    func removeStringElementInArray(index: Int, key: String) {
+        guard var arrays = self.array(forKey: key) as? [String] else {
+            return
+        }
+        guard arrays.count - 1 >= index else { return }
+        arrays.remove(at: index)
+        self.set(arrays, forKey: key)
+    }
+}
