@@ -12,7 +12,7 @@ struct AdditionalLocationSubLocalityListView: View {
     @Binding var progress: AdditionalLocationProgress
     let selectedLocality: String
     let selectedLocalityAndGu: String
-    let subLocalityOnTapGesture: (String, String, String) -> Void
+    let finalLocationOnTapGesture: (String, String, String, Bool) -> Void
     
     @State private var showFailFloater: Bool = false
     
@@ -35,7 +35,7 @@ struct AdditionalLocationSubLocalityListView: View {
                             .onTapGesture {
                                 let subLocality: String = String(data[index...])
                                 let fullAddress: String = selectedLocalityAndGu + subLocality
-                                subLocalityOnTapGesture(fullAddress, selectedLocality, subLocality)
+                                finalLocationOnTapGesture(fullAddress, selectedLocality, subLocality, true)
                             }
                     }
                 }
@@ -73,6 +73,6 @@ struct AdditionalLocationSubLocalityListView: View {
         progress: .constant(.none),
         selectedLocality: "",
         selectedLocalityAndGu: "",
-        subLocalityOnTapGesture: {_, _, _ in }
+        finalLocationOnTapGesture: {_, _, _, _ in }
     )
 }

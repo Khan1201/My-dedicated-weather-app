@@ -11,7 +11,7 @@ struct AdditionalLocationGuListView: View {
     @Binding var isPresented: Bool
     @Binding var progress: AdditionalLocationProgress
     let selectedLocality: String
-    let subLocalityOnTapGesture: (String, String, String) -> Void
+    let finalLocationOnTapGesture: (String, String, String, Bool) -> Void
 
     @State private var navNextView: Bool = false
     @State private var selectedLocalityAndGu: String = ""
@@ -30,7 +30,7 @@ struct AdditionalLocationGuListView: View {
                         .onTapGesture {
                             if selectedLocality == "세종특별자치시" {
                                 let fullAddress: String = selectedLocality + " \(gu)"
-                                subLocalityOnTapGesture(fullAddress, selectedLocality, gu)
+                                finalLocationOnTapGesture(fullAddress, selectedLocality, gu, true)
                                 
                             } else {
                                 selectedLocalityAndGu = selectedLocality + " " + gu + " "
@@ -49,7 +49,7 @@ struct AdditionalLocationGuListView: View {
                 progress: $progress,
                 selectedLocality: selectedLocality,
                 selectedLocalityAndGu: selectedLocalityAndGu,
-                subLocalityOnTapGesture: subLocalityOnTapGesture
+                finalLocationOnTapGesture: finalLocationOnTapGesture
             )
         )
     }
@@ -60,6 +60,6 @@ struct AdditionalLocationGuListView: View {
         isPresented: .constant(true),
         progress: .constant(.none),
         selectedLocality: "",
-        subLocalityOnTapGesture: {_, _, _ in }
+        finalLocationOnTapGesture: {_, _, _, _ in }
     )
 }
