@@ -10,7 +10,9 @@ import Foundation
 final class AdditionalLocationVM: ObservableObject {
     
     @Published var tempItems: [Weather.WeatherImageAndMinMax] = Dummy.weatherImageAndMinMax()
-    @Published var savedAddress: [String] = UserDefaults.shared.array(forKey: "fullAddresses") as? [String] ?? []
+    @Published var fullAddresses: [String] = UserDefaults.shared.array(forKey: UserDefaultsKeys.additionalFullAddresses) as? [String] ?? []
+    @Published var localities: [String] = UserDefaults.shared.array(forKey: UserDefaultsKeys.additionalLocalities) as? [String] ?? []
+    @Published var subLocalities: [String] = UserDefaults.shared.array(forKey: UserDefaultsKeys.additionalSubLocalities) as? [String] ?? []
         
     private let commonForecastUtil: CommonForecastUtil = CommonForecastUtil()
     private let veryShortTermForecastUtil: VeryShortTermForecastUtil = VeryShortTermForecastUtil()
@@ -181,13 +183,16 @@ extension AdditionalLocationVM {
      */
     func requestMinMaxTemp(xy: Gps2XY.LatXLngY) async -> (String, String) {
         let currentDateString = Date().toString(format: "yyyyMMdd")
+        let tomorrowDateString = Date().toString(byAdding: 1, format: "yyyyMMdd")
+        let baseTime = shortTermForecastUtil.requestBaseTime()
+        let isBaseTime2300: Bool = baseTime == "2300"
         
         let parameters = VeryShortOrShortTermForecastReq(
             serviceKey: Env.shared.openDataApiResponseKey,
             numOfRows: "300",
             baseDate: shortTermForecastUtil.requestBaseDate(),
             /// baseTime != nil -> 앱 구동 시 호출이 아닌, 수동 호출
-            baseTime: shortTermForecastUtil.requestBaseTime(),
+            baseTime: baseTime,
             nx: String(xy.x),
             ny: String(xy.y)
         )
@@ -208,7 +213,7 @@ extension AdditionalLocationVM {
             )
             
             guard let items = result.item else { return ("", "") }
-            let filteredTempItems = items.filter({ $0.fcstDate == currentDateString && $0.category == .TMP })
+            let filteredTempItems = items.filter({ $0.fcstDate == (isBaseTime2300 ? tomorrowDateString : currentDateString) && $0.category == .TMP })
             let filteredTemps = filteredTempItems.map({ $0.fcstValue })
             let minTemp = filteredTemps.min() ?? ""
             let maxTemp = filteredTemps.max() ?? ""
@@ -261,13 +266,56 @@ extension AdditionalLocationVM {
     }
 }
 
+// MARK: 0n tap gestures..
+
+extension AdditionalLocationVM {
+    
+    func itemDeleteAction(fullAddress: String, locality: String, subLocality: String) {
+        
+        guard let fullAddresses = UserDefaults.shared.array(forKey: UserDefaultsKeys.additionalFullAddresses) as? [String] else {
+            return
+        }
+        
+        guard let localities = UserDefaults.shared.array(forKey: UserDefaultsKeys.additionalLocalities) as? [String] else {
+            return
+        }
+        
+        guard let subLocalities = UserDefaults.shared.array(forKey: UserDefaultsKeys.additionalSubLocalities) as? [String] else {
+            return
+        }
+        
+        guard let fullAddressIndex = fullAddresses.firstIndex(of: fullAddress), let localityIndex = localities.firstIndex(of: locality),
+              let subLocalityIndex = subLocalities.firstIndex(of: subLocality) else { 
+            CommonUtil.shared.printError(
+                funcTitle: "itemDeleteAction", 
+                description: "Index를 찾을 수 없습니다."
+            )
+            return
+        }
+        
+        guard fullAddressIndex == localityIndex && fullAddressIndex == subLocalityIndex else {
+            CommonUtil.shared.printError(
+                funcTitle: "itemDeleteAction",
+                description: "ullAddressIndex == localityIndex == subLocalityIndex 이 아닙니다."
+            )
+            return
+        }
+        
+        UserDefaults.shared.removeStringElementInArray(index: fullAddressIndex, key: UserDefaultsKeys.additionalFullAddresses)
+        UserDefaults.shared.removeStringElementInArray(index: localityIndex, key: UserDefaultsKeys.additionalLocalities)
+        UserDefaults.shared.removeStringElementInArray(index: subLocalityIndex, key: UserDefaultsKeys.additionalSubLocalities)
+        
+        reloadItems()
+    }
+}
+
 // MARK: - ETC funcs..
 
 extension AdditionalLocationVM {
     
     func performRequestSavedLocationWeather() {
         
-        for (index, address) in self.savedAddress.enumerated() {
+        for (index, address) in self.fullAddresses.enumerated() {
             LocationDataManagerVM.getLatitudeAndLongitude(address: address) { [weak self] result in
                 guard let self = self else { return }
                 
@@ -312,5 +360,15 @@ extension AdditionalLocationVM {
     
     func additinalLocationViewTaskAction() {
         performRequestSavedLocationWeather()
+    }
+    
+    func reloadItems() {
+        let fullAddresses: [String] = UserDefaults.shared.array(forKey: UserDefaultsKeys.additionalFullAddresses) as? [String] ?? []
+        let localities: [String] = UserDefaults.shared.array(forKey: UserDefaultsKeys.additionalLocalities) as? [String] ?? []
+        let subLocalities: [String] = UserDefaults.shared.array(forKey: UserDefaultsKeys.additionalSubLocalities) as? [String] ?? []
+        
+        self.fullAddresses = fullAddresses
+        self.localities = localities
+        self.subLocalities = subLocalities
     }
 }
