@@ -51,7 +51,7 @@ struct AdditionalLocationView: View {
             view: AdditionalLocationLocalityListView(
                 isPresented: $isPresented,
                 progress: $progress,
-                subLocalityOnTapGesture: subLocalityOnTapGesture
+                finalLocationOnTapGesture: finalLocationOnTapGesture
             )
         )
     }
@@ -61,6 +61,6 @@ struct AdditionalLocationView: View {
     AdditionalLocationView(
         isPresented: .constant(true),
         progress: .constant(.none),
-        subLocalityOnTapGesture: {_, _, _ in }
+        finalLocationOnTapGesture: {_, _, _, _ in }
     )
 }
