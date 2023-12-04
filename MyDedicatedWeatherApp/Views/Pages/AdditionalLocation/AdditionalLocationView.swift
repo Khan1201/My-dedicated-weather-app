@@ -10,7 +10,7 @@ import SwiftUI
 struct AdditionalLocationView: View {
     @Binding var isPresented: Bool
     @Binding var progress: AdditionalLocationProgress
-    let subLocalityOnTapGesture: (String, String, String) -> Void
+    let finalLocationOnTapGesture: (String, String, String, Bool) -> Void
     
     @StateObject var vm: AdditionalLocationVM = AdditionalLocationVM()
     @State private var navNextView: Bool = false
