@@ -187,3 +187,9 @@ enum ShortTermForecastCategory: String, Codable {
 enum AdditionalLocationProgress {
     case loading, completed, notFound, none
 }
+
+// MARK: - 위젯 공유 사항
+
+enum WidgetShared: String {
+    case x, y, latitude, longitude, locality, subLocality, fullAddress, dustStationName
+}
