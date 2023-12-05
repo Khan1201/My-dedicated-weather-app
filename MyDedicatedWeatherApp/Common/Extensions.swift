@@ -169,4 +169,34 @@ extension UserDefaults {
         arrays.remove(at: index)
         self.set(arrays, forKey: key)
     }
+    
+    static func setWidgetShared(_ value: String, to: WidgetShared) {
+        
+        switch to {
+            
+        case .x:
+            UserDefaults.shared.set(value, forKey: UserDefaultsKeys.x)
+
+        case .y:
+            UserDefaults.shared.set(value, forKey: UserDefaultsKeys.y)
+            
+        case .latitude:
+            UserDefaults.shared.set(value, forKey: UserDefaultsKeys.latitude)
+            
+        case .longitude:
+            UserDefaults.shared.set(value, forKey: UserDefaultsKeys.longitude)
+
+        case .locality:
+            UserDefaults.shared.set(value, forKey: UserDefaultsKeys.locality)
+            
+        case .subLocality:
+            UserDefaults.shared.set(value, forKey: UserDefaultsKeys.subLocality)
+            
+        case .fullAddress:
+            UserDefaults.shared.set(value, forKey: UserDefaultsKeys.fullAddress)
+            
+        case .dustStationName:
+            UserDefaults.shared.set(value, forKey: UserDefaultsKeys.dustStation)
+        }
+    }
 }
