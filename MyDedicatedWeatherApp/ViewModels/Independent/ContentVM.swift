@@ -9,11 +9,18 @@ import Foundation
 
 final class ContentVM: ObservableObject {
     
+    static let shared = ContentVM()
+    
     @Published var currentTab: TabBarType = .current
     @Published var isLoading: Bool = true
     @Published var disableTabBarTouch: Bool = true
     @Published var showNoticePopup: Bool = false
     @Published var isRefreshed: Bool = false
+    
+    @Published private(set) var skyKeyword: String = ""
+    @Published private(set) var isDayMode: Bool = false
+    
+    private init() {}
 }
 
 
@@ -50,5 +57,13 @@ extension ContentVM {
         DispatchQueue.main.asyncAfter(wallDeadline: .now() + 0.5) {
             self.isRefreshed = false
         }
+    }
+    
+    func setIsDayMode(_ value: Bool) {
+        isDayMode = value
+    }
+    
+    func setSkyKeyword(_ value: String) {
+        skyKeyword = value
     }
 }
