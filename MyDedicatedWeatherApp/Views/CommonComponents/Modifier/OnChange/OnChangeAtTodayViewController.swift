@@ -12,6 +12,7 @@ struct OnChangeAtTodayViewController: ViewModifier {
     @EnvironmentObject var viewModel: CurrentWeatherVM
     @EnvironmentObject var locationDataManagerVM: LocationDataManagerVM
     @EnvironmentObject var contentVM: ContentVM
+    @EnvironmentObject var currentLocationVM: CurrentLocationVM
     
     func body(content: Content) -> some View {
         content
@@ -24,7 +25,7 @@ struct OnChangeAtTodayViewController: ViewModifier {
             .onChange(of: viewModel.isKakaoAddressLoadCompleted) { newValue in
                 viewModel.todayViewControllerKakaoAddressUpdatedAction(
                     umdName: viewModel.subLocalityByKakaoAddress,
-                    locality: locationDataManagerVM.currentLocation
+                    locality: locationDataManagerVM.currentLocality
                 )
             }
             // 7 values..
@@ -40,15 +41,18 @@ struct OnChangeAtTodayViewController: ViewModifier {
                 disableTabBarTouch = false
             }
             .onChange(of: viewModel.isStartRefresh) { newValue in
+                viewModel.isStartRefreshOnChangeAction(
+                    newValue: newValue,
+                    longitude: currentLocationVM.longitude,
+                    latitude: currentLocationVM.latitude,
+                    xy: currentLocationVM.xy,
+                    locality: currentLocationVM.locality,
+                    subLocality: currentLocationVM.subLocality
+                )
+                
                 if newValue {
-                    locationDataManagerVM.initializeStates()
-                    viewModel.initializeStates()
-                    locationDataManagerVM.startUpdaitingLocation()
                     contentVM.setIsRefreshedActionWhenRefreshStart()
                 }
-            }
-            .onChange(of: viewModel.locality) { newValue in
-                locationDataManagerVM.setLocality(newValue)
             }
     }
 }

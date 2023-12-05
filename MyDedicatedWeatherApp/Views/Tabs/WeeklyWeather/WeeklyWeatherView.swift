@@ -11,6 +11,7 @@ struct WeeklyWeatherView: View {
     
     @StateObject var viewModel: WeeklyWeatherVM = WeeklyWeatherVM(weeklyWeatherInformations: Dummy().weeklyWeatherInformations())
     @EnvironmentObject var contentVM: ContentVM
+    @EnvironmentObject var currentLocationVM: CurrentLocationVM
     
     @State private var graphOpacity: CGFloat = 0
     
@@ -19,11 +20,16 @@ struct WeeklyWeatherView: View {
         
         VStack(alignment: .leading, spacing: 0) {
             CurrentLocationAndDateView(
-                location: UserDefaults.standard.string(forKey: "locality") ?? "",
-                subLocation: UserDefaults.standard.string(forKey: "subLocality") ?? "", 
-                showRefreshButton: $viewModel.isWeeklyWeatherInformationsLoaded, 
+                location: currentLocationVM.locality,
+                subLocation: currentLocationVM.subLocality,
+                showRefreshButton: $viewModel.isWeeklyWeatherInformationsLoaded,
                 openAdditionalLocationView: .constant(false),
-                refreshButtonOnTapGesture: viewModel.refreshButtonOnTapGesture
+                refreshButtonOnTapGesture: {
+                    viewModel.refreshButtonOnTapGesture(
+                        xy: currentLocationVM.xy,
+                        fullAddress: currentLocationVM.fullAddress
+                    )
+                }
             )
             .padding(.leading, 24)
             .padding(.top, 35)
@@ -70,14 +76,17 @@ struct WeeklyWeatherView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
         .weekViewControllerBackground(
-            isDayMode: UserDefaults.standard.bool(forKey: "isDayMode"),
-            skyKeyword: UserDefaults.standard.string(forKey: "skyKeyword") ?? ""
+            isDayMode: contentVM.isDayMode,
+            skyKeyword: contentVM.skyKeyword
         )
         .onChange(of: contentVM.isRefreshed) { newValue in
             viewModel.isRefreshedOnChangeAction(newValue)
         }
         .task {
-            await viewModel.performWeekRequests()
+            await viewModel.performWeekRequests(
+                xy: currentLocationVM.xy,
+                fullAddress: currentLocationVM.fullAddress
+            )
         }
     }
 }

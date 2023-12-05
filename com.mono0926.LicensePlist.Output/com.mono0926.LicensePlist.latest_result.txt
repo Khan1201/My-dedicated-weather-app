@@ -1,0 +1,11 @@
+name: Alamofire, nameSpecified: Alamofire, owner: Alamofire, version: 5.6.4, source: https://github.com/Alamofire/Alamofire
+
+name: lottie-ios, nameSpecified: Lottie, owner: airbnb, version: 4.2.0, source: https://github.com/airbnb/lottie-ios
+
+name: PopupView, nameSpecified: PopupView, owner: exyte, version: 2.7.0, source: https://github.com/exyte/PopupView
+
+name: SwiftUIPager, nameSpecified: SwiftUIPager, owner: fermoya, version: 2.5.0, source: https://github.com/fermoya/SwiftUIPager
+
+add-version-numbers: false
+
+LicensePlist Version: 3.25.1

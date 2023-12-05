@@ -11,10 +11,14 @@ import UIKit
 
 final class LocationDataManagerVM: NSObject, ObservableObject {
     
-    private var locationManager = CLLocationManager()
-    @Published var currentLocation: String = "" // 서울특별시, 대구광역시
+    @Published var currentLocality: String = "" // 서울특별시, 대구광역시
     @Published var locationPermissonType: PermissionType = .notAllow
+    @Published var isLocationUpdated: Bool = false
     
+    private let currentLocationVM: CurrentLocationVM
+    private let commonForecastUtil: CommonForecastUtil = CommonForecastUtil()
+
+    private var locationManager = CLLocationManager()
     var longitudeAndLatitude: (String, String) {
         
         return (
@@ -23,18 +27,14 @@ final class LocationDataManagerVM: NSObject, ObservableObject {
         )
     }
     
-    /// Load Completed Variables..
-    @Published var isLocationUpdated: Bool = false
-    
-    private let commonForecastUtil: CommonForecastUtil = CommonForecastUtil()
-    
     enum PermissionType {
         
         case allow
         case notAllow
     }
     
-    override init() {
+    init(currentLocationVM: CurrentLocationVM = CurrentLocationVM.shared) {
+        self.currentLocationVM = currentLocationVM
         super.init()
         locationManager.delegate = self
     }
@@ -57,8 +57,6 @@ final class LocationDataManagerVM: NSObject, ObservableObject {
             lat_X: locationManager.location?.coordinate.latitude ?? 0,
             lng_Y:locationManager.location?.coordinate.longitude ?? 0
         )
-        UserDefaults.standard.set(xy.x, forKey: "x")
-        UserDefaults.standard.set(xy.y, forKey: "y")
         return xy
     }
     
@@ -70,13 +68,7 @@ final class LocationDataManagerVM: NSObject, ObservableObject {
             UIApplication.shared.open(settingURL)
         }
     }
-    
-    func setLocality(_ newValue: String) {
-        currentLocation = newValue
-        UserDefaults.standard.set(currentLocation, forKey: "locality")
-    }
-    
-//    static func getLatitudeAndLongitude(address: String, completion: @escaping (Double, Double) -> Void) {
+
     static func getLatitudeAndLongitude(address: String, completion: @escaping (Result<(Double, Double), Error>) -> Void) {
         let geocoder = CLGeocoder()
             geocoder.geocodeAddressString(address) { (placemarks, error) in
@@ -112,9 +104,15 @@ extension LocationDataManagerVM: CLLocationManagerDelegate {
             latitude: locationManager.location?.coordinate.latitude ?? 0,
             longitude: locationManager.location?.coordinate.longitude ?? 0
         )
+        let xy: Gps2XY.LatXLngY = convertLocationToXYForVeryShortForecast()
+        let latitude: String = String(locationManager.location?.coordinate.latitude ?? 0)
+        let longitude: String = String(locationManager.location?.coordinate.longitude ?? 0)
+        
         // Widget에 공유 위해
-        UserDefaults.shared.set(locationManager.location?.coordinate.latitude ?? 0, forKey: "latitude")
-        UserDefaults.shared.set(locationManager.location?.coordinate.longitude ?? 0, forKey: "longitude")
+        UserDefaults.setWidgetShared(latitude, to: .latitude)
+        UserDefaults.setWidgetShared(longitude, to: .longitude)
+        UserDefaults.setWidgetShared(String(xy.x), to: .x)
+        UserDefaults.setWidgetShared(String(xy.y), to: .y)
         
         let geoCoder: CLGeocoder = CLGeocoder()
         let local: Locale = Locale(identifier: "Ko-KR") // Korea
@@ -122,10 +120,17 @@ extension LocationDataManagerVM: CLLocationManagerDelegate {
         geoCoder.reverseGeocodeLocation(location, preferredLocale: local) { [weak self] place, error in
             guard let self = self else { return }
             if let address: CLPlacemark = place?.last {
-                self.currentLocation = address.administrativeArea ?? ""
+                self.currentLocality = address.administrativeArea ?? ""
+                
+                currentLocationVM.setXY((String(xy.x), String(xy.y)))
+                currentLocationVM.setLatitude(latitude)
+                currentLocationVM.setLongitude(longitude)
+                currentLocationVM.setLocality(self.currentLocality)
+                
                 self.isLocationUpdated = true
-                UserDefaults.standard.set(self.currentLocation, forKey: "locality")
-                UserDefaults.shared.set(self.currentLocation, forKey: "locality")
+                
+                // Widget에 공유 위해
+                UserDefaults.setWidgetShared(self.currentLocality, to: .locality)
             }
         }
     }

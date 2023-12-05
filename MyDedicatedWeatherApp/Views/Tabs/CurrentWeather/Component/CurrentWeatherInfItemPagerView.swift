@@ -15,6 +15,7 @@ struct CurrentWeatherInfItemPagerView: View {
     let page: Page
     let isLoadCompleted: Bool
     
+    @EnvironmentObject var contentVM: ContentVM
     @State private var pagerViewHeight: CGFloat = 0
     
     var body: some View {
@@ -69,7 +70,7 @@ extension CurrentWeatherInfItemPagerView {
                 imageColor: Color.blue,
                 title: "강수량",
                 value: viewModel.currentWeatherInformation.oneHourPrecipitation,
-                isDayMode: viewModel.isDayMode
+                isDayMode: contentVM.isDayMode
             )
             
             CurrentWeatherInformationItemView(
@@ -78,7 +79,7 @@ extension CurrentWeatherInfItemPagerView {
                 imageColor: Color.red.opacity(0.7),
                 title: "바람",
                 value: viewModel.currentWeatherInformation.windSpeed,
-                isDayMode: viewModel.isDayMode
+                isDayMode: contentVM.isDayMode
             )
             
             CurrentWeatherInformationItemView(
@@ -87,7 +88,7 @@ extension CurrentWeatherInfItemPagerView {
                 imageColor: Color.blue.opacity(0.7),
                 title: "습도",
                 value: viewModel.currentWeatherInformation.wetPercent,
-                isDayMode: viewModel.isDayMode
+                isDayMode: contentVM.isDayMode
             )
         }
         .padding(.horizontal, 26)
@@ -103,7 +104,7 @@ extension CurrentWeatherInfItemPagerView {
                 imageColor: Color.black.opacity(0.7),
                 title: "미세먼지",
                 value: (viewModel.currentFineDustTuple.description, ""),
-                isDayMode: viewModel.isDayMode,
+                isDayMode: contentVM.isDayMode,
                 backgroundColor: viewModel.currentFineDustTuple.color
             )
             
@@ -113,7 +114,7 @@ extension CurrentWeatherInfItemPagerView {
                 imageColor: Color.red.opacity(0.7),
                 title: "초미세먼지",
                 value: (viewModel.currentUltraFineDustTuple.description, ""),
-                isDayMode: viewModel.isDayMode,
+                isDayMode: contentVM.isDayMode,
                 backgroundColor: viewModel.currentUltraFineDustTuple.color
             )
         }

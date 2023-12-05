@@ -12,6 +12,8 @@ struct MyDedicatedWeatherAppApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(CurrentLocationVM.shared)
+                .environmentObject(ContentVM.shared)
         }
     }
 }

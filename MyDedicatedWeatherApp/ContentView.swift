@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @StateObject var vm: ContentVM = ContentVM()
+    @EnvironmentObject var vm: ContentVM
     
     var body: some View {
         
@@ -21,7 +21,6 @@ struct ContentView: View {
                         .onAppear {
                             vm.loadingOnAppearAction()
                         }
-                    
                 }
                 
                 TabView(selection: $vm.currentTab) {
@@ -54,7 +53,6 @@ struct ContentView: View {
                 .onAppear {
                     UITabBar.appearance().barTintColor = .clear
                 }
-                .environmentObject(vm)
             }
             
         }

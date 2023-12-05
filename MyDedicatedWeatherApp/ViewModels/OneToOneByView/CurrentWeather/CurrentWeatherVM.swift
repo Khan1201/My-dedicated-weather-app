@@ -25,7 +25,6 @@ final class CurrentWeatherVM: ObservableObject {
     
     static private(set) var xy: Gps2XY.LatXLngY = .init(lat: 0, lng: 0, x: 0, y: 0)
     
-    @Published private(set) var isDayMode: Bool = false
     @Published private(set) var sunRiseAndSetHHmm: (String, String) = ("0000", "0000")
     
     /// Load Completed Variables..(7 values)
@@ -44,12 +43,20 @@ final class CurrentWeatherVM: ObservableObject {
         static var stationName: String = ""
     }
     
+    private let contentVM: ContentVM
+    private let currentLocationVM: CurrentLocationVM
+    
     private let commonForecastUtil: CommonForecastUtil = CommonForecastUtil()
     private let veryShortTermForecastUtil: VeryShortTermForecastUtil = VeryShortTermForecastUtil()
     private let shortTermForecastUtil: ShortTermForecastUtil = ShortTermForecastUtil()
     private let midTermForecastUtil: MidTermForecastUtil = MidTermForecastUtil()
     private let fineDustLookUpUtil: FineDustLookUpUtil = FineDustLookUpUtil()
     private var subscriptions: Set<AnyCancellable> = []
+    
+    init(contentVM: ContentVM = ContentVM.shared, currentLocationVM: CurrentLocationVM = CurrentLocationVM.shared) {
+        self.contentVM = contentVM
+        self.currentLocationVM = currentLocationVM
+    }
 }
 
 // MARK: - Request HTTP..
@@ -78,12 +85,6 @@ extension CurrentWeatherVM {
      */
     func requestVeryShortForecastItems(xy: Gps2XY.LatXLngY) async {
         let startTime = CFAbsoluteTimeGetCurrent()
-
-        CurrentWeatherVM.xy = xy
-        
-        // Widget에 공유 위해
-        UserDefaults.shared.set(String(xy.x), forKey: "x")
-        UserDefaults.shared.set(String(xy.y), forKey: "y")
         
         let baseTime = veryShortTermForecastUtil.requestBaseTime()
         let baseDate = veryShortTermForecastUtil.requestBaseDate(baseTime: baseTime)
@@ -223,9 +224,6 @@ extension CurrentWeatherVM {
             stationName: ForDustStationRequest.stationName
         )
         
-        /// Widget에 공유하기 위해
-        UserDefaults.shared.set(parameters.stationName, forKey: "dustStationName")
-        
         do {
             let result = try await JsonRequest.shared.newRequest(
                 url: Route.GET_REAL_TIME_FIND_DUST_FORECAST.val,
@@ -303,7 +301,7 @@ extension CurrentWeatherVM {
      - parameter tmxAndtmY: 미세먼지 측정소 X, Y 좌표
      
      */
-    func requestDustForecastStation(tmXAndtmY: (String, String)) async {
+    func requestDustForecastStation(tmXAndtmY: (String, String), isCurrentLocationRequested: Bool) async {
         
         let param: DustForecastStationReq = DustForecastStationReq(
             serviceKey: Env.shared.openDataApiResponseKey,
@@ -323,6 +321,10 @@ extension CurrentWeatherVM {
             
             if let filteredResult = result.items?.first {
                 ForDustStationRequest.stationName = filteredResult.stationName
+                
+                if isCurrentLocationRequested {
+                    UserDefaults.setWidgetShared(filteredResult.stationName, to: .dustStationName)
+                }
             }
             
         } catch APIError.transportError {
@@ -345,7 +347,7 @@ extension CurrentWeatherVM {
      Apple이 제공하는.reverseGeocodeLocation 에서 특정 기기에서 sublocality가 nil로 할당되므로
      kakao address request 에서 가져오도록 결정함.
      */
-    func requestKaKaoAddressBy(longitude: String, latitude: String) async {
+    func requestKaKaoAddressBy(longitude: String, latitude: String, isCurrentLocationRequested: Bool) async {
         let startTime = CFAbsoluteTimeGetCurrent()
 
         let param = KakaoAddressReq(x: longitude, y: latitude)
@@ -363,12 +365,14 @@ extension CurrentWeatherVM {
             
             DispatchQueue.main.async {
                 self.subLocalityByKakaoAddress = result.documents[0].address.subLocality
+                self.currentLocationVM.setSubLocality(result.documents[0].address.subLocality)
                 self.isKakaoAddressLoadCompleted = true
-                UserDefaults.standard.set(self.subLocalityByKakaoAddress, forKey: "subLocality")
                 
                 /// For Widget
-                UserDefaults.shared.set(self.subLocalityByKakaoAddress, forKey: "subLocality")
-                UserDefaults.shared.set(result.documents[0].address.fullAddress, forKey: "fullAddress")
+                if isCurrentLocationRequested {
+                    UserDefaults.setWidgetShared(self.subLocalityByKakaoAddress, to: .subLocality)
+                    UserDefaults.setWidgetShared(result.documents[0].address.fullAddress, to: .fullAddress)
+                }
 
                 let durationTime = CFAbsoluteTimeGetCurrent() - startTime
                 print("카카오 주소 req 소요시간: \(durationTime)")
@@ -408,7 +412,11 @@ extension CurrentWeatherVM {
             
             DispatchQueue.main.async {
                 self.sunRiseAndSetHHmm = (parser.result.sunrise, parser.result.sunset)
-                self.setIsDayMode(riseItem: parser.result)
+                
+                let currentHHmm = Date().toString(format: "HHmm")
+                let isDayMode = self.commonForecastUtil.isDayMode(hhMM: currentHHmm, sunrise: parser.result.sunrise, sunset: parser.result.sunset)
+                self.contentVM.setIsDayMode(isDayMode)
+                
                 self.isSunriseSunsetLoadCompleted = true
             }
             
@@ -476,8 +484,7 @@ extension CurrentWeatherVM {
             skyType: veryShortTermForecastWeatherInf.skyType
         )
         
-        UserDefaults.standard.set(veryShortTermForecastWeatherInf.skyType.backgroundImageKeyword, forKey: "skyKeyword")
-        
+        contentVM.setSkyKeyword(veryShortTermForecastWeatherInf.skyType.backgroundImageKeyword)
         isCurrentWeatherInformationLoadCompleted = true
     }
     
@@ -581,19 +588,6 @@ extension CurrentWeatherVM {
     }
     
     /**
-     Set riseItem -> `isDayMode`variable
-     
-     - parameter riseItem: 일출, 일몰 Item
-     */
-    func setIsDayMode(riseItem: SunAndMoonriseBase) {
-        
-        let currentHHmm = Date().toString(format: "HHmm")
-        isDayMode = commonForecastUtil.isDayMode(hhMM: currentHHmm, sunrise: riseItem.sunrise, sunset: riseItem.sunset)
-        UserDefaults.standard.set(isDayMode, forKey: "isDayMode")
-    }
-    
-    
-    /**
      Set `isAllLoadCompleted` variable
      
      */
@@ -619,7 +613,7 @@ extension CurrentWeatherVM {
             await requestSunAndMoonrise(long: longLati.0, lat: longLati.1) // Must first called
             await requestVeryShortForecastItems(xy: xy)
             await requestShortForecastItems(xy: xy)
-            await requestKaKaoAddressBy(longitude: longLati.0, latitude: longLati.1)
+            await requestKaKaoAddressBy(longitude: longLati.0, latitude: longLati.1, isCurrentLocationRequested: true)
         }
     }
     
@@ -629,7 +623,7 @@ extension CurrentWeatherVM {
                 subLocality: umdName,
                 locality: locality
             )
-            await requestDustForecastStation(tmXAndtmY: ForDustStationRequest.tmXAndtmY)
+            await requestDustForecastStation(tmXAndtmY: ForDustStationRequest.tmXAndtmY, isCurrentLocationRequested: true)
             await requestRealTimeFindDustForecastItems()
         }
     }
@@ -667,25 +661,30 @@ extension CurrentWeatherVM {
                     await self.requestSunAndMoonrise(long: String(longitude), lat: String(latitude)) // Must first called
                     await self.requestVeryShortForecastItems(xy: xy)
                     await self.requestShortForecastItems(xy: xy)
-                    await self.requestKaKaoAddressBy(longitude: String(longitude), latitude: String(latitude))
+                    await self.requestKaKaoAddressBy(longitude: String(longitude), latitude: String(latitude), isCurrentLocationRequested: false)
                     await self.requestDustForecastStationXY(
                         subLocality: subLocality,
                         locality: locality
                     )
-                    await self.requestDustForecastStation(tmXAndtmY: ForDustStationRequest.tmXAndtmY)
+                    await self.requestDustForecastStation(tmXAndtmY: ForDustStationRequest.tmXAndtmY, isCurrentLocationRequested: false)
                     await self.requestRealTimeFindDustForecastItems()
                     
                     DispatchQueue.main.async {
+                        self.currentLocationVM.setXY((String(xy.x), String(xy.y)))
+                        self.currentLocationVM.setLatitude(String(latitude))
+                        self.currentLocationVM.setLongitude(String(longitude))
+                        self.currentLocationVM.setLocality(locality)
+                        self.currentLocationVM.setSubLocality(subLocality)
+                        self.currentLocationVM.setFullAddress(fullAddress)
+                        
                         self.additionalLocationProgress = .completed
                         self.openAdditionalLocationView = false
                     }
-                    
-                    UserDefaults.shared.set(fullAddress, forKey: UserDefaultsKeys.fullAddress)
-                    
+                                        
                     if isNewAdd {
-                        UserDefaults.shared.setUserDefaultsStringArray(value: fullAddress, key: UserDefaultsKeys.additionalFullAddresses)
-                        UserDefaults.shared.setUserDefaultsStringArray(value: locality, key: UserDefaultsKeys.additionalLocalities)
-                        UserDefaults.shared.setUserDefaultsStringArray(value: subLocality, key: UserDefaultsKeys.additionalSubLocalities)
+                        UserDefaults.standard.setUserDefaultsStringArray(value: fullAddress, key: UserDefaultsKeys.additionalFullAddresses)
+                        UserDefaults.standard.setUserDefaultsStringArray(value: locality, key: UserDefaultsKeys.additionalLocalities)
+                        UserDefaults.standard.setUserDefaultsStringArray(value: subLocality, key: UserDefaultsKeys.additionalSubLocalities)
                     }
                 }
                 
@@ -693,6 +692,28 @@ extension CurrentWeatherVM {
                 DispatchQueue.main.async {
                     self.additionalLocationProgress = .notFound
                 }
+            }
+        }
+    }
+}
+
+// MARK: - On change funcs..
+
+extension CurrentWeatherVM {
+    
+    func isStartRefreshOnChangeAction(newValue: Bool, longitude: String, latitude: String, xy: (String, String), locality: String, subLocality: String) {
+        
+        if newValue {
+            initializeStates()
+            
+            Task {
+                performRefresh(
+                    longitude: longitude,
+                    latitude: latitude,
+                    xy: xy,
+                    locality: locality,
+                    subLocality: subLocality
+                )
             }
         }
     }
@@ -711,4 +732,22 @@ extension CurrentWeatherVM {
         isSunriseSunsetLoadCompleted = false
         isTodayWeatherInformationLoadCompleted = false
     }
+    
+    func performRefresh(longitude: String, latitude: String, xy: (String, String), locality: String, subLocality: String) {
+        let convertedXY: Gps2XY.LatXLngY = .init(lat: 0, lng: 0, x: xy.0.toInt, y: xy.1.toInt)
+        
+        Task {
+            await requestSunAndMoonrise(long: longitude, lat: latitude) // Must first called
+            await requestVeryShortForecastItems(xy: convertedXY)
+            await requestShortForecastItems(xy: convertedXY)
+            await requestKaKaoAddressBy(longitude: longitude, latitude: latitude, isCurrentLocationRequested: false)
+            await requestDustForecastStationXY(
+                subLocality: subLocality,
+                locality: locality
+            )
+            await requestDustForecastStation(tmXAndtmY: ForDustStationRequest.tmXAndtmY, isCurrentLocationRequested: false)
+            await requestRealTimeFindDustForecastItems()
+        }
+    }
 }
+

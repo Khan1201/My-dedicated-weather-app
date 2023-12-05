@@ -10,9 +10,9 @@ import Foundation
 final class AdditionalLocationVM: ObservableObject {
     
     @Published var tempItems: [Weather.WeatherImageAndMinMax] = Dummy.weatherImageAndMinMax()
-    @Published var fullAddresses: [String] = UserDefaults.shared.array(forKey: UserDefaultsKeys.additionalFullAddresses) as? [String] ?? []
-    @Published var localities: [String] = UserDefaults.shared.array(forKey: UserDefaultsKeys.additionalLocalities) as? [String] ?? []
-    @Published var subLocalities: [String] = UserDefaults.shared.array(forKey: UserDefaultsKeys.additionalSubLocalities) as? [String] ?? []
+    @Published var fullAddresses: [String] = UserDefaults.standard.array(forKey: UserDefaultsKeys.additionalFullAddresses) as? [String] ?? []
+    @Published var localities: [String] = UserDefaults.standard.array(forKey: UserDefaultsKeys.additionalLocalities) as? [String] ?? []
+    @Published var subLocalities: [String] = UserDefaults.standard.array(forKey: UserDefaultsKeys.additionalSubLocalities) as? [String] ?? []
         
     private let commonForecastUtil: CommonForecastUtil = CommonForecastUtil()
     private let veryShortTermForecastUtil: VeryShortTermForecastUtil = VeryShortTermForecastUtil()
@@ -272,15 +272,15 @@ extension AdditionalLocationVM {
     
     func itemDeleteAction(fullAddress: String, locality: String, subLocality: String) {
         
-        guard let fullAddresses = UserDefaults.shared.array(forKey: UserDefaultsKeys.additionalFullAddresses) as? [String] else {
+        guard let fullAddresses = UserDefaults.standard.array(forKey: UserDefaultsKeys.additionalFullAddresses) as? [String] else {
             return
         }
         
-        guard let localities = UserDefaults.shared.array(forKey: UserDefaultsKeys.additionalLocalities) as? [String] else {
+        guard let localities = UserDefaults.standard.array(forKey: UserDefaultsKeys.additionalLocalities) as? [String] else {
             return
         }
         
-        guard let subLocalities = UserDefaults.shared.array(forKey: UserDefaultsKeys.additionalSubLocalities) as? [String] else {
+        guard let subLocalities = UserDefaults.standard.array(forKey: UserDefaultsKeys.additionalSubLocalities) as? [String] else {
             return
         }
         
@@ -301,9 +301,9 @@ extension AdditionalLocationVM {
             return
         }
         
-        UserDefaults.shared.removeStringElementInArray(index: fullAddressIndex, key: UserDefaultsKeys.additionalFullAddresses)
-        UserDefaults.shared.removeStringElementInArray(index: localityIndex, key: UserDefaultsKeys.additionalLocalities)
-        UserDefaults.shared.removeStringElementInArray(index: subLocalityIndex, key: UserDefaultsKeys.additionalSubLocalities)
+        UserDefaults.standard.removeStringElementInArray(index: fullAddressIndex, key: UserDefaultsKeys.additionalFullAddresses)
+        UserDefaults.standard.removeStringElementInArray(index: localityIndex, key: UserDefaultsKeys.additionalLocalities)
+        UserDefaults.standard.removeStringElementInArray(index: subLocalityIndex, key: UserDefaultsKeys.additionalSubLocalities)
         
         reloadItems()
     }
@@ -363,9 +363,9 @@ extension AdditionalLocationVM {
     }
     
     func reloadItems() {
-        let fullAddresses: [String] = UserDefaults.shared.array(forKey: UserDefaultsKeys.additionalFullAddresses) as? [String] ?? []
-        let localities: [String] = UserDefaults.shared.array(forKey: UserDefaultsKeys.additionalLocalities) as? [String] ?? []
-        let subLocalities: [String] = UserDefaults.shared.array(forKey: UserDefaultsKeys.additionalSubLocalities) as? [String] ?? []
+        let fullAddresses: [String] = UserDefaults.standard.array(forKey: UserDefaultsKeys.additionalFullAddresses) as? [String] ?? []
+        let localities: [String] = UserDefaults.standard.array(forKey: UserDefaultsKeys.additionalLocalities) as? [String] ?? []
+        let subLocalities: [String] = UserDefaults.standard.array(forKey: UserDefaultsKeys.additionalSubLocalities) as? [String] ?? []
         
         self.fullAddresses = fullAddresses
         self.localities = localities

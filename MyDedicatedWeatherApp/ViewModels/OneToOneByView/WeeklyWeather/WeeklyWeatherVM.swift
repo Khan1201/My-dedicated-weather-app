@@ -18,11 +18,6 @@ final class WeeklyWeatherVM: ObservableObject {
     var minMaxTemperaturesByThreeToTenDay: [(String, String)] = []
     var weatherImageAndRainfallPercentsByThreeToTenDay: [(String, String)] = []
     
-    private let xy: (String, String) = (
-        UserDefaults.shared.string(forKey: "x") ?? "",
-        UserDefaults.shared.string(forKey: "y") ?? ""
-    )
-    
     private let shortTermForecastUtil: ShortTermForecastUtil = ShortTermForecastUtil()
     private let commonForecastUtil: CommonForecastUtil = CommonForecastUtil()
     private let midTermForecastUtil: MidTermForecastUtil = MidTermForecastUtil()
@@ -41,12 +36,8 @@ extension WeeklyWeatherVM {
      
      - parameter xy: 공공데이터 값으로 변환된 X, Y
      */
-    func requestShortForecastItems() async {
+    func requestShortForecastItems(xy: (String, String)) async {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
-        let xy: (String, String) = (
-            UserDefaults.shared.string(forKey: "x") ?? "",
-            UserDefaults.shared.string(forKey: "y") ?? ""
-        )
         
         let parameters = VeryShortOrShortTermForecastReq(
             serviceKey: Env.shared.openDataApiResponseKey,
@@ -94,9 +85,8 @@ extension WeeklyWeatherVM {
     /**
      Request 중기예보 (3~ 10일) 최저, 최고 기온  Items
      */
-    func requestMidTermForecastTempItems() async {
+    func requestMidTermForecastTempItems(fullAddress: String) async {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
-        let fullAddress: String = UserDefaults.shared.string(forKey: "fullAddress") ?? ""
         
         let parameters: MidTermForecastReq = MidTermForecastReq(
             serviceKey: Env.shared.openDataApiResponseKey,
@@ -142,9 +132,8 @@ extension WeeklyWeatherVM {
     /**
      Request 중기예보 (3~ 10일) 하늘 상태, 강수 확률 items
      */
-    func requestMidTermForecastSkyStateItems() async {
+    func requestMidTermForecastSkyStateItems(fullAddress: String) async {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
-        let fullAddress: String = UserDefaults.shared.string(forKey: "fullAddress") ?? ""
 
         let parameters: MidTermForecastReq = MidTermForecastReq(
             serviceKey: Env.shared.openDataApiResponseKey,
@@ -191,14 +180,14 @@ extension WeeklyWeatherVM {
         }
     }
     
-    func performWeekRequests() async {
+    func performWeekRequests(xy: (String, String), fullAddress: String) async {
         if !isWeeklyWeatherInformationsLoaded && !isApiRequestProceeding {
             DispatchQueue.main.async {
                 self.isApiRequestProceeding = true
             }
-            await requestShortForecastItems()
-            await requestMidTermForecastTempItems()
-            await requestMidTermForecastSkyStateItems()
+            await requestShortForecastItems(xy: xy)
+            await requestMidTermForecastTempItems(fullAddress: fullAddress)
+            await requestMidTermForecastSkyStateItems(fullAddress: fullAddress)
         }
     }
 }
@@ -447,10 +436,10 @@ extension WeeklyWeatherVM {
 
 extension WeeklyWeatherVM {
     
-    func refreshButtonOnTapGesture() {
+    func refreshButtonOnTapGesture(xy: (String, String), fullAddress: String) {
         initializeStates()
         Task {
-            await performWeekRequests()
+            await performWeekRequests(xy: xy, fullAddress: fullAddress)
         }
     }
 }
