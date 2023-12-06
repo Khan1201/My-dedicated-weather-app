@@ -65,6 +65,8 @@
 		BC5386542A6EC19700D8E085 /* WeeklyWeatherVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5386532A6EC19700D8E085 /* WeeklyWeatherVM.swift */; };
 		BC5EF9032AE6A86100636A95 /* ContentVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5EF9022AE6A86100636A95 /* ContentVM.swift */; };
 		BC5EF9052AE6AF7300636A95 /* LaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5EF9042AE6AF7300636A95 /* LaunchScreen.swift */; };
+		BC69C5BA2B20C82100540871 /* AdditionalLocationSavedItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC69C5B92B20C82100540871 /* AdditionalLocationSavedItemView.swift */; };
+		BC69C5BC2B20C88900540871 /* AdditionalLocationSavedGPSItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC69C5BB2B20C88900540871 /* AdditionalLocationSavedGPSItemView.swift */; };
 		BC6EF8BD2A10AAB30072A2DE /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6EF8BC2A10AAB30072A2DE /* Extensions.swift */; };
 		BC6EF8BF2A10C0DC0072A2DE /* RealTimeFindDustForecastBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6EF8BE2A10C0DC0072A2DE /* RealTimeFindDustForecastBase.swift */; };
 		BC76923A2A431CC8005F4D7B /* CustomBottomTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC7692392A431CC8005F4D7B /* CustomBottomTabBarView.swift */; };
@@ -136,7 +138,7 @@
 		BCBA40192A7C06EE00B6EFD2 /* FineDustLookUpUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCBA40182A7C06EE00B6EFD2 /* FineDustLookUpUtil.swift */; };
 		BCBE178B2A5302D300541AEB /* TodayWeatherItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCBE178A2A5302D300541AEB /* TodayWeatherItemView.swift */; };
 		BCCA26272A514609005BB1B5 /* SunOrMoonRiseBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCCA26262A514609005BB1B5 /* SunOrMoonRiseBase.swift */; };
-		BCCD03852B1B1B4A004FF8C4 /* AdditionalLocationListSavedListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCCD03842B1B1B4A004FF8C4 /* AdditionalLocationListSavedListView.swift */; };
+		BCCD03852B1B1B4A004FF8C4 /* AdditionalLocationSavedItemsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCCD03842B1B1B4A004FF8C4 /* AdditionalLocationSavedItemsView.swift */; };
 		BCCD03872B1B2556004FF8C4 /* AdditionalLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCCD03862B1B2556004FF8C4 /* AdditionalLocationView.swift */; };
 		BCCD038A2B1B2878004FF8C4 /* AdditionalLocationVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCCD03892B1B2878004FF8C4 /* AdditionalLocationVM.swift */; };
 		BCCD80682A07A59800501BEA /* LocationDataManagerVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCCD80672A07A59800501BEA /* LocationDataManagerVM.swift */; };
@@ -252,6 +254,8 @@
 		BC5386532A6EC19700D8E085 /* WeeklyWeatherVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyWeatherVM.swift; sourceTree = "<group>"; };
 		BC5EF9022AE6A86100636A95 /* ContentVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentVM.swift; sourceTree = "<group>"; };
 		BC5EF9042AE6AF7300636A95 /* LaunchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreen.swift; sourceTree = "<group>"; };
+		BC69C5B92B20C82100540871 /* AdditionalLocationSavedItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdditionalLocationSavedItemView.swift; sourceTree = "<group>"; };
+		BC69C5BB2B20C88900540871 /* AdditionalLocationSavedGPSItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdditionalLocationSavedGPSItemView.swift; sourceTree = "<group>"; };
 		BC6EF8BC2A10AAB30072A2DE /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		BC6EF8BE2A10C0DC0072A2DE /* RealTimeFindDustForecastBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealTimeFindDustForecastBase.swift; sourceTree = "<group>"; };
 		BC7692392A431CC8005F4D7B /* CustomBottomTabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBottomTabBarView.swift; sourceTree = "<group>"; };
@@ -318,7 +322,7 @@
 		BCBE178A2A5302D300541AEB /* TodayWeatherItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayWeatherItemView.swift; sourceTree = "<group>"; };
 		BCCA26262A514609005BB1B5 /* SunOrMoonRiseBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunOrMoonRiseBase.swift; sourceTree = "<group>"; };
 		BCCA26282A51481B005BB1B5 /* SunOrMoonRiseServiceByXML.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunOrMoonRiseServiceByXML.swift; sourceTree = "<group>"; };
-		BCCD03842B1B1B4A004FF8C4 /* AdditionalLocationListSavedListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdditionalLocationListSavedListView.swift; sourceTree = "<group>"; };
+		BCCD03842B1B1B4A004FF8C4 /* AdditionalLocationSavedItemsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdditionalLocationSavedItemsView.swift; sourceTree = "<group>"; };
 		BCCD03862B1B2556004FF8C4 /* AdditionalLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdditionalLocationView.swift; sourceTree = "<group>"; };
 		BCCD03892B1B2878004FF8C4 /* AdditionalLocationVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdditionalLocationVM.swift; sourceTree = "<group>"; };
 		BCCD80672A07A59800501BEA /* LocationDataManagerVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDataManagerVM.swift; sourceTree = "<group>"; };
@@ -1078,7 +1082,9 @@
 		BCCD038B2B1B3720004FF8C4 /* Component */ = {
 			isa = PBXGroup;
 			children = (
-				BCCD03842B1B1B4A004FF8C4 /* AdditionalLocationListSavedListView.swift */,
+				BCCD03842B1B1B4A004FF8C4 /* AdditionalLocationSavedItemsView.swift */,
+				BC69C5B92B20C82100540871 /* AdditionalLocationSavedItemView.swift */,
+				BC69C5BB2B20C88900540871 /* AdditionalLocationSavedGPSItemView.swift */,
 			);
 			path = Component;
 			sourceTree = "<group>";
@@ -1326,7 +1332,7 @@
 				BCA30F9A29FE49FE0078D0B1 /* PublicDataRes.swift in Sources */,
 				BCB16E2D2A4C717D00AACFF0 /* Validate.swift in Sources */,
 				BCA30F7C29FE203A0078D0B1 /* ContentView.swift in Sources */,
-				BCCD03852B1B1B4A004FF8C4 /* AdditionalLocationListSavedListView.swift in Sources */,
+				BCCD03852B1B1B4A004FF8C4 /* AdditionalLocationSavedItemsView.swift in Sources */,
 				BC436B782AF294DF006AFFC1 /* SettingView.swift in Sources */,
 				BC86DB1C2A877F85004631D3 /* WeekWeatherItemView.swift in Sources */,
 				BC4DDA312A72BA4F000376C0 /* TodayWeatherItemScrollView.swift in Sources */,
@@ -1340,6 +1346,7 @@
 				BCA2C1B72A603B6900BBEBE2 /* GetHeight.swift in Sources */,
 				BC2419B22AA4A79D0035EDBE /* MidTermForecastTemperatureBase.swift in Sources */,
 				BC3C200D2B04FC7C0016E7D4 /* RootNavigationView.swift in Sources */,
+				BC69C5BA2B20C82100540871 /* AdditionalLocationSavedItemView.swift in Sources */,
 				BC25FDA42AFBBA9C00928D7C /* MailView.swift in Sources */,
 				BCCD80682A07A59800501BEA /* LocationDataManagerVM.swift in Sources */,
 				BCBA40102A7C01B400B6EFD2 /* ShortTermForecastUtil.swift in Sources */,
@@ -1365,6 +1372,7 @@
 				BCA2B15B2B0E53EB00B669BD /* AdditionalLocationSubLocalityListView.swift in Sources */,
 				BC3C20142B0503500016E7D4 /* OpenSourceListView.swift in Sources */,
 				BC3C20162B05035B0016E7D4 /* OpenSourceDetailView.swift in Sources */,
+				BC69C5BC2B20C88900540871 /* AdditionalLocationSavedGPSItemView.swift in Sources */,
 				BC85A94E2A02570E00C4CC48 /* VeryShortOrShortTermForecastBase.swift in Sources */,
 				BC8C94F12AE54F2500865CCB /* MidTermForecastReq.swift in Sources */,
 				BC37A6002A3ED7BC00C16278 /* DustForecastStationBase.swift in Sources */,
