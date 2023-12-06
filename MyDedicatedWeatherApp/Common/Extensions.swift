@@ -196,7 +196,7 @@ extension UserDefaults {
             UserDefaults.shared.set(value, forKey: UserDefaultsKeys.fullAddress)
             
         case .dustStationName:
-            UserDefaults.shared.set(value, forKey: UserDefaultsKeys.dustStation)
+            UserDefaults.shared.set(value, forKey: UserDefaultsKeys.dustStationName)
         }
     }
 }

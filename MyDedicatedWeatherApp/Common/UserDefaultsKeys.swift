@@ -15,7 +15,7 @@ struct UserDefaultsKeys {
     static let locality: String = "locality"
     static let subLocality: String = "subLocality"
     static let fullAddress: String = "fullAddress"
-    static let dustStation: String = "dustStation"
+    static let dustStationName: String = "dustStationName"
     static let latitude: String = "latitude"
     static let longitude: String = "longitude"
     static let x: String = "x"
