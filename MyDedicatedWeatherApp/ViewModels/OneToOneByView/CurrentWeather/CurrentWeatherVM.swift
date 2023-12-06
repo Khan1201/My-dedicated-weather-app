@@ -657,6 +657,8 @@ extension CurrentWeatherVM {
                 let xy: Gps2XY.LatXLngY = self.commonForecastUtil.convertGPS2XY(mode: .toXY, lat_X: latitude, lng_Y: longitude)
                 
                 additionalLocationProgress = .loading
+                initializeStates()
+
                 Task {
                     await self.requestSunAndMoonrise(long: String(longitude), lat: String(latitude)) // Must first called
                     await self.requestVeryShortForecastItems(xy: xy)
@@ -704,7 +706,7 @@ extension CurrentWeatherVM {
     func isStartRefreshOnChangeAction(newValue: Bool, longitude: String, latitude: String, xy: (String, String), locality: String, subLocality: String) {
         
         if newValue {
-            initializeStates()
+            initLoadCompletedVariables()
             
             Task {
                 performRefresh(
@@ -723,7 +725,7 @@ extension CurrentWeatherVM {
 
 extension CurrentWeatherVM {
     
-    func initializeStates() {
+    func initLoadCompletedVariables() {
         isCurrentWeatherInformationLoadCompleted = false
         isCurrentWeatherAnimationSetCompleted = false
         isFineDustLoadCompleted = false
