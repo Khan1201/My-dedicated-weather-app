@@ -13,7 +13,10 @@ struct AdditionalLocationView: View {
     let finalLocationOnTapGesture: (String, String, String, Bool) -> Void
     
     @StateObject var vm: AdditionalLocationVM = AdditionalLocationVM()
+    @EnvironmentObject var currentLocationVM: CurrentLocationVM
+
     @State private var navNextView: Bool = false
+    
     
     var body: some View {
         let isLoading: Bool = progress == .loading
@@ -28,6 +31,7 @@ struct AdditionalLocationView: View {
                 .padding(.top, 10)
                 
                 AdditionalLocationSavedListView(
+                    currentFullAddress: currentLocationVM.fullAddress,
                     fullAddresses: vm.fullAddresses,
                     localities: vm.localities,
                     subLocalities: vm.subLocalities,

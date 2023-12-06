@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct AdditionalLocationSavedListView: View {
+    let currentFullAddress: String
     let fullAddresses: [String]
     let localities: [String]
     let subLocalities: [String]
@@ -15,10 +16,9 @@ struct AdditionalLocationSavedListView: View {
     let itemOnTapGesture: ((String, String, String, Bool) -> Void)
     let itemDeleteAction: (String, String, String) -> Void
     
-    
     var body: some View {
         
-        VStack(alignment: .leading, spacing: 10) {
+        VStack(alignment: .leading, spacing: 16) {
             ForEach(fullAddresses.indices, id: \.self) { i in
                 AdditionalLocationSavedListItemView(
                     fullAddress: fullAddresses[i],
@@ -28,6 +28,14 @@ struct AdditionalLocationSavedListView: View {
                     onTapGesture: itemOnTapGesture,
                     deleteAction: itemDeleteAction
                 )
+                .overlay(alignment: .topLeading) {
+                    if currentFullAddress == fullAddresses[i] {
+                        Image("current_location")
+                            .resizable()
+                            .frame(width: 35, height: 35)
+                            .offset(y: -8)
+                    }
+                }
             }
         }
     }
@@ -35,7 +43,8 @@ struct AdditionalLocationSavedListView: View {
 
 #Preview {
     AdditionalLocationSavedListView(
-        fullAddresses: [],
+        currentFullAddress: "서울특별시",
+        fullAddresses: ["서울특별시", "대구광역시"],
         localities: [],
         subLocalities: [],
         tempItems: [],
