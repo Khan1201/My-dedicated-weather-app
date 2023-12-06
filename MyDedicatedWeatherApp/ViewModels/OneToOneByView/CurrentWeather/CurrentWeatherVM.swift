@@ -12,6 +12,7 @@ final class CurrentWeatherVM: ObservableObject {
     @Published private(set) var errorMessage: String = ""
     @Published private(set) var currentTemperature: String = "00"
     @Published private(set) var currentWeatherAnimationImg: String = ""
+    @Published private(set) var currentWeatherImage: String = ""
     @Published private(set) var currentWeatherInformation: Weather.CurrentInformation = Dummy.shared.currentWeatherInformation()
     @Published private(set) var currentFineDustTuple: Weather.DescriptionAndColor = .init(description: "", color: .defaultAreaColor)
     @Published private(set) var currentUltraFineDustTuple: Weather.DescriptionAndColor = .init(description: "", color: .defaultAreaColor)
@@ -110,7 +111,7 @@ extension CurrentWeatherVM {
             DispatchQueue.main.async {
                 
                 if let items = result.item {
-                    self.setCurrentWeatherAnimationImg(items: items)
+                    self.setCurrentWeatherImgAndAnimationImg(items: items)
                     self.setCurrentTemperature(items: items)
                     self.setCurrentWeatherInformation(items: items)
                     let durationTime = CFAbsoluteTimeGetCurrent() - startTime
@@ -370,6 +371,8 @@ extension CurrentWeatherVM {
                 
                 /// For Widget
                 if isCurrentLocationRequested {
+                    self.currentLocationVM.setGPSSubLocality(result.documents[0].address.subLocality)
+                    self.currentLocationVM.setFullAddress(self.currentLocationVM.gpsFullAddress)
                     UserDefaults.setWidgetShared(self.subLocalityByKakaoAddress, to: .subLocality)
                     UserDefaults.setWidgetShared(result.documents[0].address.fullAddress, to: .fullAddress)
                 }
@@ -571,7 +574,7 @@ extension CurrentWeatherVM {
      
      - parameter items: [초단기예보 Model]
      */
-    func setCurrentWeatherAnimationImg(items: [VeryShortOrShortTermForecastBase<VeryShortTermForecastCategory>]) {
+    func setCurrentWeatherImgAndAnimationImg(items: [VeryShortOrShortTermForecastBase<VeryShortTermForecastCategory>]) {
         let firstPTYItem = items[6] // 강수 형태 first
         let firstSKYItem = items[18] // 하늘 상태 first
         
@@ -582,6 +585,15 @@ extension CurrentWeatherVM {
             sunrise: sunRiseAndSetHHmm.0,
             sunset: sunRiseAndSetHHmm.1,
             isAnimationImage: true
+        ).imageString
+        
+        currentWeatherImage = commonForecastUtil.veryShortOrShortTermForecastWeatherDescriptionAndSkyTypeAndImageString(
+            ptyValue: firstPTYItem.fcstValue,
+            skyValue: firstSKYItem.fcstValue,
+            hhMMForDayOrNightImage: firstPTYItem.fcstTime,
+            sunrise: sunRiseAndSetHHmm.0,
+            sunset: sunRiseAndSetHHmm.1,
+            isAnimationImage: false
         ).imageString
         
         isCurrentWeatherAnimationSetCompleted = true
