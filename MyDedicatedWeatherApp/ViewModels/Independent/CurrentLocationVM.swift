@@ -18,12 +18,19 @@ final class CurrentLocationVM: ObservableObject {
     @Published private(set) var subLocality: String = ""
     @Published private(set) var fullAddress: String = ""
     
+    @Published private(set) var gpsLocality: String = ""
+    @Published private(set) var gpsSubLocality: String = ""
+    var gpsFullAddress: String {
+        return gpsLocality + " " + gpsSubLocality
+    }
+    
     private init() {}
 }
 
 // MARK: - Set funcs..
 
 extension CurrentLocationVM {
+    
     func setLocality(_ value: String) {
         self.locality = value
     }
@@ -46,5 +53,13 @@ extension CurrentLocationVM {
     
     func setLongitude(_ value: String) {
         self.longitude = value
+    }
+    
+    func setGPSLocality(_ value: String) {
+        self.gpsLocality = value
+    }
+    
+    func setGPSSubLocality(_ value: String) {
+        self.gpsSubLocality = value
     }
 }
