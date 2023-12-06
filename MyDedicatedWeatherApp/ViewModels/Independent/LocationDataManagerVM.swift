@@ -126,6 +126,7 @@ extension LocationDataManagerVM: CLLocationManagerDelegate {
                 currentLocationVM.setLatitude(latitude)
                 currentLocationVM.setLongitude(longitude)
                 currentLocationVM.setLocality(self.currentLocality)
+                currentLocationVM.setGPSLocality(self.currentLocality)
                 
                 self.isLocationUpdated = true
                 
