@@ -9,6 +9,7 @@ import Foundation
 
 final class AdditionalLocationVM: ObservableObject {
     
+    @Published var gpsTempItem: Weather.WeatherImageAndMinMax = .init(weatherImage: "", currentTemp: "", minMaxTemp: ("", ""))
     @Published var tempItems: [Weather.WeatherImageAndMinMax] = Dummy.weatherImageAndMinMax()
     @Published var fullAddresses: [String] = UserDefaults.standard.array(forKey: UserDefaultsKeys.additionalFullAddresses) as? [String] ?? []
     @Published var localities: [String] = UserDefaults.standard.array(forKey: UserDefaultsKeys.additionalLocalities) as? [String] ?? []
@@ -264,6 +265,14 @@ extension AdditionalLocationVM {
         tempItems.remove(at: index + 1)
         
     }
+    
+    func setGPSTempItem(currentWeatherImageAndTemp: (String, String), minMaxTemp: (String, String)) {
+        gpsTempItem = .init(
+            weatherImage: currentWeatherImageAndTemp.0,
+            currentTemp: currentWeatherImageAndTemp.1,
+            minMaxTemp: minMaxTemp
+        )
+    }
 }
 
 // MARK: 0n tap gestures..
@@ -309,9 +318,55 @@ extension AdditionalLocationVM {
     }
 }
 
+// MARK: - Life cycle funcs..
+
+extension AdditionalLocationVM {
+    
+    func additinalLocationViewTaskAction(gpsFullAddress: String) {
+        performRequestGPSLocationWeather(fullAddress: gpsFullAddress)
+        performRequestSavedLocationWeather()
+    }
+}
+
 // MARK: - ETC funcs..
 
 extension AdditionalLocationVM {
+    
+    func performRequestGPSLocationWeather(fullAddress: String) {
+        LocationDataManagerVM.getLatitudeAndLongitude(address: fullAddress) { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+                
+            case .success(let success):
+                let latitude: Double = success.0
+                let longitude: Double = success.1
+                let xy: Gps2XY.LatXLngY = self.commonForecastUtil.convertGPS2XY(mode: .toXY, lat_X: latitude, lng_Y: longitude)
+                
+                Task {
+                    let sunRiseAndSunSetHHmm = await self.requestSunRiseAndSunSetHHmm(long: String(longitude), lat: String(latitude))
+                    let currentWeatherImageAndTemp = await self.requestCurrentWeatherImageAndTemp(
+                        xy: xy,
+                        sunriseAndsunsetHHmm: sunRiseAndSunSetHHmm
+                    )
+                    let minMaxTemp = await self.requestMinMaxTemp(xy: xy)
+                    
+                    DispatchQueue.main.async {
+                        self.setGPSTempItem(
+                            currentWeatherImageAndTemp: currentWeatherImageAndTemp,
+                            minMaxTemp: minMaxTemp
+                        )
+                    }
+                }
+                
+            case .failure(_):
+                CommonUtil.shared.printError(
+                    funcTitle: "performRequestGPSLocationWeather",
+                    description: "위치를 찾을 수 없습니다."
+                )
+            }
+        }
+    }
     
     func performRequestSavedLocationWeather() {
         
@@ -327,16 +382,16 @@ extension AdditionalLocationVM {
                     let xy: Gps2XY.LatXLngY = self.commonForecastUtil.convertGPS2XY(mode: .toXY, lat_X: latitude, lng_Y: longitude)
                     
                     Task {
-                        let SunRiseAndSunSetHHmm = await self.requestSunRiseAndSunSetHHmm(long: String(longitude), lat: String(latitude))
-                        let CurrentWeatherImageAndTemp = await self.requestCurrentWeatherImageAndTemp(
+                        let sunRiseAndSunSetHHmm = await self.requestSunRiseAndSunSetHHmm(long: String(longitude), lat: String(latitude))
+                        let currentWeatherImageAndTemp = await self.requestCurrentWeatherImageAndTemp(
                             xy: xy,
-                            sunriseAndsunsetHHmm: SunRiseAndSunSetHHmm
+                            sunriseAndsunsetHHmm: sunRiseAndSunSetHHmm
                         )
                         let minMaxTemp = await self.requestMinMaxTemp(xy: xy)
                         
                         DispatchQueue.main.async {
                             self.setTempItems(
-                                currentWeatherImageAndTemp: CurrentWeatherImageAndTemp,
+                                currentWeatherImageAndTemp: currentWeatherImageAndTemp,
                                 minMaxTemp: minMaxTemp,
                                 index: index
                             )
@@ -351,15 +406,6 @@ extension AdditionalLocationVM {
                 }
             }
         }
-    }
-}
-
-// MARK: - Life cycle funcs..
-
-extension AdditionalLocationVM {
-    
-    func additinalLocationViewTaskAction() {
-        performRequestSavedLocationWeather()
     }
     
     func reloadItems() {

@@ -30,7 +30,20 @@ struct AdditionalLocationView: View {
                 )
                 .padding(.top, 10)
                 
-                AdditionalLocationSavedListView(
+                /// 현재 gps item
+                AdditionalLocationSavedGPSItemView(
+                    fullAddress: currentLocationVM.gpsFullAddress,
+                    locality: currentLocationVM.gpsLocality,
+                    subLocality: currentLocationVM.gpsSubLocality,
+                    tempItem: vm.gpsTempItem,
+                    currentLocation: currentLocationVM.fullAddress,
+                    finalLocationOnTapGesture: finalLocationOnTapGesture
+                )
+                .padding(.top, 20)
+                .padding(.horizontal, 20)
+
+                /// 추가 등록 items
+                AdditionalLocationSavedItemsView(
                     currentFullAddress: currentLocationVM.fullAddress,
                     fullAddresses: vm.fullAddresses,
                     localities: vm.localities,
@@ -39,7 +52,7 @@ struct AdditionalLocationView: View {
                     itemOnTapGesture: finalLocationOnTapGesture, 
                     itemDeleteAction: vm.itemDeleteAction(fullAddress:locality:subLocality:)
                 )
-                .padding(.top, 20)
+                .padding(.top, 16)
                 .padding(.horizontal, 20)
                 
                 HStack(alignment: .center, spacing: 5) {
@@ -66,7 +79,7 @@ struct AdditionalLocationView: View {
         }
         .preferredColorScheme(.dark)
         .task {
-            vm.additinalLocationViewTaskAction()
+            vm.additinalLocationViewTaskAction(gpsFullAddress: currentLocationVM.gpsFullAddress)
         }
         .navToNextView(
             isPresented: $navNextView,

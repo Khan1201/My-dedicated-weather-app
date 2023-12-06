@@ -1,5 +1,5 @@
 //
-//  AdditionalLocationSavedListItemView.swift
+//  AdditionalLocationSavedItemView.swift
 //  MyDedicatedWeatherApp
 //
 //  Created by 윤형석 on 12/7/23.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct AdditionalLocationSavedListItemView: View {
+struct AdditionalLocationSavedItemView: View {
     let fullAddress: String
     let locality: String
     let subLocality: String
