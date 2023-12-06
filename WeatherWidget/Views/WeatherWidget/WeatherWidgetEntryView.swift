@@ -13,7 +13,7 @@ struct WeatherWidgetEntryView : View {
     @Environment(\.widgetFamily) var family
     
     var body: some View {
-        let location: String = UserDefaults.shared.string(forKey: "locality") ?? ""
+        let location: String = UserDefaults.shared.string(forKey: UserDefaultsKeys.locality) ?? ""
         
         if #available(iOS 17.0, *) {
             VStack(alignment: .leading, spacing: 0) {

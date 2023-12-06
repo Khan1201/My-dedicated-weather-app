@@ -50,8 +50,8 @@ extension WeatherWidgetVM {
     func requestVeryShortItems() async -> [VeryShortOrShortTermForecastBase<VeryShortTermForecastCategory>] {
         let baseTime = Util.veryShortTermReqBaseTime()
         let baseDate = Util.veryShortTermReqBaseDate(baseTime: baseTime)
-        let x = UserDefaults.shared.string(forKey: "x") ?? ""
-        let y = UserDefaults.shared.string(forKey: "y") ?? ""
+        let x = UserDefaults.shared.string(forKey: UserDefaultsKeys.x) ?? ""
+        let y = UserDefaults.shared.string(forKey: UserDefaultsKeys.y) ?? ""
         
         let parameters: VeryShortOrShortTermForecastReq = VeryShortOrShortTermForecastReq(
             serviceKey: Env.shared.openDataApiResponseKey,
@@ -93,8 +93,8 @@ extension WeatherWidgetVM {
     func requestShortForecastItems() async -> [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>] {
         let baseDate = Util.shortTermReqBaseDate()
         let baseTime = Util.shortTermReqBaseTime()
-        let x = UserDefaults.shared.string(forKey: "x") ?? ""
-        let y = UserDefaults.shared.string(forKey: "y") ?? ""
+        let x = UserDefaults.shared.string(forKey: UserDefaultsKeys.x) ?? ""
+        let y = UserDefaults.shared.string(forKey: UserDefaultsKeys.y) ?? ""
         
         let parameters = VeryShortOrShortTermForecastReq(
             serviceKey: Env.shared.openDataApiResponseKey,
@@ -133,8 +133,8 @@ extension WeatherWidgetVM {
     
     /// Return (일출시간, 일몰시간)
     func requestSunriseSunset() async -> (String, String) {
-        let latitude = UserDefaults.shared.string(forKey: "latitude") ?? ""
-        let longitude = UserDefaults.shared.string(forKey: "longitude") ?? ""
+        let latitude = UserDefaults.shared.string(forKey: UserDefaultsKeys.latitude) ?? ""
+        let longitude = UserDefaults.shared.string(forKey: UserDefaultsKeys.longitude) ?? ""
         
         do {
             let parser = try await SunriseAndSunsetGetService(
@@ -169,7 +169,7 @@ extension WeatherWidgetVM {
     /// Return 미세먼지 및 초미세먼지 items
     func requestRealTimeFindDustAndUltraFindDustItems() async -> [RealTimeFindDustForecastBase] {
         
-        let stationName: String = UserDefaults.shared.string(forKey: "dustStationName") ?? ""
+        let stationName: String = UserDefaults.shared.string(forKey: UserDefaultsKeys.dustStationName) ?? ""
         
         let parameters: RealTimeFindDustForecastReq = RealTimeFindDustForecastReq(
             serviceKey: Env.shared.openDataApiResponseKey,
@@ -205,8 +205,8 @@ extension WeatherWidgetVM {
     /// Return 중기예보(3~ 10일)의 temperature items
     func requestMidTermForecastTempItems() async -> [MidTermForecastTemperatureBase] {
         
-        let locality: String = UserDefaults.shared.string(forKey: "locality") ?? ""
-        let subLocality: String = UserDefaults.shared.string(forKey: "subLocality") ?? ""
+        let locality: String = UserDefaults.shared.string(forKey: UserDefaultsKeys.locality) ?? ""
+        let subLocality: String = UserDefaults.shared.string(forKey: UserDefaultsKeys.subLocality) ?? ""
         
         let parameters: MidTermForecastReq = MidTermForecastReq(
             serviceKey: Env.shared.openDataApiResponseKey,
@@ -248,7 +248,7 @@ extension WeatherWidgetVM {
     /// Return 중기예보(3~ 10일)의 하늘상태 items
     func requestMidTermForecastSkyStateItems() async -> [MidTermForecastSkyStateBase] {
         
-        let locality: String = UserDefaults.shared.string(forKey: "locality") ?? ""
+        let locality: String = UserDefaults.shared.string(forKey: UserDefaultsKeys.locality) ?? ""
         let parameters: MidTermForecastReq = MidTermForecastReq(
             serviceKey: Env.shared.openDataApiResponseKey,
             regId: Util.midtermReqRegOrStnId(
