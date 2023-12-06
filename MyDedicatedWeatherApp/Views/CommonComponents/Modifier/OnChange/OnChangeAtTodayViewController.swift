@@ -36,8 +36,8 @@ struct OnChangeAtTodayViewController: ViewModifier {
                       viewModel.isMinMaxTempLoadCompleted &&
                       viewModel.isSunriseSunsetLoadCompleted &&
                       viewModel.isTodayWeatherInformationLoadCompleted
-            ) { newValue in
-                viewModel.setIsAllLoadCompleted()
+            ) { _ in
+                viewModel.loadCompletedVariablesOnChangeAction()
                 disableTabBarTouch = false
             }
             .onChange(of: viewModel.isStartRefresh) { newValue in
