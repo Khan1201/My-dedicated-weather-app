@@ -145,6 +145,65 @@ extension AdditionalLocationVM {
         }
     }
     
+    /// - parameter xy: 공공데이터 값으로 변환된 X, Y
+    /// '단기예보' 에서의 최소, 최대 온도 값 요청 위해 및
+    /// 02:00 or 23:00 으로 호출해야 하므로, 따로 다시 요청한다.
+    func requestTodayMinMaxTemp(xy: Gps2XY.LatXLngY) async -> (String, String) {
+        let reqStartTime = CFAbsoluteTimeGetCurrent()
+
+        let parameters = VeryShortOrShortTermForecastReq(
+            serviceKey: Env.shared.openDataApiResponseKey,
+            numOfRows: "300",
+            baseDate: shortTermForecastUtil.baseDateForTodayMinMaxReq,
+            baseTime: shortTermForecastUtil.baseTimeForTodayMinMaxReq,
+            nx: String(xy.x),
+            ny: String(xy.y)
+        )
+        
+        do {
+            let result = try await JsonRequest.shared.newRequest(
+                url: Route.GET_WEATHER_SHORT_TERM_FORECAST.val,
+                method: .get,
+                parameters: parameters,
+                headers: nil,
+                resultType: PublicDataRes<VeryShortOrShortTermForecastBase<ShortTermForecastCategory>>.self,
+                requestName: "requestShortForecastItems(xy:)"
+            )
+            
+            guard let items = result.item else { return ("", "") }
+            
+            guard let filteredMinTempItem = items.first(where: { $0.category == .TMN }) else {
+                CommonUtil.shared.printError(
+                    funcTitle: "setTodayMinMaxTemperature",
+                    description: "category == .TMN 에 해당하는 item이 없습니다."
+                )
+                return ("", "")
+            }
+            guard let filteredMaxTempItem = items.first(where: { $0.category == .TMX }) else {
+                CommonUtil.shared.printError(
+                    funcTitle: "setTodayMinMaxTemperature",
+                    description: "category == .TMX 에 해당하는 item이 없습니다."
+                )
+                return ("", "")
+            }
+            
+            return (filteredMinTempItem.fcstValue.toDouble.toInt.toString,
+                                      filteredMaxTempItem.fcstValue.toDouble.toInt.toString)
+            
+        } catch APIError.transportError {
+            
+            DispatchQueue.main.async {
+//                self.errorMessage = "API 통신 에러"
+            }
+            return ("", "")
+        } catch {
+            DispatchQueue.main.async {
+//                self.errorMessage = "알 수 없는 오류"
+            }
+            return ("", "")
+        }
+    }
+    
     /**
      Request 단기예보 Items
      
@@ -182,59 +241,59 @@ extension AdditionalLocationVM {
      - 2000: '+1시간' ~ '+76시간'
      - 2300: '+1시간' ~ '+73시간' (17:00 ~ 2300: 오늘 ~ 모레+1일 까지)
      */
-    func requestMinMaxTemp(xy: Gps2XY.LatXLngY) async -> (String, String) {
-        let currentDateString = Date().toString(format: "yyyyMMdd")
-        let tomorrowDateString = Date().toString(byAdding: 1, format: "yyyyMMdd")
-        let baseTime = shortTermForecastUtil.requestBaseTime()
-        let isBaseTime2300: Bool = baseTime == "2300"
-        
-        let parameters = VeryShortOrShortTermForecastReq(
-            serviceKey: Env.shared.openDataApiResponseKey,
-            numOfRows: "300",
-            baseDate: shortTermForecastUtil.requestBaseDate(),
-            /// baseTime != nil -> 앱 구동 시 호출이 아닌, 수동 호출
-            baseTime: baseTime,
-            nx: String(xy.x),
-            ny: String(xy.y)
-        )
-        
-        do {
-            let result = try await JsonRequest.shared.newRequest(
-                url: Route.GET_WEATHER_SHORT_TERM_FORECAST.val,
-                method: .get,
-                parameters: parameters,
-                headers: nil,
-                resultType: PublicDataRes<VeryShortOrShortTermForecastBase<ShortTermForecastCategory>>.self,
-                requestName: "requestShortForecastItems(xy:)"
-            )
-            
-            CommonUtil.shared.printSuccess(
-                funcTitle: "requestMinMaxTemp",
-                value: result
-            )
-            
-            guard let items = result.item else { return ("", "") }
-            let filteredTempItems = items.filter({ $0.fcstDate == (isBaseTime2300 ? tomorrowDateString : currentDateString) && $0.category == .TMP })
-            let filteredTemps = filteredTempItems.map({ $0.fcstValue })
-            let minTemp = filteredTemps.min() ?? ""
-            let maxTemp = filteredTemps.max() ?? ""
-
-            return (minTemp, maxTemp)
-            
-        } catch APIError.transportError {
-            
-            DispatchQueue.main.async {
-//                self.errorMessage = "API 통신 에러"
-            }
-            return ("", "")
-            
-        } catch {
-            DispatchQueue.main.async {
-//                self.errorMessage = "알 수 없는 오류"
-            }
-            return ("", "")
-        }
-    }
+//    func requestMinMaxTemp(xy: Gps2XY.LatXLngY) async -> (String, String) {
+//        let currentDateString = Date().toString(format: "yyyyMMdd")
+//        let tomorrowDateString = Date().toString(byAdding: 1, format: "yyyyMMdd")
+//        let baseTime = shortTermForecastUtil.requestBaseTime()
+//        let isBaseTime2300: Bool = baseTime == "2300"
+//        
+//        let parameters = VeryShortOrShortTermForecastReq(
+//            serviceKey: Env.shared.openDataApiResponseKey,
+//            numOfRows: "300",
+//            baseDate: shortTermForecastUtil.requestBaseDate(),
+//            /// baseTime != nil -> 앱 구동 시 호출이 아닌, 수동 호출
+//            baseTime: baseTime,
+//            nx: String(xy.x),
+//            ny: String(xy.y)
+//        )
+//        
+//        do {
+//            let result = try await JsonRequest.shared.newRequest(
+//                url: Route.GET_WEATHER_SHORT_TERM_FORECAST.val,
+//                method: .get,
+//                parameters: parameters,
+//                headers: nil,
+//                resultType: PublicDataRes<VeryShortOrShortTermForecastBase<ShortTermForecastCategory>>.self,
+//                requestName: "requestShortForecastItems(xy:)"
+//            )
+//            
+//            CommonUtil.shared.printSuccess(
+//                funcTitle: "requestMinMaxTemp",
+//                value: result
+//            )
+//            
+//            guard let items = result.item else { return ("", "") }
+//            let filteredTempItems = items.filter({ $0.fcstDate == (isBaseTime2300 ? tomorrowDateString : currentDateString) && $0.category == .TMP })
+//            let filteredTemps = filteredTempItems.map({ $0.fcstValue })
+//            let minTemp = filteredTemps.min() ?? ""
+//            let maxTemp = filteredTemps.max() ?? ""
+//
+//            return (minTemp, maxTemp)
+//            
+//        } catch APIError.transportError {
+//            
+//            DispatchQueue.main.async {
+////                self.errorMessage = "API 통신 에러"
+//            }
+//            return ("", "")
+//            
+//        } catch {
+//            DispatchQueue.main.async {
+////                self.errorMessage = "알 수 없는 오류"
+//            }
+//            return ("", "")
+//        }
+//    }
 }
 
 // MARK: - Set funcs..
@@ -275,7 +334,7 @@ extension AdditionalLocationVM {
     }
 }
 
-// MARK: 0n tap gestures..
+// MARK: - 0n tap gestures..
 
 extension AdditionalLocationVM {
     
@@ -349,7 +408,7 @@ extension AdditionalLocationVM {
                         xy: xy,
                         sunriseAndsunsetHHmm: sunRiseAndSunSetHHmm
                     )
-                    let minMaxTemp = await self.requestMinMaxTemp(xy: xy)
+                    let minMaxTemp = await self.requestTodayMinMaxTemp(xy: xy)
                     
                     DispatchQueue.main.async {
                         self.setGPSTempItem(
@@ -387,7 +446,7 @@ extension AdditionalLocationVM {
                             xy: xy,
                             sunriseAndsunsetHHmm: sunRiseAndSunSetHHmm
                         )
-                        let minMaxTemp = await self.requestMinMaxTemp(xy: xy)
+                        let minMaxTemp = await self.requestTodayMinMaxTemp(xy: xy)
                         
                         DispatchQueue.main.async {
                             self.setTempItems(

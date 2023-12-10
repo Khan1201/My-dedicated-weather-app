@@ -215,6 +215,55 @@ extension CurrentWeatherVM {
         }
     }
     
+    /// - parameter xy: 공공데이터 값으로 변환된 X, Y
+    /// '단기예보' 에서의 최소, 최대 온도 값 요청 위해 및
+    /// 02:00 or 23:00 으로 호출해야 하므로, 따로 다시 요청한다.
+    func requestTodayMinMaxTemp(xy: Gps2XY.LatXLngY) async {
+        let reqStartTime = CFAbsoluteTimeGetCurrent()
+
+        let parameters = VeryShortOrShortTermForecastReq(
+            serviceKey: Env.shared.openDataApiResponseKey,
+            numOfRows: "300",
+            baseDate: shortTermForecastUtil.baseDateForTodayMinMaxReq,
+            baseTime: shortTermForecastUtil.baseTimeForTodayMinMaxReq,
+            nx: String(xy.x),
+            ny: String(xy.y)
+        )
+        
+        do {
+            let result = try await JsonRequest.shared.newRequest(
+                url: Route.GET_WEATHER_SHORT_TERM_FORECAST.val,
+                method: .get,
+                parameters: parameters,
+                headers: nil,
+                resultType: PublicDataRes<VeryShortOrShortTermForecastBase<ShortTermForecastCategory>>.self,
+                requestName: "requestShortForecastItems(xy:)"
+            )
+            let reqEndTime = CFAbsoluteTimeGetCurrent() - reqStartTime
+            let logicStartTime = CFAbsoluteTimeGetCurrent()
+            
+            guard let items = result.item else { return }
+            
+            DispatchQueue.main.async {
+                self.setTodayMinMaxTemperature(items)
+                let logicEndTime = CFAbsoluteTimeGetCurrent() - logicStartTime
+                print("단기 req(최소, 최대 온도 값) 호출 소요시간: \(reqEndTime)")
+                print("단기 req(최소, 최대 온도 값) 로직 소요시간: \(logicEndTime)")
+            }
+            
+        } catch APIError.transportError {
+            
+            DispatchQueue.main.async {
+                self.errorMessage = "API 통신 에러"
+            }
+            
+        } catch {
+            DispatchQueue.main.async {
+                self.errorMessage = "알 수 없는 오류"
+            }
+        }
+    }
+    
     /**
      Request 실시간 미세먼지, 초미세먼지 Items request
      */
@@ -541,31 +590,30 @@ extension CurrentWeatherVM {
             popIndex += step
         }
         isTodayWeatherInformationLoadCompleted = true
-        self.setTodayMinMaxTemperature(todayWeatherInformations)
     }
-
-    /**
-     Set 오늘 날씨 정보 리스트 -> `todayMinMaxTemperature` variable
-     
-     - parameter todayWeathers: [todayWeatherInformations] 오늘 날씨 정보 리스트
-     */
-    func setTodayMinMaxTemperature(_ todayWeathers: [Weather.TodayInformation]) {
-        var maxTemp: Int = currentTemperature.toInt
-        var minTemp: Int = currentTemperature.toInt
+    
+    /// Set `todayMinMaxTemperature` variable
+    /// - parameter items: 단기예보 response items
+    func setTodayMinMaxTemperature(_ items: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>]) {
         
-        for (_, todayWeather) in todayWeatherInformations.enumerated() {
-            
-            let tempToInt: Int = Int(todayWeather.temperature) ?? 0
-            
-            if tempToInt > maxTemp {
-                maxTemp = tempToInt
-                
-            } else if tempToInt < minTemp {
-                minTemp = tempToInt
-            }
+        guard let filteredMinTempItem = items.first(where: { $0.category == .TMN }) else {
+            CommonUtil.shared.printError(
+                funcTitle: "setTodayMinMaxTemperature",
+                description: "category == .TMN 에 해당하는 item이 없습니다."
+            )
+            return
+        }
+        guard let filteredMaxTempItem = items.first(where: { $0.category == .TMX }) else {
+            CommonUtil.shared.printError(
+                funcTitle: "setTodayMinMaxTemperature",
+                description: "category == .TMX 에 해당하는 item이 없습니다."
+            )
+            return
         }
         
-        todayMinMaxTemperature = (String(minTemp), String(maxTemp))
+        todayMinMaxTemperature = (filteredMinTempItem.fcstValue.toDouble.toInt.toString,
+                                  filteredMaxTempItem.fcstValue.toDouble.toInt.toString
+        )
         isMinMaxTempLoadCompleted = true
     }
     
@@ -625,6 +673,7 @@ extension CurrentWeatherVM {
             await requestSunAndMoonrise(long: longLati.0, lat: longLati.1) // Must first called
             await requestVeryShortForecastItems(xy: xy)
             await requestShortForecastItems(xy: xy)
+            await requestTodayMinMaxTemp(xy: xy)
             await requestKaKaoAddressBy(longitude: longLati.0, latitude: longLati.1, isCurrentLocationRequested: true)
         }
     }
@@ -675,6 +724,7 @@ extension CurrentWeatherVM {
                     await self.requestSunAndMoonrise(long: String(longitude), lat: String(latitude)) // Must first called
                     await self.requestVeryShortForecastItems(xy: xy)
                     await self.requestShortForecastItems(xy: xy)
+                    await self.requestTodayMinMaxTemp(xy: xy)
                     await self.requestKaKaoAddressBy(longitude: String(longitude), latitude: String(latitude), isCurrentLocationRequested: false)
                     await self.requestDustForecastStationXY(
                         subLocality: subLocality,
@@ -758,6 +808,7 @@ extension CurrentWeatherVM {
             await requestSunAndMoonrise(long: longitude, lat: latitude) // Must first called
             await requestVeryShortForecastItems(xy: convertedXY)
             await requestShortForecastItems(xy: convertedXY)
+            await requestTodayMinMaxTemp(xy: convertedXY)
             await requestKaKaoAddressBy(longitude: longitude, latitude: latitude, isCurrentLocationRequested: false)
             await requestDustForecastStationXY(
                 subLocality: subLocality,
