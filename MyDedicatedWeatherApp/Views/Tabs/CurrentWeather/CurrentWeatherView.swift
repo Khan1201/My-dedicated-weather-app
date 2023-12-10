@@ -65,7 +65,7 @@ struct CurrentWeatherView: View {
                 skyType: viewModel.currentWeatherInformation.skyType
             )
             .onChangeAtTodayViewController(disableTabBarTouch: $disableTabBarTouch)
-            .sheet(isPresented: $viewModel.openAdditionalLocationView) {
+            .fullScreenCover(isPresented: $viewModel.openAdditionalLocationView) {
                 RootNavigationView(
                     view: AdditionalLocationView(
                         isPresented: $viewModel.openAdditionalLocationView,
