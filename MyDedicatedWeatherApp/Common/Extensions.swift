@@ -91,6 +91,10 @@ extension String {
         return Int(self) ?? 0
     }
     
+    var toDouble: Double {
+        return Double(self) ?? 0
+    }
+    
     /**
      hhMM  -> h시 m분 으로 변환
      
@@ -131,6 +135,13 @@ extension Int {
 }
 
 extension CGFloat {
+    
+    var toInt: Int {
+        return Int(self)
+    }
+}
+
+extension Double {
     
     var toInt: Int {
         return Int(self)
