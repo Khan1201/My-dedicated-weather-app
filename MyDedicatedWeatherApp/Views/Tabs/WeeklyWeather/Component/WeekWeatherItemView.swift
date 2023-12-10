@@ -15,15 +15,21 @@ struct WeekWeatherItemView: View {
     @State private var twoDigitTempSize: CGSize = CGSize()
 
     var body: some View {
+        let maxTemperatureIsMinus: Bool = item.maxTemperature.toInt <= 0
+        let imageWidth: CGFloat = UIScreen.screenWidth / 11.718
+        let baseRecWidth: CGFloat = UIScreen.screenWidth / 3.947
+        let oneTemperatureWidth: CGFloat = baseRecWidth / 35
 
         HStack(alignment: .center, spacing: 0) {
             Text(day)
-                .fontSpoqaHanSansNeo(size: 16, weight: .medium)
+                .fontSpoqaHanSansNeo(size: 15, weight: .medium)
                 .foregroundColor(Color.white)
+            
+            Spacer(minLength: 20)
             
             Image("\(item.weatherImage)")
                 .resizable()
-                .frame(width: 35, height: 35)
+                .frame(width: imageWidth, height: imageWidth)
                 .if(item.rainfallPercent != "0") { view in
                     view
                         .overlay(alignment: .bottom) {
@@ -33,33 +39,55 @@ struct WeekWeatherItemView: View {
                                 .offset(y: 4)
                         }
                 }
-                .padding(.leading, 25)
+            
+            Spacer(minLength: 12)
             
             Text("\(item.minTemperature)°")
-                .fontSpoqaHanSansNeo(size: 18, weight: .bold)
+                .fontSpoqaHanSansNeo(size: 17, weight: .bold)
                 .foregroundColor(Color.white.opacity(0.5))
                 .frame(maxWidth: twoDigitTempSize.width)
-                .padding(.leading, 12)
+            
+            Spacer(minLength: 8)
                         
             VStack(alignment: .leading, spacing: 0) {
-                RoundedRectangle(cornerRadius: 16)
-                    .fill(LinearGradient(colors: [Color(hexCode: "CDCF5C"), Color(hexCode: "EF8835")], startPoint: .leading, endPoint: .trailing))
-                    .frame(width: recWidth, height: 5)
-                    .padding(.leading, 12)
+                
+                ZStack(alignment: .leading) {
+                    ZStack(alignment: .leading) {
+                        RoundedRectangle(cornerRadius: 16)
+                            .frame(width: 95, height: 5)
+                            .opacity(0)
+                        
+                        RoundedRectangle(cornerRadius: 16)
+                            .fill(LinearGradient(colors: [Color(hexCode: "CDCF5C"), Color(hexCode: "EF8835")], startPoint: .leading, endPoint: .trailing))
+                            .frame(width: recWidth, height: 5)
+                            .opacity(maxTemperatureIsMinus ? 0 : 1)
+                    }
+                    
+                    ZStack(alignment: .trailing) {
+                        RoundedRectangle(cornerRadius: 16)
+                            .frame(width: 95, height: 5)
+                            .opacity(0)
+                        
+                        RoundedRectangle(cornerRadius: 16)
+                            .fill(LinearGradient(colors: [Color(hexCode: "56CCF2"), Color(hexCode: "2F80ED")], startPoint: .trailing, endPoint: .leading))
+                            .frame(width: recWidth, height: 5)
+                            .opacity(maxTemperatureIsMinus ? 1 : 0)
+                    }
+                }
             }
-            .frame(width: 112, alignment: .leading)
+            
+            Spacer(minLength: 8)
             
             Text("\(item.maxTemperature)°")
-                .fontSpoqaHanSansNeo(size: 18, weight: .bold)
+                .fontSpoqaHanSansNeo(size: 17, weight: .bold)
                 .foregroundColor(Color.white)
                 .frame(maxWidth: twoDigitTempSize.width)
-                .padding(.leading, 12)
             
         }
         /// 2자리수 온도  width get 위해
         .overlay {
-            Text("00°")
-                .fontSpoqaHanSansNeo(size: 18, weight: .bold)
+            Text("-10°")
+                .fontSpoqaHanSansNeo(size: 17, weight: .bold)
                 .getSize(size: $twoDigitTempSize)
                 .opacity(0)
         }
@@ -73,7 +101,7 @@ struct WeekWeatherItemView: View {
         .onAppear {
             recWidth = 0
             withAnimation(.easeInOut(duration: 0.8)) {
-                recWidth = CGFloat(item.maxTemperature.toInt) * 3
+                recWidth = maxTemperatureIsMinus ? -(CGFloat(item.minTemperature.toInt) * oneTemperatureWidth) : CGFloat(item.maxTemperature.toInt) * oneTemperatureWidth
             }
         }
     }
