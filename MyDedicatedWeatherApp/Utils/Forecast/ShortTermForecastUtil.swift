@@ -73,6 +73,30 @@ struct ShortTermForecastUtil {
         }
     }
     
+    var baseTimeForTodayMinMaxReq: String {
+        let currentHHmm = Date().toString(format: "HHmm").toInt
+        
+        if currentHHmm >= 0200 {
+            return "0200"
+            
+        } else {
+            return "2300"
+        }
+    }
+    
+    var baseDateForTodayMinMaxReq: String {
+        let currentDate = Date()
+        let currentYyyyMMdd = currentDate.toString(format: "yyyyMMdd").toInt
+        let currentHHmm = currentDate.toString(format: "HHmm").toInt
+        
+        if currentHHmm >= 0200 {
+            return currentYyyyMMdd.toString
+            
+        } else {
+            return (currentYyyyMMdd - 1).toString
+        }
+    }
+    
     func todayWeatherIndexSkipValue() -> Int {
         let currentHH: Int = Date().toString(format: "HH").toInt
         let allBaseTimeHHs: [Int] = [02, 05, 08, 11, 14, 17, 20, 23]
