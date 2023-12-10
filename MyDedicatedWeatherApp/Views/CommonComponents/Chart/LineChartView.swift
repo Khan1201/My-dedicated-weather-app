@@ -49,15 +49,18 @@ struct LineChartView: View {
         var maxTempLineYValues: [CGFloat] {
             // 0 = 바꿀 range의 최소값, height = 바꿀 range의 최대값
             return weeklyChartInformation.maxTemps.map { temp in
-                return height - ((temp - rangeMin) * (CGFloat(height) - 0) / (rangeMax - rangeMin) + 0)
+                let convertedTemp: CGFloat = temp >= rangeMax ? rangeMax : temp
+                
+                return height - ((convertedTemp - rangeMin) * (CGFloat(height) - 0) / (rangeMax - rangeMin) + 0)
             }
         }
         
         var minTempLineYValues: [CGFloat] {
             // 0 = 바꿀 range의 최소값, height = 바꿀 range의 최대값
             return weeklyChartInformation.minTemps.map { temp in
-                let result = (temp - rangeMin) * (CGFloat(height) - 0) / (rangeMax - rangeMin) + 0
-                return result < 0 ? 0 : height - result
+                let convertedTemp: CGFloat = temp <= rangeMin ? rangeMin : temp
+
+                return height - (convertedTemp - rangeMin) * (CGFloat(height) - 0) / (rangeMax - rangeMin) + 0
             }
         }
         
@@ -82,14 +85,18 @@ struct LineChartView: View {
         var maxTempVertexBottomPaddings: [CGFloat] {
             // 0 = 바꿀 range의 최소값, height = 바꿀 range의 최대값
             return weeklyChartInformation.maxTemps.map { temp in
-                return (temp - rangeMin) * (CGFloat(height) - 0) / (rangeMax - rangeMin) + 0 - (vertexSize.height / 2)
+                let convertedTemp: CGFloat = temp >= rangeMax ? rangeMax + 1 : temp
+                
+                return (convertedTemp - rangeMin) * (CGFloat(height) - 0) / (rangeMax - rangeMin) + 0 - (vertexSize.height / 2)
             }
         }
         
         var minTempVertexBottomPaddings: [CGFloat] {
             // 0 = 바꿀 range의 최소값, height = 바꿀 range의 최대값
             return weeklyChartInformation.minTemps.map { temp in
-                return (temp - rangeMin) * (CGFloat(height) - 0) / (rangeMax - rangeMin) + 0 - (vertexSize.height / 2)
+                let convertedTemp: CGFloat = temp <= rangeMin ? rangeMin - 1 : temp
+
+                return (convertedTemp - rangeMin) * (CGFloat(height) - 0) / (rangeMax - rangeMin) + 0 - (vertexSize.height / 2)
             }
         }
         
@@ -215,7 +222,7 @@ struct LineChartView: View {
                                     Text("\(Int(weeklyChartInformation.minTemps[i]))°")
                                         .fontSpoqaHanSansNeo(size: 10, weight: .bold)
                                         .foregroundColor(Int(weeklyChartInformation.maxTemps[i]) >= 30 ? Color.red.opacity(0.7) : Color.white.opacity(0.7))
-                                        .offset(x: vertexSize.width, y: -vertexSize.width * 2.5)
+                                        .offset(x: vertexSize.width, y: -vertexSize.width * 2)
                                         .fixedSize()
                                 }
                         }
@@ -239,7 +246,8 @@ struct LineChartView: View {
 
                     ForEach(weeklyChartInformation.imageAndRainPercents.indices, id: \.self) { i in
                         let isFiveTemperatureDifference: Bool = weeklyChartInformation.maxTemps[i] - weeklyChartInformation.minTemps[i] >= 5
-                        let weatherImageBottomPadding: CGFloat = isFiveTemperatureDifference ? minTempVertexBottomPaddings[i] + ((maxTempVertexBottomPaddings[i] - minTempVertexBottomPaddings[i]) / 2) : MidTermForecastUtil.isWeatherImageUnderMinTemperatureLocated(
+                        let isMinMaxTempRangeIn: Bool = weeklyChartInformation.maxTemps[i] <= rangeMax && weeklyChartInformation.minTemps[i] >= rangeMin
+                        let weatherImageBottomPadding: CGFloat = isFiveTemperatureDifference && isMinMaxTempRangeIn ? minTempVertexBottomPaddings[i] + ((maxTempVertexBottomPaddings[i] - minTempVertexBottomPaddings[i]) / 2) : MidTermForecastUtil.isWeatherImageUnderMinTemperatureLocated(
                             currentMin: weeklyChartInformation.minTemps[i],
                             yAxisMin: rangeMin,
                             currentMax: weeklyChartInformation.maxTemps[i],
