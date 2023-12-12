@@ -82,7 +82,7 @@ struct WeeklyWeatherView: View {
         .onChange(of: contentVM.isRefreshed) { newValue in
             viewModel.isRefreshedOnChangeAction(newValue)
         }
-        .task {
+        .task(priority: .userInitiated) {
             await viewModel.performWeekRequests(
                 xy: currentLocationVM.xy,
                 fullAddress: currentLocationVM.fullAddress

@@ -78,6 +78,7 @@ struct AdditionalLocationView: View {
             }
         }
         .preferredColorScheme(.dark)
+        .background(Color.black)
         .task {
             vm.additinalLocationViewTaskAction(gpsFullAddress: currentLocationVM.gpsFullAddress)
         }

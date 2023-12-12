@@ -669,17 +669,17 @@ extension CurrentWeatherVM {
         xy: Gps2XY.LatXLngY,
         longLati: (String, String)
     ) {
-        Task {
+        Task(priority: .userInitiated) {
             await requestSunAndMoonrise(long: longLati.0, lat: longLati.1) // Must first called
-            await requestVeryShortForecastItems(xy: xy)
-            await requestShortForecastItems(xy: xy)
-            await requestTodayMinMaxTemp(xy: xy)
-            await requestKaKaoAddressBy(longitude: longLati.0, latitude: longLati.1, isCurrentLocationRequested: true)
+            async let _ = requestVeryShortForecastItems(xy: xy)
+            async let _ = requestShortForecastItems(xy: xy)
+            async let _ = requestTodayMinMaxTemp(xy: xy)
+            async let _ = requestKaKaoAddressBy(longitude: longLati.0, latitude: longLati.1, isCurrentLocationRequested: true)
         }
     }
     
     func todayViewControllerKakaoAddressUpdatedAction(umdName: String, locality: String) {
-        Task {
+        Task(priority: .userInitiated) {
             await requestDustForecastStationXY(
                 subLocality: umdName,
                 locality: locality
@@ -720,12 +720,12 @@ extension CurrentWeatherVM {
                 additionalLocationProgress = .loading
                 initLoadCompletedVariables()
                 
-                Task {
+                Task(priority: .userInitiated) {
                     await self.requestSunAndMoonrise(long: String(longitude), lat: String(latitude)) // Must first called
-                    await self.requestVeryShortForecastItems(xy: xy)
-                    await self.requestShortForecastItems(xy: xy)
-                    await self.requestTodayMinMaxTemp(xy: xy)
-                    await self.requestKaKaoAddressBy(longitude: String(longitude), latitude: String(latitude), isCurrentLocationRequested: false)
+                    async let _ = self.requestVeryShortForecastItems(xy: xy)
+                    async let _ = self.requestShortForecastItems(xy: xy)
+                    async let _ = self.requestTodayMinMaxTemp(xy: xy)
+                    async let _ = self.requestKaKaoAddressBy(longitude: String(longitude), latitude: String(latitude), isCurrentLocationRequested: false)
                     await self.requestDustForecastStationXY(
                         subLocality: subLocality,
                         locality: locality
@@ -770,7 +770,7 @@ extension CurrentWeatherVM {
         if newValue {
             initLoadCompletedVariables()
             
-            Task {
+            Task(priority: .userInitiated) {
                 performRefresh(
                     longitude: longitude,
                     latitude: latitude,
@@ -804,12 +804,12 @@ extension CurrentWeatherVM {
     func performRefresh(longitude: String, latitude: String, xy: (String, String), locality: String, subLocality: String) {
         let convertedXY: Gps2XY.LatXLngY = .init(lat: 0, lng: 0, x: xy.0.toInt, y: xy.1.toInt)
         
-        Task {
+        Task(priority: .userInitiated) {
             await requestSunAndMoonrise(long: longitude, lat: latitude) // Must first called
-            await requestVeryShortForecastItems(xy: convertedXY)
-            await requestShortForecastItems(xy: convertedXY)
-            await requestTodayMinMaxTemp(xy: convertedXY)
-            await requestKaKaoAddressBy(longitude: longitude, latitude: latitude, isCurrentLocationRequested: false)
+            async let _ = requestVeryShortForecastItems(xy: convertedXY)
+            async let _ = requestShortForecastItems(xy: convertedXY)
+            async let _ = requestTodayMinMaxTemp(xy: convertedXY)
+            async let _ = requestKaKaoAddressBy(longitude: longitude, latitude: latitude, isCurrentLocationRequested: false)
             await requestDustForecastStationXY(
                 subLocality: subLocality,
                 locality: locality

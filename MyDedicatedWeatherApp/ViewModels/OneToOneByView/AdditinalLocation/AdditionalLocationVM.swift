@@ -300,6 +300,7 @@ extension AdditionalLocationVM {
 
 extension AdditionalLocationVM {
     
+    @MainActor
     func setTempItems(currentWeatherImageAndTemp: (String, String), minMaxTemp: (String, String), index: Int) {
         guard currentWeatherImageAndTemp != ("", "") && minMaxTemp != ("", "") else {
             CommonUtil.shared.printError(
@@ -325,6 +326,7 @@ extension AdditionalLocationVM {
         
     }
     
+    @MainActor
     func setGPSTempItem(currentWeatherImageAndTemp: (String, String), minMaxTemp: (String, String)) {
         gpsTempItem = .init(
             weatherImage: currentWeatherImageAndTemp.0,
@@ -402,7 +404,7 @@ extension AdditionalLocationVM {
                 let longitude: Double = success.1
                 let xy: Gps2XY.LatXLngY = self.commonForecastUtil.convertGPS2XY(mode: .toXY, lat_X: latitude, lng_Y: longitude)
                 
-                Task {
+                Task(priority: .userInitiated) {
                     let sunRiseAndSunSetHHmm = await self.requestSunRiseAndSunSetHHmm(long: String(longitude), lat: String(latitude))
                     let currentWeatherImageAndTemp = await self.requestCurrentWeatherImageAndTemp(
                         xy: xy,
@@ -410,12 +412,10 @@ extension AdditionalLocationVM {
                     )
                     let minMaxTemp = await self.requestTodayMinMaxTemp(xy: xy)
                     
-                    DispatchQueue.main.async {
-                        self.setGPSTempItem(
-                            currentWeatherImageAndTemp: currentWeatherImageAndTemp,
-                            minMaxTemp: minMaxTemp
-                        )
-                    }
+                    await self.setGPSTempItem(
+                        currentWeatherImageAndTemp: currentWeatherImageAndTemp,
+                        minMaxTemp: minMaxTemp
+                    )
                 }
                 
             case .failure(_):
@@ -440,7 +440,7 @@ extension AdditionalLocationVM {
                     let longitude: Double = success.1
                     let xy: Gps2XY.LatXLngY = self.commonForecastUtil.convertGPS2XY(mode: .toXY, lat_X: latitude, lng_Y: longitude)
                     
-                    Task {
+                    Task(priority: .userInitiated) {
                         let sunRiseAndSunSetHHmm = await self.requestSunRiseAndSunSetHHmm(long: String(longitude), lat: String(latitude))
                         let currentWeatherImageAndTemp = await self.requestCurrentWeatherImageAndTemp(
                             xy: xy,
@@ -448,13 +448,11 @@ extension AdditionalLocationVM {
                         )
                         let minMaxTemp = await self.requestTodayMinMaxTemp(xy: xy)
                         
-                        DispatchQueue.main.async {
-                            self.setTempItems(
-                                currentWeatherImageAndTemp: currentWeatherImageAndTemp,
-                                minMaxTemp: minMaxTemp,
-                                index: index
-                            )
-                        }
+                        await self.setTempItems(
+                            currentWeatherImageAndTemp: currentWeatherImageAndTemp,
+                            minMaxTemp: minMaxTemp,
+                            index: index
+                        )
                     }
                     
                 case .failure(_):
