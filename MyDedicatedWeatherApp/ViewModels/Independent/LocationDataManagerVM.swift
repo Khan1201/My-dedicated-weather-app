@@ -122,11 +122,13 @@ extension LocationDataManagerVM: CLLocationManagerDelegate {
             if let address: CLPlacemark = place?.last {
                 self.currentLocality = address.administrativeArea ?? ""
                 
-                currentLocationVM.setXY((String(xy.x), String(xy.y)))
-                currentLocationVM.setLatitude(latitude)
-                currentLocationVM.setLongitude(longitude)
-                currentLocationVM.setLocality(self.currentLocality)
-                currentLocationVM.setGPSLocality(self.currentLocality)
+                Task {
+                    await self.currentLocationVM.setXY((String(xy.x), String(xy.y)))
+                    await self.currentLocationVM.setLatitude(latitude)
+                    await self.currentLocationVM.setLongitude(longitude)
+                    await self.currentLocationVM.setLocality(self.currentLocality)
+                    await self.currentLocationVM.setGPSLocality(self.currentLocality)
+                }
                 
                 self.isLocationUpdated = true
                 

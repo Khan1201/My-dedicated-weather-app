@@ -31,34 +31,42 @@ final class CurrentLocationVM: ObservableObject {
 
 extension CurrentLocationVM {
     
+    @MainActor
     func setLocality(_ value: String) {
         self.locality = value
     }
     
+    @MainActor
     func setSubLocality(_ value: String) {
         self.subLocality = value
     }
     
+    @MainActor
     func setFullAddress(_ value: String) {
         self.fullAddress = value
     }
     
+    @MainActor
     func setXY(_ value: (String, String)) {
         self.xy = value
     }
     
+    @MainActor
     func setLatitude(_ value: String) {
         self.latitude = value
     }
     
+    @MainActor
     func setLongitude(_ value: String) {
         self.longitude = value
     }
     
+    @MainActor
     func setGPSLocality(_ value: String) {
         self.gpsLocality = value
     }
     
+    @MainActor
     func setGPSSubLocality(_ value: String) {
         self.gpsSubLocality = value
     }

@@ -20,6 +20,8 @@ final class ContentVM: ObservableObject {
     @Published private(set) var skyKeyword: String = ""
     @Published private(set) var isDayMode: Bool = false
     
+    var commonForecastUtil = CommonForecastUtil()
+    
     private init() {}
 }
 
@@ -59,8 +61,11 @@ extension ContentVM {
         }
     }
     
-    func setIsDayMode(_ value: Bool) {
-        isDayMode = value
+    @MainActor
+    func setIsDayMode(sunrise: String, sunset: String) {
+        let currentHHmm = Date().toString(format: "HHmm")
+        let result = commonForecastUtil.isDayMode(hhMM: currentHHmm, sunrise: sunrise, sunset: sunset)
+        isDayMode = result
     }
     
     func setSkyKeyword(_ value: String) {
