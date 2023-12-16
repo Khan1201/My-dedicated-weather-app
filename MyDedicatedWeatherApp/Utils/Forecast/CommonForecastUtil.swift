@@ -232,7 +232,7 @@ struct CommonForecastUtil {
                 imageString: "weather_rain_snow"
             )
             
-        case "3":
+        case "3", "7":
             let animationJson = self.decideAnimationWhetherDayOrNight(
                 hhMM: hhMMForDayOrNightImage,
                 sunrise: sunrise,
