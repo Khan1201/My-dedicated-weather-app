@@ -101,7 +101,7 @@ struct WeekWeatherItemView: View {
         .onAppear {
             recWidth = 0
             withAnimation(.easeInOut(duration: 0.8)) {
-                recWidth = maxTemperatureIsMinus ? -(CGFloat(item.minTemperature.toInt) * oneTemperatureWidth) : CGFloat(item.maxTemperature.toInt) * oneTemperatureWidth
+                recWidth = maxTemperatureIsMinus ? -(CGFloat(Double(item.minTemperature.toInt) * 1.8) * oneTemperatureWidth) : CGFloat(item.maxTemperature.toInt) * oneTemperatureWidth
             }
         }
     }
