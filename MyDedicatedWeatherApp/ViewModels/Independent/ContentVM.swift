@@ -16,6 +16,7 @@ final class ContentVM: ObservableObject {
     @Published var disableTabBarTouch: Bool = true
     @Published var showNoticePopup: Bool = false
     @Published var isRefreshed: Bool = false
+    @Published var isLocationChanged: Bool = false
     
     @Published private(set) var skyKeyword: String = ""
     @Published private(set) var isDayMode: Bool = false

@@ -24,6 +24,7 @@ struct WeeklyWeatherView: View {
                 subLocation: currentLocationVM.subLocality,
                 showRefreshButton: $viewModel.isWeeklyWeatherInformationsLoaded,
                 openAdditionalLocationView: .constant(false),
+                showLocationAddButton: false,
                 refreshButtonOnTapGesture: {
                     viewModel.refreshButtonOnTapGesture(
                         xy: currentLocationVM.xy,
@@ -81,6 +82,12 @@ struct WeeklyWeatherView: View {
         )
         .onChange(of: contentVM.isRefreshed) { newValue in
             viewModel.isRefreshedOnChangeAction(newValue)
+        }
+        .onChange(of: contentVM.isLocationChanged) { newValue in
+            contentVM.isLocationChanged = false
+            if newValue {
+                viewModel.isWeeklyWeatherInformationsLoaded = false
+            }
         }
         .task(priority: .userInitiated) {
             await viewModel.performWeekRequests(

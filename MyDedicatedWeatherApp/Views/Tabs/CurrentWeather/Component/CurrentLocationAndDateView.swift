@@ -13,6 +13,7 @@ struct CurrentLocationAndDateView: View {
     let subLocation: String
     @Binding var showRefreshButton: Bool
     @Binding var openAdditionalLocationView: Bool
+    var showLocationAddButton: Bool = true
     let refreshButtonOnTapGesture: () -> Void
     
     var body: some View {
@@ -46,6 +47,7 @@ struct CurrentLocationAndDateView: View {
                 .onTapGesture {
                     openAdditionalLocationView = true
                 }
+                .opacity(showLocationAddButton ? 1 : 0)
             }
             
             HStack(alignment: .bottom, spacing: 4) {

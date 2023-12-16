@@ -39,6 +39,7 @@ struct OnChangeAtTodayViewController: ViewModifier {
             ) { _ in
                 viewModel.loadCompletedVariablesOnChangeAction()
                 disableTabBarTouch = false
+                contentVM.isLocationChanged = true
             }
             .onChange(of: viewModel.isStartRefresh) { newValue in
                 viewModel.isStartRefreshOnChangeAction(
