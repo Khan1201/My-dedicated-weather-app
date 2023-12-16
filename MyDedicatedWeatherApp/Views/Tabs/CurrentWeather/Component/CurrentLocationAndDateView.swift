@@ -28,14 +28,24 @@ struct CurrentLocationAndDateView: View {
             .foregroundColor(.white)
             .lineSpacing(2)
             .overlay(alignment: .topLeading) {
-                Image(systemName: "plus.message")
-                    .resizable()
-                    .frame(width: 24, height: 24)
-                    .foregroundStyle(Color.white)
-                    .offset(y: -30)
-                    .onTapGesture {
-                        openAdditionalLocationView = true
-                    }
+                HStack(alignment: .center, spacing: 5) {
+                    Image(systemName: "plus")
+                        .resizable()
+                        .frame(width: 10, height: 10)
+                        .foregroundStyle(Color.white)
+                    
+                    Text("지역 추가")
+                        .fontSpoqaHanSansNeo(size: 12, weight: .medium)
+                        .foregroundStyle(Color.white)
+                }
+                .padding(.vertical, 3)
+                .padding(.horizontal, 10)
+                .background(Color.blue.opacity(0.6))
+                .clipShape(RoundedRectangle(cornerRadius: 14))
+                .offset(y: -30)
+                .onTapGesture {
+                    openAdditionalLocationView = true
+                }
             }
             
             HStack(alignment: .bottom, spacing: 4) {
