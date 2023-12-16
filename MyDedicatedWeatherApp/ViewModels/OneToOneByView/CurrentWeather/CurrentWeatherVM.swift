@@ -581,25 +581,16 @@ extension CurrentWeatherVM {
     /// - parameter items: 단기예보 response items
     @MainActor
     func setTodayMinMaxTemperature(_ items: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>]) {
+        let todayDate = Date().toString(format: "yyyyMMdd")
         
-        guard let filteredMinTempItem = items.first(where: { $0.category == .TMN }) else {
-            CommonUtil.shared.printError(
-                funcTitle: "setTodayMinMaxTemperature",
-                description: "category == .TMN 에 해당하는 item이 없습니다."
-            )
-            return
-        }
-        guard let filteredMaxTempItem = items.first(where: { $0.category == .TMX }) else {
-            CommonUtil.shared.printError(
-                funcTitle: "setTodayMinMaxTemperature",
-                description: "category == .TMX 에 해당하는 item이 없습니다."
-            )
-            return
-        }
+        let filteredItems = items.filter( {$0.category == .TMP && $0.fcstDate == todayDate} )
+        var filteredTemps = filteredItems.map({ $0.fcstValue.toInt })
+        filteredTemps.append(currentTemperature.toInt)
         
-        todayMinMaxTemperature = (filteredMinTempItem.fcstValue.toDouble.toInt.toString,
-                                  filteredMaxTempItem.fcstValue.toDouble.toInt.toString
-        )
+        let min = filteredTemps.min() ?? 0
+        let max = filteredTemps.max() ?? 0
+        
+        todayMinMaxTemperature = (min.toString, max.toString)
         isMinMaxTempLoadCompleted = true
     }
     

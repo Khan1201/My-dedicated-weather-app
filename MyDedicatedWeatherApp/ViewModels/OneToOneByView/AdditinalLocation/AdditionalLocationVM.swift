@@ -148,8 +148,7 @@ extension AdditionalLocationVM {
     /// - parameter xy: 공공데이터 값으로 변환된 X, Y
     /// '단기예보' 에서의 최소, 최대 온도 값 요청 위해 및
     /// 02:00 or 23:00 으로 호출해야 하므로, 따로 다시 요청한다.
-    func requestTodayMinMaxTemp(xy: Gps2XY.LatXLngY) async -> (String, String) {
-        let reqStartTime = CFAbsoluteTimeGetCurrent()
+    func requestTodayMinMaxTemp(xy: Gps2XY.LatXLngY, currentTemp: String) async -> (String, String) {
 
         let parameters = VeryShortOrShortTermForecastReq(
             serviceKey: Env.shared.openDataApiResponseKey,
@@ -161,6 +160,19 @@ extension AdditionalLocationVM {
         )
         
         do {
+            func filteredMinMax(_ items: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>], currentTemp: String) -> (String, String) {
+                let todayDate = Date().toString(format: "yyyyMMdd")
+                
+                let filteredItems = items.filter( {$0.category == .TMP && $0.fcstDate == todayDate} )
+                var filteredTemps = filteredItems.map({ $0.fcstValue.toInt })
+                filteredTemps.append(currentTemp.toInt)
+                
+                let min = filteredTemps.min() ?? 0
+                let max = filteredTemps.max() ?? 0
+                
+                return (min.toString, max.toString)
+            }
+            
             let result = try await JsonRequest.shared.newRequest(
                 url: Route.GET_WEATHER_SHORT_TERM_FORECAST.val,
                 method: .get,
@@ -171,24 +183,7 @@ extension AdditionalLocationVM {
             )
             
             guard let items = result.item else { return ("", "") }
-            
-            guard let filteredMinTempItem = items.first(where: { $0.category == .TMN }) else {
-                CommonUtil.shared.printError(
-                    funcTitle: "setTodayMinMaxTemperature",
-                    description: "category == .TMN 에 해당하는 item이 없습니다."
-                )
-                return ("", "")
-            }
-            guard let filteredMaxTempItem = items.first(where: { $0.category == .TMX }) else {
-                CommonUtil.shared.printError(
-                    funcTitle: "setTodayMinMaxTemperature",
-                    description: "category == .TMX 에 해당하는 item이 없습니다."
-                )
-                return ("", "")
-            }
-            
-            return (filteredMinTempItem.fcstValue.toDouble.toInt.toString,
-                                      filteredMaxTempItem.fcstValue.toDouble.toInt.toString)
+            return filteredMinMax(items, currentTemp: currentTemp)
             
         } catch APIError.transportError {
             
@@ -410,7 +405,10 @@ extension AdditionalLocationVM {
                         xy: xy,
                         sunriseAndsunsetHHmm: sunRiseAndSunSetHHmm
                     )
-                    let minMaxTemp = await self.requestTodayMinMaxTemp(xy: xy)
+                    let minMaxTemp = await self.requestTodayMinMaxTemp(
+                        xy: xy, 
+                        currentTemp: currentWeatherImageAndTemp.1
+                    )
                     
                     await self.setGPSTempItem(
                         currentWeatherImageAndTemp: currentWeatherImageAndTemp,
@@ -446,7 +444,10 @@ extension AdditionalLocationVM {
                             xy: xy,
                             sunriseAndsunsetHHmm: sunRiseAndSunSetHHmm
                         )
-                        let minMaxTemp = await self.requestTodayMinMaxTemp(xy: xy)
+                        let minMaxTemp = await self.requestTodayMinMaxTemp(
+                            xy: xy,
+                            currentTemp: currentWeatherImageAndTemp.1
+                        )
                         
                         await self.setTempItems(
                             currentWeatherImageAndTemp: currentWeatherImageAndTemp,
