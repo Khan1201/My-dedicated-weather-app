@@ -45,10 +45,12 @@ struct VeryShortTermForecastUtil {
      
      - parameter baseTime: '단기예보 request 시간'
      */
-    func requestBaseDate(baseTime: String) -> String {
+    func requestBaseDate() -> String {
+        let currentDate = Date()
+        let currentHHmm = currentDate.toString(format: "HHmm").toInt
         
-        return Date().toString(
-            byAdding: baseTime == "2330" ? -1 : 0,
+        return currentDate.toString(
+            byAdding: currentHHmm < 0030 ? -1 : 0,
             format: "yyyyMMdd"
         )
     }

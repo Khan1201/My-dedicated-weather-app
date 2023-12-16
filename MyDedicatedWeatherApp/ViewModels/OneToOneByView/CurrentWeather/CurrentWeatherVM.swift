@@ -88,7 +88,7 @@ extension CurrentWeatherVM {
         let startTime = CFAbsoluteTimeGetCurrent()
         
         let baseTime = veryShortTermForecastUtil.requestBaseTime()
-        let baseDate = veryShortTermForecastUtil.requestBaseDate(baseTime: baseTime)
+        let baseDate = veryShortTermForecastUtil.requestBaseDate()
         
         let parameters: VeryShortOrShortTermForecastReq = VeryShortOrShortTermForecastReq(
             serviceKey: Env.shared.openDataApiResponseKey,

@@ -85,7 +85,7 @@ extension AdditionalLocationVM {
      */
     func requestCurrentWeatherImageAndTemp(xy: Gps2XY.LatXLngY, sunriseAndsunsetHHmm: (String, String)) async -> (String, String) {
         let baseTime = veryShortTermForecastUtil.requestBaseTime()
-        let baseDate = veryShortTermForecastUtil.requestBaseDate(baseTime: baseTime)
+        let baseDate = veryShortTermForecastUtil.requestBaseDate()
         
         let parameters: VeryShortOrShortTermForecastReq = VeryShortOrShortTermForecastReq(
             serviceKey: Env.shared.openDataApiResponseKey,
