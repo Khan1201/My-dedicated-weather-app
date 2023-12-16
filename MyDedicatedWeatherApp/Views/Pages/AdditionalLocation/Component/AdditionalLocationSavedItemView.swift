@@ -16,7 +16,6 @@ struct AdditionalLocationSavedItemView: View {
     let deleteAction: (String, String, String) -> Void
     
     @State private var isDeleteMode: Bool = false
-    @State private var itemSize: CGSize = CGSize()
     
     var body: some View {
         
@@ -45,13 +44,19 @@ struct AdditionalLocationSavedItemView: View {
             .padding(.vertical, 12)
             .padding(.leading, 5)
             .padding(.trailing, 15)
-            .loadingProgressLottie(isLoadingCompleted: tempItem.currentTemp != "" && tempItem.minMaxTemp != ("", "") && tempItem.weatherImage != "")
+            .loadingProgressLottie(
+                isLoadingCompleted: tempItem.currentTemp != "" &&
+                tempItem.minMaxTemp != ("", "") &&
+                tempItem.weatherImage != "",
+                width: 65,
+                height: 65
+            )
             
             if isDeleteMode {
                 VStack(alignment: .leading, spacing: 0) {
                     Rectangle()
                         .fill(Color.red)
-                        .frame(width: 70, height: itemSize.height)
+                        .frame(width: 70)
                         .overlay {
                             Text("삭제")
                                 .fontSpoqaHanSansNeo(size: 14, weight: .medium)
@@ -60,15 +65,16 @@ struct AdditionalLocationSavedItemView: View {
                 }
                 .transition(.move(edge: .trailing))
                 .onTapGesture {
-                    deleteAction(fullAddress, locality, subLocality)
-                    isDeleteMode = false
+                    withAnimation {
+                        deleteAction(fullAddress, locality, subLocality)
+                        isDeleteMode = false
+                    }
                 }
             }
         }
         .padding(.leading, 15)
         .background(Color.white.opacity(0.1))
         .clipShape(RoundedRectangle(cornerRadius: 8))
-        .getSize(size: $itemSize)
         .onTapGesture {
             if isDeleteMode {
                 withAnimation(.easeIn(duration: 0.15)) {

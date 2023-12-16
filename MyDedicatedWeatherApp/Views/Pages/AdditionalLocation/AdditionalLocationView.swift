@@ -14,7 +14,7 @@ struct AdditionalLocationView: View {
     
     @StateObject var vm: AdditionalLocationVM = AdditionalLocationVM()
     @EnvironmentObject var currentLocationVM: CurrentLocationVM
-
+    
     @State private var navNextView: Bool = false
     
     
@@ -30,46 +30,48 @@ struct AdditionalLocationView: View {
                 )
                 .padding(.top, 10)
                 
-                /// 현재 gps item
-                AdditionalLocationSavedGPSItemView(
-                    fullAddress: currentLocationVM.gpsFullAddress,
-                    locality: currentLocationVM.gpsLocality,
-                    subLocality: currentLocationVM.gpsSubLocality,
-                    tempItem: vm.gpsTempItem,
-                    currentLocation: currentLocationVM.fullAddress,
-                    finalLocationOnTapGesture: finalLocationOnTapGesture
-                )
-                .padding(.top, 20)
-                .padding(.horizontal, 20)
-
-                /// 추가 등록 items
-                AdditionalLocationSavedItemsView(
-                    currentFullAddress: currentLocationVM.fullAddress,
-                    fullAddresses: vm.fullAddresses,
-                    localities: vm.localities,
-                    subLocalities: vm.subLocalities,
-                    tempItems: vm.tempItems,
-                    itemOnTapGesture: finalLocationOnTapGesture, 
-                    itemDeleteAction: vm.itemDeleteAction(fullAddress:locality:subLocality:)
-                )
-                .padding(.top, 16)
-                .padding(.horizontal, 20)
-                
-                HStack(alignment: .center, spacing: 5) {
-                    Image(systemName: "plus.magnifyingglass")
-                        .resizable()
-                        .frame(width: 15, height: 15)
+                ScrollView(.vertical, showsIndicators: false) {
+                    /// 현재 gps item
+                    AdditionalLocationSavedGPSItemView(
+                        fullAddress: currentLocationVM.gpsFullAddress,
+                        locality: currentLocationVM.gpsLocality,
+                        subLocality: currentLocationVM.gpsSubLocality,
+                        tempItem: vm.gpsTempItem,
+                        currentLocation: currentLocationVM.fullAddress,
+                        finalLocationOnTapGesture: finalLocationOnTapGesture
+                    )
+                    .padding(.top, 20)
+                    .padding(.horizontal, 20)
                     
-                    Text("추가하기")
-                        .fontSpoqaHanSansNeo(size: 15, weight: .medium)
+                    /// 추가 등록 items
+                    AdditionalLocationSavedItemsView(
+                        currentFullAddress: currentLocationVM.fullAddress,
+                        fullAddresses: vm.fullAddresses,
+                        localities: vm.localities,
+                        subLocalities: vm.subLocalities,
+                        tempItems: vm.tempItems,
+                        itemOnTapGesture: finalLocationOnTapGesture,
+                        itemDeleteAction: vm.itemDeleteAction(fullAddress:locality:subLocality:)
+                    )
+                    .padding(.top, 16)
+                    .padding(.horizontal, 20)
+                    
+                    HStack(alignment: .center, spacing: 5) {
+                        Image(systemName: "plus.magnifyingglass")
+                            .resizable()
+                            .frame(width: 15, height: 15)
+                        
+                        Text("추가하기")
+                            .fontSpoqaHanSansNeo(size: 15, weight: .medium)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.top, 25)
+                    .onTapGesture {
+                        navNextView = true
+                    }
+                    
+                    Spacer()
                 }
-                .frame(maxWidth: .infinity)
-                .padding(.top, 25)
-                .onTapGesture {
-                    navNextView = true
-                }
-                
-                Spacer()
             }
             .opacity(isLoading ? 0.4 : 1)
             

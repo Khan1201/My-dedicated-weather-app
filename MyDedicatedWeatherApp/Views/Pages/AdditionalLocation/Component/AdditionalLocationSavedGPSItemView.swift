@@ -48,10 +48,13 @@ struct AdditionalLocationSavedGPSItemView: View {
             .padding(.vertical, 12)
             .padding(.leading, 5)
             .padding(.trailing, 15)
-            .loadingProgressLottie(isLoadingCompleted: 
-                                    tempItem.currentTemp != "" && 
-                                   tempItem.minMaxTemp != ("", "")
-                                   && tempItem.weatherImage != ""
+            .loadingProgressLottie(
+                isLoadingCompleted: tempItem.currentTemp != "" &&
+                tempItem.minMaxTemp != ("", "")
+                && tempItem.weatherImage != "",
+                width: 65,
+                height: 65
+                                   
             )
         }
         .padding(.leading, 15)
