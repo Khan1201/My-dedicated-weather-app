@@ -691,10 +691,13 @@ extension CurrentWeatherVM {
     ) {
         Task(priority: .userInitiated) {
             await requestSunAndMoonrise(long: longLati.0, lat: longLati.1) // Must first called
-            async let _ = requestVeryShortForecastItems(xy: xy)
-            async let _ = requestShortForecastItems(xy: xy)
-            async let _ = requestTodayMinMaxTemp(xy: xy)
-            async let _ = requestKaKaoAddressBy(longitude: longLati.0, latitude: longLati.1, isCurrentLocationRequested: true)
+            
+            Task(priority: .userInitiated) {
+                async let _ = requestVeryShortForecastItems(xy: xy)
+                async let _ = requestShortForecastItems(xy: xy)
+                async let _ = requestTodayMinMaxTemp(xy: xy)
+                async let _ = requestKaKaoAddressBy(longitude: longLati.0, latitude: longLati.1, isCurrentLocationRequested: true)
+            }
         }
     }
     
@@ -742,16 +745,22 @@ extension CurrentWeatherVM {
                 
                 Task(priority: .userInitiated) {
                     await self.requestSunAndMoonrise(long: String(longitude), lat: String(latitude)) // Must first called
-                    async let _ = self.requestVeryShortForecastItems(xy: xy)
-                    async let _ = self.requestShortForecastItems(xy: xy)
-                    async let _ = self.requestTodayMinMaxTemp(xy: xy)
-                    async let _ = self.requestKaKaoAddressBy(longitude: String(longitude), latitude: String(latitude), isCurrentLocationRequested: false)
-                    await self.requestDustForecastStationXY(
-                        subLocality: subLocality,
-                        locality: locality
-                    )
-                    await self.requestDustForecastStation(tmXAndtmY: DustStationRequestParam.tmXAndtmY, isCurrentLocationRequested: false)
-                    await self.requestRealTimeFindDustForecastItems()
+                    
+                    Task(priority: .userInitiated) {
+                        async let _ = self.requestVeryShortForecastItems(xy: xy)
+                        async let _ = self.requestShortForecastItems(xy: xy)
+                        async let _ = self.requestTodayMinMaxTemp(xy: xy)
+                        async let _ = self.requestKaKaoAddressBy(longitude: String(longitude), latitude: String(latitude), isCurrentLocationRequested: false)
+                    }
+                    
+                    Task(priority: .userInitiated) {
+                        await self.requestDustForecastStationXY(
+                            subLocality: subLocality,
+                            locality: locality
+                        )
+                        await self.requestDustForecastStation(tmXAndtmY: DustStationRequestParam.tmXAndtmY, isCurrentLocationRequested: false)
+                        await self.requestRealTimeFindDustForecastItems()
+                    }
                     
                     await self.currentLocationVM.setXY((String(xy.x), String(xy.y)))
                     await self.currentLocationVM.setLatitude(String(latitude))
@@ -790,15 +799,13 @@ extension CurrentWeatherVM {
         if newValue {
             initLoadCompletedVariables()
             
-            Task(priority: .userInitiated) {
-                performRefresh(
-                    longitude: longitude,
-                    latitude: latitude,
-                    xy: xy,
-                    locality: locality,
-                    subLocality: subLocality
-                )
-            }
+            performRefresh(
+                longitude: longitude,
+                latitude: latitude,
+                xy: xy,
+                locality: locality,
+                subLocality: subLocality
+            )
         }
     }
     
@@ -826,16 +833,22 @@ extension CurrentWeatherVM {
         
         Task(priority: .userInitiated) {
             await requestSunAndMoonrise(long: longitude, lat: latitude) // Must first called
-            async let _ = requestVeryShortForecastItems(xy: convertedXY)
-            async let _ = requestShortForecastItems(xy: convertedXY)
-            async let _ = requestTodayMinMaxTemp(xy: convertedXY)
-            async let _ = requestKaKaoAddressBy(longitude: longitude, latitude: latitude, isCurrentLocationRequested: false)
-            await requestDustForecastStationXY(
-                subLocality: subLocality,
-                locality: locality
-            )
-            await requestDustForecastStation(tmXAndtmY: DustStationRequestParam.tmXAndtmY, isCurrentLocationRequested: false)
-            await requestRealTimeFindDustForecastItems()
+            
+            Task(priority: .userInitiated) {
+                async let _ = requestVeryShortForecastItems(xy: convertedXY)
+                async let _ = requestShortForecastItems(xy: convertedXY)
+                async let _ = requestTodayMinMaxTemp(xy: convertedXY)
+                async let _ = requestKaKaoAddressBy(longitude: longitude, latitude: latitude, isCurrentLocationRequested: false)
+            }
+            
+            Task(priority: .userInitiated) {
+                await requestDustForecastStationXY(
+                    subLocality: subLocality,
+                    locality: locality
+                )
+                await requestDustForecastStation(tmXAndtmY: DustStationRequestParam.tmXAndtmY, isCurrentLocationRequested: false)
+                await requestRealTimeFindDustForecastItems()
+            }
         }
     }
 }
