@@ -47,9 +47,8 @@ struct MidTermForecastUtil {
     }
     
     /// Return 지역정보 코드
-    /// RegId: 기온, 육상예보 조회
-    /// StnId: 전망 조회 (뉴스)
-    /// 기온 조회 할 때 fullAddress 필요, 나머지 조회엔 nil
+    /// - parameter fullAddress: 전체 주소,
+    /// - parameter reqType: 요청 타입
     func requestRegOrStnId(fullAddress: String, reqType: MidtermReqType) -> String {
         
         var result: String = ""
