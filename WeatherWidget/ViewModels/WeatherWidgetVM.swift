@@ -10,33 +10,82 @@ import Alamofire
 
 struct WeatherWidgetVM {
     
+//    func performSmallOrMediumWidgetEntrySetting() async -> SimpleEntry {
+//        var result: SimpleEntry = Dummy.simpleEntry()
+//        let veryShortForecastItems = await requestVeryShortItems()
+//        let shortForecastItems = await requestShortForecastItems()
+//        let sunriseAndSunset = await requestSunriseSunset()
+//        let realTimefindDustItems = await requestRealTimeFindDustAndUltraFindDustItems()
+//        
+//        applyVeryShortForecastData(veryShortForecastItems, to: &result, sunrise: sunriseAndSunset.0, sunset: sunriseAndSunset.1)
+//        applyShortForecastData(shortForecastItems, to: &result, sunrise: sunriseAndSunset.0, sunset: sunriseAndSunset.1)
+//        applyRealTimeFindDustAndUltraFindDustItems(realTimefindDustItems, to: &result)
+//        
+//        return result
+//    }
+    
     func performSmallOrMediumWidgetEntrySetting() async -> SimpleEntry {
         var result: SimpleEntry = Dummy.simpleEntry()
-        let veryShortForecastItems = await requestVeryShortItems()
-        let shortForecastItems = await requestShortForecastItems()
-        let sunriseAndSunset = await requestSunriseSunset()
-        let realTimefindDustItems = await requestRealTimeFindDustAndUltraFindDustItems()
+        let veryShortForecastItems = Task {
+            let result = await requestVeryShortItems()
+            return result
+        }
+        let shortForecastItems = Task {
+            let result = await requestShortForecastItems()
+            return result
+        }
+        let sunriseAndSunset = Task {
+            let result = await requestSunriseSunset()
+            return result
+        }
         
-        applyVeryShortForecastData(veryShortForecastItems, to: &result, sunrise: sunriseAndSunset.0, sunset: sunriseAndSunset.1)
-        applyShortForecastData(shortForecastItems, to: &result, sunrise: sunriseAndSunset.0, sunset: sunriseAndSunset.1)
-        applyRealTimeFindDustAndUltraFindDustItems(realTimefindDustItems, to: &result)
+        let realTimefindDustItems = Task {
+            let result = await requestRealTimeFindDustAndUltraFindDustItems()
+            return result
+        }
+        
+        await applyVeryShortForecastData(veryShortForecastItems.value, to: &result, sunrise: sunriseAndSunset.value.0, sunset: sunriseAndSunset.value.1)
+        await applyShortForecastData(shortForecastItems.value, to: &result, sunrise: sunriseAndSunset.value.0, sunset: sunriseAndSunset.value.1)
+        await applyRealTimeFindDustAndUltraFindDustItems(realTimefindDustItems.value, to: &result)
         
         return result
     }
     
     func performLargeWidgetEntrySetting() async -> SimpleEntry {
         var result: SimpleEntry = Dummy.simpleEntry()
-        let veryShortForecastItems = await requestVeryShortItems()
-        let shortForecastItems = await requestShortForecastItems()
-        let sunriseAndSunset = await requestSunriseSunset()
-        let realTimefindDustItems = await requestRealTimeFindDustAndUltraFindDustItems()
-        let midForecastTemperatureItems = await requestMidTermForecastTempItems()
-        let midForecastSkyStateItems = await requestMidTermForecastSkyStateItems()
+        let veryShortForecastItems = Task {
+            let result = await requestVeryShortItems()
+            return result
+        }
+        let shortForecastItems = Task {
+            let result = await requestShortForecastItems()
+            return result
+        }
         
-        applyVeryShortForecastData(veryShortForecastItems, to: &result, sunrise: sunriseAndSunset.0, sunset: sunriseAndSunset.1)
-        applyShortForecastData(shortForecastItems, to: &result, sunrise: sunriseAndSunset.0, sunset: sunriseAndSunset.1)
-        applyRealTimeFindDustAndUltraFindDustItems(realTimefindDustItems, to: &result)
-        applyMidtermForecastTemperatureSkyStateItems(midForecastTemperatureItems, midForecastSkyStateItems, to: &result)
+        let sunriseAndSunset = Task {
+            let result = await requestSunriseSunset()
+            return result
+        }
+        
+        let realTimefindDustItems = Task {
+            let result = await requestRealTimeFindDustAndUltraFindDustItems()
+            return result
+        }
+        
+        let midForecastTemperatureItems = Task {
+            let result = await requestMidTermForecastTempItems()
+            return result
+        }
+        
+        let midForecastSkyStateItems = Task {
+            let result = await requestMidTermForecastSkyStateItems()
+            return result
+        }
+        
+        await applyVeryShortForecastData(veryShortForecastItems.value, to: &result, sunrise: sunriseAndSunset.value.0, sunset: sunriseAndSunset.value.1)
+        await applyShortForecastData(shortForecastItems.value, to: &result, sunrise: sunriseAndSunset.value.0, sunset: sunriseAndSunset.value.1)
+        await applyRealTimeFindDustAndUltraFindDustItems(realTimefindDustItems.value, to: &result)
+        await applyMidtermForecastTemperatureSkyStateItems(midForecastTemperatureItems.value, midForecastSkyStateItems.value, to: &result)
         
         return result
     }
@@ -474,11 +523,69 @@ extension WeatherWidgetVM {
         _ skyStateItems: [MidTermForecastSkyStateBase],
         to result: inout SimpleEntry
     ) {
-        result.largeFamilyData.weeklyWeatherItems.append(
-            contentsOf: weeklyWeatherItemsByThreeToFiveDays(
-                temperatureItems, skyStateItems
+
+        //
+        guard let filteredTemperatureItem = temperatureItems.first else {
+            Util.printError(
+                funcTitle: "midtermForcastMinMaxTemperatureItems()",
+                description: "items array의 first가 존재하지 않습니다."
             )
-        )
+            return
+        }
+        
+        var temperatureResult: [(String, String)] = []
+        temperatureResult.append((filteredTemperatureItem.taMin3.toString, filteredTemperatureItem.taMax3.toString))
+        temperatureResult.append((filteredTemperatureItem.taMin4.toString, filteredTemperatureItem.taMax4.toString))
+        temperatureResult.append((filteredTemperatureItem.taMin5.toString, filteredTemperatureItem.taMax5.toString))
+        
+        
+        //
+        guard let filteredSkyStateItem = skyStateItems.first else {
+            Util.printError(
+                funcTitle: "midtermForecastWeatherImageItems()",
+                description: "items array의 first가 존재하지 않습니다."
+            )
+            return
+        }
+        var skyStateResult: [String] = []
+        skyStateResult.append(Util.remakeMidforecastSkyStateForWeatherImage(value: filteredSkyStateItem.wf3Am))
+        skyStateResult.append(Util.remakeMidforecastSkyStateForWeatherImage(value: filteredSkyStateItem.wf4Am))
+        skyStateResult.append(Util.remakeMidforecastSkyStateForWeatherImage(value: filteredSkyStateItem.wf5Am))
+        
+
+        var rainPercentResult: [String] = []
+        rainPercentResult.append(filteredSkyStateItem.rnSt3Am.toString)
+        rainPercentResult.append(filteredSkyStateItem.rnSt4Am.toString)
+        rainPercentResult.append(filteredSkyStateItem.rnSt5Am.toString)
+        
+        var weatherImageResult: [String] = []
+        weatherImageResult.append(Util.remakeMidforecastSkyStateForWeatherImage(value: filteredSkyStateItem.wf3Am))
+        weatherImageResult.append(Util.remakeMidforecastSkyStateForWeatherImage(value: filteredSkyStateItem.wf4Am))
+        weatherImageResult.append(Util.remakeMidforecastSkyStateForWeatherImage(value: filteredSkyStateItem.wf5Am))
+                
+        let currentDate: Date = Date()
+        
+        guard temperatureResult.count >= 3 && skyStateResult.count >= 3 && rainPercentResult.count >= 3 else {
+            
+            Util.printError(
+                funcTitle: "weeklyWeatherItemsByThreeToFiveDays()",
+                description: "+3 ~ 5일에 해당되는 temperature or weather image or rainpercent items가 충분하지 않습니다."
+            )
+            
+            return
+        }
+        
+        for i in 0..<temperatureResult.count {
+            result.largeFamilyData.weeklyWeatherItems.append(
+                .init(
+                    weekDay: currentDate.toString(byAdding: i + 3, format: "EE요일"),
+                    dateString: currentDate.toString(byAdding: i + 3, format: "MM/dd"),
+                    image: weatherImageResult[i],
+                    rainPercent: rainPercentResult[i],
+                    minMaxTemperature: temperatureResult[i]
+                )
+            )
+        }
     }
 }
 
@@ -491,13 +598,10 @@ extension WeatherWidgetVM {
         _ temperatureItems: [MidTermForecastTemperatureBase],
         _ skyStateItems: [MidTermForecastSkyStateBase]) -> [LargeFamilyData.WeeklyWeatherItem] {
             
-            let minMaxTemperatureItems: [(String, String)] = midtermForcastMinMaxTemperatureItems(temperatureItems)
-            let weatherImageItems: [String] = midtermForecastWeatherImageItems(skyStateItems)
-            let rainPercentItems: [String] = midtermForecastRainPercentItems(skyStateItems)
             var result: [LargeFamilyData.WeeklyWeatherItem] = []
             let currentDate: Date = Date()
             
-            guard minMaxTemperatureItems.count >= 3 && weatherImageItems.count >= 3 && rainPercentItems.count >= 3 else {
+            guard midtermForcastMinMaxTemperatureItems(temperatureItems).count >= 3 && midtermForecastWeatherImageItems(skyStateItems).count >= 3 && midtermForecastRainPercentItems(skyStateItems).count >= 3 else {
                 
                 Util.printError(
                     funcTitle: "weeklyWeatherItemsByThreeToFiveDays()",
@@ -507,14 +611,14 @@ extension WeatherWidgetVM {
                 return []
             }
             
-            for i in 0..<minMaxTemperatureItems.count {
+            for i in 0..<midtermForcastMinMaxTemperatureItems(temperatureItems).count {
                 result.append(
                     .init(
                         weekDay: currentDate.toString(byAdding: i + 3, format: "EE요일"),
                         dateString: currentDate.toString(byAdding: i + 3, format: "MM/dd"),
-                        image: weatherImageItems[i],
-                        rainPercent: rainPercentItems[i],
-                        minMaxTemperature: minMaxTemperatureItems[i]
+                        image: midtermForecastWeatherImageItems(skyStateItems)[i],
+                        rainPercent: midtermForecastRainPercentItems(skyStateItems)[i],
+                        minMaxTemperature: midtermForcastMinMaxTemperatureItems(temperatureItems)[i]
                     )
                 )
             }
