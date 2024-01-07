@@ -10,30 +10,21 @@ import Alamofire
 
 struct WeatherWidgetVM {
     
-//    func performSmallOrMediumWidgetEntrySetting() async -> SimpleEntry {
-//        var result: SimpleEntry = Dummy.simpleEntry()
-//        let veryShortForecastItems = await requestVeryShortItems()
-//        let shortForecastItems = await requestShortForecastItems()
-//        let sunriseAndSunset = await requestSunriseSunset()
-//        let realTimefindDustItems = await requestRealTimeFindDustAndUltraFindDustItems()
-//        
-//        applyVeryShortForecastData(veryShortForecastItems, to: &result, sunrise: sunriseAndSunset.0, sunset: sunriseAndSunset.1)
-//        applyShortForecastData(shortForecastItems, to: &result, sunrise: sunriseAndSunset.0, sunset: sunriseAndSunset.1)
-//        applyRealTimeFindDustAndUltraFindDustItems(realTimefindDustItems, to: &result)
-//        
-//        return result
-//    }
-    
     func performSmallOrMediumWidgetEntrySetting() async -> SimpleEntry {
         var result: SimpleEntry = Dummy.simpleEntry()
-        let veryShortForecastItems = Task {
-            let result = await requestVeryShortItems()
-            return result
-        }
+        
+        let veryShortForecastItems = await requestVeryShortItems()
+        
         let shortForecastItems = Task {
             let result = await requestShortForecastItems()
             return result
         }
+        
+        let shortForecastItemsForMinMaxTemperature = Task {
+            let result = await requestTodayMinMaxTemp()
+            return result
+        }
+        
         let sunriseAndSunset = Task {
             let result = await requestSunriseSunset()
             return result
@@ -44,8 +35,22 @@ struct WeatherWidgetVM {
             return result
         }
         
-        await applyVeryShortForecastData(veryShortForecastItems.value, to: &result, sunrise: sunriseAndSunset.value.0, sunset: sunriseAndSunset.value.1)
-        await applyShortForecastData(shortForecastItems.value, to: &result, sunrise: sunriseAndSunset.value.0, sunset: sunriseAndSunset.value.1)
+        await applyVeryShortForecastData(
+            veryShortForecastItems,
+            to: &result,
+            sunrise: sunriseAndSunset.value.0,
+            sunset: sunriseAndSunset.value.1
+        )
+        
+        await applyShortForecastData(
+            shortForecastItems.value,
+            itemsForMinMaxTemperature: shortForecastItemsForMinMaxTemperature.value,
+            currentTemperature: veryShortForecastItems[24].fcstValue,
+            to: &result,
+            sunrise: sunriseAndSunset.value.0,
+            sunset: sunriseAndSunset.value.1
+        )
+        
         await applyRealTimeFindDustAndUltraFindDustItems(realTimefindDustItems.value, to: &result)
         
         return result
@@ -53,12 +58,16 @@ struct WeatherWidgetVM {
     
     func performLargeWidgetEntrySetting() async -> SimpleEntry {
         var result: SimpleEntry = Dummy.simpleEntry()
-        let veryShortForecastItems = Task {
-            let result = await requestVeryShortItems()
-            return result
-        }
+        
+        let veryShortForecastItems = await requestVeryShortItems()
+        
         let shortForecastItems = Task {
             let result = await requestShortForecastItems()
+            return result
+        }
+        
+        let shortForecastItemsForMinMaxTemperature = Task {
+            let result = await requestTodayMinMaxTemp()
             return result
         }
         
@@ -82,9 +91,24 @@ struct WeatherWidgetVM {
             return result
         }
         
-        await applyVeryShortForecastData(veryShortForecastItems.value, to: &result, sunrise: sunriseAndSunset.value.0, sunset: sunriseAndSunset.value.1)
-        await applyShortForecastData(shortForecastItems.value, to: &result, sunrise: sunriseAndSunset.value.0, sunset: sunriseAndSunset.value.1)
+        await applyVeryShortForecastData(
+            veryShortForecastItems,
+            to: &result,
+            sunrise: sunriseAndSunset.value.0,
+            sunset: sunriseAndSunset.value.1
+        )
+        
+        await applyShortForecastData(
+            shortForecastItems.value,
+            itemsForMinMaxTemperature: shortForecastItemsForMinMaxTemperature.value,
+            currentTemperature: veryShortForecastItems[24].fcstValue,
+            to: &result,
+            sunrise: sunriseAndSunset.value.0,
+            sunset: sunriseAndSunset.value.1
+        )
+        
         await applyRealTimeFindDustAndUltraFindDustItems(realTimefindDustItems.value, to: &result)
+        
         await applyMidtermForecastTemperatureSkyStateItems(midForecastTemperatureItems.value, midForecastSkyStateItems.value, to: &result)
         
         return result
@@ -147,7 +171,7 @@ extension WeatherWidgetVM {
         
         let parameters = VeryShortOrShortTermForecastReq(
             serviceKey: Env.shared.openDataApiResponseKey,
-            numOfRows: "737",
+            numOfRows: "300",
             baseDate: baseDate,
             baseTime: baseTime,
             nx: x,
@@ -175,6 +199,49 @@ extension WeatherWidgetVM {
             Util.printError(
                 funcTitle: "requestShortForecastItems()",
                 description: "단기예보 request 실패"
+            )
+            return []
+        }
+    }
+    
+    /// '단기예보' 에서의 최소, 최대 온도 값 요청 위해 및
+    /// 02:00 or 23:00 으로 호출해야 하므로, 따로 다시 요청한다.
+    func requestTodayMinMaxTemp() async -> [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>] {
+        let baseDate = Util.baseDateForTodayMinMaxReq()
+        let baseTime = Util.baseTimeForTodayMinMaxReq()
+        let x = UserDefaults.shared.string(forKey: UserDefaultsKeys.x) ?? ""
+        let y = UserDefaults.shared.string(forKey: UserDefaultsKeys.y) ?? ""
+        
+        let parameters = VeryShortOrShortTermForecastReq(
+            serviceKey: Env.shared.openDataApiResponseKey,
+            numOfRows: "300",
+            baseDate: baseDate,
+            baseTime: baseTime,
+            nx: x,
+            ny: y
+        )
+        
+        let dataTask = AF.request(
+            Route.GET_WEATHER_SHORT_TERM_FORECAST.val,
+            method: .get,
+            parameters: parameters
+        ).serializingDecodable(PublicDataRes<VeryShortOrShortTermForecastBase<ShortTermForecastCategory>>.self)
+        
+        let result = await dataTask.result
+        
+        switch result {
+            
+        case .success(let result):
+            Util.printSuccess(
+                funcTitle: "requestTodayMinMaxTemp()",
+                value: "\(result.item?.count ?? 0)개의 단기예보(MinMax) 데이터 get"
+            )
+            return result.item ?? []
+            
+        case .failure(_):
+            Util.printError(
+                funcTitle: "requestTodayMinMaxTemp()",
+                description: "단기예보(MinMax) request 실패"
             )
             return []
         }
@@ -391,22 +458,23 @@ extension WeatherWidgetVM {
     
     func applyShortForecastData(
         _ items: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>],
+        itemsForMinMaxTemperature: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>],
+        currentTemperature: String,
         to result: inout SimpleEntry,
         sunrise: String,
         sunset: String
     ) {
-        func setMinMaxTemperature(i: Int) {
-            if i == 0 {
-                minTemperature = items[tempIndex].fcstValue.toInt
-                maxTemperature = items[tempIndex].fcstValue.toInt
-            }
+        func minMaxTemperature(_ items: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>]) -> (String, String) {
+            let todayDate = Date().toString(format: "yyyyMMdd")
             
-            if items[tempIndex].fcstValue.toInt < minTemperature {
-                minTemperature = items[tempIndex].fcstValue.toInt
-                
-            } else if items[tempIndex].fcstValue.toInt > maxTemperature {
-                maxTemperature = items[tempIndex].fcstValue.toInt
-            }
+            let filteredItems = items.filter( {$0.category == .TMP && $0.fcstDate == todayDate} )
+            var filteredTemps = filteredItems.map({ $0.fcstValue.toInt })
+            filteredTemps.append(currentTemperature.toInt)
+            
+            let min = filteredTemps.min() ?? 0
+            let max = filteredTemps.max() ?? 0
+            
+            return (min.toString, max.toString)
         }
         
         
@@ -421,8 +489,6 @@ extension WeatherWidgetVM {
         let loopCount = Util.todayWeatherLoopCount()
 
         var tempResult: [MediumFamilyData.TodayWeatherItem] = []
-        var minTemperature: Int = 0
-        var maxTemperature: Int = 0
         
         if items.count >= step * loopCount {
             
@@ -435,7 +501,6 @@ extension WeatherWidgetVM {
                 items[tempIndex + 12].category == .TMN
                 
                 step = isExistTmxOrTmn ? 13 : 12
-                setMinMaxTemperature(i: i)
                 
                 if i <= 5 {
                     let time = Util.convertAMOrPMFromHHmm(items[tempIndex].fcstTime)
@@ -467,9 +532,9 @@ extension WeatherWidgetVM {
                 tempIndex += step
             }
             
-            result.smallFamilyData.currentWeatherItem.minMaxTemperature = (
-                String(minTemperature), String(maxTemperature)
-            )
+            let minMaxTemperature: (String, String) = minMaxTemperature(itemsForMinMaxTemperature)
+            
+            result.smallFamilyData.currentWeatherItem.minMaxTemperature = minMaxTemperature
             result.mediumFamilyData.todayWeatherItems = tempResult
             
             result.largeFamilyData.weeklyWeatherItems = weeklyWeatherItemsByOneToTwoDays(items)
@@ -477,8 +542,8 @@ extension WeatherWidgetVM {
             Util.printSuccess(
                 funcTitle: "applyShortForecastData",
                 value: """
-            최저온도: \(minTemperature),
-            최대온도: \(maxTemperature),
+            최저온도: \(minMaxTemperature.0),
+            최대온도: \(minMaxTemperature.1),
             todayWeatherItems:
             \(result.mediumFamilyData.todayWeatherItems)
             set 완료
