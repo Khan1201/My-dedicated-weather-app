@@ -71,6 +71,12 @@ struct SettingView: View {
         .sheet(isPresented: $vm.openMailView) {
             MailView(isPresented: $vm.openMailView)
         }
+        .bottomNoticeFloater(
+            isPresented: $vm.showMailOpenFailAlert,
+            view: BottomNoticeFloaterView(
+                title: "기본 메일(Mail)앱이 존재하지 않습니다."
+            )
+        )
         .navToNextView(
             isPresented: $vm.navOpenSourceView,
             view: OpenSourceListView(
