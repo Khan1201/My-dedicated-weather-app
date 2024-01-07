@@ -253,8 +253,11 @@ struct Util {
     
     /// Return base date (초단기예보 requst parameter에 필요)
     public static func veryShortTermReqBaseDate(baseTime: String) -> String {
-        return Date().toString(
-            byAdding: baseTime == "2330" ? -1 : 0,
+        let currentDate = Date()
+        let currentHHmm = currentDate.toString(format: "HHmm").toInt
+        
+        return currentDate.toString(
+            byAdding: currentHHmm < 0030 ? -1 : 0,
             format: "yyyyMMdd"
         )
     }
