@@ -41,6 +41,7 @@ struct AdditionalLocationSubLocalityListView: View {
                 }
             }
             .opacity(isLoading ? 0.4 : 1)
+            .allowsHitTesting(!isLoading)
             
             if isLoading {
                 ProgressView()
