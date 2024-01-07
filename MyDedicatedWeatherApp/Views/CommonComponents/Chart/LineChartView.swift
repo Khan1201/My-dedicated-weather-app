@@ -49,7 +49,7 @@ struct LineChartView: View {
         var maxTempLineYValues: [CGFloat] {
             // 0 = 바꿀 range의 최소값, height = 바꿀 range의 최대값
             return weeklyChartInformation.maxTemps.map { temp in
-                let convertedTemp: CGFloat = temp >= rangeMax ? rangeMax : temp
+                let convertedTemp: CGFloat = temp > rangeMax ? rangeMax : temp
                 
                 return height - ((convertedTemp - rangeMin) * (CGFloat(height) - 0) / (rangeMax - rangeMin) + 0)
             }
@@ -58,7 +58,7 @@ struct LineChartView: View {
         var minTempLineYValues: [CGFloat] {
             // 0 = 바꿀 range의 최소값, height = 바꿀 range의 최대값
             return weeklyChartInformation.minTemps.map { temp in
-                let convertedTemp: CGFloat = temp <= rangeMin ? rangeMin : temp
+                let convertedTemp: CGFloat = temp < rangeMin ? rangeMin : temp
 
                 return height - (convertedTemp - rangeMin) * (CGFloat(height) - 0) / (rangeMax - rangeMin) + 0
             }
@@ -85,7 +85,7 @@ struct LineChartView: View {
         var maxTempVertexBottomPaddings: [CGFloat] {
             // 0 = 바꿀 range의 최소값, height = 바꿀 range의 최대값
             return weeklyChartInformation.maxTemps.map { temp in
-                let convertedTemp: CGFloat = temp >= rangeMax ? rangeMax + 1 : temp
+                let convertedTemp: CGFloat = temp > rangeMax ? rangeMax + 1 : temp
                 
                 return (convertedTemp - rangeMin) * (CGFloat(height) - 0) / (rangeMax - rangeMin) + 0 - (vertexSize.height / 2)
             }
@@ -94,7 +94,7 @@ struct LineChartView: View {
         var minTempVertexBottomPaddings: [CGFloat] {
             // 0 = 바꿀 range의 최소값, height = 바꿀 range의 최대값
             return weeklyChartInformation.minTemps.map { temp in
-                let convertedTemp: CGFloat = temp <= rangeMin ? rangeMin - 1 : temp
+                let convertedTemp: CGFloat = temp < rangeMin ? rangeMin - 1 : temp
 
                 return (convertedTemp - rangeMin) * (CGFloat(height) - 0) / (rangeMax - rangeMin) + 0 - (vertexSize.height / 2)
             }
