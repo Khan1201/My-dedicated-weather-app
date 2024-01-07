@@ -171,7 +171,7 @@ extension WeatherWidgetVM {
         
         let parameters = VeryShortOrShortTermForecastReq(
             serviceKey: Env.shared.openDataApiResponseKey,
-            numOfRows: "300",
+            numOfRows: "737",
             baseDate: baseDate,
             baseTime: baseTime,
             nx: x,
@@ -321,16 +321,14 @@ extension WeatherWidgetVM {
     /// Return 중기예보(3~ 10일)의 temperature items
     func requestMidTermForecastTempItems() async -> [MidTermForecastTemperatureBase] {
         
-        let locality: String = UserDefaults.shared.string(forKey: UserDefaultsKeys.locality) ?? ""
-        let subLocality: String = UserDefaults.shared.string(forKey: UserDefaultsKeys.subLocality) ?? ""
+        let fullAddress: String = UserDefaults.shared.string(forKey: UserDefaultsKeys.fullAddress) ?? ""
         
         let parameters: MidTermForecastReq = MidTermForecastReq(
             serviceKey: Env.shared.openDataApiResponseKey,
             regId: Util.midtermReqRegOrStnId(
-                locality: locality,
-                reqType: .temperature,
-                subLocality: subLocality
-            ),
+                fullAddress: fullAddress,
+                reqType: .temperature
+            ), 
             stnId: nil,
             tmFc: Util.midtermReqTmFc()
         )
@@ -364,11 +362,12 @@ extension WeatherWidgetVM {
     /// Return 중기예보(3~ 10일)의 하늘상태 items
     func requestMidTermForecastSkyStateItems() async -> [MidTermForecastSkyStateBase] {
         
-        let locality: String = UserDefaults.shared.string(forKey: UserDefaultsKeys.locality) ?? ""
+        let fullAddress: String = UserDefaults.shared.string(forKey: UserDefaultsKeys.fullAddress) ?? ""
+        
         let parameters: MidTermForecastReq = MidTermForecastReq(
             serviceKey: Env.shared.openDataApiResponseKey,
             regId: Util.midtermReqRegOrStnId(
-                locality: locality,
+                fullAddress: fullAddress,
                 reqType: .skystate
             ),
             stnId: nil,
@@ -592,8 +591,8 @@ extension WeatherWidgetVM {
         //
         guard let filteredTemperatureItem = temperatureItems.first else {
             Util.printError(
-                funcTitle: "midtermForcastMinMaxTemperatureItems()",
-                description: "items array의 first가 존재하지 않습니다."
+                funcTitle: "applyMidtermForecastTemperatureSkyStateItems()",
+                description: "temperatureItems array의 first가 존재하지 않습니다."
             )
             return
         }
@@ -607,8 +606,8 @@ extension WeatherWidgetVM {
         //
         guard let filteredSkyStateItem = skyStateItems.first else {
             Util.printError(
-                funcTitle: "midtermForecastWeatherImageItems()",
-                description: "items array의 first가 존재하지 않습니다."
+                funcTitle: "applyMidtermForecastTemperatureSkyStateItems()",
+                description: "skyStateItems array의 first가 존재하지 않습니다."
             )
             return
         }
@@ -633,7 +632,7 @@ extension WeatherWidgetVM {
         guard temperatureResult.count >= 3 && skyStateResult.count >= 3 && rainPercentResult.count >= 3 else {
             
             Util.printError(
-                funcTitle: "weeklyWeatherItemsByThreeToFiveDays()",
+                funcTitle: "applyMidtermForecastTemperatureSkyStateItems()",
                 description: "+3 ~ 5일에 해당되는 temperature or weather image or rainpercent items가 충분하지 않습니다."
             )
             
