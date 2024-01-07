@@ -322,6 +322,32 @@ struct Util {
         }
     }
     
+    // Return baseDate (최저, 최고온도 요청 parameter에 필요)
+    public static func baseDateForTodayMinMaxReq() -> String {
+        let currentDate = Date()
+        let currentYyyyMMdd = currentDate.toString(format: "yyyyMMdd").toInt
+        let currentHHmm = currentDate.toString(format: "HHmm").toInt
+        
+        if currentHHmm >= 0200 {
+            return currentYyyyMMdd.toString
+            
+        } else {
+            return (currentYyyyMMdd - 1).toString
+        }
+    }
+    
+    // Return baseTime (최저, 최고온도 요청 parameter에 필요)
+    public static func baseTimeForTodayMinMaxReq() -> String {
+        let currentHHmm = Date().toString(format: "HHmm").toInt
+        
+        if currentHHmm >= 0200 {
+            return "0200"
+            
+        } else {
+            return "2300"
+        }
+    }
+    
     /// Return 지역정보 코드
     /// RegId: 기온, 육상예보 조회
     /// StnId: 전망 조회 (뉴스)
