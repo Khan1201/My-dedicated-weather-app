@@ -16,6 +16,8 @@ struct WeatherWidget: Widget {
             WeatherWidgetEntryView(entry: entry)
         }
         .contentMarginsDisabled()
+        .configurationDisplayName("날씨모아 Widget")
+        .description("가장 최근 현재위치(GPS)의 날씨정보를 제공합니다. 변경을 원하면 앱을 실행하여 GPS 날씨를 업데이트 해주세요.")
     }
 }
 
