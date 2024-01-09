@@ -17,7 +17,7 @@ struct AdditionalLocationSubLocalityListView: View {
     @State private var showFailFloater: Bool = false
     
     var body: some View {
-        let filtedData: [String] = KoreaLocationList.allDatas.filter { $0.contains(selectedLocalityAndGu) }
+        let filtedData: [String] = KoreaLocationList.allDatas.filter { $0.contains(selectedLocalityAndGu) }.sorted()
         let isLoading: Bool = progress == .loading
         
         ZStack(alignment: .center) {
