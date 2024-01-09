@@ -20,9 +20,9 @@ final class SettingVM: ObservableObject {
 //    let subTexts: [String] = ["사용법을 알려드려요!", "리뷰는 개발자에 큰 힘이 됩니다💪", "소중한 의견 반영하겠습니다 :)", "오픈소스", "1.0.0"]
 //    let rightIconShowIndexs: [Int] = [0, 1, 2, 3]
     
-    let images: [String] = ["questionmark.circle", "plus.bubble", "bolt.horizontal", "v.square"]
-    let menus: [String] = ["도움말", "오류 신고 및 기능 제안", "오픈소스 라이센스", "앱 버전"]
-    let subTexts: [String] = ["사용법을 알려드려요!", "소중한 의견 반영하겠습니다 :)", "오픈소스", CommonUtil.shared.getCurrentVersion()]
+    let images: [String] = ["plus.bubble", "bolt.horizontal", "v.square"]
+    let menus: [String] = ["오류 신고 및 기능 제안", "오픈소스 라이센스", "앱 버전"]
+    let subTexts: [String] = [ "소중한 의견 반영하겠습니다 :)", "오픈소스", CommonUtil.shared.getCurrentVersion()]
     let rightIconShowIndexs: [Int] = [0, 1, 2]
     
     let openSourceTitles: [String] = ["Alamofire", "lottie-ios", "PopupView", "SwiftUIPager"]
