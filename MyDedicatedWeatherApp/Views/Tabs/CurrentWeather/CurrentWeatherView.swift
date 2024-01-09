@@ -58,6 +58,25 @@ struct CurrentWeatherView: View {
             }
             .padding(.top, 25)
             .frame(height: UIScreen.screenHeight, alignment: .center)
+            .overlay(alignment: .center) {
+                Text("재시도")
+                    .fontSpoqaHanSansNeo(size: 20, weight: .bold)
+                    .foregroundStyle(Color.white)
+                    .padding(.vertical, 6)
+                    .padding(.horizontal, 12)
+                    .background(Color.blue.opacity(0.6))
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                    .onTapGesture {
+                        viewModel.retryButtonOnTapGesture(
+                            longitude: currentLocationVM.longitude,
+                            latitude: currentLocationVM.latitude,
+                            xy: currentLocationVM.xy,
+                            locality: currentLocationVM.locality,
+                            subLocality: currentLocationVM.subLocality
+                        )
+                    }
+                    .opacity(viewModel.showLoadRetryButton ? 1 : 0)
+            }
             .todayViewControllerBackground(
                 isDayMode: contentVM.isDayMode,
                 isSunriseSunsetLoadCompleted: viewModel.isSunriseSunsetLoadCompleted,
@@ -65,6 +84,15 @@ struct CurrentWeatherView: View {
                 skyType: viewModel.currentWeatherInformation.skyType
             )
             .onChangeAtTodayViewController(disableTabBarTouch: $disableTabBarTouch)
+            .bottomNoticeFloater(
+                isPresented: $viewModel.showRetryFloaterAlert,
+                view: BottomNoticeFloaterView(
+                    title: """
+                    재시도 합니다.
+                    기상청 서버 네트워크에 따라 속도가 느려질 수 있습니다 :)
+                    """
+                )
+            )
             .fullScreenCover(isPresented: $viewModel.openAdditionalLocationView) {
                 RootNavigationView(
                     view: AdditionalLocationView(

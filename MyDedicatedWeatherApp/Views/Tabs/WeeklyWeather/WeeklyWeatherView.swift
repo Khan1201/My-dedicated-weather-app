@@ -72,6 +72,22 @@ struct WeeklyWeatherView: View {
                     }
                 }
                 .loadingProgressLottie(isLoadingCompleted: viewModel.isWeeklyWeatherInformationsLoaded, height: 400)
+                .overlay(alignment: .bottom) {
+                    Text("재시도")
+                        .fontSpoqaHanSansNeo(size: 20, weight: .bold)
+                        .foregroundStyle(Color.white)
+                        .padding(.vertical, 6)
+                        .padding(.horizontal, 12)
+                        .background(Color.blue.opacity(0.6))
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                        .onTapGesture {
+                            viewModel.retryButtonOnTapGesture(
+                                xy: currentLocationVM.xy,
+                                fullAddress: currentLocationVM.fullAddress
+                            )
+                        }
+                        .opacity(viewModel.showLoadRetryButton ? 1 : 0)
+                }
             }
             .padding(.top, 24)
         }
@@ -79,6 +95,15 @@ struct WeeklyWeatherView: View {
         .weekViewControllerBackground(
             isDayMode: contentVM.isDayMode,
             skyKeyword: contentVM.skyKeyword
+        )
+        .bottomNoticeFloater(
+            isPresented: $viewModel.showRetryFloaterAlert,
+            view: BottomNoticeFloaterView(
+                title: """
+                재시도 합니다.
+                기상청 서버 네트워크에 따라 속도가 느려질 수 있습니다 :)
+                """
+            )
         )
         .onChange(of: contentVM.isRefreshed) { newValue in
             viewModel.isRefreshedOnChangeAction(newValue)
@@ -90,7 +115,7 @@ struct WeeklyWeatherView: View {
             }
         }
         .task(priority: .userInitiated) {
-            await viewModel.performWeekRequests(
+            viewModel.weeklyWeatherViewTaskAction(
                 xy: currentLocationVM.xy,
                 fullAddress: currentLocationVM.fullAddress
             )

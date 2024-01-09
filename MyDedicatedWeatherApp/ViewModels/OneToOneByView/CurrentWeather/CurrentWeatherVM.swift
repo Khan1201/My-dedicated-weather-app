@@ -38,6 +38,12 @@ final class CurrentWeatherVM: ObservableObject {
     @Published private(set) var isTodayWeatherInformationLoadCompleted: Bool = false
     
     @Published private(set) var isAllLoadCompleted: Bool = false
+    @Published var showLoadRetryButton: Bool = false
+    @Published var showRetryFloaterAlert: Bool = false
+    
+    var timer: Timer?
+    var timerNum: Int = 0
+    var currentTask: Task<(), Never>?
     
     private enum DustStationRequestParam {
         static var tmXAndtmY: (String, String) = ("","")
@@ -678,6 +684,10 @@ extension CurrentWeatherVM {
          isCurrentWeatherAnimationSetCompleted && isFineDustLoadCompleted &&
          isKakaoAddressLoadCompleted && isMinMaxTempLoadCompleted &&
          isSunriseSunsetLoadCompleted && isTodayWeatherInformationLoadCompleted)
+        
+        if isAllLoadCompleted {
+            initializeTaskAndTimer()
+        }
     }
 }
 
@@ -689,7 +699,9 @@ extension CurrentWeatherVM {
         xy: Gps2XY.LatXLngY,
         longLati: (String, String)
     ) {
-        Task(priority: .userInitiated) {
+        timerStart()
+        
+        currentTask = Task(priority: .userInitiated) {
             await requestSunAndMoonrise(long: longLati.0, lat: longLati.1) // Must first called
             
             Task(priority: .userInitiated) {
@@ -702,7 +714,7 @@ extension CurrentWeatherVM {
     }
     
     func todayViewControllerKakaoAddressUpdatedAction(umdName: String, locality: String) {
-        Task(priority: .userInitiated) {
+        currentTask = Task(priority: .userInitiated) {
             await requestDustForecastStationXY(
                 subLocality: umdName,
                 locality: locality
@@ -743,7 +755,8 @@ extension CurrentWeatherVM {
                 additionalLocationProgress = .loading
                 initLoadCompletedVariables()
                 
-                Task(priority: .userInitiated) {
+                timerStart()
+                currentTask = Task(priority: .userInitiated) {
                     await self.requestSunAndMoonrise(long: String(longitude), lat: String(latitude)) // Must first called
                     
                     Task(priority: .userInitiated) {
@@ -788,6 +801,18 @@ extension CurrentWeatherVM {
             }
         }
     }
+    
+    func retryButtonOnTapGesture(longitude: String, latitude: String, xy: (String, String), locality: String, subLocality: String) {
+        showLoadRetryButton = false
+        currentTask?.cancel()
+        currentTask = nil
+        
+        if !showRetryFloaterAlert {
+            showRetryFloaterAlert = true
+        }
+        
+        performRefresh(longitude: longitude, latitude: latitude, xy: xy, locality: locality, subLocality: subLocality)
+    }
 }
 
 // MARK: - On change funcs..
@@ -828,10 +853,36 @@ extension CurrentWeatherVM {
         isTodayWeatherInformationLoadCompleted = false
     }
     
+    func initializeTaskAndTimer() {
+        showLoadRetryButton = false
+        timer?.invalidate()
+        timer = nil
+        timerNum = 0
+        currentTask = nil
+    }
+    
+    func timerStart() {
+        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(askRetryIf7SecondsAfterNotLoaded(timer:)), userInfo: nil, repeats: true)
+    }
+    
+    @objc func askRetryIf7SecondsAfterNotLoaded(timer: Timer) {
+        
+        guard self.timer != nil else { return }
+        self.timerNum += 1
+        
+        if timerNum == 7 {
+            self.timer?.invalidate()
+            self.timer = nil
+            self.timerNum = 0
+            showLoadRetryButton = true
+        }
+    }
+    
     func performRefresh(longitude: String, latitude: String, xy: (String, String), locality: String, subLocality: String) {
         let convertedXY: Gps2XY.LatXLngY = .init(lat: 0, lng: 0, x: xy.0.toInt, y: xy.1.toInt)
         
-        Task(priority: .userInitiated) {
+        timerStart()
+        currentTask = Task(priority: .userInitiated) {
             await requestSunAndMoonrise(long: longitude, lat: latitude) // Must first called
             
             Task(priority: .userInitiated) {

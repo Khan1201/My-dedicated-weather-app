@@ -13,6 +13,8 @@ final class WeeklyWeatherVM: ObservableObject {
     @Published var errorMessage: String = ""
     @Published var isApiRequestProceeding: Bool = false
     @Published var isWeeklyWeatherInformationsLoaded: Bool = false
+    @Published var showLoadRetryButton: Bool = false
+    @Published var showRetryFloaterAlert: Bool = false
 
     var tommorowAndTwoDaysLaterInformations: [Weather.WeeklyInformation] = []
     var minMaxTemperaturesByThreeToTenDay: [(String, String)] = []
@@ -22,9 +24,18 @@ final class WeeklyWeatherVM: ObservableObject {
     private let commonForecastUtil: CommonForecastUtil = CommonForecastUtil()
     private let midTermForecastUtil: MidTermForecastUtil = MidTermForecastUtil()
     
+    var timer: Timer?
+    var timerNum: Int = 0
+    var currentTask: Task<(), Never>?
+    
     // Mock data 의존성 주입 위해
     init(weeklyWeatherInformations: [Weather.WeeklyInformation]) {
         self.weeklyWeatherInformations = weeklyWeatherInformations
+    }
+    
+    deinit {
+        timer = nil
+        currentTask = nil
     }
 }
 
@@ -341,7 +352,9 @@ extension WeeklyWeatherVM {
             }
             weeklyWeatherInformations.append(contentsOf: tommorowAndTwoDaysLaterInformations)
             weeklyWeatherInformations.append(contentsOf: threeToTenDayInformations)
+            
             isWeeklyWeatherInformationsLoaded = true
+            initializeTaskAndTimer()
             CommonUtil.shared.printSuccess(funcTitle: "setWeeklyWeatherInformations()", values: weeklyWeatherInformations)
             
         } else {
@@ -437,10 +450,22 @@ extension WeeklyWeatherVM {
 extension WeeklyWeatherVM {
     
     func refreshButtonOnTapGesture(xy: (String, String), fullAddress: String) {
+        timerStart()
         initializeStates()
-        Task {
+        currentTask = Task {
             await performWeekRequests(xy: xy, fullAddress: fullAddress)
         }
+    }
+    
+    func retryButtonOnTapGesture(xy: (String, String), fullAddress: String) {
+        showLoadRetryButton = false
+        currentTask?.cancel()
+        currentTask = nil
+        
+        if !showRetryFloaterAlert {
+            showRetryFloaterAlert = true
+        }
+        refreshButtonOnTapGesture(xy: xy, fullAddress: fullAddress)
     }
 }
 
@@ -450,6 +475,31 @@ extension WeeklyWeatherVM {
     
     func initializeStates() {
         isWeeklyWeatherInformationsLoaded = false
+    }
+    
+    func initializeTaskAndTimer() {
+        showLoadRetryButton = false
+        timer?.invalidate()
+        timer = nil
+        timerNum = 0
+        currentTask = nil
+    }
+    
+    func timerStart() {
+        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(askRetryIf7SecondsAfterNotLoaded(timer:)), userInfo: nil, repeats: true)
+    }
+    
+    @objc func askRetryIf7SecondsAfterNotLoaded(timer: Timer) {
+        
+        guard self.timer != nil else { return }
+        self.timerNum += 1
+        
+        if timerNum == 7 {
+            self.timer?.invalidate()
+            self.timer = nil
+            self.timerNum = 0
+            showLoadRetryButton = true
+        }
     }
 }
 
@@ -462,6 +512,18 @@ extension WeeklyWeatherVM {
         
         if value {
             isWeeklyWeatherInformationsLoaded = false
+        }
+    }
+}
+
+// MARK: - Life cycle funcs..
+
+extension WeeklyWeatherVM {
+    
+    func weeklyWeatherViewTaskAction(xy: (String, String), fullAddress: String) {
+        timerStart()
+        currentTask = Task(priority: .userInitiated) {
+            await performWeekRequests(xy: xy, fullAddress: fullAddress)
         }
     }
 }
