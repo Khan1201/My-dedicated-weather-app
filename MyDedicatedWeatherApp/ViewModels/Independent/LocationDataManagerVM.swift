@@ -119,7 +119,11 @@ extension LocationDataManagerVM: CLLocationManagerDelegate {
         
         geoCoder.reverseGeocodeLocation(location, preferredLocale: local) { [weak self] place, error in
             guard let self = self else { return }
-            if let address: CLPlacemark = place?.last {
+            if let _ = error {
+                locationManager.startUpdatingLocation()
+                
+            } else {
+                guard let address = place?.last else { return }
                 self.currentLocality = address.administrativeArea ?? ""
                 
                 Task {
