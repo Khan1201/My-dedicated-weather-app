@@ -14,7 +14,8 @@ final class WeeklyWeatherVM: ObservableObject {
     @Published var isApiRequestProceeding: Bool = false
     @Published var isWeeklyWeatherInformationsLoaded: Bool = false
     @Published var showLoadRetryButton: Bool = false
-    @Published var showRetryFloaterAlert: Bool = false
+    @Published var showNoticeFloater: Bool = false
+    var noticeMessage: String = ""
 
     var tommorowAndTwoDaysLaterInformations: [Weather.WeeklyInformation] = []
     var minMaxTemperaturesByThreeToTenDay: [(String, String)] = []
@@ -462,9 +463,13 @@ extension WeeklyWeatherVM {
         currentTask?.cancel()
         currentTask = nil
         
-        if !showRetryFloaterAlert {
-            showRetryFloaterAlert = true
-        }
+        noticeMessage = """
+                재시도 합니다.
+                기상청 서버 네트워크에 따라 속도가 느려질 수 있습니다 :)
+                """
+        showNoticeFloater = false
+        showNoticeFloater = true
+        
         refreshButtonOnTapGesture(xy: xy, fullAddress: fullAddress)
     }
 }
@@ -494,10 +499,19 @@ extension WeeklyWeatherVM {
         guard self.timer != nil else { return }
         self.timerNum += 1
         
-        if timerNum == 7 {
+        if timerNum == 3 {
+            noticeMessage = """
+            조금만 기다려주세요.
+            기상청 서버 네트워크에 따라 속도가 느려질 수 있습니다 :)
+            """
+            showNoticeFloater = false
+            showNoticeFloater = true
+            
+        } else if timerNum == 8 {
             self.timer?.invalidate()
             self.timer = nil
             self.timerNum = 0
+            
             showLoadRetryButton = true
         }
     }

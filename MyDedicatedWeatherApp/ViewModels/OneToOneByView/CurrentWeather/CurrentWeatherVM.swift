@@ -23,6 +23,7 @@ final class CurrentWeatherVM: ObservableObject {
     @Published var additionalLocationProgress: AdditionalLocationProgress = .none
     @Published var locality: String = ""
     @Published var subLocalityByKakaoAddress: String = ""
+    @Published var isLaunchScreenEnded: Bool = false
     
     static private(set) var xy: Gps2XY.LatXLngY = .init(lat: 0, lng: 0, x: 0, y: 0)
     
@@ -39,8 +40,9 @@ final class CurrentWeatherVM: ObservableObject {
     
     @Published private(set) var isAllLoadCompleted: Bool = false
     @Published var showLoadRetryButton: Bool = false
-    @Published var showRetryFloaterAlert: Bool = false
+    @Published var showNoticeFloater: Bool = false
     
+    var noticeFloaterMessage: String = ""
     var timer: Timer?
     var timerNum: Int = 0
     var currentTask: Task<(), Never>?
@@ -699,7 +701,11 @@ extension CurrentWeatherVM {
         xy: Gps2XY.LatXLngY,
         longLati: (String, String)
     ) {
-        timerStart()
+        
+        // 런치 스크린때문에 2.5초 후에 타이머 시작
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+            self.timerStart()
+        }
         
         currentTask = Task(priority: .userInitiated) {
             await requestSunAndMoonrise(long: longLati.0, lat: longLati.1) // Must first called
@@ -736,9 +742,7 @@ extension CurrentWeatherVM {
             self.isStartRefresh = false
         }
     }
-    
-//    func additinalAddressSavedItemOnTapGesture(fullAddress)
-    
+        
     func additionalAddressFinalLocationOnTapGesture(fullAddress: String, locality: String, subLocality: String, isNewAdd: Bool) {
         
         LocationDataManagerVM.getLatitudeAndLongitude(address: fullAddress) { [weak self] result in
@@ -807,10 +811,13 @@ extension CurrentWeatherVM {
         currentTask?.cancel()
         currentTask = nil
         
-        if !showRetryFloaterAlert {
-            showRetryFloaterAlert = true
-        }
-        
+        noticeFloaterMessage = """
+        재시도 합니다.
+        기상청 서버 네트워크에 따라 속도가 느려질 수 있습니다 :)
+        """
+        showNoticeFloater = false
+        showNoticeFloater = true
+
         performRefresh(longitude: longitude, latitude: latitude, xy: xy, locality: locality, subLocality: subLocality)
     }
 }
@@ -870,10 +877,19 @@ extension CurrentWeatherVM {
         guard self.timer != nil else { return }
         self.timerNum += 1
         
-        if timerNum == 7 {
+        if timerNum == 3 {
+            noticeFloaterMessage = """
+            조금만 기다려주세요.
+            기상청 서버 네트워크에 따라 속도가 느려질 수 있습니다 :)
+            """
+            showNoticeFloater = false
+            showNoticeFloater = true
+            
+        } else if timerNum == 8 {
             self.timer?.invalidate()
             self.timer = nil
             self.timerNum = 0
+            
             showLoadRetryButton = true
         }
     }

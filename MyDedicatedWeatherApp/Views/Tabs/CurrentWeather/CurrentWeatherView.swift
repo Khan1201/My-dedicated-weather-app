@@ -85,13 +85,11 @@ struct CurrentWeatherView: View {
             )
             .onChangeAtTodayViewController(disableTabBarTouch: $disableTabBarTouch)
             .bottomNoticeFloater(
-                isPresented: $viewModel.showRetryFloaterAlert,
+                isPresented: $viewModel.showNoticeFloater,
                 view: BottomNoticeFloaterView(
-                    title: """
-                    재시도 합니다.
-                    기상청 서버 네트워크에 따라 속도가 느려질 수 있습니다 :)
-                    """
-                )
+                    title: viewModel.noticeFloaterMessage
+                ),
+                duration: 3
             )
             .fullScreenCover(isPresented: $viewModel.openAdditionalLocationView) {
                 RootNavigationView(
