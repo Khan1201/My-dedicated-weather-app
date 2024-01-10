@@ -11,7 +11,7 @@ struct CurrentLocationAndDateView: View {
     
     let location: String
     let subLocation: String
-    @Binding var showRefreshButton: Bool
+    let showRefreshButton: Bool
     @Binding var openAdditionalLocationView: Bool
     var showLocationAddButton: Bool = true
     let refreshButtonOnTapGesture: () -> Void
@@ -75,7 +75,7 @@ struct CurrentLocationAndDateView_Previews: PreviewProvider {
         CurrentLocationAndDateView(
             location: "",
             subLocation: "",
-            showRefreshButton: .constant(true),
+            showRefreshButton: true,
             openAdditionalLocationView: .constant(true),
             refreshButtonOnTapGesture: {}
         )

@@ -22,7 +22,7 @@ struct WeeklyWeatherView: View {
             CurrentLocationAndDateView(
                 location: currentLocationVM.locality,
                 subLocation: currentLocationVM.subLocality,
-                showRefreshButton: $viewModel.isWeeklyWeatherInformationsLoaded,
+                showRefreshButton: viewModel.isWeeklyWeatherInformationsLoaded,
                 openAdditionalLocationView: .constant(false),
                 showLocationAddButton: false,
                 refreshButtonOnTapGesture: {

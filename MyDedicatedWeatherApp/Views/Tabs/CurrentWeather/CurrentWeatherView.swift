@@ -151,7 +151,7 @@ extension CurrentWeatherView {
                 CurrentLocationAndDateView(
                     location: currentLocationVM.locality,
                     subLocation: currentLocationVM.subLocality,
-                    showRefreshButton: .constant(true),
+                    showRefreshButton: viewModel.isAllLoadCompleted,
                     openAdditionalLocationView: $viewModel.openAdditionalLocationView,
                     refreshButtonOnTapGesture: viewModel.refreshButtonOnTapGesture
                 )
