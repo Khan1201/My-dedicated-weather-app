@@ -23,7 +23,7 @@ final class SettingVM: ObservableObject {
     let images: [String] = ["plus.bubble", "bolt.horizontal", "v.square"]
     let menus: [String] = ["오류 신고 및 기능 제안", "오픈소스 라이센스", "앱 버전"]
     let subTexts: [String] = [ "소중한 의견 반영하겠습니다 :)", "오픈소스", CommonUtil.shared.getCurrentVersion()]
-    let rightIconShowIndexs: [Int] = [0, 1, 2]
+    let rightIconShowIndexs: [Int] = [0, 1]
     
     let openSourceTitles: [String] = ["Alamofire", "lottie-ios", "PopupView", "SwiftUIPager"]
     let openSourceLinks: [String] = [
@@ -66,10 +66,7 @@ extension SettingVM {
     func buttonTapGesture(index: Int) {
         switch index {
             
-        case 0: // 도움말
-            ()
-            
-        case 1: // 오류 신고 및 기능 제안
+        case 0: // 오류 신고 및 기능 제안
             if MFMailComposeViewController.canSendMail() {
                 openMailView = true
                 
@@ -77,7 +74,7 @@ extension SettingVM {
                 showMailOpenFailAlert = true
             }
             
-        case 2: // 오픈소스 라이센스
+        case 1: // 오픈소스 라이센스
             navOpenSourceView = true
             
         default:
