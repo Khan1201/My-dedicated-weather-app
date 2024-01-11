@@ -19,12 +19,7 @@ struct OnChangeAtTodayViewController: ViewModifier {
             .onChange(of: locationDataManagerVM.isLocationUpdated) { _ in
                 viewModel.todayViewControllerLocationManagerUpdatedAction(
                     xy: locationDataManagerVM.convertLocationToXYForVeryShortForecast(),
-                    longLati: locationDataManagerVM.longitudeAndLatitude
-                )
-            }
-            .onChange(of: viewModel.isKakaoAddressLoadCompleted) { newValue in
-                viewModel.todayViewControllerKakaoAddressUpdatedAction(
-                    umdName: viewModel.subLocalityByKakaoAddress,
+                    longLati: locationDataManagerVM.longitudeAndLatitude,
                     locality: locationDataManagerVM.currentLocality
                 )
             }

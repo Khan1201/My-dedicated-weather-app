@@ -370,7 +370,7 @@ extension CurrentWeatherVM {
             UserDefaults.setWidgetShared(item.stationName, to: .dustStationName)
 
             let reqEndTime = CFAbsoluteTimeGetCurrent() - reqStartTime
-            print("미세먼지 측정소 xy좌표 get 호출 소요시간: \(reqEndTime)")
+            print("미세먼지 측정소 get 호출 소요시간: \(reqEndTime)")
             
         } catch APIError.transportError {
             
@@ -699,7 +699,8 @@ extension CurrentWeatherVM {
     
     func todayViewControllerLocationManagerUpdatedAction(
         xy: Gps2XY.LatXLngY,
-        longLati: (String, String)
+        longLati: (String, String),
+        locality: String
     ) {
         
         // 런치 스크린때문에 2.5초 후에 타이머 시작
@@ -715,19 +716,17 @@ extension CurrentWeatherVM {
                 async let _ = requestVeryShortForecastItems(xy: xy)
                 async let _ = requestShortForecastItems(xy: xy)
                 async let _ = requestTodayMinMaxTemp(xy: xy)
-                async let _ = requestKaKaoAddressBy(longitude: longLati.0, latitude: longLati.1, isCurrentLocationRequested: true)
             }
-        }
-    }
-    
-    func todayViewControllerKakaoAddressUpdatedAction(umdName: String, locality: String) {
-        currentTask = Task(priority: .userInitiated) {
-            await requestDustForecastStationXY(
-                subLocality: umdName,
-                locality: locality
-            )
-            await requestDustForecastStation(tmXAndtmY: DustStationRequestParam.tmXAndtmY, isCurrentLocationRequested: true)
-            await requestRealTimeFindDustForecastItems()
+            
+            Task(priority: .userInitiated) {
+                await requestKaKaoAddressBy(longitude: longLati.0, latitude: longLati.1, isCurrentLocationRequested: true)
+                await requestDustForecastStationXY(
+                    subLocality: subLocalityByKakaoAddress,
+                    locality: locality
+                )
+                await requestDustForecastStation(tmXAndtmY: DustStationRequestParam.tmXAndtmY, isCurrentLocationRequested: true)
+                await requestRealTimeFindDustForecastItems()
+            }
         }
     }
 }
@@ -770,10 +769,10 @@ extension CurrentWeatherVM {
                         async let _ = self.requestVeryShortForecastItems(xy: xy)
                         async let _ = self.requestShortForecastItems(xy: xy)
                         async let _ = self.requestTodayMinMaxTemp(xy: xy)
-                        async let _ = self.requestKaKaoAddressBy(longitude: String(longitude), latitude: String(latitude), isCurrentLocationRequested: false)
                     }
                     
                     Task(priority: .userInitiated) {
+                        await self.requestKaKaoAddressBy(longitude: String(longitude), latitude: String(latitude), isCurrentLocationRequested: false)
                         await self.requestDustForecastStationXY(
                             subLocality: subLocality,
                             locality: locality
@@ -916,10 +915,10 @@ extension CurrentWeatherVM {
                 async let _ = requestVeryShortForecastItems(xy: convertedXY)
                 async let _ = requestShortForecastItems(xy: convertedXY)
                 async let _ = requestTodayMinMaxTemp(xy: convertedXY)
-                async let _ = requestKaKaoAddressBy(longitude: longitude, latitude: latitude, isCurrentLocationRequested: false)
             }
             
             Task(priority: .userInitiated) {
+                await requestKaKaoAddressBy(longitude: longitude, latitude: latitude, isCurrentLocationRequested: false)
                 await requestDustForecastStationXY(
                     subLocality: subLocality,
                     locality: locality
