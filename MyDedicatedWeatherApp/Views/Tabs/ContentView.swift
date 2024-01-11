@@ -51,10 +51,11 @@ struct ContentView: View {
                     )
                 )
                 .onAppear {
-                    UITabBar.appearance().barTintColor = .clear
+                    UITabBar.appearance().backgroundImage = UIImage()
+                    UITabBar.appearance().shadowImage = UIImage()
+                    UITabBar.appearance().clipsToBounds = true
                 }
             }
-            
         }
         .ignoresSafeArea(.all)
     }

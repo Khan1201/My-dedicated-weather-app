@@ -532,6 +532,7 @@
 		BC24199E2AA4A3560035EDBE /* Tabs */ = {
 			isa = PBXGroup;
 			children = (
+				BCA30F7B29FE203A0078D0B1 /* ContentView.swift */,
 				BC436B762AF294D3006AFFC1 /* Setting */,
 				BC24199A2AA4A1A00035EDBE /* WeeklyWeather */,
 				BC2419992AA4A1970035EDBE /* CurrentWeather */,
@@ -964,7 +965,6 @@
 				BCA30F8F29FE26500078D0B1 /* Common */,
 				BC24199F2AA4A3F00035EDBE /* ExternalFiles */,
 				BCA30F7929FE203A0078D0B1 /* MyDedicatedWeatherAppApp.swift */,
-				BCA30F7B29FE203A0078D0B1 /* ContentView.swift */,
 				BC5EF9042AE6AF7300636A95 /* LaunchScreen.swift */,
 				BCA30F7D29FE203A0078D0B1 /* Assets.xcassets */,
 				BCA30FA829FE7D780078D0B1 /* Info.plist */,
