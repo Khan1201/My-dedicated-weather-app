@@ -451,6 +451,8 @@ extension WeeklyWeatherVM {
 extension WeeklyWeatherVM {
     
     func refreshButtonOnTapGesture(xy: (String, String), fullAddress: String) {
+        showLoadRetryButton = false
+        
         timerStart()
         initializeStates()
         

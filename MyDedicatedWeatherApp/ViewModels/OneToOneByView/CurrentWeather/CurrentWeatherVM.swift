@@ -737,6 +737,7 @@ extension CurrentWeatherVM {
     
     func refreshButtonOnTapGesture() {
         isStartRefresh = true
+        showLoadRetryButton = false
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             self.isStartRefresh = false
