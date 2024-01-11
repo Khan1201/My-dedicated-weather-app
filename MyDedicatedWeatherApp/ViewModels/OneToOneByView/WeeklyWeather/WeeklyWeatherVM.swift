@@ -453,6 +453,8 @@ extension WeeklyWeatherVM {
     func refreshButtonOnTapGesture(xy: (String, String), fullAddress: String) {
         timerStart()
         initializeStates()
+        
+        initializeTask()
         currentTask = Task {
             await performWeekRequests(xy: xy, fullAddress: fullAddress)
         }
@@ -460,13 +462,11 @@ extension WeeklyWeatherVM {
     
     func retryButtonOnTapGesture(xy: (String, String), fullAddress: String) {
         showLoadRetryButton = false
-        currentTask?.cancel()
-        currentTask = nil
-        
         noticeMessage = """
                 재시도 합니다.
                 기상청 서버 네트워크에 따라 속도가 느려질 수 있습니다 :)
                 """
+        
         showNoticeFloater = false
         showNoticeFloater = true
         
@@ -484,13 +484,24 @@ extension WeeklyWeatherVM {
     
     func initializeTaskAndTimer() {
         showLoadRetryButton = false
-        timer?.invalidate()
-        timer = nil
-        timerNum = 0
+        
+        initializeTask()
+        initializeTimer()
+    }
+    
+    func initializeTask() {
+        currentTask?.cancel()
         currentTask = nil
     }
     
+    func initializeTimer() {
+        timer?.invalidate()
+        timer = nil
+        timerNum = 0
+    }
+    
     func timerStart() {
+        initializeTimer()
         timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(askRetryIf7SecondsAfterNotLoaded(timer:)), userInfo: nil, repeats: true)
     }
     
@@ -508,10 +519,7 @@ extension WeeklyWeatherVM {
             showNoticeFloater = true
             
         } else if timerNum == 8 {
-            self.timer?.invalidate()
-            self.timer = nil
-            self.timerNum = 0
-            
+            initializeTimer()
             showLoadRetryButton = true
         }
     }
@@ -536,6 +544,8 @@ extension WeeklyWeatherVM {
     
     func weeklyWeatherViewTaskAction(xy: (String, String), fullAddress: String) {
         timerStart()
+        initializeTask()
+        
         currentTask = Task(priority: .userInitiated) {
             await performWeekRequests(xy: xy, fullAddress: fullAddress)
         }

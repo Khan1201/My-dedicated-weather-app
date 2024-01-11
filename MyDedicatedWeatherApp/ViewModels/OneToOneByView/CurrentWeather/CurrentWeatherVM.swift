@@ -707,6 +707,7 @@ extension CurrentWeatherVM {
             self.timerStart()
         }
         
+        initializeTask()
         currentTask = Task(priority: .userInitiated) {
             await requestSunAndMoonrise(long: longLati.0, lat: longLati.1) // Must first called
             
@@ -760,6 +761,8 @@ extension CurrentWeatherVM {
                 initLoadCompletedVariables()
                 
                 timerStart()
+                initializeTask()
+                
                 currentTask = Task(priority: .userInitiated) {
                     await self.requestSunAndMoonrise(long: String(longitude), lat: String(latitude)) // Must first called
                     
@@ -808,9 +811,7 @@ extension CurrentWeatherVM {
     
     func retryButtonOnTapGesture(longitude: String, latitude: String, xy: (String, String), locality: String, subLocality: String) {
         showLoadRetryButton = false
-        currentTask?.cancel()
-        currentTask = nil
-        
+
         noticeFloaterMessage = """
         재시도 합니다.
         기상청 서버 네트워크에 따라 속도가 느려질 수 있습니다 :)
@@ -860,15 +861,26 @@ extension CurrentWeatherVM {
         isTodayWeatherInformationLoadCompleted = false
     }
     
-    func initializeTaskAndTimer() {
-        showLoadRetryButton = false
-        timer?.invalidate()
-        timer = nil
-        timerNum = 0
+    func initializeTask() {
+        currentTask?.cancel()
         currentTask = nil
     }
     
+    func initializeTimer() {
+        timer?.invalidate()
+        timer = nil
+        timerNum = 0
+    }
+    
+    func initializeTaskAndTimer() {
+        showLoadRetryButton = false
+        
+        initializeTask()
+        initializeTimer()
+    }
+    
     func timerStart() {
+        initializeTimer()
         timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(askRetryIf7SecondsAfterNotLoaded(timer:)), userInfo: nil, repeats: true)
     }
     
@@ -886,10 +898,7 @@ extension CurrentWeatherVM {
             showNoticeFloater = true
             
         } else if timerNum == 8 {
-            self.timer?.invalidate()
-            self.timer = nil
-            self.timerNum = 0
-            
+            initializeTimer()
             showLoadRetryButton = true
         }
     }
@@ -898,6 +907,8 @@ extension CurrentWeatherVM {
         let convertedXY: Gps2XY.LatXLngY = .init(lat: 0, lng: 0, x: xy.0.toInt, y: xy.1.toInt)
         
         timerStart()
+        initializeTask()
+        
         currentTask = Task(priority: .userInitiated) {
             await requestSunAndMoonrise(long: longitude, lat: latitude) // Must first called
             
