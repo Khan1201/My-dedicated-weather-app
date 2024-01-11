@@ -19,6 +19,9 @@ struct WeekViewControllerBackground: ViewModifier {
                         Image("background_weather_\(skyKeyword)")
                             .resizable()
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .overlay {
+                                Color.black.opacity(0.2)
+                            }
                             .ignoresSafeArea()
                         
                     } else {
