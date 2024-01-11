@@ -703,8 +703,8 @@ extension CurrentWeatherVM {
         locality: String
     ) {
         
-        // 런치 스크린때문에 2.5초 후에 타이머 시작
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+        // 런치 스크린때문에 0.5초 후에 타이머 시작
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             self.timerStart()
         }
         
