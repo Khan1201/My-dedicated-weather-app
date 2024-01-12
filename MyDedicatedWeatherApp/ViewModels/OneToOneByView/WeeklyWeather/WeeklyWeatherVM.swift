@@ -545,11 +545,14 @@ extension WeeklyWeatherVM {
 extension WeeklyWeatherVM {
     
     func weeklyWeatherViewTaskAction(xy: (String, String), fullAddress: String) {
-        timerStart()
-        initializeTask()
         
-        currentTask = Task(priority: .userInitiated) {
-            await performWeekRequests(xy: xy, fullAddress: fullAddress)
+        if !isWeeklyWeatherInformationsLoaded {
+            timerStart()
+            initializeTask()
+            
+            currentTask = Task(priority: .userInitiated) {
+                await performWeekRequests(xy: xy, fullAddress: fullAddress)
+            }
         }
     }
 }
