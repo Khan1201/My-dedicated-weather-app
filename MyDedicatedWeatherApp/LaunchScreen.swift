@@ -9,6 +9,8 @@ import SwiftUI
 
 struct LaunchScreen: View {
     var body: some View {
+        let logoWidth: CGFloat = UIScreen.screenWidth / 1.345
+        
         ZStack {
             Color.white
                 .ignoresSafeArea()
@@ -16,7 +18,8 @@ struct LaunchScreen: View {
             VStack(alignment: .leading, spacing: 0) {
                 Image("launch_screen_logo")
                     .resizable()
-                    .frame(width: 220, height: 260)
+                    .frame(width: logoWidth, height: logoWidth)
+                    .padding(.trailing, 30)
             }
         }
     }
