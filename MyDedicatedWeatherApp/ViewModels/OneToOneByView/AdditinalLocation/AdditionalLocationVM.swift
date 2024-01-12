@@ -18,6 +18,13 @@ final class AdditionalLocationVM: ObservableObject {
     private let commonForecastUtil: CommonForecastUtil = CommonForecastUtil()
     private let veryShortTermForecastUtil: VeryShortTermForecastUtil = VeryShortTermForecastUtil()
     private let shortTermForecastUtil: ShortTermForecastUtil = ShortTermForecastUtil()
+    
+    var currentTask: Task<(), Never>?
+    
+    deinit {
+        currentTask?.cancel()
+        currentTask = nil
+    }
 }
 
 // MARK: - Request funcs..
@@ -379,8 +386,7 @@ extension AdditionalLocationVM {
 extension AdditionalLocationVM {
     
     func additinalLocationViewTaskAction(gpsFullAddress: String) {
-        performRequestGPSLocationWeather(fullAddress: gpsFullAddress)
-        performRequestSavedLocationWeather()
+        performRequestSavedLocationWeather(gpsFullAddress: gpsFullAddress)
     }
 }
 
@@ -388,46 +394,12 @@ extension AdditionalLocationVM {
 
 extension AdditionalLocationVM {
     
-    func performRequestGPSLocationWeather(fullAddress: String) {
-        LocationDataManagerVM.getLatitudeAndLongitude(address: fullAddress) { [weak self] result in
-            guard let self = self else { return }
-            
-            switch result {
-                
-            case .success(let success):
-                let latitude: Double = success.0
-                let longitude: Double = success.1
-                let xy: Gps2XY.LatXLngY = self.commonForecastUtil.convertGPS2XY(mode: .toXY, lat_X: latitude, lng_Y: longitude)
-                
-                Task(priority: .userInitiated) {
-                    let sunRiseAndSunSetHHmm = await self.requestSunRiseAndSunSetHHmm(long: String(longitude), lat: String(latitude))
-                    let currentWeatherImageAndTemp = await self.requestCurrentWeatherImageAndTemp(
-                        xy: xy,
-                        sunriseAndsunsetHHmm: sunRiseAndSunSetHHmm
-                    )
-                    let minMaxTemp = await self.requestTodayMinMaxTemp(
-                        xy: xy, 
-                        currentTemp: currentWeatherImageAndTemp.1
-                    )
-                    
-                    await self.setGPSTempItem(
-                        currentWeatherImageAndTemp: currentWeatherImageAndTemp,
-                        minMaxTemp: minMaxTemp
-                    )
-                }
-                
-            case .failure(_):
-                CommonUtil.shared.printError(
-                    funcTitle: "performRequestGPSLocationWeather",
-                    description: "위치를 찾을 수 없습니다."
-                )
-            }
-        }
-    }
-    
-    func performRequestSavedLocationWeather() {
+    func performRequestSavedLocationWeather(gpsFullAddress: String) {
         
-        for (index, address) in self.fullAddresses.enumerated() {
+        var addresses = fullAddresses
+        addresses.append(gpsFullAddress)
+        
+        for (index, address) in addresses.enumerated() {
             LocationDataManagerVM.getLatitudeAndLongitude(address: address) { [weak self] result in
                 guard let self = self else { return }
                 
@@ -438,7 +410,7 @@ extension AdditionalLocationVM {
                     let longitude: Double = success.1
                     let xy: Gps2XY.LatXLngY = self.commonForecastUtil.convertGPS2XY(mode: .toXY, lat_X: latitude, lng_Y: longitude)
                     
-                    Task(priority: .userInitiated) {
+                    currentTask = Task(priority: .userInitiated) {
                         let sunRiseAndSunSetHHmm = await self.requestSunRiseAndSunSetHHmm(long: String(longitude), lat: String(latitude))
                         let currentWeatherImageAndTemp = await self.requestCurrentWeatherImageAndTemp(
                             xy: xy,
@@ -449,11 +421,20 @@ extension AdditionalLocationVM {
                             currentTemp: currentWeatherImageAndTemp.1
                         )
                         
-                        await self.setTempItems(
-                            currentWeatherImageAndTemp: currentWeatherImageAndTemp,
-                            minMaxTemp: minMaxTemp,
-                            index: index
-                        )
+                        // gps item
+                        if address == gpsFullAddress {
+                            await self.setGPSTempItem(
+                                currentWeatherImageAndTemp: currentWeatherImageAndTemp,
+                                minMaxTemp: minMaxTemp
+                            )
+                            
+                        } else {
+                            await self.setTempItems(
+                                currentWeatherImageAndTemp: currentWeatherImageAndTemp,
+                                minMaxTemp: minMaxTemp,
+                                index: index
+                            )
+                        }
                     }
                     
                 case .failure(_):
