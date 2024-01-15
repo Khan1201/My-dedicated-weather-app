@@ -14,12 +14,13 @@ struct CurrentTempAndMinMaxTempView: View {
     let isDayMode: Bool
     
     var body: some View {
-        
+        let isNotNocheDevice: Bool = CommonUtil.shared.isNotNocheDevice
+
         VStack(alignment: .center, spacing: 0) {
             
             HStack(alignment: .top, spacing: 2) {
                 Text(temp)
-                    .fontSpoqaHanSansNeo(size: 55, weight: .bold)
+                    .fontSpoqaHanSansNeo(size: isNotNocheDevice ? 50 : 55, weight: .bold)
                     .foregroundColor(.white)
                     .padding(.top, 5)
                 
@@ -52,7 +53,7 @@ struct CurrentTempAndMinMaxTempView: View {
                     .foregroundColor(.white.opacity(0.9))
                     .padding(.leading, 3)
             }
-            .padding(.top, 10)
+            .padding(.top, isNotNocheDevice ? 6 : 10)
         }
     }
 }

@@ -52,10 +52,10 @@ struct CustomBottomTabBarView: View {
 
         }
         .padding(.horizontal, 35)
-        .padding(.top, isNotNocheDevice ? 8 : 15)
-        .padding(.bottom, isNotNocheDevice ? 5 : 27)
+        .padding(.top, isNotNocheDevice ? 12 : 15)
+        .padding(.bottom, isNotNocheDevice ? 7 : 27)
         .background(.white)
-        .cornerRadius(isNotNocheDevice ? 0 : 25, corners: [.topLeft, .topRight])
+        .cornerRadius(25, corners: [.topLeft, .topRight])
     }
 }
 
@@ -82,16 +82,16 @@ extension CustomBottomTabBarView {
             
             Image(imageString)
                 .resizable()
-                .frame(width: isNotNocheDevice ? 18 : 24, height: isNotNocheDevice ? 18 : 24)
+                .frame(width: isNotNocheDevice ? 21 : 24, height: isNotNocheDevice ? 21 : 24)
             
             Text(title)
-                .font(.system(size: isNotNocheDevice ? 8 : 10, weight: isNotNocheDevice ? .bold : .medium))
+                .font(.system(size: isNotNocheDevice ? 9 : 10, weight: .medium))
                 .foregroundColor(Color.black.opacity(0.6))
         }
         .overlay(alignment: .top) {
             Image("check_blue")
                 .resizable()
-                .frame(width: isNotNocheDevice ? 16 : 20, height: isNotNocheDevice ? 16 : 20)
+                .frame(width: isNotNocheDevice ? 18 : 20, height: isNotNocheDevice ? 18 : 20)
                 .opacity(currentTab.wrappedValue == tabValue ? 1 : 0)
                 .offset(y: -5)
         }

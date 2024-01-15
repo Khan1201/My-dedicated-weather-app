@@ -13,7 +13,8 @@ struct TodaySunriseSunsetView: View {
     let isDayMode: Bool
     
     var body: some View {
-        
+        let isNotNocheDevice: Bool = CommonUtil.shared.isNotNocheDevice
+
         VStack(alignment: .leading, spacing: 0) {
             
             HStack(alignment: .center, spacing: 4) {
@@ -22,7 +23,7 @@ struct TodaySunriseSunsetView: View {
                     .frame(width: 20, height: 20)
                 
                 Text("오전 \(sunriseTime.hhMMtoKRhhMM(isSunset: false))")
-                    .fontSpoqaHanSansNeo(size: 10, weight: .medium)
+                    .fontSpoqaHanSansNeo(size: isNotNocheDevice ? 9 : 10, weight: .medium)
                     .foregroundStyle(Color.white)
             }
             .padding(.bottom, 5)
@@ -38,7 +39,7 @@ struct TodaySunriseSunsetView: View {
                     .frame(width: 20, height: 20)
                 
                 Text("오후 \(sunsetTime.hhMMtoKRhhMM(isSunset: true))")
-                    .fontSpoqaHanSansNeo(size: 10, weight: .medium)
+                    .fontSpoqaHanSansNeo(size: isNotNocheDevice ? 9 : 10, weight: .medium)
                     .foregroundStyle(Color.white)
             }
             .padding(.top, 5)

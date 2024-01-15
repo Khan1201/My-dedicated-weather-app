@@ -32,10 +32,11 @@ struct CurrentWeatherInformationItemView: View {
     
     var body: some View {
         
-        let imageWidth: CGFloat = UIScreen.screenWidth / 10.41
-        let imageHeight: CGFloat = UIScreen.screenHeight / 22.55
-        let iconWidthHeight: CGFloat = imageWidth / 1.63
-        
+        let isNotNocheDevice: Bool = CommonUtil.shared.isNotNocheDevice
+        let imageWidth: CGFloat = UIScreen.screenWidth / (isNotNocheDevice ? 12.0 : 10.41)
+        let imageHeight: CGFloat = UIScreen.screenHeight / (isNotNocheDevice ? 24 : 22.55)
+        let iconWidthHeight: CGFloat = imageWidth / (isNotNocheDevice ? 2 : 1.63)
+
         HStack(alignment: .center, spacing: 0) {
             
             RoundedRectangle(cornerRadius: 14)
@@ -50,7 +51,7 @@ struct CurrentWeatherInformationItemView: View {
                 }
             
             Text(title)
-                .fontSpoqaHanSansNeo(size: 14, weight: .regular)
+                .fontSpoqaHanSansNeo(size: isNotNocheDevice ? 13 : 14, weight: .regular)
                 .foregroundColor(.white)
                 .padding(.leading, 14)
             
@@ -58,12 +59,12 @@ struct CurrentWeatherInformationItemView: View {
             
             HStack(alignment: .center, spacing: 0) {
                 Text(value.0)
-                    .fontSpoqaHanSansNeo(size: 14, weight: .medium)
+                    .fontSpoqaHanSansNeo(size: isNotNocheDevice ? 13 : 14, weight: .medium)
                     .foregroundColor(.white)
                 
                 if value.1 != "" {
                     Text("(\(value.1))")
-                        .fontSpoqaHanSansNeo(size: 12, weight: .regular)
+                        .fontSpoqaHanSansNeo(size: isNotNocheDevice ? 11 : 12, weight: .regular)
                         .foregroundColor(.white)
                 }
             }
@@ -80,7 +81,7 @@ struct CurrentWeatherInformationItemView: View {
             
         }
         .padding(.horizontal, 11)
-        .padding(.vertical, 8)
+        .padding(.vertical, isNotNocheDevice ? 7 : 8)
         .background(
             currentBackgroundColor()
         )

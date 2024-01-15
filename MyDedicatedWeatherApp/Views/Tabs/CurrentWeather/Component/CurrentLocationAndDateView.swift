@@ -17,7 +17,8 @@ struct CurrentLocationAndDateView: View {
     let refreshButtonOnTapGesture: () -> Void
     
     var body: some View {
-        
+        let isNotNocheDevice: Bool = CommonUtil.shared.isNotNocheDevice
+
         VStack(alignment: .leading, spacing: 6) {
             Text(
             """
@@ -25,7 +26,7 @@ struct CurrentLocationAndDateView: View {
             \(subLocation)
             """
             )
-            .fontSpoqaHanSansNeo(size: 26, weight: .bold)
+            .fontSpoqaHanSansNeo(size: isNotNocheDevice ? 23 : 26, weight: .bold)
             .foregroundColor(.white)
             .lineSpacing(2)
             .overlay(alignment: .topLeading) {
@@ -36,10 +37,10 @@ struct CurrentLocationAndDateView: View {
                         .foregroundStyle(Color.white)
                     
                     Text("지역 추가")
-                        .fontSpoqaHanSansNeo(size: 12, weight: .medium)
+                        .fontSpoqaHanSansNeo(size: isNotNocheDevice ? 11 : 12, weight: .medium)
                         .foregroundStyle(Color.white)
                 }
-                .padding(.vertical, 3)
+                .padding(.vertical, isNotNocheDevice ? 2 : 3)
                 .padding(.horizontal, 10)
                 .background(Color.blue.opacity(0.6))
                 .clipShape(RoundedRectangle(cornerRadius: 14))
@@ -59,7 +60,7 @@ struct CurrentLocationAndDateView: View {
                 
                 Image("refresh.green")
                     .resizable()
-                    .frame(width: 25, height: 25)
+                    .frame(width: isNotNocheDevice ? 22 : 25, height: isNotNocheDevice ? 22 : 25)
                     .offset(x: 13)
                     .onTapGesture {
                         refreshButtonOnTapGesture()

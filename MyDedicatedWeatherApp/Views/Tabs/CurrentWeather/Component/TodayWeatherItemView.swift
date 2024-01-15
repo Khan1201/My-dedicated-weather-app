@@ -16,13 +16,14 @@ struct TodayWeatherItemView: View {
     let isDayMode: Bool
     
     var body: some View {
-        
+        let isNotNocheDevice: Bool = CommonUtil.shared.isNotNocheDevice
+
         let imageWidth: CGFloat = UIScreen.screenWidth / 12.5
         let imageHeight: CGFloat = UIScreen.screenHeight / 27.06
         
-        VStack(alignment: .center, spacing: 24) {
+        VStack(alignment: .center, spacing: isNotNocheDevice ? 18 : 24) {
             Text(time)
-                .fontSpoqaHanSansNeo(size: 14, weight: .medium)
+                .fontSpoqaHanSansNeo(size: isNotNocheDevice ? 12 : 14, weight: .medium)
                 .foregroundColor(.white)
             
             Image(weatherImage)
@@ -32,14 +33,14 @@ struct TodayWeatherItemView: View {
                     view
                         .overlay(alignment: .bottom) {
                             Text(percent + "%")
-                                .fontSpoqaHanSansNeo(size: 10, weight: .bold)
+                                .fontSpoqaHanSansNeo(size: isNotNocheDevice ? 8 : 10, weight: .bold)
                                 .foregroundColor(CustomColor.lightBlue.toColor)
                                 .offset(y: 12)
                         }
                 }
             
             Text(temperature + "°")
-                .fontSpoqaHanSansNeo(size: 18, weight: .medium)
+                .fontSpoqaHanSansNeo(size: isNotNocheDevice ? 15 : 18, weight: .medium)
                 .foregroundColor(.white)
         }
     }
