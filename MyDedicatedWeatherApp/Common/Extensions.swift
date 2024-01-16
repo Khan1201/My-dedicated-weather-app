@@ -173,9 +173,17 @@ extension UserDefaults {
     }
     
     func appendAdditionalAllLocality(_ allLocality: AllLocality) {
-        guard let fullAddress = UserDefaults.standard.array(forKey: UserDefaultsKeys.additionalFullAddresses) as? [String] else { return }
         
-        guard !fullAddress.contains(allLocality.fullAddress) else {
+        /// fullAddresses가 없을때 append
+        guard let fullAddresses = UserDefaults.standard.array(forKey: UserDefaultsKeys.additionalFullAddresses) as? [String] else {
+            setUserDefaultsStringArray(value: allLocality.fullAddress, key: UserDefaultsKeys.additionalFullAddresses)
+            setUserDefaultsStringArray(value: allLocality.locality, key: UserDefaultsKeys.additionalLocalities)
+            setUserDefaultsStringArray(value: allLocality.subLocality, key: UserDefaultsKeys.additionalSubLocalities)
+            return
+        }
+        
+        /// 중복 존재시 return
+        guard !fullAddresses.contains(allLocality.fullAddress) else {
             CommonUtil.shared.printError(
                 funcTitle: "appendAdditionalAllLocality()",
                 description: "이미 존재하는 fullAddress 입니다."
