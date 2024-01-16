@@ -114,7 +114,7 @@ struct Util {
         case "2":
             return "weather_rain_snow"
             
-        case "3":
+        case "3", "7":
             return "weather_snow"
             
         case "4":
