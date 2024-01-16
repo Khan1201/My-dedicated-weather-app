@@ -13,6 +13,8 @@ struct AdditionalLocationSavedGPSItemView: View {
     let currentLocation: String
     let finalLocationOnTapGesture: (AllLocality, Bool) -> Void
 
+    @State private var tempSize: CGSize = CGSize()
+
     var body: some View {
         
         HStack(alignment: .center, spacing: 0) {
@@ -33,7 +35,7 @@ struct AdditionalLocationSavedGPSItemView: View {
                     .resizable()
                     .frame(width: 34, height: 34)
                 
-                VStack(alignment: .leading, spacing: 2) {
+                VStack(alignment: .center, spacing: 2) {
                     Text(" \(tempItem.currentTemp)°")
                         .fontSpoqaHanSansNeo(size: 18, weight: .medium)
                         .foregroundStyle(Color.white)
@@ -42,10 +44,11 @@ struct AdditionalLocationSavedGPSItemView: View {
                         .fontSpoqaHanSansNeo(size: 12, weight: .regular)
                         .foregroundStyle(Color.white.opacity(0.7))
                 }
+                .frame(maxWidth: tempSize.width)
             }
             .padding(.vertical, 12)
             .padding(.leading, 5)
-            .padding(.trailing, 15)
+            .padding(.trailing, 8)
             .loadingProgressLottie(
                 isLoadingCompleted: tempItem.currentTemp != "" &&
                 tempItem.minMaxTemp != ("", "")
@@ -65,6 +68,19 @@ struct AdditionalLocationSavedGPSItemView: View {
                     .frame(width: 35, height: 35)
                     .offset(y: -8)
             }
+        }
+        .overlay {
+            VStack(alignment: .leading, spacing: 2) {
+                Text(" -00°")
+                    .fontSpoqaHanSansNeo(size: 18, weight: .medium)
+                    .foregroundStyle(Color.white)
+                
+                Text("-00°/-0°")
+                    .fontSpoqaHanSansNeo(size: 12, weight: .regular)
+                    .foregroundStyle(Color.white.opacity(0.7))
+            }
+            .getSize(size: $tempSize)
+            .opacity(0)
         }
         .onTapGesture {
             finalLocationOnTapGesture(

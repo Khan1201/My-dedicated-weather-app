@@ -14,6 +14,7 @@ struct AdditionalLocationSavedItemView: View {
     let deleteAction: (AllLocality) -> Void
     
     @State private var isDeleteMode: Bool = false
+    @State private var tempSize: CGSize = CGSize()
     
     var body: some View {
         
@@ -29,7 +30,7 @@ struct AdditionalLocationSavedItemView: View {
                     .resizable()
                     .frame(width: 34, height: 34)
                 
-                VStack(alignment: .leading, spacing: 2) {
+                VStack(alignment: .center, spacing: 2) {
                     Text(" \(tempItem.currentTemp)°")
                         .fontSpoqaHanSansNeo(size: 18, weight: .medium)
                         .foregroundStyle(Color.white)
@@ -38,10 +39,11 @@ struct AdditionalLocationSavedItemView: View {
                         .fontSpoqaHanSansNeo(size: 12, weight: .regular)
                         .foregroundStyle(Color.white.opacity(0.7))
                 }
+                .frame(maxWidth: tempSize.width)
             }
             .padding(.vertical, 12)
             .padding(.leading, 5)
-            .padding(.trailing, 15)
+            .padding(.trailing, 8)
             .loadingProgressLottie(
                 isLoadingCompleted: tempItem.currentTemp != "" &&
                 tempItem.minMaxTemp != ("", "") &&
@@ -73,6 +75,19 @@ struct AdditionalLocationSavedItemView: View {
         .padding(.leading, 15)
         .background(Color.white.opacity(0.1))
         .clipShape(RoundedRectangle(cornerRadius: 8))
+        .overlay {
+            VStack(alignment: .leading, spacing: 2) {
+                Text(" -00°")
+                    .fontSpoqaHanSansNeo(size: 18, weight: .medium)
+                    .foregroundStyle(Color.white)
+                
+                Text("-00°/-0°")
+                    .fontSpoqaHanSansNeo(size: 12, weight: .regular)
+                    .foregroundStyle(Color.white.opacity(0.7))
+            }
+            .getSize(size: $tempSize)
+            .opacity(0)
+        }
         .onTapGesture {
             if isDeleteMode {
                 withAnimation(.easeIn(duration: 0.15)) {
