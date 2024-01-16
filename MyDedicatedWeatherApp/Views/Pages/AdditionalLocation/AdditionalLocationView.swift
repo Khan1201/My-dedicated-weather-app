@@ -10,7 +10,7 @@ import SwiftUI
 struct AdditionalLocationView: View {
     @Binding var isPresented: Bool
     @Binding var progress: AdditionalLocationProgress
-    let finalLocationOnTapGesture: (String, String, String, Bool) -> Void
+    let finalLocationOnTapGesture: (AllLocality, Bool) -> Void // 주소 struct, isNewAdd
     
     @StateObject var vm: AdditionalLocationVM = AdditionalLocationVM()
     @EnvironmentObject var currentLocationVM: CurrentLocationVM
@@ -33,9 +33,11 @@ struct AdditionalLocationView: View {
                 ScrollView(.vertical, showsIndicators: false) {
                     /// 현재 gps item
                     AdditionalLocationSavedGPSItemView(
-                        fullAddress: currentLocationVM.gpsFullAddress,
-                        locality: currentLocationVM.gpsLocality,
-                        subLocality: currentLocationVM.gpsSubLocality,
+                        allLocality: .init(
+                            fullAddress: currentLocationVM.gpsFullAddress,
+                            locality: currentLocationVM.gpsLocality,
+                            subLocality: currentLocationVM.gpsSubLocality
+                        ),
                         tempItem: vm.gpsTempItem,
                         currentLocation: currentLocationVM.fullAddress,
                         finalLocationOnTapGesture: finalLocationOnTapGesture
@@ -46,12 +48,10 @@ struct AdditionalLocationView: View {
                     /// 추가 등록 items
                     AdditionalLocationSavedItemsView(
                         currentFullAddress: currentLocationVM.fullAddress,
-                        fullAddresses: vm.fullAddresses,
-                        localities: vm.localities,
-                        subLocalities: vm.subLocalities,
+                        allLocalities: vm.allLocalities,
                         tempItems: vm.tempItems,
                         itemOnTapGesture: finalLocationOnTapGesture,
-                        itemDeleteAction: vm.itemDeleteAction(fullAddress:locality:subLocality:)
+                        itemDeleteAction: vm.itemDeleteAction(allLocality:)
                     )
                     .padding(.top, 16)
                     .padding(.horizontal, 20)
@@ -100,6 +100,6 @@ struct AdditionalLocationView: View {
     AdditionalLocationView(
         isPresented: .constant(true),
         progress: .constant(.none),
-        finalLocationOnTapGesture: {_, _, _, _ in }
+        finalLocationOnTapGesture: {_, _ in }
     )
 }

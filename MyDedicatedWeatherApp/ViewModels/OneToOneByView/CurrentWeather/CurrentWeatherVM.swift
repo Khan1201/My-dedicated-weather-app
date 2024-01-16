@@ -21,7 +21,6 @@ final class CurrentWeatherVM: ObservableObject {
     @Published var isStartRefresh: Bool = false
     @Published var openAdditionalLocationView: Bool = false
     @Published var additionalLocationProgress: AdditionalLocationProgress = .none
-    @Published var locality: String = ""
     @Published var subLocalityByKakaoAddress: String = ""
     @Published var isLaunchScreenEnded: Bool = false
     
@@ -743,71 +742,68 @@ extension CurrentWeatherVM {
             self.isStartRefresh = false
         }
     }
-        
-    func additionalAddressFinalLocationOnTapGesture(fullAddress: String, locality: String, subLocality: String, isNewAdd: Bool) {
-        
-        LocationDataManagerVM.getLatitudeAndLongitude(address: fullAddress) { [weak self] result in
-            guard let self = self else { return }
-            self.locality = locality
+    
+    func additionalAddressFinalLocationOnTapGesture(allLocality: AllLocality, isNewAdd: Bool) {
             
-            switch result {
+            LocationDataManagerVM.getLatitudeAndLongitude(address: allLocality.fullAddress) { [weak self] result in
+                guard let self = self else { return }
                 
-            case .success(let success):
-                let latitude: Double = success.0
-                let longitude: Double = success.1
-                let xy: Gps2XY.LatXLngY = self.commonForecastUtil.convertGPS2XY(mode: .toXY, lat_X: latitude, lng_Y: longitude)
-                
-                additionalLocationProgress = .loading
-                initLoadCompletedVariables()
-                
-                timerStart()
-                initializeTask()
-                
-                currentTask = Task(priority: .userInitiated) {
-                    await self.requestSunAndMoonrise(long: String(longitude), lat: String(latitude)) // Must first called
+                switch result {
                     
-                    Task(priority: .userInitiated) {
-                        async let _ = self.requestVeryShortForecastItems(xy: xy)
-                        async let _ = self.requestShortForecastItems(xy: xy)
-                        async let _ = self.requestTodayMinMaxTemp(xy: xy)
-                    }
+                case .success(let success):
+                    let latitude: Double = success.0
+                    let longitude: Double = success.1
+                    let xy: Gps2XY.LatXLngY = self.commonForecastUtil.convertGPS2XY(mode: .toXY, lat_X: latitude, lng_Y: longitude)
                     
-                    Task(priority: .userInitiated) {
-                        await self.requestKaKaoAddressBy(longitude: String(longitude), latitude: String(latitude), isCurrentLocationRequested: false)
-                        await self.requestDustForecastStationXY(
-                            subLocality: subLocality,
-                            locality: locality
+                    additionalLocationProgress = .loading
+                    initLoadCompletedVariables()
+                    
+                    timerStart()
+                    initializeTask()
+                    
+                    currentTask = Task(priority: .userInitiated) {
+                        await self.requestSunAndMoonrise(long: String(longitude), lat: String(latitude)) // Must first called
+                        
+                        Task(priority: .userInitiated) {
+                            async let _ = self.requestVeryShortForecastItems(xy: xy)
+                            async let _ = self.requestShortForecastItems(xy: xy)
+                            async let _ = self.requestTodayMinMaxTemp(xy: xy)
+                        }
+                        
+                        Task(priority: .userInitiated) {
+                            await self.requestKaKaoAddressBy(longitude: String(longitude), latitude: String(latitude), isCurrentLocationRequested: false)
+                            await self.requestDustForecastStationXY(
+                                subLocality: allLocality.subLocality,
+                                locality: allLocality.locality
+                            )
+                            await self.requestDustForecastStation(tmXAndtmY: DustStationRequestParam.tmXAndtmY, isCurrentLocationRequested: false)
+                            await self.requestRealTimeFindDustForecastItems()
+                        }
+                        
+                        await self.currentLocationVM.setCoordinateAndAllLocality(
+                            xy: xy,
+                            latitude: latitude,
+                            longitude: longitude,
+                            allLocality: allLocality
                         )
-                        await self.requestDustForecastStation(tmXAndtmY: DustStationRequestParam.tmXAndtmY, isCurrentLocationRequested: false)
-                        await self.requestRealTimeFindDustForecastItems()
+                        
+                        DispatchQueue.main.async {
+                            self.additionalLocationProgress = .completed
+                            self.openAdditionalLocationView = false
+                        }
+                        
+                        if isNewAdd {
+                            UserDefaults.standard.appendAdditionalAllLocality(allLocality)
+                        }
                     }
                     
-                    await self.currentLocationVM.setXY((String(xy.x), String(xy.y)))
-                    await self.currentLocationVM.setLatitude(String(latitude))
-                    await self.currentLocationVM.setLongitude(String(longitude))
-                    await self.currentLocationVM.setLocality(locality)
-                    await self.currentLocationVM.setSubLocality(subLocality)
-                    await self.currentLocationVM.setFullAddress(fullAddress)
-                    
+                case .failure(_):
                     DispatchQueue.main.async {
-                        self.additionalLocationProgress = .completed
-                        self.openAdditionalLocationView = false
+                        self.additionalLocationProgress = .notFound
                     }
-                    
-                    if isNewAdd {
-                        UserDefaults.standard.setUserDefaultsStringArray(value: fullAddress, key: UserDefaultsKeys.additionalFullAddresses)
-                        UserDefaults.standard.setUserDefaultsStringArray(value: locality, key: UserDefaultsKeys.additionalLocalities)
-                        UserDefaults.standard.setUserDefaultsStringArray(value: subLocality, key: UserDefaultsKeys.additionalSubLocalities)
-                    }
-                }
-                
-            case .failure(_):
-                DispatchQueue.main.async {
-                    self.additionalLocationProgress = .notFound
                 }
             }
         }
-    }
     
     func retryButtonOnTapGesture(longitude: String, latitude: String, xy: (String, String), locality: String, subLocality: String) {
         showLoadRetryButton = false

@@ -9,27 +9,23 @@ import SwiftUI
 
 struct AdditionalLocationSavedItemsView: View {
     let currentFullAddress: String
-    let fullAddresses: [String]
-    let localities: [String]
-    let subLocalities: [String]
+    let allLocalities: [AllLocality]
     let tempItems: [Weather.WeatherImageAndMinMax]
-    let itemOnTapGesture: ((String, String, String, Bool) -> Void)
-    let itemDeleteAction: (String, String, String) -> Void
+    let itemOnTapGesture: (AllLocality, Bool) -> Void
+    let itemDeleteAction: (AllLocality) -> Void
     
     var body: some View {
         
         VStack(alignment: .leading, spacing: 16) {
-            ForEach(fullAddresses.indices, id: \.self) { i in
+            ForEach(allLocalities.indices, id: \.self) { i in
                 AdditionalLocationSavedItemView(
-                    fullAddress: fullAddresses[i],
-                    locality: localities[i],
-                    subLocality: subLocalities[i],
+                    allLocality: allLocalities[i],
                     tempItem: tempItems[i],
                     onTapGesture: itemOnTapGesture,
                     deleteAction: itemDeleteAction
                 )
                 .overlay(alignment: .topLeading) {
-                    if currentFullAddress == fullAddresses[i] {
+                    if currentFullAddress == allLocalities[i].fullAddress {
                         Image("current_location")
                             .resizable()
                             .frame(width: 35, height: 35)
@@ -44,12 +40,10 @@ struct AdditionalLocationSavedItemsView: View {
 #Preview {
     AdditionalLocationSavedItemsView(
         currentFullAddress: "서울특별시",
-        fullAddresses: ["서울특별시", "대구광역시"],
-        localities: [],
-        subLocalities: [],
+        allLocalities: [],
         tempItems: [],
-        itemOnTapGesture: { _, _, _, _ in },
-        itemDeleteAction: {_, _, _ in }
+        itemOnTapGesture: { _, _ in },
+        itemDeleteAction: { _ in }
     )
 }
 

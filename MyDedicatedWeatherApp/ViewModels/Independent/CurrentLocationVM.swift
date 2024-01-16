@@ -70,4 +70,14 @@ extension CurrentLocationVM {
     func setGPSSubLocality(_ value: String) {
         self.gpsSubLocality = value
     }
+    
+    @MainActor
+    func setCoordinateAndAllLocality(xy: Gps2XY.LatXLngY, latitude: Double, longitude: Double, allLocality: AllLocality) {
+        setXY((String(xy.x), String(xy.y)))
+        setLatitude(String(latitude))
+        setLongitude(String(longitude))
+        setFullAddress(allLocality.fullAddress)
+        setLocality(allLocality.locality)
+        setSubLocality(allLocality.subLocality)
+    }
 }

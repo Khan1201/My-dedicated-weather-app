@@ -11,15 +11,17 @@ final class AdditionalLocationVM: ObservableObject {
     
     @Published var gpsTempItem: Weather.WeatherImageAndMinMax = .init(weatherImage: "", currentTemp: "", minMaxTemp: ("", ""))
     @Published var tempItems: [Weather.WeatherImageAndMinMax] = Dummy.weatherImageAndMinMax()
-    @Published var fullAddresses: [String] = UserDefaults.standard.array(forKey: UserDefaultsKeys.additionalFullAddresses) as? [String] ?? []
-    @Published var localities: [String] = UserDefaults.standard.array(forKey: UserDefaultsKeys.additionalLocalities) as? [String] ?? []
-    @Published var subLocalities: [String] = UserDefaults.standard.array(forKey: UserDefaultsKeys.additionalSubLocalities) as? [String] ?? []
+    @Published var allLocalities: [AllLocality] = []
         
     private let commonForecastUtil: CommonForecastUtil = CommonForecastUtil()
     private let veryShortTermForecastUtil: VeryShortTermForecastUtil = VeryShortTermForecastUtil()
     private let shortTermForecastUtil: ShortTermForecastUtil = ShortTermForecastUtil()
     
     var currentTask: Task<(), Never>?
+    
+    init() {
+        self.initAllLocalities()
+    }
     
     deinit {
         currentTask?.cancel()
@@ -205,97 +207,6 @@ extension AdditionalLocationVM {
             return ("", "")
         }
     }
-    
-    /**
-     Request 단기예보 Items
-     
-     - parameter xy: 공공데이터 값으로 변환된 X, Y
-     - parameter baseTime: Request param 의 `baseTime`
-     
-     `baseTime` == nil -> 앱 첫 진입 시 자동 계산되어 호출
-     `baseTime` != nil -> 앱 첫 진입 시 호출이 아닌, 수동 호출
-     
-     Response:
-     - 1시간 별 데이터 12개 (13:00 -> 12개, 14:00 -> 12개)
-     - 요청 basetime 별 response 값이 다름
-     
-     시간 별 Index:
-     - 0: TMP (온도)
-     - 1: UUU (풍속 동서성분)
-     - 2: VVV (풍속 남북성분)
-     - 3: VEC (풍향)
-     - 4: WSD (풍속)
-     - 5: SKY (하늘 상태)
-     - 6: PTY (강수 형태)
-     - 7: POP (강수 확률)
-     - 8: WAV (파고)
-     - 9: PCP (1시간 강수량)
-     - 10: REH (습도)
-     - 11: SNO (1시간 신적설)
-     
-     요청 basetime 별 데이터 크기:
-     - 0200: '+1시간' ~ '+70시간'
-     - 0500: '+1시간' ~ '+67시간'
-     - 0800: '+1시간' ~ '+64시간'
-     - 1100: '+1시간' ~ '+61시간'
-     - 1400: '+1시간' ~ '+58시간' (0200 ~ 1400 : 오늘 ~ 모레까지)
-     - 1700: '+1시간' ~ '+79시간'
-     - 2000: '+1시간' ~ '+76시간'
-     - 2300: '+1시간' ~ '+73시간' (17:00 ~ 2300: 오늘 ~ 모레+1일 까지)
-     */
-//    func requestMinMaxTemp(xy: Gps2XY.LatXLngY) async -> (String, String) {
-//        let currentDateString = Date().toString(format: "yyyyMMdd")
-//        let tomorrowDateString = Date().toString(byAdding: 1, format: "yyyyMMdd")
-//        let baseTime = shortTermForecastUtil.requestBaseTime()
-//        let isBaseTime2300: Bool = baseTime == "2300"
-//        
-//        let parameters = VeryShortOrShortTermForecastReq(
-//            serviceKey: Env.shared.openDataApiResponseKey,
-//            numOfRows: "300",
-//            baseDate: shortTermForecastUtil.requestBaseDate(),
-//            /// baseTime != nil -> 앱 구동 시 호출이 아닌, 수동 호출
-//            baseTime: baseTime,
-//            nx: String(xy.x),
-//            ny: String(xy.y)
-//        )
-//        
-//        do {
-//            let result = try await JsonRequest.shared.newRequest(
-//                url: Route.GET_WEATHER_SHORT_TERM_FORECAST.val,
-//                method: .get,
-//                parameters: parameters,
-//                headers: nil,
-//                resultType: PublicDataRes<VeryShortOrShortTermForecastBase<ShortTermForecastCategory>>.self,
-//                requestName: "requestShortForecastItems(xy:)"
-//            )
-//            
-//            CommonUtil.shared.printSuccess(
-//                funcTitle: "requestMinMaxTemp",
-//                value: result
-//            )
-//            
-//            guard let items = result.item else { return ("", "") }
-//            let filteredTempItems = items.filter({ $0.fcstDate == (isBaseTime2300 ? tomorrowDateString : currentDateString) && $0.category == .TMP })
-//            let filteredTemps = filteredTempItems.map({ $0.fcstValue })
-//            let minTemp = filteredTemps.min() ?? ""
-//            let maxTemp = filteredTemps.max() ?? ""
-//
-//            return (minTemp, maxTemp)
-//            
-//        } catch APIError.transportError {
-//            
-//            DispatchQueue.main.async {
-////                self.errorMessage = "API 통신 에러"
-//            }
-//            return ("", "")
-//            
-//        } catch {
-//            DispatchQueue.main.async {
-////                self.errorMessage = "알 수 없는 오류"
-//            }
-//            return ("", "")
-//        }
-//    }
 }
 
 // MARK: - Set funcs..
@@ -342,7 +253,7 @@ extension AdditionalLocationVM {
 
 extension AdditionalLocationVM {
     
-    func itemDeleteAction(fullAddress: String, locality: String, subLocality: String) {
+    func itemDeleteAction(allLocality: AllLocality) {
         
         guard let fullAddresses = UserDefaults.standard.array(forKey: UserDefaultsKeys.additionalFullAddresses) as? [String] else {
             return
@@ -356,8 +267,15 @@ extension AdditionalLocationVM {
             return
         }
         
-        guard let fullAddressIndex = fullAddresses.firstIndex(of: fullAddress), let localityIndex = localities.firstIndex(of: locality),
-              let subLocalityIndex = subLocalities.firstIndex(of: subLocality) else { 
+        guard fullAddresses.count == localities.count && fullAddresses.count == subLocalities.count else {
+            CommonUtil.shared.printError(
+                funcTitle: "itemDeleteAction",
+                description: "fullAddress.count != localities.count != subLocalities.count"
+            )
+            return
+        }
+        
+        guard let index = fullAddresses.firstIndex(of: allLocality.fullAddress) else {
             CommonUtil.shared.printError(
                 funcTitle: "itemDeleteAction", 
                 description: "Index를 찾을 수 없습니다."
@@ -365,17 +283,9 @@ extension AdditionalLocationVM {
             return
         }
         
-        guard fullAddressIndex == localityIndex && fullAddressIndex == subLocalityIndex else {
-            CommonUtil.shared.printError(
-                funcTitle: "itemDeleteAction",
-                description: "ullAddressIndex == localityIndex == subLocalityIndex 이 아닙니다."
-            )
-            return
-        }
-        
-        UserDefaults.standard.removeStringElementInArray(index: fullAddressIndex, key: UserDefaultsKeys.additionalFullAddresses)
-        UserDefaults.standard.removeStringElementInArray(index: localityIndex, key: UserDefaultsKeys.additionalLocalities)
-        UserDefaults.standard.removeStringElementInArray(index: subLocalityIndex, key: UserDefaultsKeys.additionalSubLocalities)
+        UserDefaults.standard.removeStringElementInArray(index: index, key: UserDefaultsKeys.additionalFullAddresses)
+        UserDefaults.standard.removeStringElementInArray(index: index, key: UserDefaultsKeys.additionalLocalities)
+        UserDefaults.standard.removeStringElementInArray(index: index, key: UserDefaultsKeys.additionalSubLocalities)
         
         reloadItems()
     }
@@ -396,7 +306,7 @@ extension AdditionalLocationVM {
     
     func performRequestSavedLocationWeather(gpsFullAddress: String) {
         
-        var addresses = fullAddresses
+        var addresses = allLocalities.map { $0.fullAddress }
         addresses.append(gpsFullAddress)
         
         for (index, address) in addresses.enumerated() {
@@ -447,13 +357,27 @@ extension AdditionalLocationVM {
         }
     }
     
-    func reloadItems() {
+    func initAllLocalities() {
+        allLocalities = []
+        
         let fullAddresses: [String] = UserDefaults.standard.array(forKey: UserDefaultsKeys.additionalFullAddresses) as? [String] ?? []
         let localities: [String] = UserDefaults.standard.array(forKey: UserDefaultsKeys.additionalLocalities) as? [String] ?? []
         let subLocalities: [String] = UserDefaults.standard.array(forKey: UserDefaultsKeys.additionalSubLocalities) as? [String] ?? []
         
-        self.fullAddresses = fullAddresses
-        self.localities = localities
-        self.subLocalities = subLocalities
+        guard fullAddresses.count == localities.count && fullAddresses.count == subLocalities.count else { return }
+        
+        for i in fullAddresses.indices {
+            allLocalities.append(
+                .init(
+                    fullAddress: fullAddresses[i],
+                    locality: localities[i],
+                    subLocality: subLocalities[i]
+                )
+            )
+        }
+    }
+    
+    func reloadItems() {
+        initAllLocalities()
     }
 }

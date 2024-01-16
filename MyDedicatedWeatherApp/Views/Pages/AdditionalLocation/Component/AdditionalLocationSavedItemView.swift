@@ -8,19 +8,17 @@
 import SwiftUI
 
 struct AdditionalLocationSavedItemView: View {
-    let fullAddress: String
-    let locality: String
-    let subLocality: String
+    let allLocality: AllLocality
     let tempItem: Weather.WeatherImageAndMinMax
-    let onTapGesture: ((String, String, String, Bool) -> Void)
-    let deleteAction: (String, String, String) -> Void
+    let onTapGesture: (AllLocality, Bool) -> Void
+    let deleteAction: (AllLocality) -> Void
     
     @State private var isDeleteMode: Bool = false
     
     var body: some View {
         
         HStack(alignment: .center, spacing: 0) {
-            Text(fullAddress)
+            Text(allLocality.fullAddress)
                 .fontSpoqaHanSansNeo(size: 15, weight: .medium)
                 .foregroundStyle(Color.white)
             
@@ -66,7 +64,7 @@ struct AdditionalLocationSavedItemView: View {
                 .transition(.move(edge: .trailing))
                 .onTapGesture {
                     withAnimation {
-                        deleteAction(fullAddress, locality, subLocality)
+                        deleteAction(allLocality)
                         isDeleteMode = false
                     }
                 }
@@ -82,7 +80,7 @@ struct AdditionalLocationSavedItemView: View {
                 }
                 
             } else {
-                onTapGesture(fullAddress, locality, subLocality, false)
+                onTapGesture(allLocality, false)
             }
         }
         .gesture(

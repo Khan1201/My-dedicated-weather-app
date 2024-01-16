@@ -193,3 +193,9 @@ enum AdditionalLocationProgress {
 enum WidgetShared: String {
     case x, y, latitude, longitude, locality, subLocality, fullAddress, dustStationName
 }
+
+struct AllLocality {
+    let fullAddress: String
+    let locality: String
+    let subLocality: String
+}

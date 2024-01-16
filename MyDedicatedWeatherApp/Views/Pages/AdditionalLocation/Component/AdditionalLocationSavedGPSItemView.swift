@@ -8,18 +8,16 @@
 import SwiftUI
 
 struct AdditionalLocationSavedGPSItemView: View {
-    let fullAddress: String
-    let locality: String
-    let subLocality: String
+    let allLocality: AllLocality
     let tempItem: Weather.WeatherImageAndMinMax
     let currentLocation: String
-    let finalLocationOnTapGesture: (String, String, String, Bool) -> Void
+    let finalLocationOnTapGesture: (AllLocality, Bool) -> Void
 
     var body: some View {
         
         HStack(alignment: .center, spacing: 0) {
             HStack(alignment: .center, spacing: 0) {
-                Text(fullAddress)
+                Text(allLocality.fullAddress)
                     .fontSpoqaHanSansNeo(size: 15, weight: .medium)
                     .foregroundStyle(Color.white)
                 
@@ -61,7 +59,7 @@ struct AdditionalLocationSavedGPSItemView: View {
         .background(Color.white.opacity(0.1))
         .clipShape(RoundedRectangle(cornerRadius: 8))
         .overlay(alignment: .topLeading) {
-            if fullAddress == currentLocation {
+            if allLocality.fullAddress == currentLocation {
                 Image("current_location")
                     .resizable()
                     .frame(width: 35, height: 35)
@@ -70,9 +68,7 @@ struct AdditionalLocationSavedGPSItemView: View {
         }
         .onTapGesture {
             finalLocationOnTapGesture(
-                fullAddress,
-                locality,
-                subLocality,
+                allLocality,
                 false
             )
         }
@@ -81,11 +77,9 @@ struct AdditionalLocationSavedGPSItemView: View {
 
 #Preview {
     AdditionalLocationSavedGPSItemView(
-        fullAddress: "",
-        locality: "",
-        subLocality: "",
+        allLocality: .init(fullAddress: "", locality: "", subLocality: ""),
         tempItem: .init(weatherImage: "", currentTemp: "", minMaxTemp: ("", "")),
         currentLocation: "",
-        finalLocationOnTapGesture: {_, _, _, _ in }
+        finalLocationOnTapGesture: {_, _ in }
     )
 }

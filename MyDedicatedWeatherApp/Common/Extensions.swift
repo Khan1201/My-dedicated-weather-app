@@ -172,6 +172,22 @@ extension UserDefaults {
         self.set(arrays, forKey: key)
     }
     
+    func appendAdditionalAllLocality(_ allLocality: AllLocality) {
+        guard let fullAddress = UserDefaults.standard.array(forKey: UserDefaultsKeys.additionalFullAddresses) as? [String] else { return }
+        
+        guard !fullAddress.contains(allLocality.fullAddress) else {
+            CommonUtil.shared.printError(
+                funcTitle: "appendAdditionalAllLocality()",
+                description: "이미 존재하는 fullAddress 입니다."
+            )
+            return
+        }
+        
+        setUserDefaultsStringArray(value: allLocality.fullAddress, key: UserDefaultsKeys.additionalFullAddresses)
+        setUserDefaultsStringArray(value: allLocality.locality, key: UserDefaultsKeys.additionalLocalities)
+        setUserDefaultsStringArray(value: allLocality.subLocality, key: UserDefaultsKeys.additionalSubLocalities)
+    }
+    
     func removeStringElementInArray(index: Int, key: String) {
         guard var arrays = self.array(forKey: key) as? [String] else {
             return

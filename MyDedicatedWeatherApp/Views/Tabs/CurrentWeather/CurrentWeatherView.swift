@@ -97,7 +97,7 @@ struct CurrentWeatherView: View {
                         isPresented: $viewModel.openAdditionalLocationView,
                         progress: $viewModel.additionalLocationProgress,
                         finalLocationOnTapGesture:
-                            viewModel.additionalAddressFinalLocationOnTapGesture(fullAddress:locality:subLocality:isNewAdd:)
+                            viewModel.additionalAddressFinalLocationOnTapGesture(allLocality:isNewAdd:)
                     )
                 )
             }
