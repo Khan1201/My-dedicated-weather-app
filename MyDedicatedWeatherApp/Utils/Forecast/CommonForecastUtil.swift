@@ -229,7 +229,7 @@ struct CommonForecastUtil {
             return Weather.DescriptionAndSkyTypeAndImageString(
                 description: "비/눈",
                 skyType: .snow,
-                imageString: "weather_rain_snow"
+                imageString: isAnimationImage ? "RainSnowLottie" : "weather_rain_snow"
             )
             
         case "3", "7":
@@ -276,18 +276,18 @@ struct CommonForecastUtil {
             )
             
         case "6":
-            let animationJson = self.decideAnimationWhetherDayOrNight(
-                hhMM: hhMMForDayOrNightImage,
-                sunrise: sunrise,
-                sunset: sunset,
-                dayJson: "SnowLottie",
-                nightJson: "SnowNightLottie"
-            )
+//            let animationJson = self.decideAnimationWhetherDayOrNight(
+//                hhMM: hhMMForDayOrNightImage,
+//                sunrise: sunrise,
+//                sunset: sunset,
+//                dayJson: "SnowLottie",
+//                nightJson: "SnowNightLottie"
+//            )
  
             return Weather.DescriptionAndSkyTypeAndImageString(
                 description: "빗방울 / 눈날림",
                 skyType: .snow,
-                imageString: isAnimationImage ? animationJson : "weather_rain_snow"
+                imageString: isAnimationImage ? "RainSnowLottie" : "weather_rain_snow"
             )
             
         default:
