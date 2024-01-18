@@ -899,11 +899,11 @@ extension WeatherWidgetVM {
         ]
         
         let weeklyWeatherItem: [LargeFamilyData.WeeklyWeatherItem] = [
-            .init(weekDay: "금요일", dateString: "00/00", image: weatherImage, rainPercent: "30", minMaxTemperature: ("00", "00")),
-            .init(weekDay: "금요일", dateString: "00/00", image: weatherImage, rainPercent: "30", minMaxTemperature: ("00", "00")),
-            .init(weekDay: "금요일", dateString: "00/00", image: weatherImage, rainPercent: "30", minMaxTemperature: ("00", "00")),
-            .init(weekDay: "금요일", dateString: "00/00", image: weatherImage, rainPercent: "30", minMaxTemperature: ("00", "00")),
-            .init(weekDay: "금요일", dateString: "00/00", image: weatherImage, rainPercent: "30", minMaxTemperature: ("00", "00"))
+            .init(weekDay: "금요일", dateString: "00/00", image: weatherImage, rainPercent: "30", minMaxTemperature: ("-00", "00")),
+            .init(weekDay: "금요일", dateString: "00/00", image: weatherImage, rainPercent: "30", minMaxTemperature: ("-00", "00")),
+            .init(weekDay: "금요일", dateString: "00/00", image: weatherImage, rainPercent: "30", minMaxTemperature: ("-00", "00")),
+            .init(weekDay: "금요일", dateString: "00/00", image: weatherImage, rainPercent: "30", minMaxTemperature: ("-00", "00")),
+            .init(weekDay: "금요일", dateString: "00/00", image: weatherImage, rainPercent: "30", minMaxTemperature: ("-00", "00"))
         ]
                 
         result.mediumFamilyData.todayWeatherItems = todayWeatherItem

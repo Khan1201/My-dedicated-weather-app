@@ -65,7 +65,7 @@ struct WeeklyWeatherItemView: View {
         .padding(.horizontal, 24)
         /// 2자리수 온도  width get 위해
         .overlay {
-            Text("00°")
+            Text("-00°")
                 .font(.system(size: 13, weight: .bold))
                 .getSize(size: $twoDigitTempSize)
                 .opacity(0)
