@@ -53,6 +53,8 @@ struct WeatherWidgetVM {
         
         await applyRealTimeFindDustAndUltraFindDustItems(realTimefindDustItems.value, to: &result)
         
+//        testCrashOccurrence(result: &result)
+        
         return result
     }
     
@@ -110,6 +112,8 @@ struct WeatherWidgetVM {
         await applyRealTimeFindDustAndUltraFindDustItems(realTimefindDustItems.value, to: &result)
         
         await applyMidtermForecastTemperatureSkyStateItems(midForecastTemperatureItems.value, midForecastSkyStateItems.value, to: &result)
+        
+//        testCrashOccurrence(result: &result)
         
         return result
     }
@@ -873,5 +877,36 @@ extension WeatherWidgetVM {
         }
         
         return result
+    }
+}
+
+// MARK: - Test funcs..
+
+extension WeatherWidgetVM {
+    
+    func testCrashOccurrence(result: inout SimpleEntry) {
+        let weatherImage = "weather_sunny"
+        
+        result.smallFamilyData.currentWeatherItem.weatherImage = weatherImage
+
+        let todayWeatherItem: [MediumFamilyData.TodayWeatherItem] = [
+            .init(time: "3PM", image: weatherImage, precipitation: "30", temperature: "00"),
+            .init(time: "3PM", image: weatherImage, precipitation: "30", temperature: "00"),
+            .init(time: "3PM", image: weatherImage, precipitation: "30", temperature: "00"),
+            .init(time: "3PM", image: weatherImage, precipitation: "30", temperature: "00"),
+            .init(time: "3PM", image: weatherImage, precipitation: "30", temperature: "00"),
+            .init(time: "3PM", image: weatherImage, precipitation: "30", temperature: "00")
+        ]
+        
+        let weeklyWeatherItem: [LargeFamilyData.WeeklyWeatherItem] = [
+            .init(weekDay: "금요일", dateString: "00/00", image: weatherImage, rainPercent: "30", minMaxTemperature: ("00", "00")),
+            .init(weekDay: "금요일", dateString: "00/00", image: weatherImage, rainPercent: "30", minMaxTemperature: ("00", "00")),
+            .init(weekDay: "금요일", dateString: "00/00", image: weatherImage, rainPercent: "30", minMaxTemperature: ("00", "00")),
+            .init(weekDay: "금요일", dateString: "00/00", image: weatherImage, rainPercent: "30", minMaxTemperature: ("00", "00")),
+            .init(weekDay: "금요일", dateString: "00/00", image: weatherImage, rainPercent: "30", minMaxTemperature: ("00", "00"))
+        ]
+                
+        result.mediumFamilyData.todayWeatherItems = todayWeatherItem
+        result.largeFamilyData.weeklyWeatherItems = weeklyWeatherItem
     }
 }
