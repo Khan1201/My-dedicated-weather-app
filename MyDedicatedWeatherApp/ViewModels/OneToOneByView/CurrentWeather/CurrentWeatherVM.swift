@@ -444,21 +444,23 @@ extension CurrentWeatherVM {
      */
     func requestSunAndMoonrise(long: String, lat: String) async {
         let startTime = CFAbsoluteTimeGetCurrent()
+        let parameter: SunOrMoonTimeReq = .init(
+            serviceKey: Env.shared.openDataApiResponseKey,
+            locdate: Date().toString(format: "yyyyMMdd"),
+            longitude: long,
+            latitude: lat
+        )
 
         do {
-            let parser = try await SunAndMoonRiseByXMLService(
-                queryItem: .init(
-                    serviceKey: Env.shared.openDataApiResponseKey,
-                    locdate: Date().toString(format: "yyyyMMdd"),
-                    longitude: long,
-                    latitude: lat
-                )
+            let parserService = SunAndMoonRiseByXMLService(
+                queryItem: parameter
             )
-            
-            await setSunRiseAndSetHHmm(parser.result)
+            _ = try await parserService.parse()
+                                                
+            await setSunRiseAndSetHHmm(parserService.result)
             await contentVM.setIsDayMode(
-                sunrise: parser.result.sunrise,
-                sunset: parser.result.sunset
+                sunrise: parserService.result.sunrise,
+                sunset: parserService.result.sunset
             )
             
             let durationTime = CFAbsoluteTimeGetCurrent() - startTime
@@ -710,7 +712,7 @@ extension CurrentWeatherVM {
         initializeTask()
         currentTask = Task(priority: .userInitiated) {
             await requestSunAndMoonrise(long: longLati.0, lat: longLati.1) // Must first called
-            
+                        
             Task(priority: .userInitiated) {
                 async let _ = requestVeryShortForecastItems(xy: xy)
                 async let _ = requestShortForecastItems(xy: xy)

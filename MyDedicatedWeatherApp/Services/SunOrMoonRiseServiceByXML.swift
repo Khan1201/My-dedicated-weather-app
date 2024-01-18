@@ -16,15 +16,18 @@ final class SunAndMoonRiseByXMLService: NSObject {
     var isLock: Bool = false
     var tagType: SunAndMoonriseBase.TagType = .none
     
-    init(queryItem: SunOrMoonTimeReq) async throws {
+    init(queryItem: SunOrMoonTimeReq) {
         self.queryItem = queryItem
         super.init()
+    }
+    
+    func parse() async throws -> Bool {
         let url = URL(string: Route.GET_SUNRISE_SUNSET_TEMPERATURE.val)
         let data = try await AF.request(url!, method: .get, parameters: queryItem).serializingData().value
         
         let parser = XMLParser(data: data)
         parser.delegate = self
-        parser.parse()
+        return parser.parse()
     }
 }
 
