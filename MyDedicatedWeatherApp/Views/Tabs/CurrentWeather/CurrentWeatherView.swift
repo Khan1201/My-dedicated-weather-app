@@ -158,13 +158,14 @@ extension CurrentWeatherView {
                                 
                 Spacer()
                 
-                TodaySunriseSunsetView(
-                    sunriseTime: viewModel.sunRiseAndSetHHmm.0,
-                    sunsetTime: viewModel.sunRiseAndSetHHmm.1,
-                    isDayMode: contentVM.isDayMode
-                )
-                .padding(.trailing, 40)
-                .loadingProgressLottie(isLoadingCompleted: viewModel.isSunriseSunsetLoadCompleted)
+                if viewModel.isSunriseSunsetLoadCompleted {
+                    TodaySunriseSunsetView(
+                        sunriseTime: viewModel.sunRiseAndSetHHmm.0,
+                        sunsetTime: viewModel.sunRiseAndSetHHmm.1,
+                        isDayMode: contentVM.isDayMode
+                    )
+                    .padding(.trailing, 40)
+                }
             }
             
             HStack(alignment: .center, spacing: 20) {
