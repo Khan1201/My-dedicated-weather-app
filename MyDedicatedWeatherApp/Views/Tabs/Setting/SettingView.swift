@@ -82,8 +82,19 @@ struct SettingView: View {
             view: OpenSourceListView(
                 isPresented: $vm.navOpenSourceView,
                 titles: vm.openSourceTitles,
-                links: vm.openSourceLinks,
-                descriptions: Dummy.shared.openSourceDescriptions()
+                subTitles: vm.openSourceSubTitles,
+                descriptions: Dummy.shared.openSourceDescriptions(),
+                tapAvailableIndexes: vm.openSourceTapAvailableIndexes
+            )
+        )
+        .navToNextView(
+            isPresented: $vm.navWeatherStandardView,
+            view: OpenSourceListView(
+                isPresented: $vm.navOpenSourceView,
+                titles: vm.openSourceTitles,
+                subTitles: vm.openSourceSubTitles,
+                descriptions: Dummy.shared.openSourceDescriptions(),
+                tapAvailableIndexes: vm.openSourceTapAvailableIndexes
             )
         )
     }

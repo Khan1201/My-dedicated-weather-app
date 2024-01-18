@@ -10,13 +10,15 @@ import SwiftUI
 struct OpenSourceListView: View {
     @Binding var isPresented: Bool
     let titles: [String]
-    let links: [String]
+    let subTitles: [String]
     let descriptions: [String]
+    let tapAvailableIndexes: [Int]
     
     @State private var selectedIndex: Int = 0
     @State private var isNextViewShown: Bool = false
     
     var body: some View {
+        var descriptionIndex: Int = 0
         
         VStack(alignment: .leading, spacing: 30) {
             CustomNavigationBar(
@@ -31,7 +33,7 @@ struct OpenSourceListView: View {
                             .fontSpoqaHanSansNeo(size: 16, weight: .medium)
                             .foregroundStyle(Color.white)
                         
-                        Text(links[i])
+                        Text(subTitles[i])
                             .fontSpoqaHanSansNeo(size: 14, weight: .regular)
                             .foregroundStyle(Color.gray.opacity(0.7))
                             .padding(.top, 4)
@@ -44,8 +46,11 @@ struct OpenSourceListView: View {
                         }
                     }
                     .onTapGesture {
-                        selectedIndex = i
-                        isNextViewShown = true
+                        if tapAvailableIndexes.contains(i) {
+                            descriptionIndex = i - (tapAvailableIndexes.first ?? 0)
+                            selectedIndex = i
+                            isNextViewShown = true
+                        }
                     }
                 }
             }
@@ -58,7 +63,7 @@ struct OpenSourceListView: View {
             isPresented: $isNextViewShown,
             view: OpenSourceDetailView(
                 title: titles[selectedIndex],
-                description: descriptions[selectedIndex]
+                description: descriptions[descriptionIndex]
             )
         )
     }
@@ -68,12 +73,13 @@ struct OpenSourceListView: View {
     OpenSourceListView(
         isPresented: .constant(true),
         titles: ["Alamofire", "lottie-ios", "PopupView", "SwiftUIPager"],
-        links: [
+        subTitles: [
             "https://github.com/Alamofire/Alamofire",
             "https://github.com/airbnb/lottie-ios",
             "https://github.com/exyte/PopupView",
             "https://github.com/fermoya/SwiftUIPager"
         ],
-        descriptions: []
+        descriptions: [],
+        tapAvailableIndexes: []
     )
 }
