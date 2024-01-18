@@ -26,7 +26,7 @@ final class CurrentWeatherVM: ObservableObject {
     
     static private(set) var xy: Gps2XY.LatXLngY = .init(lat: 0, lng: 0, x: 0, y: 0)
     
-    @Published private(set) var sunRiseAndSetHHmm: (String, String) = ("0000", "0000")
+    @Published private(set) var sunriseAndSunsetHHmm: (String, String) = ("0000", "0000")
     
     /// Load Completed Variables..(7 values)
     @Published private(set) var isCurrentWeatherInformationLoadCompleted: Bool = false
@@ -434,49 +434,6 @@ extension CurrentWeatherVM {
             }
         }
     }
-    
-    /**
-     Request 일출 및 일몰 시간 item
-     !!! Must first called when location manager updated !!!
-     
-     - parameter long: longitude(경도),
-     - parameter lat: latitude(위도)
-     */
-    func requestSunAndMoonrise(long: String, lat: String) async {
-        let startTime = CFAbsoluteTimeGetCurrent()
-        let parameter: SunOrMoonTimeReq = .init(
-            serviceKey: Env.shared.openDataApiResponseKey,
-            locdate: Date().toString(format: "yyyyMMdd"),
-            longitude: long,
-            latitude: lat
-        )
-
-        do {
-            let parserService = SunAndMoonRiseByXMLService(
-                queryItem: parameter
-            )
-            _ = try await parserService.parse()
-                                                
-            await setSunRiseAndSetHHmm(parserService.result)
-            await contentVM.setIsDayMode(
-                sunrise: parserService.result.sunrise,
-                sunset: parserService.result.sunset
-            )
-            
-            let durationTime = CFAbsoluteTimeGetCurrent() - startTime
-            print("일출 일몰 req 소요시간: \(durationTime)")
-            
-        } catch APIError.transportError {
-            
-            DispatchQueue.main.async {
-                self.errorMessage = "API 통신 에러"
-            }
-        } catch {
-            DispatchQueue.main.async {
-                self.errorMessage = "알 수 없는 오류"
-            }
-        }
-    }
 }
 
 // MARK: - Set Variables..
@@ -511,8 +468,8 @@ extension CurrentWeatherVM {
             ptyValue: firstPTYItem.fcstValue,
             skyValue: firstSKYItem.fcstValue,
             hhMMForDayOrNightImage: firstPTYItem.fcstTime,
-            sunrise: sunRiseAndSetHHmm.0,
-            sunset: sunRiseAndSetHHmm.1,
+            sunrise: sunriseAndSunsetHHmm.0,
+            sunset: sunriseAndSunsetHHmm.1,
             isAnimationImage: false
         )
         
@@ -565,8 +522,8 @@ extension CurrentWeatherVM {
                 ptyValue: items[ptyIndex].fcstValue,
                 skyValue: items[skyIndex].fcstValue,
                 hhMMForDayOrNightImage: items[tempIndex].fcstTime,
-                sunrise: self.sunRiseAndSetHHmm.0,
-                sunset: self.sunRiseAndSetHHmm.1,
+                sunrise: self.sunriseAndSunsetHHmm.0,
+                sunset: self.sunriseAndSunsetHHmm.1,
                 isAnimationImage: false
             )
             
@@ -617,8 +574,8 @@ extension CurrentWeatherVM {
             ptyValue: firstPTYItem.fcstValue,
             skyValue: firstSKYItem.fcstValue,
             hhMMForDayOrNightImage: firstPTYItem.fcstTime,
-            sunrise: sunRiseAndSetHHmm.0,
-            sunset: sunRiseAndSetHHmm.1,
+            sunrise: sunriseAndSunsetHHmm.0,
+            sunset: sunriseAndSunsetHHmm.1,
             isAnimationImage: true
         ).imageString
         
@@ -626,8 +583,8 @@ extension CurrentWeatherVM {
             ptyValue: firstPTYItem.fcstValue,
             skyValue: firstSKYItem.fcstValue,
             hhMMForDayOrNightImage: firstPTYItem.fcstTime,
-            sunrise: sunRiseAndSetHHmm.0,
-            sunset: sunRiseAndSetHHmm.1,
+            sunrise: sunriseAndSunsetHHmm.0,
+            sunset: sunriseAndSunsetHHmm.1,
             isAnimationImage: false
         ).imageString
         
@@ -654,9 +611,8 @@ extension CurrentWeatherVM {
     
     /// Set 일출, 일몰 시간
     /// - parameter item: 일출 일몰 요청 response
-    @MainActor
-    func setSunRiseAndSetHHmm(_ item: SunAndMoonriseBase) {
-        sunRiseAndSetHHmm = (item.sunrise, item.sunset)
+    func setSunriseAndSunsetHHmm(sunrise: String, sunset: String) {
+        sunriseAndSunsetHHmm = (sunrise, sunset)
         isSunriseSunsetLoadCompleted = true
     }
     
@@ -710,8 +666,9 @@ extension CurrentWeatherVM {
         }
         
         initializeTask()
+        calculateAndSetSunriseSunset(longLati: longLati)
+        
         currentTask = Task(priority: .userInitiated) {
-            await requestSunAndMoonrise(long: longLati.0, lat: longLati.1) // Must first called
                         
             Task(priority: .userInitiated) {
                 async let _ = requestVeryShortForecastItems(xy: xy)
@@ -762,9 +719,9 @@ extension CurrentWeatherVM {
                     
                     timerStart()
                     initializeTask()
+                    calculateAndSetSunriseSunset(longLati: (String(longitude), String(latitude)))
                     
                     currentTask = Task(priority: .userInitiated) {
-                        await self.requestSunAndMoonrise(long: String(longitude), lat: String(latitude)) // Must first called
                         
                         Task(priority: .userInitiated) {
                             async let _ = self.requestVeryShortForecastItems(xy: xy)
@@ -901,14 +858,29 @@ extension CurrentWeatherVM {
         }
     }
     
+    func calculateAndSetSunriseSunset(longLati: (String, String)) {
+        let currentDate: Date = Date()
+        let sunrise = currentDate.sunrise(.init(latitude: longLati.1.toDouble, longitude: longLati.0.toDouble))
+        let sunset = currentDate.sunset(.init(latitude: longLati.1.toDouble, longitude: longLati.0.toDouble))
+        
+        if let sunrise = sunrise, let sunset = sunset {
+            let sunriseHHmm = sunrise.toString(format: "HHmm", timeZone: TimeZone(identifier: "UTC"))
+            let sunsetHHmm = sunset.toString(format: "HHmm", timeZone: TimeZone(identifier: "UTC"))
+            
+            contentVM.setIsDayMode(sunriseHHmm: sunriseHHmm, sunsetHHmm: sunsetHHmm)
+            setSunriseAndSunsetHHmm(sunrise: sunriseHHmm, sunset: sunsetHHmm)
+            print("일출: \(sunriseHHmm), 일몰: \(sunsetHHmm)")
+        }
+    }
+    
     func performRefresh(longitude: String, latitude: String, xy: (String, String), locality: String, subLocality: String) {
         let convertedXY: Gps2XY.LatXLngY = .init(lat: 0, lng: 0, x: xy.0.toInt, y: xy.1.toInt)
         
         timerStart()
         initializeTask()
-        
+        calculateAndSetSunriseSunset(longLati: (String(longitude), String(latitude)))
+
         currentTask = Task(priority: .userInitiated) {
-            await requestSunAndMoonrise(long: longitude, lat: latitude) // Must first called
             
             Task(priority: .userInitiated) {
                 async let _ = requestVeryShortForecastItems(xy: convertedXY)

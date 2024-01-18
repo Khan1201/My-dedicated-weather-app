@@ -160,8 +160,8 @@ extension CurrentWeatherView {
                 
                 if viewModel.isSunriseSunsetLoadCompleted {
                     TodaySunriseSunsetView(
-                        sunriseTime: viewModel.sunRiseAndSetHHmm.0,
-                        sunsetTime: viewModel.sunRiseAndSetHHmm.1,
+                        sunriseTime: viewModel.sunriseAndSunsetHHmm.0,
+                        sunsetTime: viewModel.sunriseAndSunsetHHmm.1,
                         isDayMode: contentVM.isDayMode
                     )
                     .padding(.trailing, 40)
