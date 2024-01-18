@@ -83,6 +83,21 @@ extension Date {
         
         return dateFormatter.string(from: self)
     }
+    
+    /**
+     format 형식으로 String 반환
+     timeZone 반영
+     
+     - parameter dateFormat: dateFormat String
+     - parameter timeZone: time zone
+     */
+    func toString(format: String, timeZone: TimeZone?) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = format
+        dateFormatter.timeZone = timeZone
+        
+        return dateFormatter.string(from: self)
+    }
 }
 
 extension String {
