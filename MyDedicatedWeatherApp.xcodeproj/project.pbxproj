@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BC013CCD2B591046005C4555 /* SunriseAndSunsetCarculate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC013CCC2B591046005C4555 /* SunriseAndSunsetCarculate.swift */; };
 		BC0852772AE032ED00CFB877 /* PopupView in Frameworks */ = {isa = PBXBuildFile; productRef = BC0852762AE032ED00CFB877 /* PopupView */; };
 		BC0857B82ACFA98F00D0AE33 /* WeeklyWeatherItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC0857B72ACFA98F00D0AE33 /* WeeklyWeatherItemView.swift */; };
 		BC0857BB2ACFB21E00D0AE33 /* TodayWeatherItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC0857BA2ACFB21E00D0AE33 /* TodayWeatherItemView.swift */; };
@@ -208,6 +209,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		BC013CCC2B591046005C4555 /* SunriseAndSunsetCarculate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunriseAndSunsetCarculate.swift; sourceTree = "<group>"; };
 		BC0857B72ACFA98F00D0AE33 /* WeeklyWeatherItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyWeatherItemView.swift; sourceTree = "<group>"; };
 		BC0857BA2ACFB21E00D0AE33 /* TodayWeatherItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayWeatherItemView.swift; sourceTree = "<group>"; };
 		BC0857BE2ACFB5C000D0AE33 /* CurrentWeatherTemperatureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeatherTemperatureView.swift; sourceTree = "<group>"; };
@@ -1013,6 +1015,7 @@
 			children = (
 				BCA30FA129FE6FC30078D0B1 /* JsonRequest.swift */,
 				BCCA26282A51481B005BB1B5 /* SunOrMoonRiseServiceByXML.swift */,
+				BC013CCC2B591046005C4555 /* SunriseAndSunsetCarculate.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -1341,6 +1344,7 @@
 				BCB16E2D2A4C717D00AACFF0 /* Validate.swift in Sources */,
 				BCA30F7C29FE203A0078D0B1 /* ContentView.swift in Sources */,
 				BCCD03852B1B1B4A004FF8C4 /* AdditionalLocationSavedItemsView.swift in Sources */,
+				BC013CCD2B591046005C4555 /* SunriseAndSunsetCarculate.swift in Sources */,
 				BC436B782AF294DF006AFFC1 /* SettingView.swift in Sources */,
 				BC86DB1C2A877F85004631D3 /* WeekWeatherItemView.swift in Sources */,
 				BC4DDA312A72BA4F000376C0 /* TodayWeatherItemScrollView.swift in Sources */,
