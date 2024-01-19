@@ -138,12 +138,7 @@ extension CurrentWeatherVM {
     
     /**
      Request 단기예보 Items
-     
      - parameter xy: 공공데이터 값으로 변환된 X, Y
-     - parameter baseTime: Request param 의 `baseTime`
-     
-     `baseTime` == nil -> 앱 첫 진입 시 자동 계산되어 호출
-     `baseTime` != nil -> 앱 첫 진입 시 호출이 아닌, 수동 호출
      
      Response:
      - 1시간 별 데이터 12개 (13:00 -> 12개, 14:00 -> 12개)
@@ -173,15 +168,14 @@ extension CurrentWeatherVM {
      - 2000: '+1시간' ~ '+76시간'
      - 2300: '+1시간' ~ '+73시간' (17:00 ~ 2300: 오늘 ~ 모레+1일 까지)
      */
-    func requestShortForecastItems(xy: Gps2XY.LatXLngY, baseTime: String? = nil) async {
+    func requestShortForecastItems(xy: Gps2XY.LatXLngY) async {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
 
         let parameters = VeryShortOrShortTermForecastReq(
             serviceKey: Env.shared.openDataApiResponseKey,
             numOfRows: "300",
             baseDate: shortTermForecastUtil.requestBaseDate(),
-            /// baseTime != nil -> 앱 구동 시 호출이 아닌, 수동 호출
-            baseTime: baseTime != nil ? baseTime! : shortTermForecastUtil.requestBaseTime(),
+            baseTime: shortTermForecastUtil.requestBaseTime(),
             nx: String(xy.x),
             ny: String(xy.y)
         )
