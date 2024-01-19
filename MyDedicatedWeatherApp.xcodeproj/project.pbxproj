@@ -84,6 +84,7 @@
 		BC7D33E22A12788E00B1012F /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = BC7D33E12A12788E00B1012F /* Lottie */; };
 		BC7D33E52A127ABB00B1012F /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC7D33E42A127ABB00B1012F /* LottieView.swift */; };
 		BC85A94E2A02570E00C4CC48 /* VeryShortOrShortTermForecastBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC85A94D2A02570E00C4CC48 /* VeryShortOrShortTermForecastBase.swift */; };
+		BC86692A2B5A0B0500619D49 /* SunriseAndSunsetCarculate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC013CCC2B591046005C4555 /* SunriseAndSunsetCarculate.swift */; };
 		BC86DB1C2A877F85004631D3 /* WeekWeatherItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC86DB1B2A877F85004631D3 /* WeekWeatherItemView.swift */; };
 		BC8A58E42B1F555D0000AB20 /* CurrentLocationVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC8A58E32B1F555D0000AB20 /* CurrentLocationVM.swift */; };
 		BC8A58E52B1F6FF30000AB20 /* UserDefaultsKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3E5B4C2B1DD8A2000CDFB0 /* UserDefaultsKeys.swift */; };
@@ -1457,6 +1458,7 @@
 				BCFB3EFA2A9F95D40043C26B /* Provider.swift in Sources */,
 				BCFB3EE92A9F90860043C26B /* WeatherWidgetBundle.swift in Sources */,
 				BC15D44B2AA60EC1006DC537 /* Env.swift in Sources */,
+				BC86692A2B5A0B0500619D49 /* SunriseAndSunsetCarculate.swift in Sources */,
 				BC0857C32ACFC60300D0AE33 /* WeatherWidgetSmallView.swift in Sources */,
 				BC8C95062AE5541C00865CCB /* MidTermForecastReq.swift in Sources */,
 				BC8C95052AE5541800865CCB /* VeryShortOrShortTermForecastReq.swift in Sources */,
