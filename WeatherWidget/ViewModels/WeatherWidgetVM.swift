@@ -9,6 +9,21 @@ import Foundation
 import Alamofire
 
 struct WeatherWidgetVM {
+        
+    var sunriseAndSunsetHHmm: (String, String) {
+        
+        let currentDate: Date = Date()
+        let latitude = UserDefaults.shared.string(forKey: UserDefaultsKeys.latitude) ?? ""
+        let longitude = UserDefaults.shared.string(forKey: UserDefaultsKeys.longitude) ?? ""
+                
+        guard let sunriseDate = currentDate.sunrise(.init(latitude: Double(latitude) ?? 0, longitude: Double(longitude) ?? 0)) else { return ("", "") }
+        guard let sunsetDate = currentDate.sunset(.init(latitude: Double(latitude) ?? 0, longitude: Double(longitude) ?? 0)) else { return ("", "") }
+        
+        let sunriseHHmm = sunriseDate.toString(format: "HHmm", timeZone: TimeZone(identifier: "UTC"))
+        let sunsetHHmm = sunsetDate.toString(format: "HHmm", timeZone: TimeZone(identifier: "UTC"))
+        
+        return (sunriseHHmm, sunsetHHmm)
+    }
     
     func performSmallOrMediumWidgetEntrySetting() async -> SimpleEntry {
         var result: SimpleEntry = Dummy.simpleEntry()
@@ -25,21 +40,16 @@ struct WeatherWidgetVM {
             return result
         }
         
-        let sunriseAndSunset = Task {
-            let result = await requestSunriseSunset()
-            return result
-        }
-        
         let realTimefindDustItems = Task {
             let result = await requestRealTimeFindDustAndUltraFindDustItems()
             return result
         }
         
-        await applyVeryShortForecastData(
+        applyVeryShortForecastData(
             veryShortForecastItems,
             to: &result,
-            sunrise: sunriseAndSunset.value.0,
-            sunset: sunriseAndSunset.value.1
+            sunrise: sunriseAndSunsetHHmm.0,
+            sunset: sunriseAndSunsetHHmm.1
         )
         
         await applyShortForecastData(
@@ -47,8 +57,8 @@ struct WeatherWidgetVM {
             itemsForMinMaxTemperature: shortForecastItemsForMinMaxTemperature.value,
             currentTemperature: veryShortForecastItems[24].fcstValue,
             to: &result,
-            sunrise: sunriseAndSunset.value.0,
-            sunset: sunriseAndSunset.value.1
+            sunrise: sunriseAndSunsetHHmm.0,
+            sunset: sunriseAndSunsetHHmm.1
         )
         
         await applyRealTimeFindDustAndUltraFindDustItems(realTimefindDustItems.value, to: &result)
@@ -60,7 +70,7 @@ struct WeatherWidgetVM {
     
     func performLargeWidgetEntrySetting() async -> SimpleEntry {
         var result: SimpleEntry = Dummy.simpleEntry()
-        
+
         let veryShortForecastItems = await requestVeryShortItems()
         
         let shortForecastItems = Task {
@@ -70,11 +80,6 @@ struct WeatherWidgetVM {
         
         let shortForecastItemsForMinMaxTemperature = Task {
             let result = await requestTodayMinMaxTemp()
-            return result
-        }
-        
-        let sunriseAndSunset = Task {
-            let result = await requestSunriseSunset()
             return result
         }
         
@@ -93,11 +98,11 @@ struct WeatherWidgetVM {
             return result
         }
         
-        await applyVeryShortForecastData(
+        applyVeryShortForecastData(
             veryShortForecastItems,
             to: &result,
-            sunrise: sunriseAndSunset.value.0,
-            sunset: sunriseAndSunset.value.1
+            sunrise: sunriseAndSunsetHHmm.0,
+            sunset: sunriseAndSunsetHHmm.1
         )
         
         await applyShortForecastData(
@@ -105,8 +110,8 @@ struct WeatherWidgetVM {
             itemsForMinMaxTemperature: shortForecastItemsForMinMaxTemperature.value,
             currentTemperature: veryShortForecastItems[24].fcstValue,
             to: &result,
-            sunrise: sunriseAndSunset.value.0,
-            sunset: sunriseAndSunset.value.1
+            sunrise: sunriseAndSunsetHHmm.0,
+            sunset: sunriseAndSunsetHHmm.1
         )
         
         await applyRealTimeFindDustAndUltraFindDustItems(realTimefindDustItems.value, to: &result)
@@ -252,39 +257,39 @@ extension WeatherWidgetVM {
     }
     
     /// Return (일출시간, 일몰시간)
-    func requestSunriseSunset() async -> (String, String) {
-        let latitude = UserDefaults.shared.string(forKey: UserDefaultsKeys.latitude) ?? ""
-        let longitude = UserDefaults.shared.string(forKey: UserDefaultsKeys.longitude) ?? ""
-        
-        do {
-            let parser = try await SunriseAndSunsetGetService(
-                queryItem: .init(
-                    serviceKey: Env.shared.openDataApiResponseKey,
-                    locdate: Date().toString(format: "yyyyMMdd"),
-                    longitude: longitude,
-                    latitude: latitude
-                )
-            )
-            
-            Util.printSuccess(
-                funcTitle: "requestSunriseSunset()",
-                value: """
-                일출시간: \(parser.result.sunrise)
-                일몰시간: \(parser.result.sunset)
-                """
-            )
-            
-            return (parser.result.sunrise, parser.result.sunset)
-            
-        } catch {
-            Util.printError(
-                funcTitle: "requestSunriseSunset()",
-                description: "일출 일물 시간 request 실패"
-            )
-            
-            return ("", "")
-        }
-    }
+//    func requestSunriseSunset() async -> (String, String) {
+//        let latitude = UserDefaults.shared.string(forKey: UserDefaultsKeys.latitude) ?? ""
+//        let longitude = UserDefaults.shared.string(forKey: UserDefaultsKeys.longitude) ?? ""
+//        
+//        do {
+//            let parser = try await SunriseAndSunsetGetService(
+//                queryItem: .init(
+//                    serviceKey: Env.shared.openDataApiResponseKey,
+//                    locdate: Date().toString(format: "yyyyMMdd"),
+//                    longitude: longitude,
+//                    latitude: latitude
+//                )
+//            )
+//            
+//            Util.printSuccess(
+//                funcTitle: "requestSunriseSunset()",
+//                value: """
+//                일출시간: \(parser.result.sunrise)
+//                일몰시간: \(parser.result.sunset)
+//                """
+//            )
+//            
+//            return (parser.result.sunrise, parser.result.sunset)
+//            
+//        } catch {
+//            Util.printError(
+//                funcTitle: "requestSunriseSunset()",
+//                description: "일출 일물 시간 request 실패"
+//            )
+//            
+//            return ("", "")
+//        }
+//    }
     
     /// Return 미세먼지 및 초미세먼지 items
     func requestRealTimeFindDustAndUltraFindDustItems() async -> [RealTimeFindDustForecastBase] {
