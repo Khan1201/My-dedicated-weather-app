@@ -43,18 +43,19 @@ struct Weather {
     
     struct WeeklyInformation: Identifiable {
         let id = UUID()
-        let weatherImage: String
-        let rainfallPercent: String
-        let minTemperature: String
-        let maxTemperature: String
+        var weatherImage: String
+        var rainfallPercent: String
+        var minTemperature: String
+        var maxTemperature: String
+        var date: String // yyyyMMdd (Sorting 위해)
     }
     
     struct WeeklyChartInformation {
-        let minTemps: [CGFloat]
-        let maxTemps: [CGFloat]
-        let xList: [(String, String)] // x축 = (요일, 날짜)
-        let yList: [Int] // y축 = 온도 범위
-        let imageAndRainPercents: [(String, String)]
+        var minTemps: [CGFloat]
+        var maxTemps: [CGFloat]
+        var xList: [(String, String)] // x축 = (요일, 날짜)
+        var yList: [Int] // y축 = 온도 범위
+        var imageAndRainPercents: [(String, String)]
     }
     
     struct WeatherImageAndMinMax {

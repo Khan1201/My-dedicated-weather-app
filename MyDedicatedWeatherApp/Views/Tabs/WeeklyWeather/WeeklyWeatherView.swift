@@ -9,7 +9,7 @@ import SwiftUI
 
 struct WeeklyWeatherView: View {
     
-    @StateObject var viewModel: WeeklyWeatherVM = WeeklyWeatherVM(weeklyWeatherInformations: Dummy().weeklyWeatherInformations())
+    @StateObject var viewModel: WeeklyWeatherVM = WeeklyWeatherVM()
     @EnvironmentObject var contentVM: ContentVM
     @EnvironmentObject var currentLocationVM: CurrentLocationVM
     
@@ -112,6 +112,9 @@ struct WeeklyWeatherView: View {
                 viewModel.isWeeklyWeatherInformationsLoaded = false
             }
         }
+        .onChange(of: viewModel.isShortTermForecastLoaded && viewModel.isMidtermForecastTempLoaded && viewModel.isMidtermForecastSkyStateLoaded) { newValue in
+            viewModel.loadedVariablesOnChangeAction(newValue)
+        }
         .task(priority: .userInitiated) {
             viewModel.weeklyWeatherViewTaskAction(
                 xy: currentLocationVM.xy,
@@ -123,6 +126,6 @@ struct WeeklyWeatherView: View {
 
 struct WeekViewController_Previews: PreviewProvider {
     static var previews: some View {
-        WeeklyWeatherView(viewModel: WeeklyWeatherVM(weeklyWeatherInformations: Dummy.shared.weeklyWeatherInformations()))
+        WeeklyWeatherView(viewModel: WeeklyWeatherVM())
     }
 }

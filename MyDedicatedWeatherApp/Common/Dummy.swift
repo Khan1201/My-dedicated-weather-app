@@ -77,7 +77,8 @@ final class Dummy {
             weatherImage: "weather_cloud_many",
             rainfallPercent: "40",
             minTemperature: "23",
-            maxTemperature: "32"
+            maxTemperature: "32", 
+            date: ""
         )
     }
     
@@ -87,49 +88,57 @@ final class Dummy {
                 weatherImage: "weather_cloud_many",
                 rainfallPercent: "40",
                 minTemperature: "23",
-                maxTemperature: "32"
+                maxTemperature: "32",
+                date: ""
             ),
             .init(
                 weatherImage: "weather_blur",
                 rainfallPercent: "40",
                 minTemperature: "23",
-                maxTemperature: "32"
+                maxTemperature: "32",
+                date: ""
             ),
             .init(
                 weatherImage: "weather_cloud_many",
                 rainfallPercent: "40",
                 minTemperature: "23",
-                maxTemperature: "32"
+                maxTemperature: "32",
+                date: ""
             ),
             .init(
                 weatherImage: "weather_sunny",
                 rainfallPercent: "40",
                 minTemperature: "23",
-                maxTemperature: "32"
+                maxTemperature: "32",
+                date: ""
             ),
             .init(
                 weatherImage: "weather_rain",
                 rainfallPercent: "40",
                 minTemperature: "23",
-                maxTemperature: "32"
+                maxTemperature: "32",
+                date: ""
             ),
             .init(
                 weatherImage: "weather_snow",
                 rainfallPercent: "40",
                 minTemperature: "23",
-                maxTemperature: "32"
+                maxTemperature: "32",
+                date: ""
             ),
             .init(
                 weatherImage: "weather_sunny",
                 rainfallPercent: "40",
                 minTemperature: "23",
-                maxTemperature: "32"
+                maxTemperature: "32",
+                date: ""
             ),
             .init(
                 weatherImage: "weather_sunny",
                 rainfallPercent: "40",
                 minTemperature: "23",
-                maxTemperature: "32"
+                maxTemperature: "32",
+                date: ""
             ),
             
         ]
