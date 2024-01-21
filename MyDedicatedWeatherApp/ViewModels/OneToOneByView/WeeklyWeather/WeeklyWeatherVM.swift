@@ -432,6 +432,7 @@ extension WeeklyWeatherVM {
         initializeTaskAndTimer()
         initializeStates()
         
+        timerStart()
         currentTask = Task(priority: .userInitiated) {
             performWeekRequests(xy: xy, fullAddress: fullAddress)
         }
@@ -488,14 +489,15 @@ extension WeeklyWeatherVM {
     }
     
     func initializeStates() {
-        initializeLoadedStates()
+        initializeApiLoadedStates()
         isWeeklyWeatherInformationsLoaded = false
     }
     
-    func initializeLoadedStates() {
+    func initializeApiLoadedStates() {
         isShortTermForecastLoaded = false
         isMidtermForecastTempLoaded = false
         isMidtermForecastSkyStateLoaded = false
+        isApiRequestProceeding = false
     }
     
     func initializeTaskAndTimer() {
@@ -560,8 +562,7 @@ extension WeeklyWeatherVM {
             setWeeklyChartInformationYList()
             initializeTaskAndTimer()
             isWeeklyWeatherInformationsLoaded = true
-            isApiRequestProceeding = false
-            initializeLoadedStates()
+            initializeApiLoadedStates()
         }
     }
 }
@@ -573,9 +574,9 @@ extension WeeklyWeatherVM {
     func weeklyWeatherViewTaskAction(xy: (String, String), fullAddress: String) {
         
         if !isWeeklyWeatherInformationsLoaded {
-            timerStart()
             initializeTask()
             
+            timerStart()
             currentTask = Task(priority: .userInitiated) {
                 performWeekRequests(xy: xy, fullAddress: fullAddress)
             }
