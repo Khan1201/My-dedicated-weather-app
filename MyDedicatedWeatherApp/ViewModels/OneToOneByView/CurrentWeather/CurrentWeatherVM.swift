@@ -639,6 +639,7 @@ extension CurrentWeatherVM {
          isSunriseSunsetLoadCompleted && isTodayWeatherInformationLoadCompleted)
         
         if isAllLoadCompleted {
+            HapticGenerator.impact(style: .soft)
             initializeTaskAndTimer()
         }
     }

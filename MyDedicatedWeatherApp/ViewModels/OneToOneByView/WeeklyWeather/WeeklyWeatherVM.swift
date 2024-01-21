@@ -563,6 +563,7 @@ extension WeeklyWeatherVM {
             initializeTaskAndTimer()
             isWeeklyWeatherInformationsLoaded = true
             initializeApiLoadedStates()
+            HapticGenerator.impact(style: .soft)
         }
     }
 }
