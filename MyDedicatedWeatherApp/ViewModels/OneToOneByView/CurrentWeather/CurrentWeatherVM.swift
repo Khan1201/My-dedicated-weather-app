@@ -663,15 +663,15 @@ extension CurrentWeatherVM {
         initializeTask()
         calculateAndSetSunriseSunset(longLati: longLati)
         
-        currentTask = Task(priority: .userInitiated) {
+        currentTask = Task(priority: .high) {
                         
-            Task(priority: .userInitiated) {
+            Task(priority: .high) {
                 async let _ = requestVeryShortForecastItems(xy: xy)
                 async let _ = requestShortForecastItems(xy: xy)
                 async let _ = requestTodayMinMaxTemp(xy: xy)
             }
             
-            Task(priority: .userInitiated) {
+            Task(priority: .low) {
                 await requestKaKaoAddressBy(longitude: longLati.0, latitude: longLati.1, isCurrentLocationRequested: true)
                 await requestDustForecastStationXY(
                     subLocality: subLocalityByKakaoAddress,
@@ -716,15 +716,15 @@ extension CurrentWeatherVM {
                     initializeTask()
                     calculateAndSetSunriseSunset(longLati: (String(longitude), String(latitude)))
                     
-                    currentTask = Task(priority: .userInitiated) {
+                    currentTask = Task(priority: .high) {
                         
-                        Task(priority: .userInitiated) {
+                        Task(priority: .high) {
                             async let _ = self.requestVeryShortForecastItems(xy: xy)
                             async let _ = self.requestShortForecastItems(xy: xy)
                             async let _ = self.requestTodayMinMaxTemp(xy: xy)
                         }
                         
-                        Task(priority: .userInitiated) {
+                        Task(priority: .low) {
                             await self.requestKaKaoAddressBy(longitude: String(longitude), latitude: String(latitude), isCurrentLocationRequested: false)
                             await self.requestDustForecastStationXY(
                                 subLocality: allLocality.subLocality,
@@ -875,15 +875,15 @@ extension CurrentWeatherVM {
         initializeTask()
         calculateAndSetSunriseSunset(longLati: (String(longitude), String(latitude)))
 
-        currentTask = Task(priority: .userInitiated) {
+        currentTask = Task(priority: .high) {
             
-            Task(priority: .userInitiated) {
+            Task(priority: .high) {
                 async let _ = requestVeryShortForecastItems(xy: convertedXY)
                 async let _ = requestShortForecastItems(xy: convertedXY)
                 async let _ = requestTodayMinMaxTemp(xy: convertedXY)
             }
             
-            Task(priority: .userInitiated) {
+            Task(priority: .low) {
                 await requestKaKaoAddressBy(longitude: longitude, latitude: latitude, isCurrentLocationRequested: false)
                 await requestDustForecastStationXY(
                     subLocality: subLocality,

@@ -196,7 +196,7 @@ extension WeeklyWeatherVM {
                 self.isApiRequestProceeding = true
             }
             
-            Task(priority: .userInitiated) {
+            Task(priority: .high) {
                 async let _ = requestShortForecastItems(xy: xy)
                 async let _ = requestMidTermForecastTempItems(fullAddress: fullAddress)
                 async let _ = requestMidTermForecastSkyStateItems(fullAddress: fullAddress)
@@ -433,7 +433,7 @@ extension WeeklyWeatherVM {
         initializeStates()
         
         timerStart()
-        currentTask = Task(priority: .userInitiated) {
+        currentTask = Task(priority: .high) {
             performWeekRequests(xy: xy, fullAddress: fullAddress)
         }
     }
@@ -578,7 +578,7 @@ extension WeeklyWeatherVM {
             initializeTask()
             
             timerStart()
-            currentTask = Task(priority: .userInitiated) {
+            currentTask = Task(priority: .high) {
                 performWeekRequests(xy: xy, fullAddress: fullAddress)
             }
         }
