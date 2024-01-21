@@ -15,10 +15,10 @@ struct OpenSourceListView: View {
     let tapAvailableIndexes: [Int]
     
     @State private var selectedIndex: Int = 0
+    @State private var descriptionIndex: Int = 0
     @State private var isNextViewShown: Bool = false
     
     var body: some View {
-        var descriptionIndex: Int = 0
         
         VStack(alignment: .leading, spacing: 30) {
             CustomNavigationBar(
