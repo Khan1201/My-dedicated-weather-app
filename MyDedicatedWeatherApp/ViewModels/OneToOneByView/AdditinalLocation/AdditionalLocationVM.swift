@@ -40,37 +40,37 @@ extension AdditionalLocationVM {
      - parameter long: longitude(경도),
      - parameter lat: latitude(위도)
      */
-    func requestSunRiseAndSunSetHHmm(long: String, lat: String) async -> (String, String) {
-
-        do {
-            let parser = try await SunAndMoonRiseByXMLService(
-                queryItem: .init(
-                    serviceKey: Env.shared.openDataApiResponseKey,
-                    locdate: Date().toString(format: "yyyyMMdd"),
-                    longitude: long,
-                    latitude: lat
-                )
-            )
-            CommonUtil.shared.printSuccess(
-                funcTitle: "requestSunRiseAndSunSetHHmm",
-                value: parser.result
-            )
-            
-            return (parser.result.sunrise, parser.result.sunset)
-            
-        } catch APIError.transportError {
-            DispatchQueue.main.async {
-//                self.errorMessage = "API 통신 에러"
-            }
-            return ("", "")
-
-        } catch {
-            DispatchQueue.main.async {
-//                self.errorMessage = "알 수 없는 오류"
-            }
-            return ("", "")
-        }
-    }
+//    func requestSunRiseAndSunSetHHmm(long: String, lat: String) async -> (String, String) {
+//
+//        do {
+//            let parser = try await SunAndMoonRiseByXMLService(
+//                queryItem: .init(
+//                    serviceKey: Env.shared.openDataApiResponseKey,
+//                    locdate: Date().toString(format: "yyyyMMdd"),
+//                    longitude: long,
+//                    latitude: lat
+//                )
+//            )
+//            CommonUtil.shared.printSuccess(
+//                funcTitle: "requestSunRiseAndSunSetHHmm",
+//                value: parser.result
+//            )
+//            
+//            return (parser.result.sunrise, parser.result.sunset)
+//            
+//        } catch APIError.transportError {
+//            DispatchQueue.main.async {
+////                self.errorMessage = "API 통신 에러"
+//            }
+//            return ("", "")
+//
+//        } catch {
+//            DispatchQueue.main.async {
+////                self.errorMessage = "알 수 없는 오류"
+//            }
+//            return ("", "")
+//        }
+//    }
     
     /**
      Request 초 단기예보 Items
@@ -319,9 +319,9 @@ extension AdditionalLocationVM {
                     let latitude: Double = success.0
                     let longitude: Double = success.1
                     let xy: Gps2XY.LatXLngY = self.commonForecastUtil.convertGPS2XY(mode: .toXY, lat_X: latitude, lng_Y: longitude)
+                    let sunRiseAndSunSetHHmm = sunriseSunsetHHmm(longLati: (String(longitude), String(latitude)))
                     
                     currentTask = Task(priority: .userInitiated) {
-                        let sunRiseAndSunSetHHmm = await self.requestSunRiseAndSunSetHHmm(long: String(longitude), lat: String(latitude))
                         let currentWeatherImageAndTemp = await self.requestCurrentWeatherImageAndTemp(
                             xy: xy,
                             sunriseAndsunsetHHmm: sunRiseAndSunSetHHmm
@@ -379,5 +379,21 @@ extension AdditionalLocationVM {
     
     func reloadItems() {
         initAllLocalities()
+    }
+    
+    func sunriseSunsetHHmm(longLati: (String, String)) -> (String, String) {
+        let currentDate: Date = Date()
+        let sunrise = currentDate.sunrise(.init(latitude: longLati.1.toDouble, longitude: longLati.0.toDouble))
+        let sunset = currentDate.sunset(.init(latitude: longLati.1.toDouble, longitude: longLati.0.toDouble))
+        
+        if let sunrise = sunrise, let sunset = sunset {
+            let sunriseHHmm = sunrise.toString(format: "HHmm", timeZone: TimeZone(identifier: "UTC"))
+            let sunsetHHmm = sunset.toString(format: "HHmm", timeZone: TimeZone(identifier: "UTC"))
+            
+            return (sunriseHHmm, sunsetHHmm)
+            
+        } else {
+            return ("", "")
+        }
     }
 }
