@@ -93,11 +93,10 @@ extension AdditionalLocationVM {
      - 54 ~ 59: WSD(풍속)
      */
     func requestCurrentWeatherImageAndTemp(xy: Gps2XY.LatXLngY, sunriseAndsunsetHHmm: (String, String)) async -> (String, String) {
-        let baseTime = veryShortTermForecastUtil.requestBaseTime()
-        let baseDate = veryShortTermForecastUtil.requestBaseDate()
+        let baseTime = veryShortTermForecastUtil.requestBaseTime
+        let baseDate = veryShortTermForecastUtil.requestBaseDate
         
         let parameters: VeryShortOrShortTermForecastReq = VeryShortOrShortTermForecastReq(
-            serviceKey: Env.shared.openDataApiResponseKey,
             numOfRows: "300",
             baseDate: baseDate,
             baseTime: baseTime,
@@ -160,7 +159,6 @@ extension AdditionalLocationVM {
     func requestTodayMinMaxTemp(xy: Gps2XY.LatXLngY, currentTemp: String) async -> (String, String) {
 
         let parameters = VeryShortOrShortTermForecastReq(
-            serviceKey: Env.shared.openDataApiResponseKey,
             numOfRows: "300",
             baseDate: shortTermForecastUtil.baseDateForTodayMinMaxReq,
             baseTime: shortTermForecastUtil.baseTimeForTodayMinMaxReq,

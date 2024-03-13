@@ -12,7 +12,7 @@ struct VeryShortTermForecastUtil {
     /**
      Return 현재시간 -> baseTime (초단기예보 Requst 타입)
      */
-    func requestBaseTime() -> String {
+    var requestBaseTime: String {
         let currentDate: Date = Date()
         let currentHour: String = currentDate.toString(format: "HH")
         let currentMinute: String = currentDate.toString(format: "mm")
@@ -42,10 +42,8 @@ struct VeryShortTermForecastUtil {
     
     /**
      초단기예보 Reqeust baseTime(시간)에 따른 baseDate(날짜) 설정
-     
-     - parameter baseTime: '단기예보 request 시간'
      */
-    func requestBaseDate() -> String {
+    var requestBaseDate: String {
         let currentDate = Date()
         let currentHHmm = currentDate.toString(format: "HHmm").toInt
         
