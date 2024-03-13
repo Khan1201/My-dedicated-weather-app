@@ -61,9 +61,16 @@ final class CurrentWeatherVM: ObservableObject {
     private let fineDustLookUpUtil: FineDustLookUpUtil = FineDustLookUpUtil()
     private var subscriptions: Set<AnyCancellable> = []
     
-    init(contentVM: ContentVM = ContentVM.shared, currentLocationVM: CurrentLocationVM = CurrentLocationVM.shared) {
+    private let veryShortForecastService: VeryShortForecastRequestable
+    
+    init(
+        contentVM: ContentVM = ContentVM.shared,
+        currentLocationVM: CurrentLocationVM = CurrentLocationVM.shared,
+        veryShortForecastService: VeryShortForecastRequestable = VeryShortForecastService()
+    ) {
         self.contentVM = contentVM
         self.currentLocationVM = currentLocationVM
+        self.veryShortForecastService = veryShortForecastService
     }
 }
 
@@ -94,44 +101,20 @@ extension CurrentWeatherVM {
     func requestVeryShortForecastItems(xy: Gps2XY.LatXLngY) async {
         let startTime = CFAbsoluteTimeGetCurrent()
         
-        let baseTime = veryShortTermForecastUtil.requestBaseTime()
-        let baseDate = veryShortTermForecastUtil.requestBaseDate()
+        let result = await veryShortForecastService.requestVeryShortForecastItems(xy: xy)
         
-        let parameters: VeryShortOrShortTermForecastReq = VeryShortOrShortTermForecastReq(
-            serviceKey: Env.shared.openDataApiResponseKey,
-            numOfRows: "300",
-            baseDate: baseDate,
-            baseTime: baseTime,
-            nx: String(xy.x),
-            ny: String(xy.y)
-        )
-        
-        do {
-            let result = try await JsonRequest.shared.newRequest(
-                url: Route.GET_WEATHER_VERY_SHORT_TERM_FORECAST.val,
-                method: .get,
-                parameters: parameters,
-                headers: nil,
-                resultType: PublicDataRes<VeryShortOrShortTermForecastBase<VeryShortTermForecastCategory>>.self,
-                requestName: "requestVeryShortForecastItems(xy:)"
-            )
-            
-            guard let items = result.item else { return }
+        switch result {
+        case .success(let success):
+            guard let items = success.item else { return }
             await self.setCurrentWeatherImgAndAnimationImg(items: items)
             await self.setCurrentTemperature(items: items)
             await self.setCurrentWeatherInformation(items: items)
             
             let durationTime = CFAbsoluteTimeGetCurrent() - startTime
             print("초단기 req 소요시간: \(durationTime)")
-            
-        } catch APIError.transportError {
-            
+        case .failure:
             DispatchQueue.main.async {
                 self.errorMessage = "API 통신 에러"
-            }
-        } catch {
-            DispatchQueue.main.async {
-                self.errorMessage = "알 수 없는 오류"
             }
         }
     }

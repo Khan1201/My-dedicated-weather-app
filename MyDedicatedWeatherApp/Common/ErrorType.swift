@@ -8,8 +8,8 @@
 import Foundation
 
 enum APIError: Error {
-    
     case transportError
+    case afError(error: Error)
 }
 
 enum LocationError: Error {
