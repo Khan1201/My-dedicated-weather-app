@@ -8,7 +8,7 @@
 import Foundation
 
 struct VeryShortOrShortTermForecastReq: Encodable {
-    let serviceKey: String
+    let serviceKey: String = Env.shared.openDataApiResponseKey
     let pageNo: String = "1"
     let numOfRows: String
     let dataType: String = "JSON"

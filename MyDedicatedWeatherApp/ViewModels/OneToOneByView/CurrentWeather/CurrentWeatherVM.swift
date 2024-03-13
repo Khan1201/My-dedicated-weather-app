@@ -172,7 +172,6 @@ extension CurrentWeatherVM {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
 
         let parameters = VeryShortOrShortTermForecastReq(
-            serviceKey: Env.shared.openDataApiResponseKey,
             numOfRows: "300",
             baseDate: shortTermForecastUtil.requestBaseDate(),
             baseTime: shortTermForecastUtil.requestBaseTime(),
@@ -216,7 +215,6 @@ extension CurrentWeatherVM {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
 
         let parameters = VeryShortOrShortTermForecastReq(
-            serviceKey: Env.shared.openDataApiResponseKey,
             numOfRows: "300",
             baseDate: shortTermForecastUtil.baseDateForTodayMinMaxReq,
             baseTime: shortTermForecastUtil.baseTimeForTodayMinMaxReq,

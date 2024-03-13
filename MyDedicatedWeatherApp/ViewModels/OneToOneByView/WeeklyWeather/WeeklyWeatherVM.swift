@@ -57,7 +57,6 @@ extension WeeklyWeatherVM {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
         
         let parameters = VeryShortOrShortTermForecastReq(
-            serviceKey: Env.shared.openDataApiResponseKey,
             numOfRows: "737",
             baseDate: shortTermForecastUtil.requestBaseDate(),
             baseTime: shortTermForecastUtil.requestBaseTime(),

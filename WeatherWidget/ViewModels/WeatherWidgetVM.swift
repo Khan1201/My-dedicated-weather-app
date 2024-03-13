@@ -136,7 +136,6 @@ extension WeatherWidgetVM {
         let y = UserDefaults.shared.string(forKey: UserDefaultsKeys.y) ?? ""
         
         let parameters: VeryShortOrShortTermForecastReq = VeryShortOrShortTermForecastReq(
-            serviceKey: Env.shared.openDataApiResponseKey,
             numOfRows: "300",
             baseDate: baseDate,
             baseTime: baseTime,
@@ -179,7 +178,6 @@ extension WeatherWidgetVM {
         let y = UserDefaults.shared.string(forKey: UserDefaultsKeys.y) ?? ""
         
         let parameters = VeryShortOrShortTermForecastReq(
-            serviceKey: Env.shared.openDataApiResponseKey,
             numOfRows: "737",
             baseDate: baseDate,
             baseTime: baseTime,
@@ -222,7 +220,6 @@ extension WeatherWidgetVM {
         let y = UserDefaults.shared.string(forKey: UserDefaultsKeys.y) ?? ""
         
         let parameters = VeryShortOrShortTermForecastReq(
-            serviceKey: Env.shared.openDataApiResponseKey,
             numOfRows: "300",
             baseDate: baseDate,
             baseTime: baseTime,
