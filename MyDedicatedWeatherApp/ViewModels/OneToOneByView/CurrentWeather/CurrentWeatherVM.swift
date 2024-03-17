@@ -63,17 +63,20 @@ final class CurrentWeatherVM: ObservableObject {
     
     private let veryShortForecastService: VeryShortForecastRequestable
     private let shortForecastService: ShortForecastRequestable
+    private let dustForecastService: DustForecastRequestable
     
     init(
         contentVM: ContentVM = ContentVM.shared,
         currentLocationVM: CurrentLocationVM = CurrentLocationVM.shared,
         veryShortForecastService: VeryShortForecastRequestable = VeryShortForecastService(),
-        shortForecastService: ShortForecastRequestable = ShortForecastService()
+        shortForecastService: ShortForecastRequestable = ShortForecastService(),
+        dustForecastService: DustForecastRequestable = DustForecastService()
     ) {
         self.contentVM = contentVM
         self.currentLocationVM = currentLocationVM
         self.veryShortForecastService = veryShortForecastService
         self.shortForecastService = shortForecastService
+        self.dustForecastService = dustForecastService
     }
 }
 
@@ -201,35 +204,18 @@ extension CurrentWeatherVM {
     func requestRealTimeFindDustForecastItems() async {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
 
-        let parameters: RealTimeFindDustForecastReq = RealTimeFindDustForecastReq(
-            serviceKey: Env.shared.openDataApiResponseKey,
-            stationName: DustStationRequestParam.stationName
-        )
+        let result = await dustForecastService.requestRealTimeFindDustForecastItems(stationName: DustStationRequestParam.stationName)
         
-        do {
-            let result = try await JsonRequest.shared.newRequest(
-                url: Route.GET_REAL_TIME_FIND_DUST_FORECAST.val,
-                method: .get,
-                parameters: parameters,
-                headers: nil,
-                resultType: PublicDataRes<RealTimeFindDustForecastBase>.self,
-                requestName: "requestRealTimeFindDustForecastItems()"
-            )
-            
-            guard let item = result.items?.first else { return }
+        switch result {
+        case .success(let success):
+            guard let item = success.items?.first else { return }
             await setCurrentFineDustAndUltraFineDustTuple(item)
             
             let reqEndTime = CFAbsoluteTimeGetCurrent() - reqStartTime
             print("미세먼지 item 호출 소요시간: \(reqEndTime)")
-            
-        } catch APIError.transportError {
-            
+        case .failure:
             DispatchQueue.main.async {
                 self.errorMessage = "API 통신 에러"
-            }
-        } catch {
-            DispatchQueue.main.async {
-                self.errorMessage = "알 수 없는 오류"
             }
         }
     }
@@ -242,35 +228,18 @@ extension CurrentWeatherVM {
      */
     func requestDustForecastStationXY(subLocality: String, locality: String) async {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
-
-        let param: DustForecastStationXYReq = DustForecastStationXYReq(
-            serviceKey: Env.shared.openDataApiResponseKey,
-            umdName: subLocality
-        )
         
-        do {
-            let result = try await JsonRequest.shared.newRequest(
-                url: Route.GET_DUST_FORECAST_STATION_XY.val,
-                method: .get,
-                parameters: param,
-                headers: nil,
-                resultType: PublicDataRes<DustForecastStationXYBase>.self,
-                requestName: "requestDustForecastStationXY(umdName:, locality:)"
-            )
-            
-            setDustStationRequestParamXY(items: result.items, locality: locality)
+        let result = await dustForecastService.requestDustForecastStationXY(subLocality: subLocality)
+        
+        switch result {
+        case .success(let success):
+            setDustStationRequestParamXY(items: success.items, locality: locality)
                 
             let reqEndTime = CFAbsoluteTimeGetCurrent() - reqStartTime
             print("미세먼지 측정소 xy좌표 get 호출 소요시간: \(reqEndTime)")
-            
-        } catch APIError.transportError {
-            
+        case .failure:
             DispatchQueue.main.async {
                 self.errorMessage = "API 통신 에러"
-            }
-        } catch {
-            DispatchQueue.main.async {
-                self.errorMessage = "알 수 없는 오류"
             }
         }
     }
@@ -282,39 +251,21 @@ extension CurrentWeatherVM {
      */
     func requestDustForecastStation(tmXAndtmY: (String, String), isCurrentLocationRequested: Bool) async {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
-
-        let param: DustForecastStationReq = DustForecastStationReq(
-            serviceKey: Env.shared.openDataApiResponseKey,
-            tmX: tmXAndtmY.0,
-            tmY: tmXAndtmY.1
-        )
         
-        do {
-            let result = try await JsonRequest.shared.newRequest(
-                url: Route.GET_DUST_FORECAST_STATION.val,
-                method: .get,
-                parameters: param,
-                headers: nil,
-                resultType: PublicDataRes<DustForecastStationBase>.self,
-                requestName: "requestDustForecastStation()"
-            )
+        let result = await dustForecastService.requestDustForecastStation(tmXAndtmY: tmXAndtmY)
+        
+        switch result {
+        case .success(let success):
+            setDustStationRequestParamStationName(success.items)
             
-            setDustStationRequestParamStationName(result.items)
-            
-            guard let items = result.items, let item = items.first else { return }
+            guard let items = success.items, let item = items.first else { return }
             UserDefaults.setWidgetShared(item.stationName, to: .dustStationName)
 
             let reqEndTime = CFAbsoluteTimeGetCurrent() - reqStartTime
             print("미세먼지 측정소 get 호출 소요시간: \(reqEndTime)")
-            
-        } catch APIError.transportError {
-            
+        case .failure:
             DispatchQueue.main.async {
                 self.errorMessage = "API 통신 에러"
-            }
-        } catch {
-            DispatchQueue.main.async {
-                self.errorMessage = "알 수 없는 오류"
             }
         }
     }

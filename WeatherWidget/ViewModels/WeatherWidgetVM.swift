@@ -294,7 +294,6 @@ extension WeatherWidgetVM {
         let stationName: String = UserDefaults.shared.string(forKey: UserDefaultsKeys.dustStationName) ?? ""
         
         let parameters: RealTimeFindDustForecastReq = RealTimeFindDustForecastReq(
-            serviceKey: Env.shared.openDataApiResponseKey,
             stationName: stationName
         )
         

@@ -121,6 +121,7 @@
 		BCA30FA229FE6FC30078D0B1 /* JsonRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30FA129FE6FC30078D0B1 /* JsonRequest.swift */; };
 		BCA30FA529FE73C90078D0B1 /* CurrentWeatherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30FA429FE73C90078D0B1 /* CurrentWeatherView.swift */; };
 		BCA30FA729FE73D70078D0B1 /* CurrentWeatherVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30FA629FE73D70078D0B1 /* CurrentWeatherVM.swift */; };
+		BCAD3F7C2BA6DBB800688B4A /* DustForecastService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCAD3F7B2BA6DBB800688B4A /* DustForecastService.swift */; };
 		BCB16E2D2A4C717D00AACFF0 /* Validate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB16E2C2A4C717D00AACFF0 /* Validate.swift */; };
 		BCB16E302A4DC66300AACFF0 /* KakaoAddressBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB16E2F2A4DC66300AACFF0 /* KakaoAddressBase.swift */; };
 		BCB532132A75114100DC2B33 /* CloudManyNightLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BCB532062A75114100DC2B33 /* CloudManyNightLottie.json */; };
@@ -312,6 +313,7 @@
 		BCA30FA629FE73D70078D0B1 /* CurrentWeatherVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeatherVM.swift; sourceTree = "<group>"; };
 		BCA30FA829FE7D780078D0B1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		BCA30FA929FFDC580078D0B1 /* Dummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummy.swift; sourceTree = "<group>"; };
+		BCAD3F7B2BA6DBB800688B4A /* DustForecastService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DustForecastService.swift; sourceTree = "<group>"; };
 		BCB16E2C2A4C717D00AACFF0 /* Validate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validate.swift; sourceTree = "<group>"; };
 		BCB16E2F2A4DC66300AACFF0 /* KakaoAddressBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoAddressBase.swift; sourceTree = "<group>"; };
 		BCB532062A75114100DC2B33 /* CloudManyNightLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CloudManyNightLottie.json; sourceTree = "<group>"; };
@@ -1024,6 +1026,7 @@
 		BCA30F8929FE20800078D0B1 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				BCAD3F7A2BA6DB8600688B4A /* DustForecastService */,
 				BCBCFFBC2BA1DB2B000B8958 /* MidTermForecastService */,
 				BCBCFFBB2BA1DB26000B8958 /* ShortForecast */,
 				BCBCFFBA2BA1DAFC000B8958 /* VeryShortForecast */,
@@ -1072,6 +1075,14 @@
 				BC7692382A431C94005F4D7B /* TabBar */,
 			);
 			path = CommonComponents;
+			sourceTree = "<group>";
+		};
+		BCAD3F7A2BA6DB8600688B4A /* DustForecastService */ = {
+			isa = PBXGroup;
+			children = (
+				BCAD3F7B2BA6DBB800688B4A /* DustForecastService.swift */,
+			);
+			path = DustForecastService;
 			sourceTree = "<group>";
 		};
 		BCBA400C2A7BFF4800B6EFD2 /* Utils */ = {
@@ -1451,6 +1462,7 @@
 				BCA2B1592B0E538900B669BD /* AdditionalLocationGuListView.swift in Sources */,
 				BC25FDA22AFBB7F400928D7C /* SettingVM.swift in Sources */,
 				BC1E9E382AD2945000ECE71C /* SunOrMoonRiseServiceByXML.swift in Sources */,
+				BCAD3F7C2BA6DBB800688B4A /* DustForecastService.swift in Sources */,
 				BC7B765A2A938C580004BF8B /* LineChartView.swift in Sources */,
 				BC7C6B4F2A8BC1D0009D2A0F /* WeekViewControllerBackground.swift in Sources */,
 				BC4DDA3C2A72C86D000376C0 /* CurrentWeatherInfItemPagerView.swift in Sources */,
