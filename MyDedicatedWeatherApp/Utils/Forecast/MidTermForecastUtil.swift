@@ -10,7 +10,7 @@ import Foundation
 struct MidTermForecastUtil {
     
     /// Return 요청 날짜 (yyyyMMddHHmm 형식)
-    func requestTmFc() -> String {
+    var tmFcPar: String {
         
         var result: String = ""
         
@@ -49,7 +49,7 @@ struct MidTermForecastUtil {
     /// Return 지역정보 코드
     /// - parameter fullAddress: 전체 주소,
     /// - parameter reqType: 요청 타입
-    func requestRegOrStnId(fullAddress: String, reqType: MidtermReqType) -> String {
+    func regOrStnIdPar(fullAddress: String, reqType: MidtermReqType) -> String {
         
         var result: String = ""
         

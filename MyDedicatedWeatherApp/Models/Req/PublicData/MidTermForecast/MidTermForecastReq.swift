@@ -9,7 +9,7 @@ import Foundation
 
 struct MidTermForecastReq: Encodable {
     
-    let serviceKey: String
+    let serviceKey: String = Env.shared.openDataApiResponseKey
     let pageNo: Int = 1
     let numOfRows: Int = 10
     let dataType: String = "JSON"

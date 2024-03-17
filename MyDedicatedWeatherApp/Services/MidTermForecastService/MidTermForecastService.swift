@@ -14,7 +14,6 @@ protocol MidtermForecastRequestable {
 }
 
 struct MidTermForecastService: MidtermForecastRequestable {
-    
     private let util: MidTermForecastUtil
     
     init(util: MidTermForecastUtil = MidTermForecastUtil()) {
@@ -23,10 +22,9 @@ struct MidTermForecastService: MidtermForecastRequestable {
     
     func requestMidTermForecastTempItems(fullAddress: String) async -> Result<PublicDataRes<MidTermForecastTemperatureBase>, APIError> {
         let parameters: MidTermForecastReq = MidTermForecastReq(
-            serviceKey: Env.shared.openDataApiResponseKey,
-            regId: util.requestRegOrStnId(fullAddress: fullAddress, reqType: .temperature),
+            regId: util.regOrStnIdPar(fullAddress: fullAddress, reqType: .temperature),
             stnId: nil,
-            tmFc: util.requestTmFc()
+            tmFc: util.tmFcPar
         )
         
         let result = await ApiRequester.request(
@@ -42,10 +40,9 @@ struct MidTermForecastService: MidtermForecastRequestable {
     
     func requestMidTermForecastSkyStateItems(fullAddress: String) async -> Result<PublicDataRes<MidTermForecastSkyStateBase>, APIError> {
         let parameters: MidTermForecastReq = MidTermForecastReq(
-            serviceKey: Env.shared.openDataApiResponseKey,
-            regId: util.requestRegOrStnId(fullAddress: fullAddress, reqType: .skystate),
+            regId: util.regOrStnIdPar(fullAddress: fullAddress, reqType: .skystate),
             stnId: nil,
-            tmFc: util.requestTmFc()
+            tmFc: util.tmFcPar
         )
         
         let result = await ApiRequester.request(

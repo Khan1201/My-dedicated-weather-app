@@ -330,7 +330,6 @@ extension WeatherWidgetVM {
         let fullAddress: String = UserDefaults.shared.string(forKey: UserDefaultsKeys.fullAddress) ?? ""
         
         let parameters: MidTermForecastReq = MidTermForecastReq(
-            serviceKey: Env.shared.openDataApiResponseKey,
             regId: Util.midtermReqRegOrStnId(
                 fullAddress: fullAddress,
                 reqType: .temperature
@@ -371,7 +370,6 @@ extension WeatherWidgetVM {
         let fullAddress: String = UserDefaults.shared.string(forKey: UserDefaultsKeys.fullAddress) ?? ""
         
         let parameters: MidTermForecastReq = MidTermForecastReq(
-            serviceKey: Env.shared.openDataApiResponseKey,
             regId: Util.midtermReqRegOrStnId(
                 fullAddress: fullAddress,
                 reqType: .skystate
