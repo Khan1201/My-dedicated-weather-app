@@ -30,6 +30,8 @@ final class WeeklyWeatherVM: ObservableObject {
     private let commonForecastUtil: CommonForecastUtil = CommonForecastUtil()
     private let midTermForecastUtil: MidTermForecastUtil = MidTermForecastUtil()
     
+    private let midtermForecastService: MidtermForecastRequestable
+    
     var timer: Timer?
     var timerNum: Int = 0
     var currentTask: Task<(), Never>?
@@ -39,7 +41,8 @@ final class WeeklyWeatherVM: ObservableObject {
         currentTask = nil
     }
     
-    init() {
+    init(midtermForecastService: MidtermForecastRequestable = MidTermForecastService()) {
+        self.midtermForecastService = midtermForecastService
         initWeeklyWeatherInformation()
         initWeeklyChartInformation()
     }
@@ -102,27 +105,14 @@ extension WeeklyWeatherVM {
     func requestMidTermForecastTempItems(fullAddress: String) async {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
         
-        let parameters: MidTermForecastReq = MidTermForecastReq(
-            serviceKey: Env.shared.openDataApiResponseKey,
-            regId: midTermForecastUtil.requestRegOrStnId(fullAddress: fullAddress, reqType: .temperature),
-            stnId: nil,
-            tmFc: midTermForecastUtil.requestTmFc()
-        )
+        let result = await midtermForecastService.requestMidTermForecastTempItems(fullAddress: fullAddress)
         
-        do {
-            let result = try await JsonRequest.shared.newRequest(
-                url: Route.GET_WEATHER_MID_TERM_FORECAST_TEMP.val,
-                method: .get,
-                parameters: parameters,
-                headers: nil,
-                resultType: PublicDataRes<MidTermForecastTemperatureBase>.self,
-                requestName: "requestMidTermForecastTempItems()"
-            )
-            
+        switch result {
+        case .success(let success):
             let reqEndTime = CFAbsoluteTimeGetCurrent() - reqStartTime
             
             DispatchQueue.main.async {
-                if let item = result.item?.first {
+                if let item = success.item?.first {
                     self.setWeeklyWeatherInformationsMinMaxTemp(three2tenDay: item)
                     self.setWeeklyChartInformationMinMaxTemp(three2tenDay: item)
                     self.isMidtermForecastTempLoaded = true
@@ -130,15 +120,8 @@ extension WeeklyWeatherVM {
                 }
                 
             }
-        } catch APIError.transportError {
-            
-            DispatchQueue.main.async {
-                self.errorMessage = "API 통신 에러"
-            }
-        } catch {
-            DispatchQueue.main.async {
-                self.errorMessage = "알 수 없는 오류"
-            }
+        case .failure:
+            self.errorMessage = "API 통신 에러"
         }
     }
     
@@ -147,43 +130,24 @@ extension WeeklyWeatherVM {
      */
     func requestMidTermForecastSkyStateItems(fullAddress: String) async {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
-
-        let parameters: MidTermForecastReq = MidTermForecastReq(
-            serviceKey: Env.shared.openDataApiResponseKey,
-            regId: midTermForecastUtil.requestRegOrStnId(fullAddress: fullAddress, reqType: .skystate),
-            stnId: nil,
-            tmFc: midTermForecastUtil.requestTmFc()
-        )
         
-        do {
-            let result = try await JsonRequest.shared.newRequest(
-                url: Route.GET_WEATHER_MID_TERM_FORECAST_SKYSTATE.val,
-                method: .get,
-                parameters: parameters,
-                headers: nil,
-                resultType: PublicDataRes<MidTermForecastSkyStateBase>.self,
-                requestName: "requestMidTermForecastSkyStateItems()"
-            )
-            
+        let result = await midtermForecastService.requestMidTermForecastSkyStateItems(fullAddress: fullAddress)
+        
+        switch result {
+        case .success(let success):
             let reqEndTime = CFAbsoluteTimeGetCurrent() - reqStartTime
             
             DispatchQueue.main.async {
-                if let item = result.item?.first {
+                if let item = success.item?.first {
                     self.setWeeklyWeatherInformationsImageAndRainPercent(three2tenDay: item)
                     self.setWeeklyChartInformationImageAndRainPercent(three2tenDay: item)
                     self.isMidtermForecastSkyStateLoaded = true
                     print("주간 예보 - 중기 예보(하늘상태) req 호출 소요시간: \(reqEndTime)")
                 }
-                
             }
-        } catch APIError.transportError {
-            
+        case .failure:
             DispatchQueue.main.async {
                 self.errorMessage = "API 통신 에러"
-            }
-        } catch {
-            DispatchQueue.main.async {
-                self.errorMessage = "알 수 없는 오류"
             }
         }
     }
