@@ -58,8 +58,8 @@ extension WeeklyWeatherVM {
         
         let parameters = VeryShortOrShortTermForecastReq(
             numOfRows: "737",
-            baseDate: shortTermForecastUtil.requestBaseDate(),
-            baseTime: shortTermForecastUtil.requestBaseTime(),
+            baseDate: shortTermForecastUtil.baseDatePar,
+            baseTime: shortTermForecastUtil.baseTimePar,
             nx: xy.0,
             ny: xy.1
         )

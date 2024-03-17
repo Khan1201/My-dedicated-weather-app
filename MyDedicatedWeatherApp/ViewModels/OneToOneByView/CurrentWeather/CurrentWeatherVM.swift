@@ -62,15 +62,18 @@ final class CurrentWeatherVM: ObservableObject {
     private var subscriptions: Set<AnyCancellable> = []
     
     private let veryShortForecastService: VeryShortForecastRequestable
+    private let shortForecastService: ShortForecastRequestable
     
     init(
         contentVM: ContentVM = ContentVM.shared,
         currentLocationVM: CurrentLocationVM = CurrentLocationVM.shared,
-        veryShortForecastService: VeryShortForecastRequestable = VeryShortForecastService()
+        veryShortForecastService: VeryShortForecastRequestable = VeryShortForecastService(),
+        shortForecastService: ShortForecastRequestable = ShortForecastService()
     ) {
         self.contentVM = contentVM
         self.currentLocationVM = currentLocationVM
         self.veryShortForecastService = veryShortForecastService
+        self.shortForecastService = shortForecastService
     }
 }
 
@@ -154,39 +157,18 @@ extension CurrentWeatherVM {
     func requestShortForecastItems(xy: Gps2XY.LatXLngY) async {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
 
-        let parameters = VeryShortOrShortTermForecastReq(
-            numOfRows: "300",
-            baseDate: shortTermForecastUtil.requestBaseDate(),
-            baseTime: shortTermForecastUtil.requestBaseTime(),
-            nx: String(xy.x),
-            ny: String(xy.y)
-        )
+        let result = await shortForecastService.requestShortForecastItems(xy: xy)
         
-        do {
-            let result = try await JsonRequest.shared.newRequest(
-                url: Route.GET_WEATHER_SHORT_TERM_FORECAST.val,
-                method: .get,
-                parameters: parameters,
-                headers: nil,
-                resultType: PublicDataRes<VeryShortOrShortTermForecastBase<ShortTermForecastCategory>>.self,
-                requestName: "requestShortForecastItems(xy:)"
-            )
-            
-            guard let items = result.item else { return }
+        switch result {
+        case .success(let success):
+            guard let items = success.item else { return }
             await setTodayWeatherInformations(items: items)
             
             let reqEndTime = CFAbsoluteTimeGetCurrent() - reqStartTime
             print("단기 req 호출 소요시간: \(reqEndTime)")
-            
-        } catch APIError.transportError {
-            
+        case .failure:
             DispatchQueue.main.async {
                 self.errorMessage = "API 통신 에러"
-            }
-            
-        } catch {
-            DispatchQueue.main.async {
-                self.errorMessage = "알 수 없는 오류"
             }
         }
     }
@@ -197,39 +179,18 @@ extension CurrentWeatherVM {
     func requestTodayMinMaxTemp(xy: Gps2XY.LatXLngY) async {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
 
-        let parameters = VeryShortOrShortTermForecastReq(
-            numOfRows: "300",
-            baseDate: shortTermForecastUtil.baseDateForTodayMinMaxReq,
-            baseTime: shortTermForecastUtil.baseTimeForTodayMinMaxReq,
-            nx: String(xy.x),
-            ny: String(xy.y)
-        )
+        let result = await shortForecastService.requestTodayMinMaxTemp(xy: xy)
         
-        do {
-            let result = try await JsonRequest.shared.newRequest(
-                url: Route.GET_WEATHER_SHORT_TERM_FORECAST.val,
-                method: .get,
-                parameters: parameters,
-                headers: nil,
-                resultType: PublicDataRes<VeryShortOrShortTermForecastBase<ShortTermForecastCategory>>.self,
-                requestName: "requestShortForecastItems(xy:)"
-            )
-            
-            guard let items = result.item else { return }
+        switch result {
+        case .success(let success):
+            guard let items = success.item else { return }
             await setTodayMinMaxTemperature(items)
             
             let reqEndTime = CFAbsoluteTimeGetCurrent() - reqStartTime
             print("단기 req(최소, 최대 온도 값) 호출 소요시간: \(reqEndTime)")
-
-        } catch APIError.transportError {
-            
+        case .failure:
             DispatchQueue.main.async {
                 self.errorMessage = "API 통신 에러"
-            }
-            
-        } catch {
-            DispatchQueue.main.async {
-                self.errorMessage = "알 수 없는 오류"
             }
         }
     }
@@ -474,14 +435,14 @@ extension CurrentWeatherVM {
     func setTodayWeatherInformations(items: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>]) {
         todayWeatherInformations = []
         
-        let skipValue = shortTermForecastUtil.todayWeatherIndexSkipValue()
+        let skipValue = shortTermForecastUtil.todayWeatherIndexSkipValue
         
         var tempIndex = 0 + skipValue
         var skyIndex = 5 + skipValue
         var ptyIndex = 6 + skipValue
         var popIndex = 7 + skipValue
         var step = 12
-        let loopCount = shortTermForecastUtil.todayWeatherLoopCount()
+        let loopCount = shortTermForecastUtil.todayWeatherLoopCount
         
         // 각 index 해당하는 값(시간에 해당하는 값) append
         for _ in 0..<loopCount {
