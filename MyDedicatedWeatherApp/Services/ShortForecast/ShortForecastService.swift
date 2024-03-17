@@ -8,7 +8,7 @@
 import Foundation
 
 protocol ShortForecastRequestable {
-    func requestShortForecastItems(xy: Gps2XY.LatXLngY) async -> Result<PublicDataRes<VeryShortOrShortTermForecastBase<ShortTermForecastCategory>>, APIError>
+    func requestShortForecastItems(xy: Gps2XY.LatXLngY, reqRow: String) async -> Result<PublicDataRes<VeryShortOrShortTermForecastBase<ShortTermForecastCategory>>, APIError>
     
     func requestTodayMinMaxTemp(xy: Gps2XY.LatXLngY) async -> Result<PublicDataRes<VeryShortOrShortTermForecastBase<ShortTermForecastCategory>>, APIError>
 }
@@ -16,9 +16,9 @@ protocol ShortForecastRequestable {
 struct ShortForecastService: ShortForecastRequestable {
     private let util: ShortTermForecastUtil = ShortTermForecastUtil()
     
-    func requestShortForecastItems(xy: Gps2XY.LatXLngY) async -> Result<PublicDataRes<VeryShortOrShortTermForecastBase<ShortTermForecastCategory>>, APIError> {
+    func requestShortForecastItems(xy: Gps2XY.LatXLngY, reqRow: String) async -> Result<PublicDataRes<VeryShortOrShortTermForecastBase<ShortTermForecastCategory>>, APIError> {
         let parameters = VeryShortOrShortTermForecastReq(
-            numOfRows: "300",
+            numOfRows: reqRow,
             baseDate: util.baseDatePar,
             baseTime: util.baseTimePar,
             nx: String(xy.x),

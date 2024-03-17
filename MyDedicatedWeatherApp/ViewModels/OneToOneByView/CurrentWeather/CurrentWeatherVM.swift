@@ -157,7 +157,7 @@ extension CurrentWeatherVM {
     func requestShortForecastItems(xy: Gps2XY.LatXLngY) async {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
 
-        let result = await shortForecastService.requestShortForecastItems(xy: xy)
+        let result = await shortForecastService.requestShortForecastItems(xy: xy, reqRow: "300")
         
         switch result {
         case .success(let success):

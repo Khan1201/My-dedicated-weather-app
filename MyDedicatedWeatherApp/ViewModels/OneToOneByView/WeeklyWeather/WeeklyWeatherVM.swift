@@ -30,6 +30,7 @@ final class WeeklyWeatherVM: ObservableObject {
     private let commonForecastUtil: CommonForecastUtil = CommonForecastUtil()
     private let midTermForecastUtil: MidTermForecastUtil = MidTermForecastUtil()
     
+    private let shortForecastService: ShortForecastRequestable
     private let midtermForecastService: MidtermForecastRequestable
     
     var timer: Timer?
@@ -41,7 +42,11 @@ final class WeeklyWeatherVM: ObservableObject {
         currentTask = nil
     }
     
-    init(midtermForecastService: MidtermForecastRequestable = MidTermForecastService()) {
+    init(
+        shortForecastService: ShortForecastRequestable = ShortForecastService(),
+        midtermForecastService: MidtermForecastRequestable = MidTermForecastService()
+    ) {
+        self.shortForecastService = shortForecastService
         self.midtermForecastService = midtermForecastService
         initWeeklyWeatherInformation()
         initWeeklyChartInformation()
@@ -58,43 +63,26 @@ extension WeeklyWeatherVM {
      */
     func requestShortForecastItems(xy: (String, String)) async {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
-        
-        let parameters = VeryShortOrShortTermForecastReq(
-            numOfRows: "737",
-            baseDate: shortTermForecastUtil.baseDatePar,
-            baseTime: shortTermForecastUtil.baseTimePar,
-            nx: xy.0,
-            ny: xy.1
+                
+        let result = await shortForecastService.requestShortForecastItems(
+            xy: .init(lat: 0, lng: 0, x: xy.0.toInt, y: xy.1.toInt),
+            reqRow: "737"
         )
         
-        do {
-            let result = try await JsonRequest.shared.newRequest(
-                url: Route.GET_WEATHER_SHORT_TERM_FORECAST.val,
-                method: .get,
-                parameters: parameters,
-                headers: nil,
-                resultType: PublicDataRes<VeryShortOrShortTermForecastBase<ShortTermForecastCategory>>.self,
-                requestName: "requestShortForecastItems(xy:)"
-            )
+        switch result {
+        case .success(let success):
             let reqEndTime = CFAbsoluteTimeGetCurrent() - reqStartTime
             
             DispatchQueue.main.async {
-                if let item = result.item {
+                if let item = success.item {
                     self.setWeeklyWeatherInformationsAndWeeklyChartInformation(one2twoDay: item)
                     self.isShortTermForecastLoaded = true
                     print("주간예보 - 단기 req 호출 소요시간: \(reqEndTime)")
                 }
             }
-            
-        } catch APIError.transportError {
-            
+        case .failure:
             DispatchQueue.main.async {
                 self.errorMessage = "API 통신 에러"
-            }
-            
-        } catch {
-            DispatchQueue.main.async {
-                self.errorMessage = "알 수 없는 오류"
             }
         }
     }
