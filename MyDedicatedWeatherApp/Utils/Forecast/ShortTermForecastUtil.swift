@@ -13,7 +13,7 @@ struct ShortTermForecastUtil {
      Return 현재시간 -> baseTime (단기예보 Requst 타입)
      
      */
-    func requestBaseTime() -> String {
+    var baseTimePar: String {
         
         let dateFormatterHourMinute = DateFormatter()
         dateFormatterHourMinute.dateFormat = "HHmm"
@@ -55,7 +55,7 @@ struct ShortTermForecastUtil {
         }
     }
     
-    func requestBaseDate() -> String {
+    var baseDatePar: String {
         
         let currentDate: Date = Date()
         let currentYearMonthDay = currentDate.toString(format: "yyyyMMdd")
@@ -97,7 +97,7 @@ struct ShortTermForecastUtil {
         }
     }
     
-    func todayWeatherIndexSkipValue() -> Int {
+    var todayWeatherIndexSkipValue: Int {
         let currentHH: Int = Date().toString(format: "HH").toInt
         let allBaseTimeHHs: [Int] = [02, 05, 08, 11, 14, 17, 20, 23]
         
@@ -127,7 +127,7 @@ struct ShortTermForecastUtil {
         return result
     }
     
-    func todayWeatherLoopCount() -> Int {
+    var todayWeatherLoopCount: Int {
         let currentHH: Int = Date().toString(format: "HH").toInt
         let allBaseTimeHHs: [Int] = [02, 05, 08, 11, 14, 17, 20, 23]
         
