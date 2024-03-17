@@ -122,6 +122,7 @@
 		BCA30FA529FE73C90078D0B1 /* CurrentWeatherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30FA429FE73C90078D0B1 /* CurrentWeatherView.swift */; };
 		BCA30FA729FE73D70078D0B1 /* CurrentWeatherVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30FA629FE73D70078D0B1 /* CurrentWeatherVM.swift */; };
 		BCAD3F7C2BA6DBB800688B4A /* DustForecastService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCAD3F7B2BA6DBB800688B4A /* DustForecastService.swift */; };
+		BCAD3F7F2BA6EB9000688B4A /*  KakaoAddressService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCAD3F7E2BA6EB9000688B4A /*  KakaoAddressService.swift */; };
 		BCB16E2D2A4C717D00AACFF0 /* Validate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB16E2C2A4C717D00AACFF0 /* Validate.swift */; };
 		BCB16E302A4DC66300AACFF0 /* KakaoAddressBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB16E2F2A4DC66300AACFF0 /* KakaoAddressBase.swift */; };
 		BCB532132A75114100DC2B33 /* CloudManyNightLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BCB532062A75114100DC2B33 /* CloudManyNightLottie.json */; };
@@ -314,6 +315,7 @@
 		BCA30FA829FE7D780078D0B1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		BCA30FA929FFDC580078D0B1 /* Dummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummy.swift; sourceTree = "<group>"; };
 		BCAD3F7B2BA6DBB800688B4A /* DustForecastService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DustForecastService.swift; sourceTree = "<group>"; };
+		BCAD3F7E2BA6EB9000688B4A /*  KakaoAddressService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = " KakaoAddressService.swift"; sourceTree = "<group>"; };
 		BCB16E2C2A4C717D00AACFF0 /* Validate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validate.swift; sourceTree = "<group>"; };
 		BCB16E2F2A4DC66300AACFF0 /* KakaoAddressBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoAddressBase.swift; sourceTree = "<group>"; };
 		BCB532062A75114100DC2B33 /* CloudManyNightLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CloudManyNightLottie.json; sourceTree = "<group>"; };
@@ -1026,6 +1028,7 @@
 		BCA30F8929FE20800078D0B1 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				BCAD3F7D2BA6EB7900688B4A /*  KakaoAddressService */,
 				BCAD3F7A2BA6DB8600688B4A /* DustForecastService */,
 				BCBCFFBC2BA1DB2B000B8958 /* MidTermForecastService */,
 				BCBCFFBB2BA1DB26000B8958 /* ShortForecast */,
@@ -1083,6 +1086,14 @@
 				BCAD3F7B2BA6DBB800688B4A /* DustForecastService.swift */,
 			);
 			path = DustForecastService;
+			sourceTree = "<group>";
+		};
+		BCAD3F7D2BA6EB7900688B4A /*  KakaoAddressService */ = {
+			isa = PBXGroup;
+			children = (
+				BCAD3F7E2BA6EB9000688B4A /*  KakaoAddressService.swift */,
+			);
+			path = " KakaoAddressService";
 			sourceTree = "<group>";
 		};
 		BCBA400C2A7BFF4800B6EFD2 /* Utils */ = {
@@ -1417,6 +1428,7 @@
 				BCA30F9529FE39BC0078D0B1 /* Env.swift in Sources */,
 				BC3E5B4D2B1DD8A2000CDFB0 /* UserDefaultsKeys.swift in Sources */,
 				BCA2C1B72A603B6900BBEBE2 /* GetHeight.swift in Sources */,
+				BCAD3F7F2BA6EB9000688B4A /*  KakaoAddressService.swift in Sources */,
 				BC2419B22AA4A79D0035EDBE /* MidTermForecastTemperatureBase.swift in Sources */,
 				BC3C200D2B04FC7C0016E7D4 /* RootNavigationView.swift in Sources */,
 				BC69C5BA2B20C82100540871 /* AdditionalLocationSavedItemView.swift in Sources */,

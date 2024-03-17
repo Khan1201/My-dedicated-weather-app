@@ -64,19 +64,22 @@ final class CurrentWeatherVM: ObservableObject {
     private let veryShortForecastService: VeryShortForecastRequestable
     private let shortForecastService: ShortForecastRequestable
     private let dustForecastService: DustForecastRequestable
+    private let kakaoAddressService: KakaoAddressService
     
     init(
         contentVM: ContentVM = ContentVM.shared,
         currentLocationVM: CurrentLocationVM = CurrentLocationVM.shared,
         veryShortForecastService: VeryShortForecastRequestable = VeryShortForecastService(),
         shortForecastService: ShortForecastRequestable = ShortForecastService(),
-        dustForecastService: DustForecastRequestable = DustForecastService()
+        dustForecastService: DustForecastRequestable = DustForecastService(),
+        kakaoAddressService: KakaoAddressService = KakaoAddressService()
     ) {
         self.contentVM = contentVM
         self.currentLocationVM = currentLocationVM
         self.veryShortForecastService = veryShortForecastService
         self.shortForecastService = shortForecastService
         self.dustForecastService = dustForecastService
+        self.kakaoAddressService = kakaoAddressService
     }
 }
 
@@ -281,43 +284,31 @@ extension CurrentWeatherVM {
     func requestKaKaoAddressBy(longitude: String, latitude: String, isCurrentLocationRequested: Bool) async {
         let startTime = CFAbsoluteTimeGetCurrent()
 
-        let param = KakaoAddressReq(x: longitude, y: latitude)
-        let header = Validate().kakaoHeader()
+        let result = await kakaoAddressService.requestKaKaoAddressBy(
+            longitude: longitude,
+            latitude: latitude
+        )
         
-        do {
-            let result = try await JsonRequest.shared.newRequest(
-                url: Route.GET_KAKAO_ADDRESS.val,
-                method: .get,
-                parameters: param,
-                headers: header,
-                resultType: KakaoAddressBase.DocumentsBase.self,
-                requestName: "requestKaKaoAddressBy(x:, y:)"
-            )
+        switch result {
+        case .success(let success):
+            await setSubLocalityByKakaoAddress(success.documents)
             
-            await setSubLocalityByKakaoAddress(result.documents)
-            
-            guard result.documents.count > 0 else { return }
-            await currentLocationVM.setSubLocality(result.documents[0].address.subLocality)
+            guard success.documents.count > 0 else { return }
+            await currentLocationVM.setSubLocality(success.documents[0].address.subLocality)
             
             /// For Widget
             if isCurrentLocationRequested {
-                await self.currentLocationVM.setGPSSubLocality(result.documents[0].address.subLocality)
+                await self.currentLocationVM.setGPSSubLocality(success.documents[0].address.subLocality)
                 await self.currentLocationVM.setFullAddress(self.currentLocationVM.gpsFullAddress)
                 UserDefaults.setWidgetShared(self.subLocalityByKakaoAddress, to: .subLocality)
-                UserDefaults.setWidgetShared(result.documents[0].address.fullAddress, to: .fullAddress)
+                UserDefaults.setWidgetShared(success.documents[0].address.fullAddress, to: .fullAddress)
             }
 
             let durationTime = CFAbsoluteTimeGetCurrent() - startTime
             print("카카오 주소 req 소요시간: \(durationTime)")
-            
-        } catch APIError.transportError {
-            
+        case .failure:
             DispatchQueue.main.async {
                 self.errorMessage = "API 통신 에러"
-            }
-        } catch {
-            DispatchQueue.main.async {
-                self.errorMessage = "알 수 없는 오류"
             }
         }
     }
