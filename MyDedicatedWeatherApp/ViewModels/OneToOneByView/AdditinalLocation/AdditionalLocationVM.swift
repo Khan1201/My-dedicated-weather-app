@@ -17,9 +17,17 @@ final class AdditionalLocationVM: ObservableObject {
     private let veryShortTermForecastUtil: VeryShortTermForecastUtil = VeryShortTermForecastUtil()
     private let shortTermForecastUtil: ShortTermForecastUtil = ShortTermForecastUtil()
     
+    private let veryShortForecastService: VeryShortForecastRequestable
+    private let shortForecastService: ShortForecastRequestable
+    
     var currentTask: Task<(), Never>?
     
-    init() {
+    init(
+        veryShortForecastService: VeryShortForecastRequestable = VeryShortForecastService(),
+        shortForecastService: ShortForecastRequestable = ShortForecastService()
+    ) {
+        self.veryShortForecastService = veryShortForecastService
+        self.shortForecastService = shortForecastService
         self.initAllLocalities()
     }
     
@@ -93,33 +101,16 @@ extension AdditionalLocationVM {
      - 54 ~ 59: WSD(풍속)
      */
     func requestCurrentWeatherImageAndTemp(xy: Gps2XY.LatXLngY, sunriseAndsunsetHHmm: (String, String)) async -> (String, String) {
-        let baseTime = veryShortTermForecastUtil.requestBaseTime
-        let baseDate = veryShortTermForecastUtil.requestBaseDate
+        let result = await veryShortForecastService.requestVeryShortForecastItems(xy: xy)
         
-        let parameters: VeryShortOrShortTermForecastReq = VeryShortOrShortTermForecastReq(
-            numOfRows: "300",
-            baseDate: baseDate,
-            baseTime: baseTime,
-            nx: String(xy.x),
-            ny: String(xy.y)
-        )
-        
-        do {
-            let result = try await JsonRequest.shared.newRequest(
-                url: Route.GET_WEATHER_VERY_SHORT_TERM_FORECAST.val,
-                method: .get,
-                parameters: parameters,
-                headers: nil,
-                resultType: PublicDataRes<VeryShortOrShortTermForecastBase<VeryShortTermForecastCategory>>.self,
-                requestName: "requestVeryShortForecastItems(xy:)"
-            )
-            
+        switch result {
+        case .success(let success):
             CommonUtil.shared.printSuccess(
                 funcTitle: "requestCurrentWeatherImageAndTemp",
                 value: result
             )
             
-            guard let items = result.item else { return ("", "") }
+            guard let items = success.item else { return ("", "") }
             guard items.count >= 25 else { return ("", "")}
             
             let firstPTYItem = items[6]
@@ -137,18 +128,7 @@ extension AdditionalLocationVM {
             let temp = items[24].fcstValue
                         
             return (weatherImage, temp)
-            
-        } catch APIError.transportError {
-            
-            DispatchQueue.main.async {
-//                self.errorMessage = "API 통신 에러"
-            }
-            return ("", "")
-            
-        } catch {
-            DispatchQueue.main.async {
-//                self.errorMessage = "알 수 없는 오류"
-            }
+        case .failure:
             return ("", "")
         }
     }
@@ -157,51 +137,26 @@ extension AdditionalLocationVM {
     /// '단기예보' 에서의 최소, 최대 온도 값 요청 위해 및
     /// 02:00 or 23:00 으로 호출해야 하므로, 따로 다시 요청한다.
     func requestTodayMinMaxTemp(xy: Gps2XY.LatXLngY, currentTemp: String) async -> (String, String) {
-
-        let parameters = VeryShortOrShortTermForecastReq(
-            numOfRows: "300",
-            baseDate: shortTermForecastUtil.baseDateForTodayMinMaxReq,
-            baseTime: shortTermForecastUtil.baseTimeForTodayMinMaxReq,
-            nx: String(xy.x),
-            ny: String(xy.y)
-        )
+        func filteredMinMax(_ items: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>], currentTemp: String) -> (String, String) {
+            let todayDate = Date().toString(format: "yyyyMMdd")
+            
+            let filteredItems = items.filter( {$0.category == .TMP && $0.fcstDate == todayDate} )
+            var filteredTemps = filteredItems.map({ $0.fcstValue.toInt })
+            filteredTemps.append(currentTemp.toInt)
+            
+            let min = filteredTemps.min() ?? 0
+            let max = filteredTemps.max() ?? 0
+            
+            return (min.toString, max.toString)
+        }
         
-        do {
-            func filteredMinMax(_ items: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>], currentTemp: String) -> (String, String) {
-                let todayDate = Date().toString(format: "yyyyMMdd")
-                
-                let filteredItems = items.filter( {$0.category == .TMP && $0.fcstDate == todayDate} )
-                var filteredTemps = filteredItems.map({ $0.fcstValue.toInt })
-                filteredTemps.append(currentTemp.toInt)
-                
-                let min = filteredTemps.min() ?? 0
-                let max = filteredTemps.max() ?? 0
-                
-                return (min.toString, max.toString)
-            }
-            
-            let result = try await JsonRequest.shared.newRequest(
-                url: Route.GET_WEATHER_SHORT_TERM_FORECAST.val,
-                method: .get,
-                parameters: parameters,
-                headers: nil,
-                resultType: PublicDataRes<VeryShortOrShortTermForecastBase<ShortTermForecastCategory>>.self,
-                requestName: "requestShortForecastItems(xy:)"
-            )
-            
-            guard let items = result.item else { return ("", "") }
+        let result = await shortForecastService.requestTodayMinMaxTemp(xy: xy)
+
+        switch result {
+        case .success(let success):
+            guard let items = success.item else { return ("", "") }
             return filteredMinMax(items, currentTemp: currentTemp)
-            
-        } catch APIError.transportError {
-            
-            DispatchQueue.main.async {
-//                self.errorMessage = "API 통신 에러"
-            }
-            return ("", "")
-        } catch {
-            DispatchQueue.main.async {
-//                self.errorMessage = "알 수 없는 오류"
-            }
+        case .failure(let failure):
             return ("", "")
         }
     }
