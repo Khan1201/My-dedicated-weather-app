@@ -14,7 +14,11 @@ protocol ShortForecastRequestable {
 }
 
 struct ShortForecastService: ShortForecastRequestable {
-    private let util: ShortTermForecastUtil = ShortTermForecastUtil()
+    private let util: ShortTermForecastUtil
+    
+    init(util: ShortTermForecastUtil = ShortTermForecastUtil()) {
+        self.util = util
+    }
     
     func requestShortForecastItems(xy: Gps2XY.LatXLngY, reqRow: String) async -> Result<PublicDataRes<VeryShortOrShortTermForecastBase<ShortTermForecastCategory>>, APIError> {
         let parameters = VeryShortOrShortTermForecastReq(

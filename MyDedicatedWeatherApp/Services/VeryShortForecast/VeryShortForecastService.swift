@@ -12,14 +12,18 @@ protocol VeryShortForecastRequestable {
 }
 
 struct VeryShortForecastService: VeryShortForecastRequestable {
-    private let veryShortTermForecastUtil: VeryShortTermForecastUtil = VeryShortTermForecastUtil()
+    private let util: VeryShortTermForecastUtil
+    
+    init(util: VeryShortTermForecastUtil = VeryShortTermForecastUtil()) {
+        self.util = util
+    }
 
     func requestVeryShortForecastItems(xy: Gps2XY.LatXLngY) async -> Result<PublicDataRes<VeryShortOrShortTermForecastBase<VeryShortTermForecastCategory>>, APIError>
     {
         let parameters: VeryShortOrShortTermForecastReq = VeryShortOrShortTermForecastReq(
             numOfRows: "300",
-            baseDate: veryShortTermForecastUtil.requestBaseDate,
-            baseTime: veryShortTermForecastUtil.requestBaseTime,
+            baseDate: util.requestBaseDate,
+            baseTime: util.requestBaseTime,
             nx: String(xy.x),
             ny: String(xy.y)
         )
