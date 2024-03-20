@@ -12,9 +12,9 @@ protocol VeryShortForecastRequestable {
 }
 
 struct VeryShortForecastService: VeryShortForecastRequestable {
-    private let util: VeryShortTermForecastUtil
+    private let util: VeryShortForecastRequestParam
     
-    init(util: VeryShortTermForecastUtil = VeryShortTermForecastUtil()) {
+    init(util: VeryShortForecastRequestParam = VeryShortTermForecastUtil()) {
         self.util = util
     }
 

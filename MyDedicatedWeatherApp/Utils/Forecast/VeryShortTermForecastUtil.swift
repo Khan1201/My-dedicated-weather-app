@@ -7,7 +7,12 @@
 
 import Foundation
 
-struct VeryShortTermForecastUtil {
+protocol VeryShortForecastRequestParam {
+    var requestBaseTime: String { get }
+    var requestBaseDate: String { get }
+}
+
+struct VeryShortTermForecastUtil: VeryShortForecastRequestParam {
     
     /**
      Return 현재시간 -> baseTime (초단기예보 Requst 타입)

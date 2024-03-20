@@ -76,6 +76,11 @@
 		BC76923A2A431CC8005F4D7B /* CustomBottomTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC7692392A431CC8005F4D7B /* CustomBottomTabBarView.swift */; };
 		BC76923D2A4329DC005F4D7B /* CornerRadiusByCorner.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC76923C2A4329DC005F4D7B /* CornerRadiusByCorner.swift */; };
 		BC76BAB62BAAFFC300DA19A8 /* SunriseAndSunsetCarculate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC013CCC2B591046005C4555 /* SunriseAndSunsetCarculate.swift */; };
+		BC76BABE2BAB048400DA19A8 /* VeryShortForecastUnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC76BABD2BAB048400DA19A8 /* VeryShortForecastUnitTests.swift */; };
+		BC76BACA2BAB071900DA19A8 /* VeryShortForecastServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC76BAC92BAB071900DA19A8 /* VeryShortForecastServiceMock.swift */; };
+		BC76BACD2BAB087E00DA19A8 /* ApiRequesterMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC76BACC2BAB087E00DA19A8 /* ApiRequesterMock.swift */; };
+		BC76BACF2BAB0D9300DA19A8 /* VeryShortForecastMockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC76BACE2BAB0D9300DA19A8 /* VeryShortForecastMockData.swift */; };
+		BC76BAD32BAB189E00DA19A8 /* VeryShortForecastUtilMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC76BAD22BAB189E00DA19A8 /* VeryShortForecastUtilMock.swift */; };
 		BC78251B2A5EE15900930FD6 /* SwiftUIPager in Frameworks */ = {isa = PBXBuildFile; productRef = BC78251A2A5EE15900930FD6 /* SwiftUIPager */; };
 		BC78EFE92A7A922900DC3352 /* BackgroundSunnyNightLottie1.json in Resources */ = {isa = PBXBuildFile; fileRef = BC78EFE82A7A922900DC3352 /* BackgroundSunnyNightLottie1.json */; };
 		BC78EFEB2A7A92B700DC3352 /* BackgroundCloudyLottie1.json in Resources */ = {isa = PBXBuildFile; fileRef = BC78EFEA2A7A92B700DC3352 /* BackgroundCloudyLottie1.json */; };
@@ -192,6 +197,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		BC76BABF2BAB048400DA19A8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BCA30F6E29FE20390078D0B1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BCA30F7529FE20390078D0B1;
+			remoteInfo = MyDedicatedWeatherApp;
+		};
 		BCFB3EEF2A9F90870043C26B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BCA30F6E29FE20390078D0B1 /* Project object */;
@@ -274,6 +286,12 @@
 		BC723C662B57D54C0086BAAB /* BackgroundSnowLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BackgroundSnowLottie.json; sourceTree = "<group>"; };
 		BC7692392A431CC8005F4D7B /* CustomBottomTabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBottomTabBarView.swift; sourceTree = "<group>"; };
 		BC76923C2A4329DC005F4D7B /* CornerRadiusByCorner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CornerRadiusByCorner.swift; sourceTree = "<group>"; };
+		BC76BABB2BAB048400DA19A8 /* MyDedicatedWeatherUnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MyDedicatedWeatherUnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		BC76BABD2BAB048400DA19A8 /* VeryShortForecastUnitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VeryShortForecastUnitTests.swift; sourceTree = "<group>"; };
+		BC76BAC92BAB071900DA19A8 /* VeryShortForecastServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VeryShortForecastServiceMock.swift; sourceTree = "<group>"; };
+		BC76BACC2BAB087E00DA19A8 /* ApiRequesterMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiRequesterMock.swift; sourceTree = "<group>"; };
+		BC76BACE2BAB0D9300DA19A8 /* VeryShortForecastMockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VeryShortForecastMockData.swift; sourceTree = "<group>"; };
+		BC76BAD22BAB189E00DA19A8 /* VeryShortForecastUtilMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VeryShortForecastUtilMock.swift; sourceTree = "<group>"; };
 		BC78EFE82A7A922900DC3352 /* BackgroundSunnyNightLottie1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BackgroundSunnyNightLottie1.json; sourceTree = "<group>"; };
 		BC78EFEA2A7A92B700DC3352 /* BackgroundCloudyLottie1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BackgroundCloudyLottie1.json; sourceTree = "<group>"; };
 		BC7B76592A938C580004BF8B /* LineChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineChartView.swift; sourceTree = "<group>"; };
@@ -391,6 +409,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		BC76BAB82BAB048400DA19A8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BCA30F7329FE20390078D0B1 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -729,6 +754,82 @@
 			path = TabBar;
 			sourceTree = "<group>";
 		};
+		BC76BABC2BAB048400DA19A8 /* MyDedicatedWeatherUnitTests */ = {
+			isa = PBXGroup;
+			children = (
+				BC76BAD42BAB1DB500DA19A8 /* UnitTests */,
+				BC76BAC72BAB06C200DA19A8 /* MockObject */,
+				BC76BAC42BAB066500DA19A8 /* MockData */,
+			);
+			path = MyDedicatedWeatherUnitTests;
+			sourceTree = "<group>";
+		};
+		BC76BAC42BAB066500DA19A8 /* MockData */ = {
+			isa = PBXGroup;
+			children = (
+				BC76BAC52BAB067200DA19A8 /* VeryShortForecast */,
+			);
+			path = MockData;
+			sourceTree = "<group>";
+		};
+		BC76BAC52BAB067200DA19A8 /* VeryShortForecast */ = {
+			isa = PBXGroup;
+			children = (
+				BC76BACE2BAB0D9300DA19A8 /* VeryShortForecastMockData.swift */,
+			);
+			path = VeryShortForecast;
+			sourceTree = "<group>";
+		};
+		BC76BAC72BAB06C200DA19A8 /* MockObject */ = {
+			isa = PBXGroup;
+			children = (
+				BC76BAD12BAB188800DA19A8 /* Util */,
+				BC76BAD02BAB188200DA19A8 /* Service */,
+				BC76BACB2BAB086C00DA19A8 /* Network */,
+			);
+			path = MockObject;
+			sourceTree = "<group>";
+		};
+		BC76BAC82BAB06EB00DA19A8 /* VeryShortForecastService */ = {
+			isa = PBXGroup;
+			children = (
+				BC76BAC92BAB071900DA19A8 /* VeryShortForecastServiceMock.swift */,
+			);
+			path = VeryShortForecastService;
+			sourceTree = "<group>";
+		};
+		BC76BACB2BAB086C00DA19A8 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				BC76BACC2BAB087E00DA19A8 /* ApiRequesterMock.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		BC76BAD02BAB188200DA19A8 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				BC76BAC82BAB06EB00DA19A8 /* VeryShortForecastService */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		BC76BAD12BAB188800DA19A8 /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				BC76BAD22BAB189E00DA19A8 /* VeryShortForecastUtilMock.swift */,
+			);
+			path = Util;
+			sourceTree = "<group>";
+		};
+		BC76BAD42BAB1DB500DA19A8 /* UnitTests */ = {
+			isa = PBXGroup;
+			children = (
+				BC76BABD2BAB048400DA19A8 /* VeryShortForecastUnitTests.swift */,
+			);
+			path = UnitTests;
+			sourceTree = "<group>";
+		};
 		BC78EFEC2A7A9F3600DC3352 /* BackgroundLottie */ = {
 			isa = PBXGroup;
 			children = (
@@ -960,6 +1061,7 @@
 				BC15D43D2AA60B00006DC537 /* WeatherWidgetExtension.entitlements */,
 				BCA30F7829FE203A0078D0B1 /* MyDedicatedWeatherApp */,
 				BCFB3EE72A9F90860043C26B /* WeatherWidget */,
+				BC76BABC2BAB048400DA19A8 /* MyDedicatedWeatherUnitTests */,
 				BCFB3EE22A9F90860043C26B /* Frameworks */,
 				BCA30F7729FE20390078D0B1 /* Products */,
 			);
@@ -970,6 +1072,7 @@
 			children = (
 				BCA30F7629FE20390078D0B1 /* MyDedicatedWeatherApp.app */,
 				BCFB3EE12A9F90860043C26B /* WeatherWidgetExtension.appex */,
+				BC76BABB2BAB048400DA19A8 /* MyDedicatedWeatherUnitTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1252,6 +1355,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		BC76BABA2BAB048400DA19A8 /* MyDedicatedWeatherUnitTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BC76BAC12BAB048400DA19A8 /* Build configuration list for PBXNativeTarget "MyDedicatedWeatherUnitTests" */;
+			buildPhases = (
+				BC76BAB72BAB048400DA19A8 /* Sources */,
+				BC76BAB82BAB048400DA19A8 /* Frameworks */,
+				BC76BAB92BAB048400DA19A8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				BC76BAC02BAB048400DA19A8 /* PBXTargetDependency */,
+			);
+			name = MyDedicatedWeatherUnitTests;
+			productName = MyDedicatedWeatherUnitTests;
+			productReference = BC76BABB2BAB048400DA19A8 /* MyDedicatedWeatherUnitTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		BCA30F7529FE20390078D0B1 /* MyDedicatedWeatherApp */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = BCA30F8429FE203B0078D0B1 /* Build configuration list for PBXNativeTarget "MyDedicatedWeatherApp" */;
@@ -1304,9 +1425,13 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1430;
+				LastSwiftUpdateCheck = 1530;
 				LastUpgradeCheck = 1420;
 				TargetAttributes = {
+					BC76BABA2BAB048400DA19A8 = {
+						CreatedOnToolsVersion = 15.3;
+						TestTargetID = BCA30F7529FE20390078D0B1;
+					};
 					BCA30F7529FE20390078D0B1 = {
 						CreatedOnToolsVersion = 14.2;
 					};
@@ -1336,11 +1461,19 @@
 			targets = (
 				BCA30F7529FE20390078D0B1 /* MyDedicatedWeatherApp */,
 				BCFB3EE02A9F90860043C26B /* WeatherWidgetExtension */,
+				BC76BABA2BAB048400DA19A8 /* MyDedicatedWeatherUnitTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		BC76BAB92BAB048400DA19A8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BCA30F7429FE20390078D0B1 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1404,6 +1537,18 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		BC76BAB72BAB048400DA19A8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BC76BAD32BAB189E00DA19A8 /* VeryShortForecastUtilMock.swift in Sources */,
+				BC76BABE2BAB048400DA19A8 /* VeryShortForecastUnitTests.swift in Sources */,
+				BC76BACA2BAB071900DA19A8 /* VeryShortForecastServiceMock.swift in Sources */,
+				BC76BACD2BAB087E00DA19A8 /* ApiRequesterMock.swift in Sources */,
+				BC76BACF2BAB0D9300DA19A8 /* VeryShortForecastMockData.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BCA30F7229FE20390078D0B1 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1549,6 +1694,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		BC76BAC02BAB048400DA19A8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BCA30F7529FE20390078D0B1 /* MyDedicatedWeatherApp */;
+			targetProxy = BC76BABF2BAB048400DA19A8 /* PBXContainerItemProxy */;
+		};
 		BCFB3EF02A9F90870043C26B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = BCFB3EE02A9F90860043C26B /* WeatherWidgetExtension */;
@@ -1557,6 +1707,53 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		BC76BAC22BAB048400DA19A8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 475T36V685;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = kr.xoul.UnitTest.MyDedicatedWeatherUnitTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MyDedicatedWeatherApp.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MyDedicatedWeatherApp";
+			};
+			name = Debug;
+		};
+		BC76BAC32BAB048400DA19A8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 475T36V685;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = kr.xoul.UnitTest.MyDedicatedWeatherUnitTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MyDedicatedWeatherApp.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MyDedicatedWeatherApp";
+			};
+			name = Release;
+		};
 		BCA30F8229FE203B0078D0B1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1804,6 +2001,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		BC76BAC12BAB048400DA19A8 /* Build configuration list for PBXNativeTarget "MyDedicatedWeatherUnitTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC76BAC22BAB048400DA19A8 /* Debug */,
+				BC76BAC32BAB048400DA19A8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		BCA30F7129FE20390078D0B1 /* Build configuration list for PBXProject "MyDedicatedWeatherApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
