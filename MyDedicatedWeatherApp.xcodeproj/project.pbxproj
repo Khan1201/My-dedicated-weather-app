@@ -75,6 +75,7 @@
 		BC723C672B57D54C0086BAAB /* BackgroundSnowLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BC723C662B57D54C0086BAAB /* BackgroundSnowLottie.json */; };
 		BC76923A2A431CC8005F4D7B /* CustomBottomTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC7692392A431CC8005F4D7B /* CustomBottomTabBarView.swift */; };
 		BC76923D2A4329DC005F4D7B /* CornerRadiusByCorner.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC76923C2A4329DC005F4D7B /* CornerRadiusByCorner.swift */; };
+		BC76BAB62BAAFFC300DA19A8 /* SunriseAndSunsetCarculate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC013CCC2B591046005C4555 /* SunriseAndSunsetCarculate.swift */; };
 		BC78251B2A5EE15900930FD6 /* SwiftUIPager in Frameworks */ = {isa = PBXBuildFile; productRef = BC78251A2A5EE15900930FD6 /* SwiftUIPager */; };
 		BC78EFE92A7A922900DC3352 /* BackgroundSunnyNightLottie1.json in Resources */ = {isa = PBXBuildFile; fileRef = BC78EFE82A7A922900DC3352 /* BackgroundSunnyNightLottie1.json */; };
 		BC78EFEB2A7A92B700DC3352 /* BackgroundCloudyLottie1.json in Resources */ = {isa = PBXBuildFile; fileRef = BC78EFEA2A7A92B700DC3352 /* BackgroundCloudyLottie1.json */; };
@@ -1025,7 +1026,7 @@
 		BCA30F8929FE20800078D0B1 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				BCAD3F7D2BA6EB7900688B4A /*  KakaoAddressService */,
+				BCAD3F7D2BA6EB7900688B4A /* KakaoAddressService */,
 				BCAD3F7A2BA6DB8600688B4A /* DustForecastService */,
 				BCBCFFBC2BA1DB2B000B8958 /* MidTermForecastService */,
 				BCBCFFBB2BA1DB26000B8958 /* ShortForecast */,
@@ -1081,12 +1082,12 @@
 			path = DustForecastService;
 			sourceTree = "<group>";
 		};
-		BCAD3F7D2BA6EB7900688B4A /*  KakaoAddressService */ = {
+		BCAD3F7D2BA6EB7900688B4A /* KakaoAddressService */ = {
 			isa = PBXGroup;
 			children = (
 				BCAD3F7E2BA6EB9000688B4A /*  KakaoAddressService.swift */,
 			);
-			path = " KakaoAddressService";
+			path = KakaoAddressService;
 			sourceTree = "<group>";
 		};
 		BCAD3F812BA6EFC000688B4A /* Haptic */ = {
@@ -1537,6 +1538,7 @@
 				BCFB3EFA2A9F95D40043C26B /* Provider.swift in Sources */,
 				BCFB3EE92A9F90860043C26B /* WeatherWidgetBundle.swift in Sources */,
 				BC15D44B2AA60EC1006DC537 /* Env.swift in Sources */,
+				BC76BAB62BAAFFC300DA19A8 /* SunriseAndSunsetCarculate.swift in Sources */,
 				BC0857C32ACFC60300D0AE33 /* WeatherWidgetSmallView.swift in Sources */,
 				BC8C95062AE5541C00865CCB /* MidTermForecastReq.swift in Sources */,
 				BC8C95052AE5541800865CCB /* VeryShortOrShortTermForecastReq.swift in Sources */,
