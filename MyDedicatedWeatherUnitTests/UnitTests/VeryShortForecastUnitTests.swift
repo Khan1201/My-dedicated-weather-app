@@ -9,14 +9,15 @@ import XCTest
 @testable import MyDedicatedWeatherApp
 
 final class VeryShortForecastUnitTests: XCTestCase {
+    var vm: CurrentWeatherVM!
     let baseDate: String = Date().toString(byAdding: -1, format: "yyyyMMdd")
 
     override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        vm = CurrentWeatherVM()
     }
 
     override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        vm = nil
     }
 
     func test_초단기예보_목_데이터가_잘_반환되는지() async throws {
@@ -515,5 +516,215 @@ final class VeryShortForecastUnitTests: XCTestCase {
         case .failure:
             XCTAssert(false)
         }
+    }
+    
+    func test_초단기예보_api_호출후_currentWeatherAnimationImg_currentWeatherImage_세팅이_정상적으로_되는지_확인() async throws {
+        // given
+        let baseTime: String = "2330"
+        let mockUtil = VeryShortForecastUtilMock(requestBaseTime: baseTime, requestBaseDate: baseDate)
+        let service = VeryShortForecastService(util: mockUtil)
+        vm = CurrentWeatherVM(veryShortForecastService: service)
+
+        // when
+        await vm.requestVeryShortForecastItems(xy: .init(lat: 0, lng: 0, x: 55, y: 127))
+        let expectation = expectation(description: "대기")
+
+        // then
+        if vm.currentWeatherImage != "" && vm.currentWeatherAnimationImg != "" {
+            expectation.fulfill()
+            XCTAssert(true)
+        }
+        
+        await fulfillment(of: [expectation], timeout: 5)
+    }
+    
+    func test_초단기예보_api_결과값이_맑음이고_일몰전일때_올바르게_변환되는지확인() async throws {
+        // given
+        let sut = CommonForecastUtil()
+        
+        let expectedImage = "weather_sunny"
+        let expectedAnimation = "SunnyLottie"
+        
+        let resultImage = sut.veryShortOrShortTermForecastWeatherDescriptionAndSkyTypeAndImageString(
+            ptyValue: "0",
+            skyValue: "1",
+            hhMMForDayOrNightImage: "1300",
+            sunrise: "0700",
+            sunset: "1800",
+            isAnimationImage: false
+        ).imageString
+        
+        let resultAnimation = sut.veryShortOrShortTermForecastWeatherDescriptionAndSkyTypeAndImageString(
+            ptyValue: "0",
+            skyValue: "1",
+            hhMMForDayOrNightImage: "1300",
+            sunrise: "0700",
+            sunset: "1800",
+            isAnimationImage: true
+        ).imageString
+        
+        XCTAssertEqual(expectedImage, resultImage)
+        XCTAssertEqual(expectedAnimation, resultAnimation)
+    }
+    
+    func test_초단기예보_api_결과값이_맑음이고_일몰후일때_올바르게_변환되는지확인() async throws {
+        // given
+        let sut = CommonForecastUtil()
+        
+        let expectedImage = "weather_sunny_night"
+        let expectedAnimation = "SunnyNightLottie"
+        
+        let resultImage = sut.veryShortOrShortTermForecastWeatherDescriptionAndSkyTypeAndImageString(
+            ptyValue: "0",
+            skyValue: "1",
+            hhMMForDayOrNightImage: "2100",
+            sunrise: "0700",
+            sunset: "1800",
+            isAnimationImage: false
+        ).imageString
+        
+        let resultAnimation = sut.veryShortOrShortTermForecastWeatherDescriptionAndSkyTypeAndImageString(
+            ptyValue: "0",
+            skyValue: "1",
+            hhMMForDayOrNightImage: "2100",
+            sunrise: "0700",
+            sunset: "1800",
+            isAnimationImage: true
+        ).imageString
+        
+        XCTAssertEqual(expectedImage, resultImage)
+        XCTAssertEqual(expectedAnimation, resultAnimation)
+    }
+    
+    func test_초단기예보_api_결과값이_구름많음이고_일몰전일때_올바르게_변환되는지확인() async throws {
+        // given
+        let sut = CommonForecastUtil()
+        
+        let currentHHmm: String = "1300"
+        let ptyValue: String = "0" // 0 -> 강수량 없음
+        let skyValue: String = "3"
+        
+        let expectedImage = "weather_cloud_many"
+        let expectedAnimation = "CloudManyLottie"
+        
+        let resultImage = sut.veryShortOrShortTermForecastWeatherDescriptionAndSkyTypeAndImageString(
+            ptyValue: ptyValue,
+            skyValue: skyValue,
+            hhMMForDayOrNightImage: currentHHmm,
+            sunrise: "0700",
+            sunset: "1800",
+            isAnimationImage: false
+        ).imageString
+        
+        let resultAnimation = sut.veryShortOrShortTermForecastWeatherDescriptionAndSkyTypeAndImageString(
+            ptyValue: ptyValue,
+            skyValue: skyValue,
+            hhMMForDayOrNightImage: currentHHmm,
+            sunrise: "0700",
+            sunset: "1800",
+            isAnimationImage: true
+        ).imageString
+        
+        XCTAssertEqual(expectedImage, resultImage)
+        XCTAssertEqual(expectedAnimation, resultAnimation)
+    }
+    
+    func test_초단기예보_api_결과값이_구름많음이고_일몰후일때_올바르게_변환되는지확인() async throws {
+        // given
+        let sut = CommonForecastUtil()
+        
+        let currentHHmm: String = "2100"
+        let ptyValue: String = "0" // 0 -> 강수량 없음
+        let skyValue: String = "3"
+        
+        let expectedImage = "weather_cloud_many_night"
+        let expectedAnimation = "CloudManyNightLottie"
+        
+        let resultImage = sut.veryShortOrShortTermForecastWeatherDescriptionAndSkyTypeAndImageString(
+            ptyValue: ptyValue,
+            skyValue: skyValue,
+            hhMMForDayOrNightImage: currentHHmm,
+            sunrise: "0700",
+            sunset: "1800",
+            isAnimationImage: false
+        ).imageString
+        
+        let resultAnimation = sut.veryShortOrShortTermForecastWeatherDescriptionAndSkyTypeAndImageString(
+            ptyValue: ptyValue,
+            skyValue: skyValue,
+            hhMMForDayOrNightImage: currentHHmm,
+            sunrise: "0700",
+            sunset: "1800",
+            isAnimationImage: true
+        ).imageString
+        
+        XCTAssertEqual(expectedImage, resultImage)
+        XCTAssertEqual(expectedAnimation, resultAnimation)
+    }
+    
+    func test_초단기예보_api_결과값이_흐림이고_일몰전일때_올바르게_변환되는지확인() async throws {
+        // given
+        let sut = CommonForecastUtil()
+        
+        let currentHHmm: String = "1300"
+        let ptyValue: String = "0" // 0 -> 강수량 없음
+        let skyValue: String = "4"
+        
+        let expectedImage = "weather_blur"
+        let expectedAnimation = "BlurLottie"
+        
+        let resultImage = sut.veryShortOrShortTermForecastWeatherDescriptionAndSkyTypeAndImageString(
+            ptyValue: ptyValue,
+            skyValue: skyValue,
+            hhMMForDayOrNightImage: currentHHmm,
+            sunrise: "0700",
+            sunset: "1800",
+            isAnimationImage: false
+        ).imageString
+        
+        let resultAnimation = sut.veryShortOrShortTermForecastWeatherDescriptionAndSkyTypeAndImageString(
+            ptyValue: ptyValue,
+            skyValue: skyValue,
+            hhMMForDayOrNightImage: currentHHmm,
+            sunrise: "0700",
+            sunset: "1800",
+            isAnimationImage: true
+        ).imageString
+        
+        XCTAssertEqual(expectedImage, resultImage)
+        XCTAssertEqual(expectedAnimation, resultAnimation)
+    }
+    
+    func test_초단기예보_api_결과값이_흐림이고_일몰후일때_올바르게_변환되는지확인() async throws {
+        // given
+        let sut = CommonForecastUtil()
+        
+        let currentHHmm: String = "2100"
+        let ptyValue: String = "0" // 0 -> 강수량 없음
+        let skyValue: String = "4"
+        
+        let expectedImage = "weather_blur"
+        let expectedAnimation = "BlurLottie"
+        
+        let resultImage = sut.veryShortOrShortTermForecastWeatherDescriptionAndSkyTypeAndImageString(
+            ptyValue: ptyValue,
+            skyValue: skyValue,
+            hhMMForDayOrNightImage: currentHHmm,
+            sunrise: "0700",
+            sunset: "1800",
+            isAnimationImage: false
+        ).imageString
+        
+        let resultAnimation = sut.veryShortOrShortTermForecastWeatherDescriptionAndSkyTypeAndImageString(
+            ptyValue: ptyValue,
+            skyValue: skyValue,
+            hhMMForDayOrNightImage: currentHHmm,
+            sunrise: "0700",
+            sunset: "1800",
+            isAnimationImage: true
+        ).imageString
+        
+        XCTAssertEqual(expectedImage, resultImage)
+        XCTAssertEqual(expectedAnimation, resultAnimation)
     }
 }
