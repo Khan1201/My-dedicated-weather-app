@@ -263,6 +263,10 @@
 		BC3C201A2B0505620016E7D4 /* CustomNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationBar.swift; sourceTree = "<group>"; };
 		BC3E5B4C2B1DD8A2000CDFB0 /* UserDefaultsKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsKeys.swift; sourceTree = "<group>"; };
 		BC436B772AF294DF006AFFC1 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
+		BC4928072C5BC9E2008ECD9D /* Data */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Data; path = MyDedicatedWeatherApp/Data; sourceTree = "<group>"; };
+		BC4928082C5BCA0D008ECD9D /* CurrentWeatherFeature */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = CurrentWeatherFeature; path = MyDedicatedWeatherApp/CurrentWeatherFeature; sourceTree = "<group>"; };
+		BC4928092C5BCB53008ECD9D /* Core */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Core; path = MyDedicatedWeatherApp/Core; sourceTree = "<group>"; };
+		BC49280A2C5BCE9B008ECD9D /* Domain */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Domain; path = MyDedicatedWeatherApp/Domain; sourceTree = "<group>"; };
 		BC4BE18B2AE02B2B000EAA47 /* BottomNoticeFloaterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomNoticeFloaterView.swift; sourceTree = "<group>"; };
 		BC4BE1912AE030B5000EAA47 /* BottomNoticeFloater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomNoticeFloater.swift; sourceTree = "<group>"; };
 		BC4DDA272A72B4F1000376C0 /* TodayViewControllerBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewControllerBackground.swift; sourceTree = "<group>"; };
@@ -1058,6 +1062,10 @@
 		BCA30F6D29FE20390078D0B1 = {
 			isa = PBXGroup;
 			children = (
+				BC49280A2C5BCE9B008ECD9D /* Domain */,
+				BC4928092C5BCB53008ECD9D /* Core */,
+				BC4928072C5BC9E2008ECD9D /* Data */,
+				BC4928082C5BCA0D008ECD9D /* CurrentWeatherFeature */,
 				BC15D43D2AA60B00006DC537 /* WeatherWidgetExtension.entitlements */,
 				BCA30F7829FE203A0078D0B1 /* MyDedicatedWeatherApp */,
 				BCFB3EE72A9F90860043C26B /* WeatherWidget */,
