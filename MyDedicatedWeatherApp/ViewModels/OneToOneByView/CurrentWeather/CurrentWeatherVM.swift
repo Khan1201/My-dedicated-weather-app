@@ -550,9 +550,9 @@ extension CurrentWeatherVM {
         currentTask = Task(priority: .high) {
                         
             Task(priority: .high) {
-                async let _ = requestVeryShortForecastItems(xy: xy)
-                async let _ = requestShortForecastItems(xy: xy)
-                async let _ = requestTodayMinMaxTemp(xy: xy)
+                await requestVeryShortForecastItems(xy: xy)
+                await requestShortForecastItems(xy: xy)
+                await requestTodayMinMaxTemp(xy: xy)
             }
             
             Task(priority: .low) {
@@ -603,9 +603,9 @@ extension CurrentWeatherVM {
                     currentTask = Task(priority: .high) {
                         
                         Task(priority: .high) {
-                            async let _ = self.requestVeryShortForecastItems(xy: xy)
-                            async let _ = self.requestShortForecastItems(xy: xy)
-                            async let _ = self.requestTodayMinMaxTemp(xy: xy)
+                            await self.requestVeryShortForecastItems(xy: xy)
+                            await self.requestShortForecastItems(xy: xy)
+                            await self.requestTodayMinMaxTemp(xy: xy)
                         }
                         
                         Task(priority: .low) {
@@ -762,9 +762,9 @@ extension CurrentWeatherVM {
         currentTask = Task(priority: .high) {
             
             Task(priority: .high) {
-                async let _ = requestVeryShortForecastItems(xy: convertedXY)
-                async let _ = requestShortForecastItems(xy: convertedXY)
-                async let _ = requestTodayMinMaxTemp(xy: convertedXY)
+                await requestVeryShortForecastItems(xy: convertedXY)
+                await requestShortForecastItems(xy: convertedXY)
+                await requestTodayMinMaxTemp(xy: convertedXY)
             }
             
             Task(priority: .low) {

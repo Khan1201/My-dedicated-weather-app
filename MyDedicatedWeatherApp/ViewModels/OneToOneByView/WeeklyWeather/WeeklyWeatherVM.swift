@@ -148,9 +148,9 @@ extension WeeklyWeatherVM {
             }
             
             Task(priority: .high) {
-                async let _ = requestShortForecastItems(xy: xy)
-                async let _ = requestMidTermForecastTempItems(fullAddress: fullAddress)
-                async let _ = requestMidTermForecastSkyStateItems(fullAddress: fullAddress)
+                await requestShortForecastItems(xy: xy)
+                await requestMidTermForecastTempItems(fullAddress: fullAddress)
+                await requestMidTermForecastSkyStateItems(fullAddress: fullAddress)
             }
         }
     }
