@@ -15,7 +15,10 @@ let package = Package(
             targets: ["CurrentWeatherFeature"]),
     ],
     dependencies: [
-        .package(path: "../Domain")
+        .package(path: "../Domain"),
+        .package(path: "../Data"),
+        .package(path: "../Core"),
+        .package(path: "../AdditionalLocationFeature")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -23,7 +26,10 @@ let package = Package(
         .target(
             name: "CurrentWeatherFeature",
             dependencies: [
-                .product(name: "Domain", package: "Domain")
+                .product(name: "Domain", package: "Domain"),
+                .product(name: "Data", package: "Data"),
+                .product(name: "Core", package: "Core"),
+                .product(name: "AdditionalLocationFeature", package: "AdditionalLocationFeature")
             ],
             path: "Sources"
         ),

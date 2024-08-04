@@ -7,6 +7,9 @@
 
 import SwiftUI
 import SwiftUIPager
+import Core
+import Domain
+import AdditionalLocationFeature
 
 struct CurrentWeatherView: View {
     @Binding var disableTabBarTouch: Bool

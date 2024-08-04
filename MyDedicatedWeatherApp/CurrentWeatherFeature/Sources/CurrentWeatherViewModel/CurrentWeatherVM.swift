@@ -7,6 +7,9 @@
 
 import Foundation
 import Combine
+import Domain
+import Data
+import Core
 
 final class CurrentWeatherVM: ObservableObject {
     @Published private(set) var errorMessage: String = ""
@@ -523,7 +526,7 @@ extension CurrentWeatherVM {
          isSunriseSunsetLoadCompleted && isTodayWeatherInformationLoadCompleted)
         
         if isAllLoadCompleted {
-            HapticGenerator.impact(style: .soft)
+            CustomHapticGenerator.impact(style: .soft)
             initializeTaskAndTimer()
         }
     }

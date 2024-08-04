@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import Core
+import Domain
 
 struct TodayWeatherItemView: View {
     
