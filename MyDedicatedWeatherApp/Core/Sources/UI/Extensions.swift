@@ -10,30 +10,30 @@ import SwiftUI
 
 extension UIScreen {
     
-    static let screenWidth: CGFloat = UIScreen.main.bounds.size.width
-    static let screenHeight: CGFloat = UIScreen.main.bounds.size.height
+    public static let screenWidth: CGFloat = UIScreen.main.bounds.size.width
+    public static let screenHeight: CGFloat = UIScreen.main.bounds.size.height
 }
 
 extension Color {
     
-    init(hexCode: String, alpha: CGFloat = 1.0) {
+    public init(hexCode: String, alpha: CGFloat = 1.0) {
         
         self.init(uiColor: UIColor(hexCode: hexCode, alpha: alpha))
     }
     
-    init(_ red: CGFloat, _ green: CGFloat, _ blue: CGFloat) {
+    public init(_ red: CGFloat, _ green: CGFloat, _ blue: CGFloat) {
         self.init(red: CGFloat(red/255.0), green: CGFloat(green/255.0), blue: CGFloat(blue/255.0))
     }
     
     /// 기본 묶음 view background
-    static var defaultAreaColor: Color {
+    public static var defaultAreaColor: Color {
         return Color.white.opacity(0.08)
     }
 }
 
 extension UIColor {
     
-    convenience init(hexCode: String, alpha: CGFloat = 1.0) {
+    public convenience init(hexCode: String, alpha: CGFloat = 1.0) {
         var hexFormatted: String = hexCode.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).uppercased()
         
         if hexFormatted.hasPrefix("#") {
@@ -53,7 +53,7 @@ extension UIColor {
 }
 
 extension View {
-    @ViewBuilder func `if`<Content: View>(
+    @ViewBuilder public func `if`<Content: View>(
         _ condition: Bool,
         transform: (Self) -> Content
     ) -> some View {
@@ -67,7 +67,7 @@ extension View {
 
 extension CGFloat {
     
-    var toInt: Int {
+    public var toInt: Int {
         return Int(self)
     }
 }
