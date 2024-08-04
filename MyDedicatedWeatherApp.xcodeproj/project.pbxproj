@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -109,6 +109,11 @@
 		BC91FD542A4483CA00D3E665 /* LoadingProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC91FD532A4483CA00D3E665 /* LoadingProgress.swift */; };
 		BC98BB622B0CFCC000B39F48 /* KoreaLocationList.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC98BB612B0CFCC000B39F48 /* KoreaLocationList.swift */; };
 		BC9A9DCF2AD7E96000603D0C /* WeatherWidgetVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC9A9DCE2AD7E96000603D0C /* WeatherWidgetVM.swift */; };
+		BC9DC8572C5FB1D0004B968D /* Core in Frameworks */ = {isa = PBXBuildFile; productRef = BC9DC8562C5FB1D0004B968D /* Core */; };
+		BC9DC85A2C5FB1E2004B968D /* Data in Frameworks */ = {isa = PBXBuildFile; productRef = BC9DC8592C5FB1E2004B968D /* Data */; };
+		BC9DC85D2C5FB1EF004B968D /* Domain in Frameworks */ = {isa = PBXBuildFile; productRef = BC9DC85C2C5FB1EF004B968D /* Domain */; };
+		BC9DC8602C5FB204004B968D /* CurrentWeatherFeature in Frameworks */ = {isa = PBXBuildFile; productRef = BC9DC85F2C5FB204004B968D /* CurrentWeatherFeature */; };
+		BC9DC8632C5FB214004B968D /* AdditionalLocationFeature in Frameworks */ = {isa = PBXBuildFile; productRef = BC9DC8622C5FB214004B968D /* AdditionalLocationFeature */; };
 		BCA2B1572B0E536C00B669BD /* AdditionalLocationLocalityListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA2B1562B0E536C00B669BD /* AdditionalLocationLocalityListView.swift */; };
 		BCA2B1592B0E538900B669BD /* AdditionalLocationGuListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA2B1582B0E538900B669BD /* AdditionalLocationGuListView.swift */; };
 		BCA2B15B2B0E53EB00B669BD /* AdditionalLocationSubLocalityListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA2B15A2B0E53EB00B669BD /* AdditionalLocationSubLocalityListView.swift */; };
@@ -426,8 +431,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				BC0852772AE032ED00CFB877 /* PopupView in Frameworks */,
+				BC9DC85D2C5FB1EF004B968D /* Domain in Frameworks */,
 				BCA30F8C29FE25280078D0B1 /* Alamofire in Frameworks */,
+				BC9DC8632C5FB214004B968D /* AdditionalLocationFeature in Frameworks */,
+				BC9DC85A2C5FB1E2004B968D /* Data in Frameworks */,
+				BC9DC8602C5FB204004B968D /* CurrentWeatherFeature in Frameworks */,
 				BC7D33E22A12788E00B1012F /* Lottie in Frameworks */,
+				BC9DC8572C5FB1D0004B968D /* Core in Frameworks */,
 				BC78251B2A5EE15900930FD6 /* SwiftUIPager in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1403,6 +1413,11 @@
 				BC7D33E12A12788E00B1012F /* Lottie */,
 				BC78251A2A5EE15900930FD6 /* SwiftUIPager */,
 				BC0852762AE032ED00CFB877 /* PopupView */,
+				BC9DC8562C5FB1D0004B968D /* Core */,
+				BC9DC8592C5FB1E2004B968D /* Data */,
+				BC9DC85C2C5FB1EF004B968D /* Domain */,
+				BC9DC85F2C5FB204004B968D /* CurrentWeatherFeature */,
+				BC9DC8622C5FB214004B968D /* AdditionalLocationFeature */,
 			);
 			productName = MyDedicatedWeatherApp;
 			productReference = BCA30F7629FE20390078D0B1 /* MyDedicatedWeatherApp.app */;
@@ -1464,6 +1479,11 @@
 				BC7D33E02A12788E00B1012F /* XCRemoteSwiftPackageReference "lottie-ios" */,
 				BC7825192A5EE15900930FD6 /* XCRemoteSwiftPackageReference "SwiftUIPager" */,
 				BC0852752AE032ED00CFB877 /* XCRemoteSwiftPackageReference "PopupView" */,
+				BC9DC8552C5FB1D0004B968D /* XCLocalSwiftPackageReference "MyDedicatedWeatherApp/Core" */,
+				BC9DC8582C5FB1E2004B968D /* XCLocalSwiftPackageReference "MyDedicatedWeatherApp/Data" */,
+				BC9DC85B2C5FB1EF004B968D /* XCLocalSwiftPackageReference "MyDedicatedWeatherApp/Domain" */,
+				BC9DC85E2C5FB204004B968D /* XCLocalSwiftPackageReference "MyDedicatedWeatherApp/CurrentWeatherFeature" */,
+				BC9DC8612C5FB214004B968D /* XCLocalSwiftPackageReference "MyDedicatedWeatherApp/AdditionalLocationFeature" */,
 			);
 			productRefGroup = BCA30F7729FE20390078D0B1 /* Products */;
 			projectDirPath = "";
@@ -2049,6 +2069,29 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		BC9DC8552C5FB1D0004B968D /* XCLocalSwiftPackageReference "MyDedicatedWeatherApp/Core" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = MyDedicatedWeatherApp/Core;
+		};
+		BC9DC8582C5FB1E2004B968D /* XCLocalSwiftPackageReference "MyDedicatedWeatherApp/Data" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = MyDedicatedWeatherApp/Data;
+		};
+		BC9DC85B2C5FB1EF004B968D /* XCLocalSwiftPackageReference "MyDedicatedWeatherApp/Domain" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = MyDedicatedWeatherApp/Domain;
+		};
+		BC9DC85E2C5FB204004B968D /* XCLocalSwiftPackageReference "MyDedicatedWeatherApp/CurrentWeatherFeature" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = MyDedicatedWeatherApp/CurrentWeatherFeature;
+		};
+		BC9DC8612C5FB214004B968D /* XCLocalSwiftPackageReference "MyDedicatedWeatherApp/AdditionalLocationFeature" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = MyDedicatedWeatherApp/AdditionalLocationFeature;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
 		BC0852752AE032ED00CFB877 /* XCRemoteSwiftPackageReference "PopupView" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -2104,6 +2147,26 @@
 			isa = XCSwiftPackageProductDependency;
 			package = BC7D33E02A12788E00B1012F /* XCRemoteSwiftPackageReference "lottie-ios" */;
 			productName = Lottie;
+		};
+		BC9DC8562C5FB1D0004B968D /* Core */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Core;
+		};
+		BC9DC8592C5FB1E2004B968D /* Data */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Data;
+		};
+		BC9DC85C2C5FB1EF004B968D /* Domain */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Domain;
+		};
+		BC9DC85F2C5FB204004B968D /* CurrentWeatherFeature */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CurrentWeatherFeature;
+		};
+		BC9DC8622C5FB214004B968D /* AdditionalLocationFeature */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AdditionalLocationFeature;
 		};
 		BCA30F8B29FE25280078D0B1 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
