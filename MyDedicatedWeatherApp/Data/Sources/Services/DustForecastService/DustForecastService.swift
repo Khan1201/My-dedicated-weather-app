@@ -9,14 +9,17 @@ import Foundation
 import Core
 import Domain
 
-protocol DustForecastRequestable {
+public protocol DustForecastRequestable {
     func requestDustForecastStationXY(subLocality: String) async -> Result<PublicDataRes<DustForecastStationXYBase>, APIError>
     func requestDustForecastStation(tmXAndtmY: (String, String)) async -> Result<PublicDataRes<DustForecastStationBase>, APIError>
     func requestRealTimeFindDustForecastItems(stationName: String) async -> Result<PublicDataRes<RealTimeFindDustForecastBase>, APIError>
 }
 
-struct DustForecastService: DustForecastRequestable {
-    func requestDustForecastStationXY(subLocality: String) async -> Result<PublicDataRes<DustForecastStationXYBase>, APIError> {
+public struct DustForecastService: DustForecastRequestable {
+    
+    public init() {}
+    
+    public func requestDustForecastStationXY(subLocality: String) async -> Result<PublicDataRes<DustForecastStationXYBase>, APIError> {
         let parameters: DustForecastStationXYReq = DustForecastStationXYReq(
             umdName: subLocality
         )
@@ -32,7 +35,7 @@ struct DustForecastService: DustForecastRequestable {
         return result
     }
     
-    func requestDustForecastStation(tmXAndtmY: (String, String)) async -> Result<PublicDataRes<DustForecastStationBase>, APIError> {
+    public func requestDustForecastStation(tmXAndtmY: (String, String)) async -> Result<PublicDataRes<DustForecastStationBase>, APIError> {
         let parameters: DustForecastStationReq = DustForecastStationReq(
             tmX: tmXAndtmY.0,
             tmY: tmXAndtmY.1
@@ -49,7 +52,7 @@ struct DustForecastService: DustForecastRequestable {
         return result
     }
     
-    func requestRealTimeFindDustForecastItems(stationName: String) async -> Result<PublicDataRes<RealTimeFindDustForecastBase>, APIError> {
+    public func requestRealTimeFindDustForecastItems(stationName: String) async -> Result<PublicDataRes<RealTimeFindDustForecastBase>, APIError> {
         let parameters: RealTimeFindDustForecastReq = RealTimeFindDustForecastReq(
             stationName: stationName
         )

@@ -7,13 +7,13 @@
 
 import Foundation
 
-struct DustForecastStationXYBase: Decodable {
+public struct DustForecastStationXYBase: Decodable {
     
-    let sggName: String
-    let umdName: String
-    let tmX: String
-    let tmY: String
-    let sidoName: String
+    public let sggName: String
+    public let umdName: String
+    public let tmX: String
+    public let tmY: String
+    public let sidoName: String
     
     enum CodingKeys: CodingKey {
         case sggName
@@ -23,7 +23,7 @@ struct DustForecastStationXYBase: Decodable {
         case sidoName
     }
     
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.sggName = try container.decode(String.self, forKey: .sggName)
         self.umdName = try container.decode(String.self, forKey: .umdName)

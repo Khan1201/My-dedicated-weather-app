@@ -7,34 +7,43 @@
 
 import Foundation
 
-struct KakaoAddressBase: Encodable {
-    let fullAddress: String
-    let subLocality: String // 성수동 1가
+public struct KakaoAddressBase: Encodable {
+    public let fullAddress: String
+    public let subLocality: String // 성수동 1가
     
     enum CodingKeys: String, CodingKey {
         case address_name
         case region_3depth_name
     }
     
-    func encode(to encoder: Encoder) throws {
+    public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(fullAddress, forKey: .address_name)
         try container.encode(subLocality, forKey: .region_3depth_name)
     }
     
     // Nested
-    struct DocumentsBase: Decodable {
-        let documents: [AddressBase]
+    public struct DocumentsBase: Decodable {
+        public init(documents: [AddressBase]) {
+            self.documents = documents
+        }
+        
+        public let documents: [AddressBase]
     }
     
-    struct AddressBase: Decodable {
-        let road_address: KakaoAddressBase?
-        let address: KakaoAddressBase
+    public struct AddressBase: Decodable {
+        public init(road_address: KakaoAddressBase?, address: KakaoAddressBase) {
+            self.road_address = road_address
+            self.address = address
+        }
+        
+        public let road_address: KakaoAddressBase?
+        public let address: KakaoAddressBase
     }
 }
 
 extension KakaoAddressBase: Decodable {
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.fullAddress = try container.decode(String.self, forKey: .address_name)
         self.subLocality = try container.decode(String.self, forKey: .region_3depth_name)

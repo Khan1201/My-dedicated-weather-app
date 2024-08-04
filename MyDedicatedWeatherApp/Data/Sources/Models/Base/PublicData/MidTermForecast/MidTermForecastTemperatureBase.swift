@@ -7,25 +7,45 @@
 
 import Foundation
 
-struct MidTermForecastTemperatureBase {
+public struct MidTermForecastTemperatureBase {
     
-    let regId: String
-    let taMin3: Int
-    let taMax3: Int
-    let taMin4: Int
-    let taMax4: Int
-    let taMin5: Int
-    let taMax5: Int
-    let taMin6: Int
-    let taMax6: Int
-    let taMin7: Int
-    let taMax7: Int
-    let taMin8: Int
-    let taMax8: Int
-    let taMin9: Int
-    let taMax9: Int
-    let taMin10: Int
-    let taMax10: Int
+    public init(regId: String, taMin3: Int, taMax3: Int, taMin4: Int, taMax4: Int, taMin5: Int, taMax5: Int, taMin6: Int, taMax6: Int, taMin7: Int, taMax7: Int, taMin8: Int, taMax8: Int, taMin9: Int, taMax9: Int, taMin10: Int, taMax10: Int) {
+        self.regId = regId
+        self.taMin3 = taMin3
+        self.taMax3 = taMax3
+        self.taMin4 = taMin4
+        self.taMax4 = taMax4
+        self.taMin5 = taMin5
+        self.taMax5 = taMax5
+        self.taMin6 = taMin6
+        self.taMax6 = taMax6
+        self.taMin7 = taMin7
+        self.taMax7 = taMax7
+        self.taMin8 = taMin8
+        self.taMax8 = taMax8
+        self.taMin9 = taMin9
+        self.taMax9 = taMax9
+        self.taMin10 = taMin10
+        self.taMax10 = taMax10
+    }
+    
+    public let regId: String
+    public let taMin3: Int
+    public let taMax3: Int
+    public let taMin4: Int
+    public let taMax4: Int
+    public let taMin5: Int
+    public let taMax5: Int
+    public let taMin6: Int
+    public let taMax6: Int
+    public let taMin7: Int
+    public let taMax7: Int
+    public let taMin8: Int
+    public let taMax8: Int
+    public let taMin9: Int
+    public let taMax9: Int
+    public let taMin10: Int
+    public let taMax10: Int
     
     enum CodingKeys: CodingKey {
         case regId
@@ -50,7 +70,7 @@ struct MidTermForecastTemperatureBase {
 
 extension MidTermForecastTemperatureBase: Decodable {
     
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.regId = try container.decode(String.self, forKey: .regId)
         self.taMin3 = try container.decode(Int.self, forKey: .taMin3)

@@ -9,18 +9,18 @@ import Foundation
 import Core
 import Domain
 
-protocol KakaoAddressRequestable {
+public protocol KakaoAddressRequestable {
     func requestKaKaoAddressBy(longitude: String, latitude: String) async -> Result<KakaoAddressBase.DocumentsBase, APIError>
 }
 
-struct KakaoAddressService: KakaoAddressRequestable {
+public struct KakaoAddressService: KakaoAddressRequestable {
     private let validate: Validate
     
-    init(validate: Validate = Validate()) {
+    public init(validate: Validate = Validate()) {
         self.validate = validate
     }
     
-    func requestKaKaoAddressBy(longitude: String, latitude: String) async
+    public func requestKaKaoAddressBy(longitude: String, latitude: String) async
     -> Result<KakaoAddressBase.DocumentsBase, APIError> {
         let parameters = KakaoAddressReq(x: longitude, y: latitude)
         let header = validate.kakaoHeader()

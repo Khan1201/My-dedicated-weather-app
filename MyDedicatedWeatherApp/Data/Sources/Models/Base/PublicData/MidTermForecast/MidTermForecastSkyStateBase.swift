@@ -7,23 +7,23 @@
 
 import Foundation
 
-struct MidTermForecastSkyStateBase: Decodable {
-    let rnSt3Am: Int // 강수 확률
-    let rnSt4Am: Int
-    let rnSt5Am: Int
-    let rnSt6Am: Int
-    let rnSt7Am: Int
-    let rnSt8: Int
-    let rnSt9: Int
-    let rnSt10: Int
-    let wf3Am: String // 하늘 상태 정보
-    let wf4Am: String
-    let wf5Am: String
-    let wf6Am: String
-    let wf7Am: String
-    let wf8: String
-    let wf9: String
-    let wf10: String
+public struct MidTermForecastSkyStateBase: Decodable {
+    public let rnSt3Am: Int // 강수 확률
+    public let rnSt4Am: Int
+    public let rnSt5Am: Int
+    public let rnSt6Am: Int
+    public let rnSt7Am: Int
+    public let rnSt8: Int
+    public let rnSt9: Int
+    public let rnSt10: Int
+    public let wf3Am: String // 하늘 상태 정보
+    public let wf4Am: String
+    public let wf5Am: String
+    public let wf6Am: String
+    public let wf7Am: String
+    public let wf8: String
+    public let wf9: String
+    public let wf10: String
     
     enum CodingKeys: String, CodingKey {
         case rnSt3Am,
@@ -44,7 +44,7 @@ struct MidTermForecastSkyStateBase: Decodable {
              wf10
     }
     
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.rnSt3Am = try container.decode(Int.self, forKey: .rnSt3Am)
         self.rnSt4Am = try container.decode(Int.self, forKey: .rnSt4Am)

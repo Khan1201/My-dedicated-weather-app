@@ -9,18 +9,18 @@ import Foundation
 import Core
 import Domain
 
-protocol VeryShortForecastRequestable {
+public protocol VeryShortForecastRequestable {
     func requestVeryShortForecastItems(xy: Gps2XY.LatXLngY) async -> Result<PublicDataRes<VeryShortOrShortTermForecastBase<VeryShortTermForecastCategory>>, APIError>
 }
 
-struct VeryShortForecastService: VeryShortForecastRequestable {
+public struct VeryShortForecastService: VeryShortForecastRequestable {
     private let util: VeryShortForecastRequestParam
     
-    init(util: VeryShortForecastRequestParam = VeryShortTermForecastUtil()) {
+    public init(util: VeryShortForecastRequestParam = VeryShortTermForecastUtil()) {
         self.util = util
     }
 
-    func requestVeryShortForecastItems(xy: Gps2XY.LatXLngY) async -> Result<PublicDataRes<VeryShortOrShortTermForecastBase<VeryShortTermForecastCategory>>, APIError>
+    public func requestVeryShortForecastItems(xy: Gps2XY.LatXLngY) async -> Result<PublicDataRes<VeryShortOrShortTermForecastBase<VeryShortTermForecastCategory>>, APIError>
     {
         let parameters: VeryShortOrShortTermForecastReq = VeryShortOrShortTermForecastReq(
             numOfRows: "300",

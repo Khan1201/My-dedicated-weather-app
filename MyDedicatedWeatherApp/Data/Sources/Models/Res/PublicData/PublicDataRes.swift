@@ -6,11 +6,12 @@
 //
 
 import Foundation
+import Domain
 
-struct PublicDataRes<T>: Decodable where T: Decodable {
+public struct PublicDataRes<T>: Decodable where T: Decodable {
     
-    var item: [T]?
-    var items: [T]?
+    public  var item: [T]?
+    public  var items: [T]?
     
     enum CodingKeys: String, CodingKey {
         
@@ -29,7 +30,7 @@ struct PublicDataRes<T>: Decodable where T: Decodable {
         case item
     }
     
-    init(from decoder: Decoder) throws {
+    public  init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let responseKeys = try container.nestedContainer(keyedBy: ResponseKeys.self, forKey: .response)
         let bodyKeys = try responseKeys.nestedContainer(keyedBy: BodyKeys.self, forKey: .body)
