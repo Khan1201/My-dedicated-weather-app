@@ -7,7 +7,9 @@
 
 import Foundation
 
-struct CommonForecastUtil {
+public struct CommonForecastUtil {
+    
+    public init() {}
     
     /**
      Latitude(위도) ,Longitude(경도) -> nx, ny (단기예보, 초단기예보 전용 x, y 좌표 값)
@@ -15,7 +17,7 @@ struct CommonForecastUtil {
      - parameter ptyValue: 강수량 값,
      - parameter skyValue: 하늘상태 값
      */
-    func convertGPS2XY(mode: Gps2XY.LocationConvertMode, lat_X: Double, lng_Y: Double) -> Gps2XY.LatXLngY {
+    public func convertGPS2XY(mode: Gps2XY.LocationConvertMode, lat_X: Double, lng_Y: Double) -> Gps2XY.LatXLngY {
         
         let RE = 6371.00877 // 지구 반경(km)
         let GRID = 5.0 // 격자 간격(km)
@@ -105,7 +107,7 @@ struct CommonForecastUtil {
      - parameter sunrise: 일출 시간
      - parameter sunset: 일몰 시간
      */
-    func isDayMode(hhMM: String, sunrise: String, sunset: String) -> Bool {
+    public func isDayMode(hhMM: String, sunrise: String, sunset: String) -> Bool {
         
         let hhMMToInt = Int(hhMM) ?? 0
         let sunriseToInt = Int(sunrise) ?? 0
@@ -125,7 +127,7 @@ struct CommonForecastUtil {
      - parameter dayJson: 05 ~ 18 시 json file name
      - parameter nightJson: 19 ~ 04 시 json file name
      */
-    func decideAnimationWhetherDayOrNight(
+    public func decideAnimationWhetherDayOrNight(
         hhMM: String,
         sunrise: String,
         sunset: String,
@@ -147,7 +149,7 @@ struct CommonForecastUtil {
      - parameter dayImageString: 05 ~ 18 시 image string
      - parameter nightImageString: 19 ~ 04 시 image string
      */
-    func decideImageWhetherDayOrNight(
+    public func decideImageWhetherDayOrNight(
         hhMM: String,
         sunrise: String,
         sunset:  String ,
@@ -168,7 +170,7 @@ struct CommonForecastUtil {
      
      - parameter value: 예보 조회 response 1시간 강수량 값
      */
-    func remakeOneHourPrecipitationValueByVeryShortTermOrShortTermForecast(value: String) -> (String, String) {
+    public func remakeOneHourPrecipitationValueByVeryShortTermOrShortTermForecast(value: String) -> (String, String) {
         
         if value == "강수없음" {
             return ("비 없음", "")
@@ -201,7 +203,7 @@ struct CommonForecastUtil {
      
      - parameter value: 예보 조회 response 바람속도 값
      */
-    func remakePrecipitaionTypeValueByVeryShortTermOrShortTermForecast(
+    public func remakePrecipitaionTypeValueByVeryShortTermOrShortTermForecast(
         _ value: String,
         hhMMForDayOrNightImage: String,
         sunrise: String,
@@ -305,7 +307,7 @@ struct CommonForecastUtil {
      - parameter value: 예보 조회 response 하늘상태 값,
      - parameter isAnimationImage: is image is animation or basic
      */
-    func remakeSkyStateValueByVeryShortTermOrShortTermForecast(
+    public func remakeSkyStateValueByVeryShortTermOrShortTermForecast(
         _ value: String,
         hhMMForDayOrNightImage: String,
         sunrise: String,
@@ -378,7 +380,7 @@ struct CommonForecastUtil {
      - parameter ptyValue: 강수량 값,
      - parameter skyValue: 하늘상태 값
      */
-    func veryShortOrShortTermForecastWeatherDescriptionAndSkyTypeAndImageString(
+    public func veryShortOrShortTermForecastWeatherDescriptionAndSkyTypeAndImageString(
         ptyValue: String,
         skyValue: String,
         hhMMForDayOrNightImage: String,
@@ -412,7 +414,7 @@ struct CommonForecastUtil {
      
      - parameter value: 예보 조회 response 바람속도 값
      */
-    func remakeWindSpeedValueByVeryShortTermOrShortTermForecast(value: String) -> (String, String) {
+    public func remakeWindSpeedValueByVeryShortTermOrShortTermForecast(value: String) -> (String, String) {
         
         let stringToDouble = Double(value) ?? 0.0
         

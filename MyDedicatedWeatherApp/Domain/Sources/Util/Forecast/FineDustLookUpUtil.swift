@@ -7,14 +7,16 @@
 
 import Foundation
 
-struct FineDustLookUpUtil {
+public struct FineDustLookUpUtil {
+    
+    public init() {}
     
     /**
      미세먼지 api response value 값 -> UI 보여질 값으로 remake
      
      - parameter value: 미세먼지 값
      */
-    func remakeFindDustValue(value: String) -> Weather.DescriptionAndColor { // 미세먼지
+    public func remakeFindDustValue(value: String) -> Weather.DescriptionAndColor { // 미세먼지
         
         let valueToInt: Int = Int(value) ?? 0
         
@@ -38,7 +40,7 @@ struct FineDustLookUpUtil {
      
      - parameter value: 초미세먼지 값
      */
-    func remakeUltraFindDustValue(value: String) -> Weather.DescriptionAndColor { // 초 미세먼지
+    public func remakeUltraFindDustValue(value: String) -> Weather.DescriptionAndColor { // 초 미세먼지
         
         let valueToInt: Int = Int(value) ?? 0
         

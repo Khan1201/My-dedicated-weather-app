@@ -18,7 +18,7 @@ extension Date {
      - parameter byAdding: 더할  값
      - parameter format: format 형식 (ex: "yyyy")
      */
-    func toString(byAdding day: Int, format: String) -> String {
+    public func toString(byAdding day: Int, format: String) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = format
         dateFormatter.locale = Locale(identifier: "ko")
@@ -32,7 +32,7 @@ extension Date {
      
      - parameter dateFormat: dateFormat String
      */
-    func toString(format: String) -> String {
+    public func toString(format: String) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = format
         dateFormatter.locale = Locale(identifier: "ko")
@@ -47,7 +47,7 @@ extension Date {
      - parameter dateFormat: dateFormat String
      - parameter timeZone: time zone
      */
-    func toString(format: String, timeZone: TimeZone?) -> String {
+    public func toString(format: String, timeZone: TimeZone?) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = format
         dateFormatter.timeZone = timeZone
@@ -58,11 +58,11 @@ extension Date {
 
 extension String {
     
-    var toInt: Int {
+    public var toInt: Int {
         return Int(self) ?? 0
     }
     
-    var toDouble: Double {
+    public var toDouble: Double {
         return Double(self) ?? 0
     }
     
@@ -71,7 +71,7 @@ extension String {
      
      - parameter isSunset: 일몰인지 (오전, 오후 구분 위해)
      */
-    func hhMMtoKRhhMM(isSunset: Bool) -> String {
+    public func hhMMtoKRhhMM(isSunset: Bool) -> String {
         guard let _ = Int(self), self.count == 4 else {
             CommonUtil.shared.printError(
                 funcTitle: "hhMMtoKRhhMM(isSunset:)",
@@ -104,21 +104,21 @@ extension String {
 
 extension Int {
     
-    var toString: String {
+    public var toString: String {
         return String(self)
     }
 }
 
 extension Double {
     
-    var toInt: Int {
+    public var toInt: Int {
         return Int(self)
     }
 }
 
 extension UserDefaults {
     
-    func setUserDefaultsStringArray(value: String, key: String) {
+    public func setUserDefaultsStringArray(value: String, key: String) {
         guard var arrays = self.array(forKey: key) as? [String] else {
             self.set([value], forKey: key)
             return
@@ -127,7 +127,7 @@ extension UserDefaults {
         self.set(arrays, forKey: key)
     }
     
-    func appendAdditionalAllLocality(_ allLocality: AllLocality) {
+    public func appendAdditionalAllLocality(_ allLocality: AllLocality) {
         
         /// fullAddresses가 없을때 append
         guard let fullAddresses = UserDefaults.standard.array(forKey: UserDefaultsKeys.additionalFullAddresses) as? [String] else {
@@ -151,7 +151,7 @@ extension UserDefaults {
         setUserDefaultsStringArray(value: allLocality.subLocality, key: UserDefaultsKeys.additionalSubLocalities)
     }
     
-    func removeStringElementInArray(index: Int, key: String) {
+    public func removeStringElementInArray(index: Int, key: String) {
         guard var arrays = self.array(forKey: key) as? [String] else {
             return
         }
@@ -160,7 +160,7 @@ extension UserDefaults {
         self.set(arrays, forKey: key)
     }
     
-    static func setWidgetShared(_ value: String, to: WidgetShared) {
+    public static func setWidgetShared(_ value: String, to: WidgetShared) {
         
         switch to {
             
