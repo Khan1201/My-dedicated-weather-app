@@ -277,6 +277,7 @@
 		BC4DDA372A72C4D5000376C0 /* CurrentLocationAndDateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentLocationAndDateView.swift; sourceTree = "<group>"; };
 		BC4DDA392A72C69E000376C0 /* CurrentTempAndMinMaxTempView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentTempAndMinMaxTempView.swift; sourceTree = "<group>"; };
 		BC4DDA3B2A72C86D000376C0 /* CurrentWeatherInfItemPagerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeatherInfItemPagerView.swift; sourceTree = "<group>"; };
+		BC4EFFA12C5FA30C00FF0ECC /* AdditionalLocationFeature */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = AdditionalLocationFeature; path = MyDedicatedWeatherApp/AdditionalLocationFeature; sourceTree = "<group>"; };
 		BC5386512A6EC18500D8E085 /* WeeklyWeatherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyWeatherView.swift; sourceTree = "<group>"; };
 		BC5386532A6EC19700D8E085 /* WeeklyWeatherVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyWeatherVM.swift; sourceTree = "<group>"; };
 		BC5EF9022AE6A86100636A95 /* ContentVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentVM.swift; sourceTree = "<group>"; };
@@ -1062,6 +1063,7 @@
 		BCA30F6D29FE20390078D0B1 = {
 			isa = PBXGroup;
 			children = (
+				BC4EFFA12C5FA30C00FF0ECC /* AdditionalLocationFeature */,
 				BC49280A2C5BCE9B008ECD9D /* Domain */,
 				BC4928092C5BCB53008ECD9D /* Core */,
 				BC4928072C5BC9E2008ECD9D /* Data */,
