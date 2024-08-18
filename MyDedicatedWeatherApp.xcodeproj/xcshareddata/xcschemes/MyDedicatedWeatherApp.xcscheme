@@ -69,7 +69,7 @@
             isEnabled = "YES">
          </EnvironmentVariable>
          <EnvironmentVariable
-            key = "public_api_service_key"
+            key = "public_api_key"
             value = "y3QEGzdMjGegzjAeWWvc7ADK9H0xg3Hf3Qemgayk+bsOyp5ETXuif6Z9V7bV3MnZr995tmCZqSVpaFDgQpXF1A=="
             isEnabled = "YES">
          </EnvironmentVariable>
