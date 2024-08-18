@@ -62,6 +62,18 @@
             ReferencedContainer = "container:MyDedicatedWeatherApp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <EnvironmentVariables>
+         <EnvironmentVariable
+            key = "kakao_api_key"
+            value = "66820c78c1e5f26636315e6eccdd81a9"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "public_api_service_key"
+            value = "y3QEGzdMjGegzjAeWWvc7ADK9H0xg3Hf3Qemgayk+bsOyp5ETXuif6Z9V7bV3MnZr995tmCZqSVpaFDgQpXF1A=="
+            isEnabled = "YES">
+         </EnvironmentVariable>
+      </EnvironmentVariables>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
