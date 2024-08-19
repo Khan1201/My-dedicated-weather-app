@@ -10,9 +10,9 @@ import Core
 import Domain
 
 public protocol ShortForecastRequestable {
-    func requestShortForecastItems(xy: Gps2XY.LatXLngY, reqRow: String) async -> Result<PublicDataRes<VeryShortOrShortTermForecastBase<ShortTermForecastCategory>>, APIError>
+    func requestShortForecastItems(serviceKey: String, xy: Gps2XY.LatXLngY, reqRow: String) async -> Result<PublicDataRes<VeryShortOrShortTermForecastBase<ShortTermForecastCategory>>, APIError>
     
-    func requestTodayMinMaxTemp(xy: Gps2XY.LatXLngY) async -> Result<PublicDataRes<VeryShortOrShortTermForecastBase<ShortTermForecastCategory>>, APIError>
+    func requestTodayMinMaxTemp(serviceKey: String, xy: Gps2XY.LatXLngY) async -> Result<PublicDataRes<VeryShortOrShortTermForecastBase<ShortTermForecastCategory>>, APIError>
 }
 
 public struct ShortForecastService: ShortForecastRequestable {
@@ -22,8 +22,9 @@ public struct ShortForecastService: ShortForecastRequestable {
         self.util = util
     }
     
-    public func requestShortForecastItems(xy: Gps2XY.LatXLngY, reqRow: String) async -> Result<PublicDataRes<VeryShortOrShortTermForecastBase<ShortTermForecastCategory>>, APIError> {
+    public func requestShortForecastItems(serviceKey: String, xy: Gps2XY.LatXLngY, reqRow: String) async -> Result<PublicDataRes<VeryShortOrShortTermForecastBase<ShortTermForecastCategory>>, APIError> {
         let parameters = VeryShortOrShortTermForecastReq(
+            serviceKey: serviceKey,
             numOfRows: reqRow,
             baseDate: util.baseDatePar,
             baseTime: util.baseTimePar,
@@ -42,8 +43,9 @@ public struct ShortForecastService: ShortForecastRequestable {
         return result
     }
     
-    public func requestTodayMinMaxTemp(xy: Gps2XY.LatXLngY) async -> Result<PublicDataRes<VeryShortOrShortTermForecastBase<ShortTermForecastCategory>>, APIError> {
+    public func requestTodayMinMaxTemp(serviceKey: String, xy: Gps2XY.LatXLngY) async -> Result<PublicDataRes<VeryShortOrShortTermForecastBase<ShortTermForecastCategory>>, APIError> {
         let parameters = VeryShortOrShortTermForecastReq(
+            serviceKey: serviceKey,
             numOfRows: "300",
             baseDate: util.baseDateForTodayMinMaxReq,
             baseTime: util.baseTimeForTodayMinMaxReq,

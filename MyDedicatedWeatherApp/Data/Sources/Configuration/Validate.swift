@@ -8,10 +8,12 @@
 import Foundation
 import Alamofire
 
-struct Validate {
+public struct Validate {
     
-    func kakaoHeader() -> HTTPHeaders? {
+    public init() {}
+    
+    public func kakaoHeader(apiKey: String) -> HTTPHeaders? {
         
-        return HTTPHeaders(["Authorization": "KakaoAK \(Env.shared.kakaoRestAPIKey)"])
+        return HTTPHeaders(["Authorization": "KakaoAK \(apiKey)"])
     }
 }

@@ -6,6 +6,9 @@
 //
 
 import SwiftUI
+import Core
+import Domain
+import CurrentWeatherFeature
 
 struct ContentView: View {
     

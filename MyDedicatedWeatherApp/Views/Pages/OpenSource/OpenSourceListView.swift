@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Core
 
 struct OpenSourceListView: View {
     @Binding var isPresented: Bool

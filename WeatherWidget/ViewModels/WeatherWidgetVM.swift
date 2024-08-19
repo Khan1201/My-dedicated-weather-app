@@ -7,6 +7,8 @@
 
 import Foundation
 import Alamofire
+import Data
+import Domain
 
 struct WeatherWidgetVM {
         
@@ -136,6 +138,7 @@ extension WeatherWidgetVM {
         let y = UserDefaults.shared.string(forKey: UserDefaultsKeys.y) ?? ""
         
         let parameters: VeryShortOrShortTermForecastReq = VeryShortOrShortTermForecastReq(
+            serviceKey: Env.shared.openDataApiResponseKey,
             numOfRows: "300",
             baseDate: baseDate,
             baseTime: baseTime,
@@ -178,6 +181,7 @@ extension WeatherWidgetVM {
         let y = UserDefaults.shared.string(forKey: UserDefaultsKeys.y) ?? ""
         
         let parameters = VeryShortOrShortTermForecastReq(
+            serviceKey: Env.shared.openDataApiResponseKey,
             numOfRows: "737",
             baseDate: baseDate,
             baseTime: baseTime,
@@ -220,6 +224,7 @@ extension WeatherWidgetVM {
         let y = UserDefaults.shared.string(forKey: UserDefaultsKeys.y) ?? ""
         
         let parameters = VeryShortOrShortTermForecastReq(
+            serviceKey: Env.shared.openDataApiResponseKey,
             numOfRows: "300",
             baseDate: baseDate,
             baseTime: baseTime,
@@ -294,6 +299,7 @@ extension WeatherWidgetVM {
         let stationName: String = UserDefaults.shared.string(forKey: UserDefaultsKeys.dustStationName) ?? ""
         
         let parameters: RealTimeFindDustForecastReq = RealTimeFindDustForecastReq(
+            serviceKey: Env.shared.openDataApiResponseKey,
             stationName: stationName
         )
         
@@ -329,6 +335,7 @@ extension WeatherWidgetVM {
         let fullAddress: String = UserDefaults.shared.string(forKey: UserDefaultsKeys.fullAddress) ?? ""
         
         let parameters: MidTermForecastReq = MidTermForecastReq(
+            serviceKey: Env.shared.openDataApiResponseKey,
             regId: Util.midtermReqRegOrStnId(
                 fullAddress: fullAddress,
                 reqType: .temperature
@@ -369,6 +376,7 @@ extension WeatherWidgetVM {
         let fullAddress: String = UserDefaults.shared.string(forKey: UserDefaultsKeys.fullAddress) ?? ""
         
         let parameters: MidTermForecastReq = MidTermForecastReq(
+            serviceKey: Env.shared.openDataApiResponseKey,
             regId: Util.midtermReqRegOrStnId(
                 fullAddress: fullAddress,
                 reqType: .skystate

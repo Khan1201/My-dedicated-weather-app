@@ -107,12 +107,4 @@ final class Dummy {
             )
         )
     }
-    public static func SunAndMoonriseBase() -> SunAndMoonriseBase {
-        return .init(
-            sunrise: "",
-            sunset: "",
-            moonrise: "",
-            moonset: ""
-        )
-    }
 }

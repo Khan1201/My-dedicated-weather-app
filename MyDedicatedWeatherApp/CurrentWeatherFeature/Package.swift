@@ -15,6 +15,7 @@ let package = Package(
             targets: ["CurrentWeatherFeature"]),
     ],
     dependencies: [
+        .package(url: "https://github.com/fermoya/SwiftUIPager.git", .upToNextMajor(from: "2.0.0")),
         .package(path: "../Domain"),
         .package(path: "../Data"),
         .package(path: "../Core"),
@@ -26,6 +27,7 @@ let package = Package(
         .target(
             name: "CurrentWeatherFeature",
             dependencies: [
+                .product(name: "SwiftUIPager", package: "SwiftUIPager"),
                 .product(name: "Domain", package: "Domain"),
                 .product(name: "Data", package: "Data"),
                 .product(name: "Core", package: "Core"),

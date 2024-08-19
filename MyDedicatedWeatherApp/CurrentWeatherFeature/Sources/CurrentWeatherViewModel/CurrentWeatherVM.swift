@@ -44,6 +44,9 @@ final class CurrentWeatherVM: ObservableObject {
     @Published var showLoadRetryButton: Bool = false
     @Published var showNoticeFloater: Bool = false
     
+    private let publicApiKey: String = ProcessInfo.processInfo.environment["public_api_key"] ?? ""
+    private let kakaoApiKey: String = ProcessInfo.processInfo.environment["kakao_api_key"] ?? ""
+    
     var noticeFloaterMessage: String = ""
     var timer: Timer?
     var timerNum: Int = 0
@@ -113,7 +116,7 @@ extension CurrentWeatherVM {
     func requestVeryShortForecastItems(xy: Gps2XY.LatXLngY) async {
         let startTime = CFAbsoluteTimeGetCurrent()
         
-        let result = await veryShortForecastService.requestVeryShortForecastItems(xy: xy)
+        let result = await veryShortForecastService.requestVeryShortForecastItems(serviceKey: publicApiKey, xy: xy)
         
         switch result {
         case .success(let success):
@@ -166,7 +169,7 @@ extension CurrentWeatherVM {
     func requestShortForecastItems(xy: Gps2XY.LatXLngY) async {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
 
-        let result = await shortForecastService.requestShortForecastItems(xy: xy, reqRow: "300")
+        let result = await shortForecastService.requestShortForecastItems(serviceKey: publicApiKey, xy: xy, reqRow: "300")
         
         switch result {
         case .success(let success):
@@ -188,7 +191,7 @@ extension CurrentWeatherVM {
     func requestTodayMinMaxTemp(xy: Gps2XY.LatXLngY) async {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
 
-        let result = await shortForecastService.requestTodayMinMaxTemp(xy: xy)
+        let result = await shortForecastService.requestTodayMinMaxTemp(serviceKey: publicApiKey, xy: xy)
         
         switch result {
         case .success(let success):
@@ -210,7 +213,7 @@ extension CurrentWeatherVM {
     func requestRealTimeFindDustForecastItems() async {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
 
-        let result = await dustForecastService.requestRealTimeFindDustForecastItems(stationName: DustStationRequestParam.stationName)
+        let result = await dustForecastService.requestRealTimeFindDustForecastItems(serviceKey: publicApiKey, stationName: DustStationRequestParam.stationName)
         
         switch result {
         case .success(let success):
@@ -235,7 +238,7 @@ extension CurrentWeatherVM {
     func requestDustForecastStationXY(subLocality: String, locality: String) async {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
         
-        let result = await dustForecastService.requestDustForecastStationXY(subLocality: subLocality)
+        let result = await dustForecastService.requestDustForecastStationXY(serviceKey: publicApiKey,subLocality: subLocality)
         
         switch result {
         case .success(let success):
@@ -258,7 +261,7 @@ extension CurrentWeatherVM {
     func requestDustForecastStation(tmXAndtmY: (String, String), isCurrentLocationRequested: Bool) async {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
         
-        let result = await dustForecastService.requestDustForecastStation(tmXAndtmY: tmXAndtmY)
+        let result = await dustForecastService.requestDustForecastStation(serviceKey: publicApiKey,tmXAndtmY: tmXAndtmY)
         
         switch result {
         case .success(let success):
@@ -288,6 +291,7 @@ extension CurrentWeatherVM {
         let startTime = CFAbsoluteTimeGetCurrent()
 
         let result = await kakaoAddressService.requestKaKaoAddressBy(
+            apiKey: kakaoApiKey,
             longitude: longitude,
             latitude: latitude
         )

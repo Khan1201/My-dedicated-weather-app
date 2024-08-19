@@ -6,6 +6,9 @@
 //
 
 import Foundation
+import Domain
+import Data
+import Core
 
 final class WeeklyWeatherVM: ObservableObject {
     @Published var weeklyWeatherInformations: [Weather.WeeklyInformation] = []
@@ -32,6 +35,8 @@ final class WeeklyWeatherVM: ObservableObject {
     
     private let shortForecastService: ShortForecastRequestable
     private let midtermForecastService: MidtermForecastRequestable
+    
+    private let publicApiKey: String = ProcessInfo.processInfo.environment["public_api_key"] ?? ""
     
     var timer: Timer?
     var timerNum: Int = 0
@@ -65,6 +70,7 @@ extension WeeklyWeatherVM {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
                 
         let result = await shortForecastService.requestShortForecastItems(
+            serviceKey: publicApiKey,
             xy: .init(lat: 0, lng: 0, x: xy.0.toInt, y: xy.1.toInt),
             reqRow: "737"
         )
@@ -93,7 +99,10 @@ extension WeeklyWeatherVM {
     func requestMidTermForecastTempItems(fullAddress: String) async {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
         
-        let result = await midtermForecastService.requestMidTermForecastTempItems(fullAddress: fullAddress)
+        let result = await midtermForecastService.requestMidTermForecastTempItems(
+            serviceKey: publicApiKey,
+            fullAddress: fullAddress
+        )
         
         switch result {
         case .success(let success):
@@ -119,7 +128,10 @@ extension WeeklyWeatherVM {
     func requestMidTermForecastSkyStateItems(fullAddress: String) async {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
         
-        let result = await midtermForecastService.requestMidTermForecastSkyStateItems(fullAddress: fullAddress)
+        let result = await midtermForecastService.requestMidTermForecastSkyStateItems(
+            serviceKey: publicApiKey,
+            fullAddress: fullAddress
+        )
         
         switch result {
         case .success(let success):
@@ -514,7 +526,7 @@ extension WeeklyWeatherVM {
             initializeTaskAndTimer()
             isWeeklyWeatherInformationsLoaded = true
             initializeApiLoadedStates()
-            HapticGenerator.impact(style: .soft)
+            CustomHapticGenerator.impact(style: .soft)
         }
     }
 }

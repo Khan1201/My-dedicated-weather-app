@@ -7,15 +7,20 @@
 
 import Foundation
 
-struct RealTimeFindDustForecastReq: Encodable {
+public struct RealTimeFindDustForecastReq: Encodable {
     
-    let serviceKey: String = Env.shared.openDataApiResponseKey
-    let returnType: String = "JSON"
-    let numOfRows: String = "100"
-    let pageNo: String = "1"
-    let stationName: String
-    let dataTerm: String = "DAILY"
-    let ver: String = "1.0"
+    public let serviceKey: String
+    public let returnType: String = "JSON"
+    public let numOfRows: String = "100"
+    public let pageNo: String = "1"
+    public let stationName: String
+    public let dataTerm: String = "DAILY"
+    public let ver: String = "1.0"
+    
+    public init(serviceKey: String, stationName: String) {
+        self.serviceKey = serviceKey
+        self.stationName = stationName
+    }
     
     enum CodingKeys: String, CodingKey {
         case serviceKey,
@@ -27,7 +32,7 @@ struct RealTimeFindDustForecastReq: Encodable {
              ver
     }
     
-    func encode(to encoder: Encoder) throws {
+    public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(serviceKey, forKey: .serviceKey)
         try container.encode(returnType, forKey: .returnType)

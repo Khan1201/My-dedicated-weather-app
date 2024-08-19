@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum Route {
+public enum Route {
     
     case GET_WEATHER_SHORT_TERM_FORECAST,
          GET_WEATHER_VERY_SHORT_TERM_FORECAST,
@@ -20,7 +20,7 @@ enum Route {
          GET_WEATHER_MID_TERM_FORECAST_SKYSTATE,
          GET_WEATHER_MID_TERM_FORECAST_NEWS
     
-    var val: String {
+    public var val: String {
         
         switch self {
         

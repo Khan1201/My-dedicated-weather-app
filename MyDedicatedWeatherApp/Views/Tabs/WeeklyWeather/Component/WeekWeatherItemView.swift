@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import Domain
+import Core
 
 struct WeekWeatherItemView: View {
     let item: Weather.WeeklyInformation

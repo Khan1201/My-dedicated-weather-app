@@ -9,7 +9,7 @@ import Foundation
 
 struct DustForecastStationReq: Encodable {
     
-    let serviceKey: String = Env.shared.openDataApiResponseKey
+    let serviceKey: String
     let returnType: String = "json"
     let tmX: String
     let tmY: String

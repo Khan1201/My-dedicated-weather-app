@@ -9,21 +9,22 @@ import Foundation
 import Core
 import Domain
 
-protocol MidtermForecastRequestable {
-    func requestMidTermForecastTempItems(fullAddress: String) async -> Result<PublicDataRes<MidTermForecastTemperatureBase>, APIError>
+public protocol MidtermForecastRequestable {
+    func requestMidTermForecastTempItems(serviceKey: String, fullAddress: String) async -> Result<PublicDataRes<MidTermForecastTemperatureBase>, APIError>
     
-    func requestMidTermForecastSkyStateItems(fullAddress: String) async -> Result<PublicDataRes<MidTermForecastSkyStateBase>, APIError>
+    func requestMidTermForecastSkyStateItems(serviceKey: String, fullAddress: String) async -> Result<PublicDataRes<MidTermForecastSkyStateBase>, APIError>
 }
 
-struct MidTermForecastService: MidtermForecastRequestable {
+public struct MidTermForecastService: MidtermForecastRequestable {
     private let util: MidTermForecastUtil
     
-    init(util: MidTermForecastUtil = MidTermForecastUtil()) {
+    public init(util: MidTermForecastUtil = MidTermForecastUtil()) {
         self.util = util
     }
     
-    func requestMidTermForecastTempItems(fullAddress: String) async -> Result<PublicDataRes<MidTermForecastTemperatureBase>, APIError> {
+    public func requestMidTermForecastTempItems(serviceKey: String, fullAddress: String) async -> Result<PublicDataRes<MidTermForecastTemperatureBase>, APIError> {
         let parameters: MidTermForecastReq = MidTermForecastReq(
+            serviceKey: serviceKey,
             regId: util.regOrStnIdPar(fullAddress: fullAddress, reqType: .temperature),
             stnId: nil,
             tmFc: util.tmFcPar
@@ -40,8 +41,9 @@ struct MidTermForecastService: MidtermForecastRequestable {
         return result
     }
     
-    func requestMidTermForecastSkyStateItems(fullAddress: String) async -> Result<PublicDataRes<MidTermForecastSkyStateBase>, APIError> {
+    public func requestMidTermForecastSkyStateItems(serviceKey: String, fullAddress: String) async -> Result<PublicDataRes<MidTermForecastSkyStateBase>, APIError> {
         let parameters: MidTermForecastReq = MidTermForecastReq(
+            serviceKey: serviceKey,
             regId: util.regOrStnIdPar(fullAddress: fullAddress, reqType: .skystate),
             stnId: nil,
             tmFc: util.tmFcPar

@@ -10,7 +10,7 @@ import Core
 import Domain
 
 public protocol VeryShortForecastRequestable {
-    func requestVeryShortForecastItems(xy: Gps2XY.LatXLngY) async -> Result<PublicDataRes<VeryShortOrShortTermForecastBase<VeryShortTermForecastCategory>>, APIError>
+    func requestVeryShortForecastItems(serviceKey: String, xy: Gps2XY.LatXLngY) async -> Result<PublicDataRes<VeryShortOrShortTermForecastBase<VeryShortTermForecastCategory>>, APIError>
 }
 
 public struct VeryShortForecastService: VeryShortForecastRequestable {
@@ -20,9 +20,10 @@ public struct VeryShortForecastService: VeryShortForecastRequestable {
         self.util = util
     }
 
-    public func requestVeryShortForecastItems(xy: Gps2XY.LatXLngY) async -> Result<PublicDataRes<VeryShortOrShortTermForecastBase<VeryShortTermForecastCategory>>, APIError>
+    public func requestVeryShortForecastItems(serviceKey: String, xy: Gps2XY.LatXLngY) async -> Result<PublicDataRes<VeryShortOrShortTermForecastBase<VeryShortTermForecastCategory>>, APIError>
     {
         let parameters: VeryShortOrShortTermForecastReq = VeryShortOrShortTermForecastReq(
+            serviceKey: serviceKey,
             numOfRows: "300",
             baseDate: util.requestBaseDate,
             baseTime: util.requestBaseTime,

@@ -7,6 +7,7 @@
 
 import SwiftUI
 import WidgetKit
+import Core
 
 struct WeeklyWeatherItemView: View {
     let weekDay: String

@@ -15,7 +15,9 @@ let package = Package(
             targets: ["AdditionalLocationFeature"]),
     ],
     dependencies: [
-        .package(path: "../Domain")
+        .package(name: "Domain", path: "../Domain"),
+        .package(name: "Core", path: "../Core"),
+        .package(name: "Data", path: "../Data")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -23,7 +25,9 @@ let package = Package(
         .target(
             name: "AdditionalLocationFeature",
             dependencies: [
-                .product(name: "Domain", package: "Domain")
+                .product(name: "Domain", package: "Domain"),
+                .product(name: "Core", package: "Core"),
+                .product(name: "Data", package: "Data")
             ],
             path: "Sources"
         ),

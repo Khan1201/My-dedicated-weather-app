@@ -7,6 +7,7 @@
 
 import Foundation
 import MessageUI
+import Domain
 
 final class SettingVM: ObservableObject {
     

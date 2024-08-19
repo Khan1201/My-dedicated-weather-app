@@ -7,15 +7,24 @@
 
 import Foundation
 
-struct VeryShortOrShortTermForecastReq: Encodable {
-    let serviceKey: String = Env.shared.openDataApiResponseKey
-    let pageNo: String = "1"
-    let numOfRows: String
-    let dataType: String = "JSON"
-    let baseDate: String
-    let baseTime: String
-    let nx: String
-    let ny: String
+public struct VeryShortOrShortTermForecastReq: Encodable {
+    public let serviceKey: String
+    public let pageNo: String = "1"
+    public let numOfRows: String
+    public let dataType: String = "JSON"
+    public let baseDate: String
+    public let baseTime: String
+    public let nx: String
+    public let ny: String
+    
+    public init(serviceKey: String, numOfRows: String, baseDate: String, baseTime: String, nx: String, ny: String) {
+        self.serviceKey = serviceKey
+        self.numOfRows = numOfRows
+        self.baseDate = baseDate
+        self.baseTime = baseTime
+        self.nx = nx
+        self.ny = ny
+    }
     
     enum CodingKeys: String, CodingKey {
         case serviceKey, pageNo,
@@ -25,7 +34,7 @@ struct VeryShortOrShortTermForecastReq: Encodable {
              nx, ny
     }
     
-    func encode(to encoder: Encoder) throws {
+    public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(serviceKey, forKey: .serviceKey)
         try container.encode(pageNo, forKey: .pageNo)

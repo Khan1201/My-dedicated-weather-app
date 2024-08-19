@@ -11,7 +11,7 @@ import Core
 import Domain
 import AdditionalLocationFeature
 
-struct CurrentWeatherView: View {
+public struct CurrentWeatherView: View {
     @Binding var disableTabBarTouch: Bool
     
     @StateObject var viewModel: CurrentWeatherVM = CurrentWeatherVM()
@@ -23,7 +23,11 @@ struct CurrentWeatherView: View {
     @State private var page: Page = .first()
     @State private var pageIndex: Int = 0
     
-    var body: some View {
+    public init(disableTabBarTouch: Binding<Bool>) {
+        self._disableTabBarTouch = disableTabBarTouch
+    }
+    
+    public var body: some View {
         
         let isFirstPage: Bool = pageIndex == 0
         

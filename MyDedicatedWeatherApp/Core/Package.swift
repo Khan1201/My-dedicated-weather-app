@@ -14,6 +14,8 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/Alamofire/Alamofire.git", .upToNextMajor(from: "5.9.1")),
+        .package(url: "https://github.com/exyte/PopupView.git", .upToNextMajor(from: "2.7.0")),
+        .package(url: "https://github.com/airbnb/lottie-ios.git", .upToNextMajor(from: "4.2.0")),
         .package(path: "../Domain")
     ],
     targets: [
@@ -23,6 +25,8 @@ let package = Package(
             name: "Core",
             dependencies: [
                 .product(name: "Alamofire", package: "Alamofire"),
+                .product(name: "PopupView", package: "PopupView"),
+                .product(name: "Lottie", package: "lottie-ios"),
                 .product(name: "Domain", package: "Domain")
             ],
             path: "Sources"

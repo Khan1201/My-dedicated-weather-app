@@ -8,23 +8,23 @@
 import Foundation
 
 extension UserDefaults {
-    static var shared: UserDefaults {
+    public static var shared: UserDefaults {
         let appGroupId = "group.weatherProject"
         return UserDefaults(suiteName: appGroupId)!
     }
 }
 
-struct UserDefaultsKeys {
+public struct UserDefaultsKeys {
     
-    static let additionalFullAddresses: String = "additionalFullAddresses"
-    static let additionalLocalities: String = "additionalLocalities"
-    static let additionalSubLocalities: String = "additionalSubLocalities"
-    static let locality: String = "locality"
-    static let subLocality: String = "subLocality"
-    static let fullAddress: String = "fullAddress"
-    static let dustStationName: String = "dustStationName"
-    static let latitude: String = "latitude"
-    static let longitude: String = "longitude"
-    static let x: String = "x"
-    static let y: String = "y"
+    public static let additionalFullAddresses: String = "additionalFullAddresses"
+    public static let additionalLocalities: String = "additionalLocalities"
+    public static let additionalSubLocalities: String = "additionalSubLocalities"
+    public static let locality: String = "locality"
+    public static let subLocality: String = "subLocality"
+    public static let fullAddress: String = "fullAddress"
+    public static let dustStationName: String = "dustStationName"
+    public static let latitude: String = "latitude"
+    public static let longitude: String = "longitude"
+    public static let x: String = "x"
+    public static let y: String = "y"
 }

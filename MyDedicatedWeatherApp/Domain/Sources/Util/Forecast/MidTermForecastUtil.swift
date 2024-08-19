@@ -612,16 +612,16 @@ public struct MidTermForecastUtil {
         var minCount: Int = 0
         var maxCount: Int = 0
         
-        let convertedCurrentMin: Int = currentMin.toInt <= yAxisMin.toInt ? yAxisMin.toInt : currentMin.toInt
-        let convertedCurrentMax: Int = currentMax.toInt >= yAxisMax.toInt ? yAxisMax.toInt : currentMax.toInt
+        let convertedCurrentMin: Int = Int(currentMin) <= Int(yAxisMin) ? Int(yAxisMin) : Int(currentMin)
+        let convertedCurrentMax: Int = Int(currentMax) >= Int(yAxisMax) ? Int(yAxisMax) : Int(currentMax)
         
         // y 최저 ~ 현재 최저
-        for _ in yAxisMin.toInt...convertedCurrentMin {
+        for _ in Int(yAxisMin)...convertedCurrentMin {
             minCount += 1
         }
         
         // 현재 최대 ~ y 최대
-        for _ in convertedCurrentMax...yAxisMax.toInt {
+        for _ in convertedCurrentMax...Int(yAxisMax) {
             maxCount += 1
         }
         

@@ -7,6 +7,7 @@
 
 
 import SwiftUI
+import Domain
 
 struct WeatherWidgetEntryView : View {
     let entry: Provider.Entry

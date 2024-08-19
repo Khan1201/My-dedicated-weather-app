@@ -6,6 +6,9 @@
 //
 
 import SwiftUI
+import Domain
+import Core
+import CurrentWeatherFeature
 
 struct WeeklyWeatherView: View {
     

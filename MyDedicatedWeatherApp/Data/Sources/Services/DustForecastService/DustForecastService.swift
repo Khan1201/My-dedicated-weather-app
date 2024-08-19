@@ -10,17 +10,18 @@ import Core
 import Domain
 
 public protocol DustForecastRequestable {
-    func requestDustForecastStationXY(subLocality: String) async -> Result<PublicDataRes<DustForecastStationXYBase>, APIError>
-    func requestDustForecastStation(tmXAndtmY: (String, String)) async -> Result<PublicDataRes<DustForecastStationBase>, APIError>
-    func requestRealTimeFindDustForecastItems(stationName: String) async -> Result<PublicDataRes<RealTimeFindDustForecastBase>, APIError>
+    func requestDustForecastStationXY(serviceKey: String, subLocality: String) async -> Result<PublicDataRes<DustForecastStationXYBase>, APIError>
+    func requestDustForecastStation(serviceKey: String, tmXAndtmY: (String, String)) async -> Result<PublicDataRes<DustForecastStationBase>, APIError>
+    func requestRealTimeFindDustForecastItems(serviceKey: String, stationName: String) async -> Result<PublicDataRes<RealTimeFindDustForecastBase>, APIError>
 }
 
 public struct DustForecastService: DustForecastRequestable {
     
     public init() {}
     
-    public func requestDustForecastStationXY(subLocality: String) async -> Result<PublicDataRes<DustForecastStationXYBase>, APIError> {
+    public func requestDustForecastStationXY(serviceKey: String, subLocality: String) async -> Result<PublicDataRes<DustForecastStationXYBase>, APIError> {
         let parameters: DustForecastStationXYReq = DustForecastStationXYReq(
+            serviceKey: serviceKey,
             umdName: subLocality
         )
         
@@ -35,8 +36,9 @@ public struct DustForecastService: DustForecastRequestable {
         return result
     }
     
-    public func requestDustForecastStation(tmXAndtmY: (String, String)) async -> Result<PublicDataRes<DustForecastStationBase>, APIError> {
+    public func requestDustForecastStation(serviceKey: String, tmXAndtmY: (String, String)) async -> Result<PublicDataRes<DustForecastStationBase>, APIError> {
         let parameters: DustForecastStationReq = DustForecastStationReq(
+            serviceKey: serviceKey,
             tmX: tmXAndtmY.0,
             tmY: tmXAndtmY.1
         )
@@ -52,8 +54,9 @@ public struct DustForecastService: DustForecastRequestable {
         return result
     }
     
-    public func requestRealTimeFindDustForecastItems(stationName: String) async -> Result<PublicDataRes<RealTimeFindDustForecastBase>, APIError> {
+    public func requestRealTimeFindDustForecastItems(serviceKey: String, stationName: String) async -> Result<PublicDataRes<RealTimeFindDustForecastBase>, APIError> {
         let parameters: RealTimeFindDustForecastReq = RealTimeFindDustForecastReq(
+            serviceKey: serviceKey,
             stationName: stationName
         )
         

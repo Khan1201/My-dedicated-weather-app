@@ -21,13 +21,8 @@ public struct LineChartView: View {
     var maxLineColor: Color
     var lineWidth: CGFloat
     
-    public init(weeklyChartInformation: Binding<Weather.WeeklyChartInformation>, xTextSize: CGSize, yTextSize: CGSize, xStepSize: CGSize, yStepSize: CGSize, lineStepSize: CGSize, minLineColor: Color = Color.blue.opacity(0.6), maxLineColor: Color = Color.red.opacity(0.6), lineWidth: CGFloat = 2.5) {
+    public init(weeklyChartInformation: Binding<Weather.WeeklyChartInformation>, minLineColor: Color = Color.blue.opacity(0.6), maxLineColor: Color = Color.red.opacity(0.6), lineWidth: CGFloat = 2.5) {
         self._weeklyChartInformation = weeklyChartInformation
-        self.xTextSize = xTextSize
-        self.yTextSize = yTextSize
-        self.xStepSize = xStepSize
-        self.yStepSize = yStepSize
-        self.lineStepSize = lineStepSize
         self.minLineColor = minLineColor
         self.maxLineColor = maxLineColor
         self.lineWidth = lineWidth
