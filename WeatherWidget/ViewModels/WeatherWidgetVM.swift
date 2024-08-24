@@ -17,7 +17,7 @@ struct WeatherWidgetVM {
     private let midTermForecastService: MidtermForecastRequestable
     private let dustForecastService: DustForecastRequestable
     
-    private let serviceKey: String = Env.shared.openDataApiResponseKey
+    private let serviceKey: String = ProcessInfo.processInfo.environment["public_api_key"] ?? ""
     private let commonForecastUtil: CommonForecastUtil = .init()
     private let findDustLookUpUtil: FineDustLookUpUtil = .init()
     private let shortForecastUtil: ShortTermForecastUtil = .init()
@@ -252,23 +252,6 @@ extension WeatherWidgetVM {
         let x = UserDefaults.shared.string(forKey: UserDefaultsKeys.x) ?? ""
         let y = UserDefaults.shared.string(forKey: UserDefaultsKeys.y) ?? ""
         
-//        let parameters = VeryShortOrShortTermForecastReq(
-//            serviceKey: Env.shared.openDataApiResponseKey,
-//            numOfRows: "300",
-//            baseDate: baseDate,
-//            baseTime: baseTime,
-//            nx: x,
-//            ny: y
-//        )
-//        
-//        let dataTask = AF.request(
-//            Route.GET_WEATHER_SHORT_TERM_FORECAST.val,
-//            method: .get,
-//            parameters: parameters
-//        ).serializingDecodable(PublicDataRes<VeryShortOrShortTermForecastBase<ShortTermForecastCategory>>.self)
-        
-//        let result = await dataTask.result
-        
         let result = await shortForecastService.requestTodayMinMaxTemp(
             serviceKey: serviceKey,
             xy: .init(lat: 0, lng: 0, x: x.toInt, y: y.toInt)
@@ -329,22 +312,8 @@ extension WeatherWidgetVM {
     
     /// Return 미세먼지 및 초미세먼지 items
     func requestRealTimeFindDustAndUltraFindDustItems() async -> [RealTimeFindDustForecastBase] {
-        
         let stationName: String = UserDefaults.shared.string(forKey: UserDefaultsKeys.dustStationName) ?? ""
-        
-//        let parameters: RealTimeFindDustForecastReq = RealTimeFindDustForecastReq(
-//            serviceKey: Env.shared.openDataApiResponseKey,
-//            stationName: stationName
-//        )
-//        
-//        let dataTask = AF.request(
-//            Route.GET_REAL_TIME_FIND_DUST_FORECAST.val,
-//            method: .get,
-//            parameters: parameters
-//        ).serializingDecodable(PublicDataRes<RealTimeFindDustForecastBase>.self)
-//        
-//        let result = await dataTask.result
-        
+
         let result = await dustForecastService.requestRealTimeFindDustForecastItems(
             serviceKey: serviceKey,
             stationName: stationName
@@ -370,26 +339,7 @@ extension WeatherWidgetVM {
     
     /// Return 중기예보(3~ 10일)의 temperature items
     func requestMidTermForecastTempItems() async -> [MidTermForecastTemperatureBase] {
-        
         let fullAddress: String = UserDefaults.shared.string(forKey: UserDefaultsKeys.fullAddress) ?? ""
-        
-//        let parameters: MidTermForecastReq = MidTermForecastReq(
-//            serviceKey: Env.shared.openDataApiResponseKey,
-//            regId: Util.midtermReqRegOrStnId(
-//                fullAddress: fullAddress,
-//                reqType: .temperature
-//            ), 
-//            stnId: nil,
-//            tmFc: Util.midtermReqTmFc()
-//        )
-//        
-//        let dataTask = AF.request(
-//            Route.GET_WEATHER_MID_TERM_FORECAST_TEMP.val,
-//            method: .get,
-//            parameters: parameters
-//        ).serializingDecodable(PublicDataRes<MidTermForecastTemperatureBase>.self)
-//        
-//        let result = await dataTask.result
         
         let result = await midTermForecastService.requestMidTermForecastTempItems(
             serviceKey: serviceKey,
@@ -416,26 +366,7 @@ extension WeatherWidgetVM {
     
     /// Return 중기예보(3~ 10일)의 하늘상태 items
     func requestMidTermForecastSkyStateItems() async -> [MidTermForecastSkyStateBase] {
-        
         let fullAddress: String = UserDefaults.shared.string(forKey: UserDefaultsKeys.fullAddress) ?? ""
-        
-//        let parameters: MidTermForecastReq = MidTermForecastReq(
-//            serviceKey: Env.shared.openDataApiResponseKey,
-//            regId: Util.midtermReqRegOrStnId(
-//                fullAddress: fullAddress,
-//                reqType: .skystate
-//            ),
-//            stnId: nil,
-//            tmFc: Util.midtermReqTmFc()
-//        )
-//        
-//        let dataTask = AF.request(
-//            Route.GET_WEATHER_MID_TERM_FORECAST_SKYSTATE.val,
-//            method: .get,
-//            parameters: parameters
-//        ).serializingDecodable(PublicDataRes<MidTermForecastSkyStateBase>.self)
-//        
-//        let result = await dataTask.result
         
         let result = await midTermForecastService.requestMidTermForecastSkyStateItems(
             serviceKey: serviceKey,
