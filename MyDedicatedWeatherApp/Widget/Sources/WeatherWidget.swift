@@ -8,10 +8,12 @@
 import WidgetKit
 import SwiftUI
 
-struct WeatherWidget: Widget {
+public struct WeatherWidget: Widget {
     let kind: String = "WeatherWidget"
+    
+    public init() {}
 
-    var body: some WidgetConfiguration {
+    public var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: Provider()) { entry in
             WeatherWidgetEntryView(entry: entry)
         }

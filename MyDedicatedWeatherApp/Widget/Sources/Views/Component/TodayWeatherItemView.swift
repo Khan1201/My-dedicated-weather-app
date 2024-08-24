@@ -19,7 +19,7 @@ struct TodayWeatherItemView: View {
                 .font(.system(size: 10, weight: .medium))
                 .foregroundColor(Color.white.opacity(0.7))
             
-            Image(image)
+            Image(image, bundle: .module)
                 .resizable()
                 .frame(width: 24, height: 24)
                 .if(rainPercent != "0") { view in

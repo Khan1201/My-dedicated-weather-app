@@ -7,6 +7,7 @@
 
 import WidgetKit
 import SwiftUI
+import Widget
 
 @main
 struct WeatherWidgetBundle: WidgetBundle {

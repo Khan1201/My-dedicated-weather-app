@@ -35,7 +35,7 @@ struct WeeklyWeatherItemView: View {
             
             Spacer()
             
-            Image(image)
+            Image(image, bundle: .module)
                 .resizable()
                 .frame(width: 23, height: 23)
                 .if(precipitation != "0") { view in

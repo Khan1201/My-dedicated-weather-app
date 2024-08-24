@@ -37,7 +37,7 @@ struct CurrentWeatherTemperatureView: View {
             .foregroundColor(Color.white)
             
             HStack(alignment: .bottom, spacing: 15) {
-                Image(weatherImage)
+                Image(weatherImage, bundle: .module)
                     .resizable()
                     .frame(width: 40, height: 40)
                     .padding(.leading, 10)

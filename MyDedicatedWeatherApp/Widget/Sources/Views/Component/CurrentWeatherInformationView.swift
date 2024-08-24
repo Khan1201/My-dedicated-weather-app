@@ -36,7 +36,7 @@ struct CurrentWeatherInformationView: View {
         HStack(alignment: .center, spacing: 10) {
             VStack(alignment: .leading, spacing: 5) {
                 HStack(alignment: .center, spacing: 10) {
-                    Image("precipitation")
+                    Image("precipitation", bundle: .module)
                         .resizable()
                         .renderingMode(.template)
                         .foregroundColor(Color.blue.opacity(0.8))
@@ -48,7 +48,7 @@ struct CurrentWeatherInformationView: View {
                 }
                 
                 HStack(alignment: .center, spacing: 10) {
-                    Image("wind")
+                    Image("wind", bundle: .module)
                         .resizable()
                         .renderingMode(.template)
                         .foregroundColor(Color.red.opacity(0.8))
@@ -60,13 +60,13 @@ struct CurrentWeatherInformationView: View {
                 }
                 
                 HStack(alignment: .center, spacing: 10) {
-                    Image("wet")
+                    Image("wet", bundle: .module)
                         .resizable()
                         .renderingMode(.template)
                         .foregroundColor(Color.blue.opacity(0.8))
                         .frame(width: 15, height: 15)
                     
-                    Text("\(wet)%")
+                    Text("\(wet)%", bundle: .module)
                         .font(.system(size: 9, weight: .medium))
                         .foregroundColor(Color.white)
                 }
@@ -78,7 +78,7 @@ struct CurrentWeatherInformationView: View {
             
             VStack(alignment: .center, spacing: 10) {
                 HStack(alignment: .center, spacing: 8) {
-                    Image("fine_dust")
+                    Image("fine_dust", bundle: .module)
                         .resizable()
                         .renderingMode(.template)
                         .foregroundColor(Color.gray)
@@ -95,7 +95,7 @@ struct CurrentWeatherInformationView: View {
                 .cornerRadius(10)
                                             
                 HStack(alignment: .center, spacing: 8) {
-                    Image("fine_dust")
+                    Image("fine_dust", bundle: .module)
                         .resizable()
                         .renderingMode(.template)
                         .foregroundColor(Color.red.opacity(0.5))
