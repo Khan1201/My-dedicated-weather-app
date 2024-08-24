@@ -14,7 +14,6 @@
 		BC0857C32ACFC60300D0AE33 /* WeatherWidgetSmallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC0857C22ACFC60300D0AE33 /* WeatherWidgetSmallView.swift */; };
 		BC0857C52ACFC60F00D0AE33 /* WeatherWidgetMediumView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC0857C42ACFC60F00D0AE33 /* WeatherWidgetMediumView.swift */; };
 		BC0857C72ACFC61B00D0AE33 /* WeatherWidgetLargeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC0857C62ACFC61B00D0AE33 /* WeatherWidgetLargeView.swift */; };
-		BC15D44B2AA60EC1006DC537 /* Env.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30F9429FE39BC0078D0B1 /* Env.swift */; };
 		BC1E9E372AD293B200ECE71C /* SunriseAndSunsetGetService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC1E9E362AD293B200ECE71C /* SunriseAndSunsetGetService.swift */; };
 		BC251F2B2A76A2F8004CE9CF /* LoadingLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BC251F2A2A76A2F8004CE9CF /* LoadingLottie.json */; };
 		BC25FDA22AFBB7F400928D7C /* SettingVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC25FDA12AFBB7F400928D7C /* SettingVM.swift */; };
@@ -53,7 +52,6 @@
 		BCA30F7C29FE203A0078D0B1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30F7B29FE203A0078D0B1 /* ContentView.swift */; };
 		BCA30F7E29FE203A0078D0B1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BCA30F7D29FE203A0078D0B1 /* Assets.xcassets */; };
 		BCA30F8129FE203B0078D0B1 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BCA30F8029FE203B0078D0B1 /* Preview Assets.xcassets */; };
-		BCA30F9529FE39BC0078D0B1 /* Env.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30F9429FE39BC0078D0B1 /* Env.swift */; };
 		BCB532132A75114100DC2B33 /* CloudManyNightLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BCB532062A75114100DC2B33 /* CloudManyNightLottie.json */; };
 		BCB532142A75114100DC2B33 /* SunnyLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BCB532072A75114100DC2B33 /* SunnyLottie.json */; };
 		BCB532152A75114100DC2B33 /* LoadFailLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BCB532082A75114100DC2B33 /* LoadFailLottie.json */; };
@@ -177,7 +175,6 @@
 		BCA30F7B29FE203A0078D0B1 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		BCA30F7D29FE203A0078D0B1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BCA30F8029FE203B0078D0B1 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		BCA30F9429FE39BC0078D0B1 /* Env.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Env.swift; sourceTree = "<group>"; };
 		BCA30FA829FE7D780078D0B1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		BCB532062A75114100DC2B33 /* CloudManyNightLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CloudManyNightLottie.json; sourceTree = "<group>"; };
 		BCB532072A75114100DC2B33 /* SunnyLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SunnyLottie.json; sourceTree = "<group>"; };
@@ -577,7 +574,6 @@
 				BCA30F7D29FE203A0078D0B1 /* Assets.xcassets */,
 				BCA30FA829FE7D780078D0B1 /* Info.plist */,
 				BCA30F7F29FE203B0078D0B1 /* Preview Content */,
-				BCA30F9429FE39BC0078D0B1 /* Env.swift */,
 			);
 			path = MyDedicatedWeatherApp;
 			sourceTree = "<group>";
@@ -883,7 +879,6 @@
 				BCA30F7C29FE203A0078D0B1 /* ContentView.swift in Sources */,
 				BC436B782AF294DF006AFFC1 /* SettingView.swift in Sources */,
 				BC86DB1C2A877F85004631D3 /* WeekWeatherItemView.swift in Sources */,
-				BCA30F9529FE39BC0078D0B1 /* Env.swift in Sources */,
 				BC3C20142B0503500016E7D4 /* OpenSourceListView.swift in Sources */,
 				BC3C20162B05035B0016E7D4 /* OpenSourceDetailView.swift in Sources */,
 				BCA30F7A29FE203A0078D0B1 /* MyDedicatedWeatherAppApp.swift in Sources */,
@@ -914,7 +909,6 @@
 				BCFB3F002A9F96440043C26B /* WeatherWidgetEntryView.swift in Sources */,
 				BCFB3EFA2A9F95D40043C26B /* Provider.swift in Sources */,
 				BCFB3EE92A9F90860043C26B /* WeatherWidgetBundle.swift in Sources */,
-				BC15D44B2AA60EC1006DC537 /* Env.swift in Sources */,
 				BC0857C32ACFC60300D0AE33 /* WeatherWidgetSmallView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
