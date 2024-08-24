@@ -6,7 +6,6 @@
 //
 
 import WidgetKit
-import Alamofire
 
 struct Provider: TimelineProvider {
     
