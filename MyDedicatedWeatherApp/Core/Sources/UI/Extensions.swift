@@ -31,6 +31,16 @@ extension Color {
     }
 }
 
+extension Color {
+    public static var dayBackground: Color {
+        return Color("WidgetDayBackground")
+    }
+    
+    public static var nightBackground: Color {
+        return Color("WidgetNightBackground")
+    }
+}
+
 extension UIColor {
     
     public convenience init(hexCode: String, alpha: CGFloat = 1.0) {

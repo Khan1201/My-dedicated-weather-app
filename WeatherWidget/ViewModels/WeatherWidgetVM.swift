@@ -6,11 +6,36 @@
 //
 
 import Foundation
-import Alamofire
 import Data
 import Domain
+import Core
 
 struct WeatherWidgetVM {
+    
+    private let veryShortForecastService: VeryShortForecastRequestable
+    private let shortForecastService: ShortForecastRequestable
+    private let midTermForecastService: MidtermForecastRequestable
+    private let dustForecastService: DustForecastRequestable
+    
+    private let serviceKey: String = Env.shared.openDataApiResponseKey
+    private let commonForecastUtil: CommonForecastUtil = .init()
+    private let findDustLookUpUtil: FineDustLookUpUtil = .init()
+    private let shortForecastUtil: ShortTermForecastUtil = .init()
+    private let midTermForecastUtil: MidTermForecastUtil = .init()
+    private let commonUtil: CommonUtil = .shared
+    
+    init(
+        veryShortForecastService: VeryShortForecastRequestable = VeryShortForecastService(),
+        shortForecastService: ShortForecastRequestable = ShortForecastService(),
+        midTermForecastService: MidtermForecastRequestable = MidTermForecastService(),
+        dustForecastService: DustForecastRequestable = DustForecastService()
+    ) {
+        self.veryShortForecastService = veryShortForecastService
+        self.shortForecastService = shortForecastService
+        self.midTermForecastService = midTermForecastService
+        self.dustForecastService = dustForecastService
+    }
+    
         
     var sunriseAndSunsetHHmm: (String, String) {
         
@@ -132,40 +157,41 @@ extension WeatherWidgetVM {
     
     /// Return 초단기예보 items
     func requestVeryShortItems() async -> [VeryShortOrShortTermForecastBase<VeryShortTermForecastCategory>] {
-        let baseTime = Util.veryShortTermReqBaseTime()
-        let baseDate = Util.veryShortTermReqBaseDate(baseTime: baseTime)
         let x = UserDefaults.shared.string(forKey: UserDefaultsKeys.x) ?? ""
         let y = UserDefaults.shared.string(forKey: UserDefaultsKeys.y) ?? ""
         
-        let parameters: VeryShortOrShortTermForecastReq = VeryShortOrShortTermForecastReq(
-            serviceKey: Env.shared.openDataApiResponseKey,
-            numOfRows: "300",
-            baseDate: baseDate,
-            baseTime: baseTime,
-            nx: x,
-            ny: y
+//        let parameters: VeryShortOrShortTermForecastReq = VeryShortOrShortTermForecastReq(
+//            serviceKey: Env.shared.openDataApiResponseKey,
+//            numOfRows: "300",
+//            baseDate: baseDate,
+//            baseTime: baseTime,
+//            nx: x,
+//            ny: y
+//        )
+        
+        let result = await veryShortForecastService.requestVeryShortForecastItems(
+            serviceKey: serviceKey,
+            xy: .init(lat: 0, lng: 0, x: x.toInt, y: y.toInt)
         )
         
-        let dataTask = AF.request(
-            Route.GET_WEATHER_VERY_SHORT_TERM_FORECAST.val,
-            method: .get,
-            parameters: parameters
-        )
-            .serializingDecodable(PublicDataRes<VeryShortOrShortTermForecastBase<VeryShortTermForecastCategory>>.self)
-        
-        let result = await dataTask.result
+//        let dataTask = AF.request(
+//            Route.GET_WEATHER_VERY_SHORT_TERM_FORECAST.val,
+//            method: .get,
+//            parameters: parameters
+//        )
+//            .serializingDecodable(PublicDataRes<VeryShortOrShortTermForecastBase<VeryShortTermForecastCategory>>.self)
         
         switch result {
             
-        case .success(let result):
-            Util.printSuccess(
+        case .success(let success):
+            commonUtil.printSuccess(
                 funcTitle: "requestVeryShortItems()",
-                value: "\(result.item?.count ?? 0)개의 초단기 예보 데이터 get"
+                value: "\(success.item?.count ?? 0)개의 초단기 예보 데이터 get"
             )
-            return result.item ?? []
+            return success.item ?? []
             
         case .failure(_):
-            Util.printError(
+            commonUtil.printError(
                 funcTitle: "requestVeryShortItems()",
                 description: "초단기예보 request 실패"
             )
@@ -175,39 +201,44 @@ extension WeatherWidgetVM {
     
     /// Return 단기예보 items
     func requestShortForecastItems() async -> [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>] {
-        let baseDate = Util.shortTermReqBaseDate()
-        let baseTime = Util.shortTermReqBaseTime()
         let x = UserDefaults.shared.string(forKey: UserDefaultsKeys.x) ?? ""
         let y = UserDefaults.shared.string(forKey: UserDefaultsKeys.y) ?? ""
         
-        let parameters = VeryShortOrShortTermForecastReq(
-            serviceKey: Env.shared.openDataApiResponseKey,
-            numOfRows: "737",
-            baseDate: baseDate,
-            baseTime: baseTime,
-            nx: x,
-            ny: y
+//        let parameters = VeryShortOrShortTermForecastReq(
+//            serviceKey: Env.shared.openDataApiResponseKey,
+//            numOfRows: "737",
+//            baseDate: baseDate,
+//            baseTime: baseTime,
+//            nx: x,
+//            ny: y
+//        )
+        
+//        let dataTask = AF.request(
+//            Route.GET_WEATHER_SHORT_TERM_FORECAST.val,
+//            method: .get,
+//            parameters: parameters
+//        ).serializingDecodable(PublicDataRes<VeryShortOrShortTermForecastBase<ShortTermForecastCategory>>.self)
+        
+        
+        let result = await shortForecastService.requestShortForecastItems(
+            serviceKey: serviceKey,
+            xy: .init(lat: 0, lng: 0, x: x.toInt, y: y.toInt),
+            reqRow: "737"
         )
         
-        let dataTask = AF.request(
-            Route.GET_WEATHER_SHORT_TERM_FORECAST.val,
-            method: .get,
-            parameters: parameters
-        ).serializingDecodable(PublicDataRes<VeryShortOrShortTermForecastBase<ShortTermForecastCategory>>.self)
-        
-        let result = await dataTask.result
+//        let result = await dataTask.result
         
         switch result {
             
         case .success(let result):
-            Util.printSuccess(
+            commonUtil.printSuccess(
                 funcTitle: "requestShortItems()",
                 value: "\(result.item?.count ?? 0)개의 단기 예보 데이터 get"
             )
             return result.item ?? []
             
         case .failure(_):
-            Util.printError(
+            commonUtil.printError(
                 funcTitle: "requestShortForecastItems()",
                 description: "단기예보 request 실패"
             )
@@ -218,39 +249,42 @@ extension WeatherWidgetVM {
     /// '단기예보' 에서의 최소, 최대 온도 값 요청 위해 및
     /// 02:00 or 23:00 으로 호출해야 하므로, 따로 다시 요청한다.
     func requestTodayMinMaxTemp() async -> [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>] {
-        let baseDate = Util.baseDateForTodayMinMaxReq()
-        let baseTime = Util.baseTimeForTodayMinMaxReq()
         let x = UserDefaults.shared.string(forKey: UserDefaultsKeys.x) ?? ""
         let y = UserDefaults.shared.string(forKey: UserDefaultsKeys.y) ?? ""
         
-        let parameters = VeryShortOrShortTermForecastReq(
-            serviceKey: Env.shared.openDataApiResponseKey,
-            numOfRows: "300",
-            baseDate: baseDate,
-            baseTime: baseTime,
-            nx: x,
-            ny: y
+//        let parameters = VeryShortOrShortTermForecastReq(
+//            serviceKey: Env.shared.openDataApiResponseKey,
+//            numOfRows: "300",
+//            baseDate: baseDate,
+//            baseTime: baseTime,
+//            nx: x,
+//            ny: y
+//        )
+//        
+//        let dataTask = AF.request(
+//            Route.GET_WEATHER_SHORT_TERM_FORECAST.val,
+//            method: .get,
+//            parameters: parameters
+//        ).serializingDecodable(PublicDataRes<VeryShortOrShortTermForecastBase<ShortTermForecastCategory>>.self)
+        
+//        let result = await dataTask.result
+        
+        let result = await shortForecastService.requestTodayMinMaxTemp(
+            serviceKey: serviceKey,
+            xy: .init(lat: 0, lng: 0, x: x.toInt, y: y.toInt)
         )
-        
-        let dataTask = AF.request(
-            Route.GET_WEATHER_SHORT_TERM_FORECAST.val,
-            method: .get,
-            parameters: parameters
-        ).serializingDecodable(PublicDataRes<VeryShortOrShortTermForecastBase<ShortTermForecastCategory>>.self)
-        
-        let result = await dataTask.result
         
         switch result {
             
         case .success(let result):
-            Util.printSuccess(
+            commonUtil.printSuccess(
                 funcTitle: "requestTodayMinMaxTemp()",
                 value: "\(result.item?.count ?? 0)개의 단기예보(MinMax) 데이터 get"
             )
             return result.item ?? []
             
         case .failure(_):
-            Util.printError(
+            commonUtil.printError(
                 funcTitle: "requestTodayMinMaxTemp()",
                 description: "단기예보(MinMax) request 실패"
             )
@@ -273,7 +307,7 @@ extension WeatherWidgetVM {
 //                )
 //            )
 //            
-//            Util.printSuccess(
+//            commonUtil.printSuccess(
 //                funcTitle: "requestSunriseSunset()",
 //                value: """
 //                일출시간: \(parser.result.sunrise)
@@ -284,7 +318,7 @@ extension WeatherWidgetVM {
 //            return (parser.result.sunrise, parser.result.sunset)
 //            
 //        } catch {
-//            Util.printError(
+//            commonUtil.printError(
 //                funcTitle: "requestSunriseSunset()",
 //                description: "일출 일물 시간 request 실패"
 //            )
@@ -298,30 +332,35 @@ extension WeatherWidgetVM {
         
         let stationName: String = UserDefaults.shared.string(forKey: UserDefaultsKeys.dustStationName) ?? ""
         
-        let parameters: RealTimeFindDustForecastReq = RealTimeFindDustForecastReq(
-            serviceKey: Env.shared.openDataApiResponseKey,
+//        let parameters: RealTimeFindDustForecastReq = RealTimeFindDustForecastReq(
+//            serviceKey: Env.shared.openDataApiResponseKey,
+//            stationName: stationName
+//        )
+//        
+//        let dataTask = AF.request(
+//            Route.GET_REAL_TIME_FIND_DUST_FORECAST.val,
+//            method: .get,
+//            parameters: parameters
+//        ).serializingDecodable(PublicDataRes<RealTimeFindDustForecastBase>.self)
+//        
+//        let result = await dataTask.result
+        
+        let result = await dustForecastService.requestRealTimeFindDustForecastItems(
+            serviceKey: serviceKey,
             stationName: stationName
         )
-        
-        let dataTask = AF.request(
-            Route.GET_REAL_TIME_FIND_DUST_FORECAST.val,
-            method: .get,
-            parameters: parameters
-        ).serializingDecodable(PublicDataRes<RealTimeFindDustForecastBase>.self)
-        
-        let result = await dataTask.result
         
         switch result {
             
         case .success(let result):
-            Util.printSuccess(
+            commonUtil.printSuccess(
                 funcTitle: "requestRealTimeFindDustAndUltraFindDustItems()",
                 value: "\(result.items?.count ?? 0)개의 미세먼지, 초 미세먼지 데이터 get"
             )
             return result.items ?? []
             
         case .failure(_):
-            Util.printError(
+            commonUtil.printError(
                 funcTitle: "requestRealTimeFindDustAndUltraFindDustItems()",
                 description: "미세먼지 request 실패"
             )
@@ -334,35 +373,40 @@ extension WeatherWidgetVM {
         
         let fullAddress: String = UserDefaults.shared.string(forKey: UserDefaultsKeys.fullAddress) ?? ""
         
-        let parameters: MidTermForecastReq = MidTermForecastReq(
-            serviceKey: Env.shared.openDataApiResponseKey,
-            regId: Util.midtermReqRegOrStnId(
-                fullAddress: fullAddress,
-                reqType: .temperature
-            ), 
-            stnId: nil,
-            tmFc: Util.midtermReqTmFc()
+//        let parameters: MidTermForecastReq = MidTermForecastReq(
+//            serviceKey: Env.shared.openDataApiResponseKey,
+//            regId: Util.midtermReqRegOrStnId(
+//                fullAddress: fullAddress,
+//                reqType: .temperature
+//            ), 
+//            stnId: nil,
+//            tmFc: Util.midtermReqTmFc()
+//        )
+//        
+//        let dataTask = AF.request(
+//            Route.GET_WEATHER_MID_TERM_FORECAST_TEMP.val,
+//            method: .get,
+//            parameters: parameters
+//        ).serializingDecodable(PublicDataRes<MidTermForecastTemperatureBase>.self)
+//        
+//        let result = await dataTask.result
+        
+        let result = await midTermForecastService.requestMidTermForecastTempItems(
+            serviceKey: serviceKey,
+            fullAddress: fullAddress
         )
-        
-        let dataTask = AF.request(
-            Route.GET_WEATHER_MID_TERM_FORECAST_TEMP.val,
-            method: .get,
-            parameters: parameters
-        ).serializingDecodable(PublicDataRes<MidTermForecastTemperatureBase>.self)
-        
-        let result = await dataTask.result
         
         switch result {
             
         case .success(let result):
-            Util.printSuccess(
+            commonUtil.printSuccess(
                 funcTitle: "requestMidTermForecastTempItems()",
                 value: "\(result.item?.count ?? 0)개의 중기예보의 temperature 데이터 get"
             )
             return result.item ?? []
             
         case .failure(_):
-            Util.printError(
+            commonUtil.printError(
                 funcTitle: "requestMidTermForecastTempItems()",
                 description: "중기예보 온도 request 실패"
             )
@@ -375,35 +419,40 @@ extension WeatherWidgetVM {
         
         let fullAddress: String = UserDefaults.shared.string(forKey: UserDefaultsKeys.fullAddress) ?? ""
         
-        let parameters: MidTermForecastReq = MidTermForecastReq(
-            serviceKey: Env.shared.openDataApiResponseKey,
-            regId: Util.midtermReqRegOrStnId(
-                fullAddress: fullAddress,
-                reqType: .skystate
-            ),
-            stnId: nil,
-            tmFc: Util.midtermReqTmFc()
+//        let parameters: MidTermForecastReq = MidTermForecastReq(
+//            serviceKey: Env.shared.openDataApiResponseKey,
+//            regId: Util.midtermReqRegOrStnId(
+//                fullAddress: fullAddress,
+//                reqType: .skystate
+//            ),
+//            stnId: nil,
+//            tmFc: Util.midtermReqTmFc()
+//        )
+//        
+//        let dataTask = AF.request(
+//            Route.GET_WEATHER_MID_TERM_FORECAST_SKYSTATE.val,
+//            method: .get,
+//            parameters: parameters
+//        ).serializingDecodable(PublicDataRes<MidTermForecastSkyStateBase>.self)
+//        
+//        let result = await dataTask.result
+        
+        let result = await midTermForecastService.requestMidTermForecastSkyStateItems(
+            serviceKey: serviceKey,
+            fullAddress: fullAddress
         )
-        
-        let dataTask = AF.request(
-            Route.GET_WEATHER_MID_TERM_FORECAST_SKYSTATE.val,
-            method: .get,
-            parameters: parameters
-        ).serializingDecodable(PublicDataRes<MidTermForecastSkyStateBase>.self)
-        
-        let result = await dataTask.result
         
         switch result {
             
         case .success(let result):
-            Util.printSuccess(
+            commonUtil.printSuccess(
                 funcTitle: "rrequestMidTermForecastSkyStateItems()",
                 value: "\(result.item?.count ?? 0)개의 중기예보의 skyState 데이터 get"
             )
             return result.item ?? []
             
         case .failure(_):
-            Util.printError(
+            commonUtil.printError(
                 funcTitle: "requestMidTermForecastSkyStateItems()",
                 description: "중기예보 하늘상태 request 실패"
             )
@@ -434,18 +483,25 @@ extension WeatherWidgetVM {
             let skyState = items[18].fcstValue
             
             result.smallFamilyData.currentWeatherItem.currentTemperature = currentTemperature
-            result.smallFamilyData.currentWeatherItem.wind = Util.remakeWindSpeedValueForToString(value: currentWindSpeed).0
+            result.smallFamilyData.currentWeatherItem.wind = commonForecastUtil.remakeWindSpeedValueByVeryShortTermOrShortTermForecast(value: currentWindSpeed).0
             result.smallFamilyData.currentWeatherItem.wetPercent = currentWetPercent
-            result.smallFamilyData.currentWeatherItem.precipitation = Util.remakePrecipitationValueForToString(value: currentOneHourPrecipitation).0
+            result.smallFamilyData.currentWeatherItem.precipitation = commonForecastUtil.remakeOneHourPrecipitationValueByVeryShortTermOrShortTermForecast(value: currentOneHourPrecipitation).0
             result.smallFamilyData.currentWeatherItem.weatherImage =
-            Util.remakeRainStateAndSkyStateForWeatherImage(rainState: rainState, skyState: skyState, hhMM: targetTime, sunrise: sunrise, sunset: sunset)
-            result.isDayMode = Util.isDayMode(
-                targetHHmm: Date().toString(format: "HHmm"),
+            commonForecastUtil.veryShortOrShortTermForecastWeatherDescriptionAndSkyTypeAndImageString(
+                ptyValue: rainState,
+                skyValue: skyState,
+                hhMMForDayOrNightImage: targetTime,
+                sunrise: sunrise,
+                sunset: sunset,
+                isAnimationImage: false
+            ).imageString
+            result.isDayMode = commonForecastUtil.isDayMode(
+                hhMM: Date().toString(format: "HHmm"),
                 sunrise: sunrise,
                 sunset: sunset
             )
             
-            Util.printSuccess(
+            commonUtil.printSuccess(
                 funcTitle: "applyVeryShortForecastData",
                 value: """
             현재 온도: \(result.smallFamilyData.currentWeatherItem.currentTemperature),
@@ -458,7 +514,7 @@ extension WeatherWidgetVM {
             )
             
         } else {
-            Util.printError(
+            commonUtil.printError(
                 funcTitle: "applyVeryShortForecastData",
                 description: "초단기예보 데이터 세팅에 items의 55개의 데이터가 필요합니다. items의 개수가 55개를 넘지 못하므로, index 접근 불가"
             )
@@ -488,7 +544,7 @@ extension WeatherWidgetVM {
         }
         
         
-        let skipValue = Util.todayWeatherIndexSkipValue()
+        let skipValue = shortForecastUtil.todayWeatherIndexSkipValue
 
         var tempIndex = 0 + skipValue
         var skyIndex = 5 + skipValue
@@ -496,7 +552,7 @@ extension WeatherWidgetVM {
         var popIndex = 7 + skipValue
         
         var step = 12
-        let loopCount = Util.todayWeatherLoopCount()
+        let loopCount = shortForecastUtil.todayWeatherLoopCount
 
         var tempResult: [MediumFamilyData.TodayWeatherItem] = []
         
@@ -513,15 +569,17 @@ extension WeatherWidgetVM {
                 step = isExistTmxOrTmn ? 13 : 12
                 
                 if i <= 5 {
-                    let time = Util.convertAMOrPMFromHHmm(items[tempIndex].fcstTime)
+                    let time = commonUtil.convertAMOrPMFromHHmm(items[tempIndex].fcstTime)
                     
-                    let weatherImage = Util.remakeRainStateAndSkyStateForWeatherImage(
-                        rainState: items[ptyIndex].fcstValue,
-                        skyState: items[skyIndex].fcstValue,
-                        hhMM: items[ptyIndex].fcstTime, // // 날씨 이미지 day or night 인지 구분위한 target time
+                    let weatherImage = commonForecastUtil.veryShortOrShortTermForecastWeatherDescriptionAndSkyTypeAndImageString(
+                        ptyValue: items[ptyIndex].fcstValue,
+                        skyValue: items[skyIndex].fcstValue,
+                        hhMMForDayOrNightImage: items[ptyIndex].fcstTime,
                         sunrise: sunrise,
-                        sunset: sunset
-                    )
+                        sunset: sunset,
+                        isAnimationImage: false
+                    ).imageString
+                    
                     let precipitation = items[popIndex].fcstValue
                     let temperature = items[tempIndex].fcstValue
                     
@@ -549,7 +607,7 @@ extension WeatherWidgetVM {
             
             result.largeFamilyData.weeklyWeatherItems = weeklyWeatherItemsByOneToTwoDays(items)
             
-            Util.printSuccess(
+            commonUtil.printSuccess(
                 funcTitle: "applyShortForecastData",
                 value: """
             최저온도: \(minMaxTemperature.0),
@@ -561,7 +619,8 @@ extension WeatherWidgetVM {
             )
             
         } else {
-            Util.printError(
+            
+            commonUtil.printError(
                 funcTitle: "applyShortForecastData()",
                 description: "현재 날씨에서 +1 ~ 24시간까지의 데이터가 존재하지 않습니다."
             )
@@ -573,18 +632,19 @@ extension WeatherWidgetVM {
         to result: inout SimpleEntry
     ) {
         guard let item = items.first else {
-            Util.printError(
+            commonUtil.printError(
                 funcTitle: "applyRealTimeFindDustAndUltraFindDustItems()",
                 description: "items가 존재하지 않습니다."
             )
             return
             
         }
-        let findDust: String = Util.remakeFindDustValue(value: item.pm10Value)
-        let ultraFindDust: String = Util.remakeUltraFindDustValue(value: item.pm25Value)
+        
+        let findDust: String = findDustLookUpUtil.remakeFindDustValue(value: item.pm10Value).description
+        let ultraFindDust: String = findDustLookUpUtil.remakeUltraFindDustValue(value: item.pm25Value).description
         result.smallFamilyData.currentWeatherItem.findDust = (findDust, ultraFindDust)
         
-        Util.printSuccess(
+        commonUtil.printSuccess(
             funcTitle: "applyRealTimeFindDustAndUltraFindDustItems()",
             value: """
         미세먼지: \(findDust),
@@ -601,7 +661,7 @@ extension WeatherWidgetVM {
 
         //
         guard let filteredTemperatureItem = temperatureItems.first else {
-            Util.printError(
+            commonUtil.printError(
                 funcTitle: "applyMidtermForecastTemperatureSkyStateItems()",
                 description: "temperatureItems array의 first가 존재하지 않습니다."
             )
@@ -616,16 +676,17 @@ extension WeatherWidgetVM {
         
         //
         guard let filteredSkyStateItem = skyStateItems.first else {
-            Util.printError(
+            commonUtil.printError(
                 funcTitle: "applyMidtermForecastTemperatureSkyStateItems()",
                 description: "skyStateItems array의 first가 존재하지 않습니다."
             )
             return
         }
         var skyStateResult: [String] = []
-        skyStateResult.append(Util.remakeMidforecastSkyStateForWeatherImage(value: filteredSkyStateItem.wf3Am))
-        skyStateResult.append(Util.remakeMidforecastSkyStateForWeatherImage(value: filteredSkyStateItem.wf4Am))
-        skyStateResult.append(Util.remakeMidforecastSkyStateForWeatherImage(value: filteredSkyStateItem.wf5Am))
+        
+        skyStateResult.append(midTermForecastUtil.remakeSkyStateValueToImageString(value: filteredSkyStateItem.wf3Am))
+        skyStateResult.append(midTermForecastUtil.remakeSkyStateValueToImageString(value: filteredSkyStateItem.wf4Am))
+        skyStateResult.append(midTermForecastUtil.remakeSkyStateValueToImageString(value: filteredSkyStateItem.wf5Am))
         
 
         var rainPercentResult: [String] = []
@@ -634,15 +695,15 @@ extension WeatherWidgetVM {
         rainPercentResult.append(filteredSkyStateItem.rnSt5Am.toString)
         
         var weatherImageResult: [String] = []
-        weatherImageResult.append(Util.remakeMidforecastSkyStateForWeatherImage(value: filteredSkyStateItem.wf3Am))
-        weatherImageResult.append(Util.remakeMidforecastSkyStateForWeatherImage(value: filteredSkyStateItem.wf4Am))
-        weatherImageResult.append(Util.remakeMidforecastSkyStateForWeatherImage(value: filteredSkyStateItem.wf5Am))
+        weatherImageResult.append(midTermForecastUtil.remakeSkyStateValueToImageString(value: filteredSkyStateItem.wf3Am))
+        weatherImageResult.append(midTermForecastUtil.remakeSkyStateValueToImageString(value: filteredSkyStateItem.wf4Am))
+        weatherImageResult.append(midTermForecastUtil.remakeSkyStateValueToImageString(value: filteredSkyStateItem.wf5Am))
                 
         let currentDate: Date = Date()
         
         guard temperatureResult.count >= 3 && skyStateResult.count >= 3 && rainPercentResult.count >= 3 else {
             
-            Util.printError(
+            commonUtil.printError(
                 funcTitle: "applyMidtermForecastTemperatureSkyStateItems()",
                 description: "+3 ~ 5일에 해당되는 temperature or weather image or rainpercent items가 충분하지 않습니다."
             )
@@ -678,7 +739,7 @@ extension WeatherWidgetVM {
             
             guard midtermForcastMinMaxTemperatureItems(temperatureItems).count >= 3 && midtermForecastWeatherImageItems(skyStateItems).count >= 3 && midtermForecastRainPercentItems(skyStateItems).count >= 3 else {
                 
-                Util.printError(
+                commonUtil.printError(
                     funcTitle: "weeklyWeatherItemsByThreeToFiveDays()",
                     description: "+3 ~ 5일에 해당되는 temperature or weather image or rainpercent items가 충분하지 않습니다."
                 )
@@ -707,7 +768,7 @@ extension WeatherWidgetVM {
         _ items: [MidTermForecastTemperatureBase]
     ) -> [(String, String)] {
         guard let item = items.first else {
-            Util.printError(
+            commonUtil.printError(
                 funcTitle: "midtermForcastMinMaxTemperatureItems()",
                 description: "items array의 first가 존재하지 않습니다."
             )
@@ -727,16 +788,17 @@ extension WeatherWidgetVM {
         _ items: [MidTermForecastSkyStateBase]
     ) -> [String] {
         guard let item = items.first else {
-            Util.printError(
+            commonUtil.printError(
                 funcTitle: "midtermForecastWeatherImageItems()",
                 description: "items array의 first가 존재하지 않습니다."
             )
             return []
         }
         var tempResult: [String] = []
-        tempResult.append(Util.remakeMidforecastSkyStateForWeatherImage(value: item.wf3Am))
-        tempResult.append(Util.remakeMidforecastSkyStateForWeatherImage(value: item.wf4Am))
-        tempResult.append(Util.remakeMidforecastSkyStateForWeatherImage(value: item.wf5Am))
+                    
+        tempResult.append(midTermForecastUtil.remakeSkyStateValueToImageString(value: item.wf3Am))
+        tempResult.append(midTermForecastUtil.remakeSkyStateValueToImageString(value: item.wf4Am))
+        tempResult.append(midTermForecastUtil.remakeSkyStateValueToImageString(value: item.wf5Am))
         
         return tempResult
     }
@@ -746,7 +808,7 @@ extension WeatherWidgetVM {
         _ items: [MidTermForecastSkyStateBase]
     ) -> [String] {
         guard let item = items.first else {
-            Util.printError(
+            commonUtil.printError(
                 funcTitle: "midtermForecastRainPercentItems()",
                 description: "items array의 first가 존재하지 않습니다."
             )
@@ -772,7 +834,7 @@ extension WeatherWidgetVM {
             
             guard minMaxTemperatureItems.count >= 2 && weatherImageItems.count >= 2 && rainPercentItems.count >= 2 else {
                 
-                Util.printError(
+                commonUtil.printError(
                     funcTitle: "weeklyWeatherItemsByOneToTwoDays()",
                     description: "+1 ~ 2일에 해당되는 temperature or weather image or rainpercent items가 충분하지 않습니다.",
                     value: """
@@ -859,8 +921,13 @@ extension WeatherWidgetVM {
         
         for i in 0..<skyStateFilteredItems.count {
             result.append(
-                Util
-                    .remakeSkyStateForWeatherImage(skyStateFilteredItems[i].fcstValue, hhMM: "1200", sunrise: "0600", sunset: "2000")
+                commonForecastUtil.remakeSkyStateValueByVeryShortTermOrShortTermForecast(
+                    skyStateFilteredItems[i].fcstValue,
+                    hhMMForDayOrNightImage: "1200",
+                    sunrise: "0600",
+                    sunset: "2000",
+                    isAnimationImage: false
+                ).imageString
             )
         }
         
