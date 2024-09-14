@@ -17,7 +17,7 @@ struct WeatherWidgetVM {
     private let midTermForecastService: MidtermForecastRequestable
     private let dustForecastService: DustForecastRequestable
     
-    private let serviceKey: String = ProcessInfo.processInfo.environment["public_api_key"] ?? ""
+    private let serviceKey: String = Bundle.main.object(forInfoDictionaryKey: "public_api_key") as? String ?? ""
     private let commonForecastUtil: CommonForecastUtil = .init()
     private let findDustLookUpUtil: FineDustLookUpUtil = .init()
     private let shortForecastUtil: ShortTermForecastUtil = .init()

@@ -18,6 +18,7 @@
 		BC436B782AF294DF006AFFC1 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC436B772AF294DF006AFFC1 /* SettingView.swift */; };
 		BC5386522A6EC18500D8E085 /* WeeklyWeatherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5386512A6EC18500D8E085 /* WeeklyWeatherView.swift */; };
 		BC5386542A6EC19700D8E085 /* WeeklyWeatherVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5386532A6EC19700D8E085 /* WeeklyWeatherVM.swift */; };
+		BC5D13752C9588AA0076F6C8 /* Env.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = BC5D13742C9588AA0076F6C8 /* Env.xcconfig */; };
 		BC5EF9052AE6AF7300636A95 /* LaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5EF9042AE6AF7300636A95 /* LaunchScreen.swift */; };
 		BC71DEE72C72C4F200313D6F /* Core in Frameworks */ = {isa = PBXBuildFile; productRef = BC71DEE62C72C4F200313D6F /* Core */; };
 		BC723C652B57D25A0086BAAB /* RainSnowLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BC723C642B57D25A0086BAAB /* RainSnowLottie.json */; };
@@ -132,6 +133,7 @@
 		BC4EFFA12C5FA30C00FF0ECC /* AdditionalLocationFeature */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = AdditionalLocationFeature; path = MyDedicatedWeatherApp/AdditionalLocationFeature; sourceTree = "<group>"; };
 		BC5386512A6EC18500D8E085 /* WeeklyWeatherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyWeatherView.swift; sourceTree = "<group>"; };
 		BC5386532A6EC19700D8E085 /* WeeklyWeatherVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyWeatherVM.swift; sourceTree = "<group>"; };
+		BC5D13742C9588AA0076F6C8 /* Env.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Env.xcconfig; sourceTree = "<group>"; };
 		BC5EF9042AE6AF7300636A95 /* LaunchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreen.swift; sourceTree = "<group>"; };
 		BC723C642B57D25A0086BAAB /* RainSnowLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = RainSnowLottie.json; sourceTree = "<group>"; };
 		BC723C662B57D54C0086BAAB /* BackgroundSnowLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BackgroundSnowLottie.json; sourceTree = "<group>"; };
@@ -452,6 +454,7 @@
 		BCA30F6D29FE20390078D0B1 = {
 			isa = PBXGroup;
 			children = (
+				BC5D13742C9588AA0076F6C8 /* Env.xcconfig */,
 				BC956E122C7A200000600330 /* Widget */,
 				BC4EFFA12C5FA30C00FF0ECC /* AdditionalLocationFeature */,
 				BC49280A2C5BCE9B008ECD9D /* Domain */,
@@ -709,6 +712,7 @@
 				BCE4899C2A4EA32400A18B2B /* LICENSE in Resources */,
 				BCB532192A75114100DC2B33 /* ThunderLottie.json in Resources */,
 				BCB532172A75114100DC2B33 /* SunnyNightLottie.json in Resources */,
+				BC5D13752C9588AA0076F6C8 /* Env.xcconfig in Resources */,
 				BCB5321D2A75114100DC2B33 /* ThunderRainLottie.json in Resources */,
 				BCB532182A75114100DC2B33 /* RainShowerLottie.json in Resources */,
 				BC307E202A7935D60008800A /* LocationLottie.json in Resources */,
@@ -977,6 +981,7 @@
 		};
 		BCA30F8529FE203B0078D0B1 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BC5D13742C9588AA0076F6C8 /* Env.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -989,6 +994,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MyDedicatedWeatherApp/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "날씨모아";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "내 위치 확인를 위해 권한이 필요합니다.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "내 위치 확인을 위해 권한이 필요합니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -1012,6 +1018,7 @@
 		};
 		BCA30F8629FE203B0078D0B1 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BC5D13742C9588AA0076F6C8 /* Env.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1024,6 +1031,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MyDedicatedWeatherApp/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "날씨모아";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "내 위치 확인를 위해 권한이 필요합니다.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "내 위치 확인을 위해 권한이 필요합니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -1047,6 +1055,7 @@
 		};
 		BCFB3EF32A9F90870043C26B /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BC5D13742C9588AA0076F6C8 /* Env.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
@@ -1076,6 +1085,7 @@
 		};
 		BCFB3EF42A9F90870043C26B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BC5D13742C9588AA0076F6C8 /* Env.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;

@@ -2,6 +2,13 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
+	<key>Privacy — Location When In Use Usage Description</key>
+	<string>날씨 데이터를 가져오기 위해 위치 정보 권한이 필요합니다.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>SpoqaHanSansNeo-Thin.otf</string>
@@ -10,12 +17,9 @@
 		<string>SpoqaHanSansNeo-Light.otf</string>
 		<string>SpoqaHanSansNeo-Bold.otf</string>
 	</array>
-	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSAllowsArbitraryLoads</key>
-		<true/>
-	</dict>
-	<key>Privacy — Location When In Use Usage Description</key>
-	<string>날씨 데이터를 가져오기 위해 위치 정보 권한이 필요합니다.</string>
+	<key>kakao_api_key</key>
+	<string>$(kakao_api_key)</string>
+	<key>public_api_key</key>
+	<string>$(public_api_key)</string>
 </dict>
 </plist>
