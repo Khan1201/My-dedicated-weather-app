@@ -160,26 +160,10 @@ extension WeatherWidgetVM {
         let x = UserDefaults.shared.string(forKey: UserDefaultsKeys.x) ?? ""
         let y = UserDefaults.shared.string(forKey: UserDefaultsKeys.y) ?? ""
         
-//        let parameters: VeryShortOrShortTermForecastReq = VeryShortOrShortTermForecastReq(
-//            serviceKey: Env.shared.openDataApiResponseKey,
-//            numOfRows: "300",
-//            baseDate: baseDate,
-//            baseTime: baseTime,
-//            nx: x,
-//            ny: y
-//        )
-        
         let result = await veryShortForecastService.requestVeryShortForecastItems(
             serviceKey: serviceKey,
             xy: .init(lat: 0, lng: 0, x: x.toInt, y: y.toInt)
         )
-        
-//        let dataTask = AF.request(
-//            Route.GET_WEATHER_VERY_SHORT_TERM_FORECAST.val,
-//            method: .get,
-//            parameters: parameters
-//        )
-//            .serializingDecodable(PublicDataRes<VeryShortOrShortTermForecastBase<VeryShortTermForecastCategory>>.self)
         
         switch result {
             
@@ -204,30 +188,12 @@ extension WeatherWidgetVM {
         let x = UserDefaults.shared.string(forKey: UserDefaultsKeys.x) ?? ""
         let y = UserDefaults.shared.string(forKey: UserDefaultsKeys.y) ?? ""
         
-//        let parameters = VeryShortOrShortTermForecastReq(
-//            serviceKey: Env.shared.openDataApiResponseKey,
-//            numOfRows: "737",
-//            baseDate: baseDate,
-//            baseTime: baseTime,
-//            nx: x,
-//            ny: y
-//        )
-        
-//        let dataTask = AF.request(
-//            Route.GET_WEATHER_SHORT_TERM_FORECAST.val,
-//            method: .get,
-//            parameters: parameters
-//        ).serializingDecodable(PublicDataRes<VeryShortOrShortTermForecastBase<ShortTermForecastCategory>>.self)
-        
-        
         let result = await shortForecastService.requestShortForecastItems(
             serviceKey: serviceKey,
             xy: .init(lat: 0, lng: 0, x: x.toInt, y: y.toInt),
             reqRow: "737"
         )
-        
-//        let result = await dataTask.result
-        
+                
         switch result {
             
         case .success(let result):
