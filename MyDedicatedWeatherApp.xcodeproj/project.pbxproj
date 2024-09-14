@@ -142,7 +142,7 @@
 		BCA30F7B29FE203A0078D0B1 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
 		BCA30F7D29FE203A0078D0B1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BCA30F8029FE203B0078D0B1 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		BCA30FA829FE7D780078D0B1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		BCA30FA829FE7D780078D0B1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BCB532062A75114100DC2B33 /* CloudManyNightLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CloudManyNightLottie.json; sourceTree = "<group>"; };
 		BCB532072A75114100DC2B33 /* SunnyLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SunnyLottie.json; sourceTree = "<group>"; };
 		BCB532082A75114100DC2B33 /* LoadFailLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LoadFailLottie.json; sourceTree = "<group>"; };
@@ -252,13 +252,25 @@
 			path = LottieAnimation;
 			sourceTree = "<group>";
 		};
-		BC24199F2AA4A3F00035EDBE /* ExternalFiles */ = {
+		BC5D137E2C95990E0076F6C8 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				BCA30F7D29FE203A0078D0B1 /* Assets.xcassets */,
+				BCA30FA829FE7D780078D0B1 /* Info.plist */,
+				BCA30F7F29FE203B0078D0B1 /* Preview Content */,
 				BCE489952A4EA2F900A18B2B /* CustomFont */,
 				BC137CA62A1282A9002D6667 /* LottieAnimation */,
 			);
-			path = ExternalFiles;
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		BC5D137F2C95994A0076F6C8 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				BCA30F7B29FE203A0078D0B1 /* MainTabView.swift */,
+				BC5EF9042AE6AF7300636A95 /* LaunchScreen.swift */,
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 		BC76BABC2BAB048400DA19A8 /* MyDedicatedWeatherUnitTests */ = {
@@ -384,14 +396,10 @@
 		BCA30F7829FE203A0078D0B1 /* MyDedicatedWeatherApp */ = {
 			isa = PBXGroup;
 			children = (
+				BC5D137F2C95994A0076F6C8 /* Components */,
+				BC5D137E2C95990E0076F6C8 /* Resources */,
 				BC15D43C2AA60AC8006DC537 /* MyDedicatedWeatherApp.entitlements */,
-				BCA30F7B29FE203A0078D0B1 /* MainTabView.swift */,
-				BC24199F2AA4A3F00035EDBE /* ExternalFiles */,
 				BCA30F7929FE203A0078D0B1 /* MyDedicatedWeatherAppApp.swift */,
-				BC5EF9042AE6AF7300636A95 /* LaunchScreen.swift */,
-				BCA30F7D29FE203A0078D0B1 /* Assets.xcassets */,
-				BCA30FA829FE7D780078D0B1 /* Info.plist */,
-				BCA30F7F29FE203B0078D0B1 /* Preview Content */,
 			);
 			path = MyDedicatedWeatherApp;
 			sourceTree = "<group>";
@@ -869,11 +877,11 @@
 				CODE_SIGN_ENTITLEMENTS = MyDedicatedWeatherApp/MyDedicatedWeatherApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"MyDedicatedWeatherApp/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"MyDedicatedWeatherApp/Resources/Preview Content\"";
 				DEVELOPMENT_TEAM = 475T36V685;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = MyDedicatedWeatherApp/Info.plist;
+				INFOPLIST_FILE = MyDedicatedWeatherApp/Resources/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "날씨모아";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "내 위치 확인를 위해 권한이 필요합니다.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "내 위치 확인을 위해 권한이 필요합니다.";
@@ -906,11 +914,11 @@
 				CODE_SIGN_ENTITLEMENTS = MyDedicatedWeatherApp/MyDedicatedWeatherApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"MyDedicatedWeatherApp/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"MyDedicatedWeatherApp/Resources/Preview Content\"";
 				DEVELOPMENT_TEAM = 475T36V685;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = MyDedicatedWeatherApp/Info.plist;
+				INFOPLIST_FILE = MyDedicatedWeatherApp/Resources/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "날씨모아";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "내 위치 확인를 위해 권한이 필요합니다.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "내 위치 확인을 위해 권한이 필요합니다.";
