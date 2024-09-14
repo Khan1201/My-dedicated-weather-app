@@ -7,7 +7,6 @@
 
 import SwiftUI
 import Domain
-import Core
 
 public struct CurrentLocationAndDateView: View {
     
