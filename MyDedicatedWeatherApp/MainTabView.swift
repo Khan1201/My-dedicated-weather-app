@@ -10,8 +10,9 @@ import Core
 import Domain
 import CurrentWeatherFeature
 import WeeklyWeatherFeature
+import SettingFeature
 
-struct ContentView: View {
+struct MainTabView: View {
     
     @EnvironmentObject var vm: ContentVM
     
@@ -65,8 +66,8 @@ struct ContentView: View {
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
+struct MainTabView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        MainTabView()
     }
 }

@@ -12,7 +12,7 @@ import Domain
 struct MyDedicatedWeatherAppApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainTabView()
                 .environmentObject(CurrentLocationVM.shared)
                 .environmentObject(ContentVM.shared)
         }

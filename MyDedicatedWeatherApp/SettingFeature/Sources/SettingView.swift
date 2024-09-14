@@ -9,11 +9,13 @@ import SwiftUI
 import Core
 import Domain
 
-struct SettingView: View {
+public struct SettingView: View {
     
     @StateObject var vm: SettingVM = SettingVM()
     
-    var body: some View {
+    public init() {}
+    
+    public var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("설정")
                 .fontSpoqaHanSansNeo(size: 30, weight: .bold)
