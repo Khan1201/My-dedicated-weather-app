@@ -22,7 +22,7 @@ final class AdditionalLocationVM: ObservableObject {
     private let veryShortForecastService: VeryShortForecastRequestable
     private let shortForecastService: ShortForecastRequestable
     
-    private let publicApiKey: String = ProcessInfo.processInfo.environment["public_api_key"] ?? ""
+    private let publicApiKey: String = Bundle.main.object(forInfoDictionaryKey: "public_api_key") as? String ?? ""
     var currentTask: Task<(), Never>?
     
     init(

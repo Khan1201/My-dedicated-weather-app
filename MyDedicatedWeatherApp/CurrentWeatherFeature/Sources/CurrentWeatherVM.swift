@@ -44,8 +44,8 @@ final class CurrentWeatherVM: ObservableObject {
     @Published var showLoadRetryButton: Bool = false
     @Published var showNoticeFloater: Bool = false
     
-    private let publicApiKey: String = ProcessInfo.processInfo.environment["public_api_key"] ?? ""
-    private let kakaoApiKey: String = ProcessInfo.processInfo.environment["kakao_api_key"] ?? ""
+    private let publicApiKey: String = Bundle.main.object(forInfoDictionaryKey: "public_api_key") as? String ?? ""
+    private let kakaoApiKey: String = Bundle.main.object(forInfoDictionaryKey: "kakao_api_key") as? String ?? ""
     
     var noticeFloaterMessage: String = ""
     var timer: Timer?
