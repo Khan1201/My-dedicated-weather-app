@@ -9,6 +9,7 @@ import SwiftUI
 import Core
 import Domain
 import CurrentWeatherFeature
+import WeeklyWeatherFeature
 
 struct ContentView: View {
     

@@ -36,7 +36,7 @@ final class WeeklyWeatherVM: ObservableObject {
     private let shortForecastService: ShortForecastRequestable
     private let midtermForecastService: MidtermForecastRequestable
     
-    private let publicApiKey: String = ProcessInfo.processInfo.environment["public_api_key"] ?? ""
+    private let publicApiKey: String = Bundle.main.object(forInfoDictionaryKey: "public_api_key") as? String ?? ""
     
     var timer: Timer?
     var timerNum: Int = 0

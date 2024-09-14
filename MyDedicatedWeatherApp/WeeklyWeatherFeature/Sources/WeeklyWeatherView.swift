@@ -8,9 +8,8 @@
 import SwiftUI
 import Domain
 import Core
-import CurrentWeatherFeature
 
-struct WeeklyWeatherView: View {
+public struct WeeklyWeatherView: View {
     
     @StateObject var viewModel: WeeklyWeatherVM = WeeklyWeatherVM()
     @EnvironmentObject var contentVM: ContentVM
@@ -18,7 +17,9 @@ struct WeeklyWeatherView: View {
     
     @State private var graphOpacity: CGFloat = 0
     
-    var body: some View {
+    public init() {}
+    
+    public var body: some View {
         let currentDate: Date = Date()
         
         VStack(alignment: .leading, spacing: 0) {
@@ -124,11 +125,5 @@ struct WeeklyWeatherView: View {
                 fullAddress: currentLocationVM.fullAddress
             )
         }
-    }
-}
-
-struct WeekViewController_Previews: PreviewProvider {
-    static var previews: some View {
-        WeeklyWeatherView(viewModel: WeeklyWeatherVM())
     }
 }
