@@ -23,8 +23,6 @@ public struct CustomBottomTabBarView: View {
     }
     
     public var body: some View {
-        let isNotNocheDevice: Bool = CommonUtil.shared.isNotNocheDevice
-
         HStack(alignment: .bottom, spacing: 0) {
             tabBarItemView(
                 imageString: "calender_today",
@@ -56,11 +54,10 @@ public struct CustomBottomTabBarView: View {
                 onTapGesture: itemOnTapGesture
             )
             .frame(maxWidth: tabBarItemSize.width)
-
         }
         .padding(.horizontal, 35)
-        .padding(.top, isNotNocheDevice ? 12 : 15)
-        .padding(.bottom, isNotNocheDevice ? 7 : 27)
+        .padding(.top, 15)
+        .padding(.bottom, 20)
         .background(.white)
         .cornerRadius(25, corners: [.topLeft, .topRight])
     }
