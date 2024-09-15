@@ -41,7 +41,7 @@ final class CurrentWeatherVM: ObservableObject {
     @Published private(set) var isTodayWeatherInformationLoadCompleted: Bool = false
     
     @Published private(set) var isAllLoadCompleted: Bool = false
-    @Published var showLoadRetryButton: Bool = false
+    @Published var retryInitialReq: Bool = false
     @Published var showNoticeFloater: Bool = false
     
     private let publicApiKey: String = Bundle.main.object(forInfoDictionaryKey: "public_api_key") as? String ?? ""
@@ -581,7 +581,7 @@ extension CurrentWeatherVM {
     
     func refreshButtonOnTapGesture() {
         isStartRefresh = true
-        showLoadRetryButton = false
+        retryInitialReq = false
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             self.isStartRefresh = false
@@ -650,8 +650,8 @@ extension CurrentWeatherVM {
             }
         }
     
-    func retryButtonOnTapGesture(longitude: String, latitude: String, xy: (String, String), locality: String, subLocality: String) {
-        showLoadRetryButton = false
+    func retryAndShowNoticeFloater(longitude: String, latitude: String, xy: (String, String), locality: String, subLocality: String) {
+        retryInitialReq = false
 
         noticeFloaterMessage = """
         재시도 합니다.
@@ -714,7 +714,7 @@ extension CurrentWeatherVM {
     }
     
     func initializeTaskAndTimer() {
-        showLoadRetryButton = false
+        retryInitialReq = false
         
         initializeTask()
         initializeTimer()
@@ -740,7 +740,7 @@ extension CurrentWeatherVM {
             
         } else if timerNum == 8 {
             initializeTimer()
-            showLoadRetryButton = true
+            retryInitialReq = true
         }
     }
     

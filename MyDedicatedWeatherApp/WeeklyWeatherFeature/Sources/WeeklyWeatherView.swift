@@ -76,22 +76,6 @@ public struct WeeklyWeatherView: View {
                     }
                 }
                 .loadingProgressLottie(isLoadingCompleted: viewModel.isWeeklyWeatherInformationsLoaded, height: 400)
-                .overlay(alignment: .bottom) {
-                    Text("재시도")
-                        .fontSpoqaHanSansNeo(size: 20, weight: .bold)
-                        .foregroundStyle(Color.white)
-                        .padding(.vertical, 6)
-                        .padding(.horizontal, 12)
-                        .background(Color.blue.opacity(0.6))
-                        .clipShape(RoundedRectangle(cornerRadius: 8))
-                        .onTapGesture {
-                            viewModel.retryButtonOnTapGesture(
-                                xy: currentLocationVM.xy,
-                                fullAddress: currentLocationVM.fullAddress
-                            )
-                        }
-                        .opacity(viewModel.showLoadRetryButton ? 1 : 0)
-                }
             }
             .padding(.top, 24)
         }
@@ -107,6 +91,14 @@ public struct WeeklyWeatherView: View {
             ),
             duration: 3
         )
+        .onChange(of: viewModel.retryInitialReq) { newValue in
+            if newValue {
+                viewModel.retryAndShowNoticeFloater(
+                    xy: currentLocationVM.xy,
+                    fullAddress: currentLocationVM.fullAddress
+                )
+            }
+        }
         .onChange(of: contentVM.isRefreshed) { newValue in
             viewModel.isRefreshedOnChangeAction(newValue)
         }

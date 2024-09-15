@@ -65,24 +65,16 @@ public struct CurrentWeatherView: View {
             }
             .padding(.top, 25)
             .frame(height: UIScreen.screenHeight, alignment: .center)
-            .overlay(alignment: .center) {
-                Text("재시도")
-                    .fontSpoqaHanSansNeo(size: 20, weight: .bold)
-                    .foregroundStyle(Color.white)
-                    .padding(.vertical, 6)
-                    .padding(.horizontal, 12)
-                    .background(Color.blue.opacity(0.6))
-                    .clipShape(RoundedRectangle(cornerRadius: 8))
-                    .onTapGesture {
-                        viewModel.retryButtonOnTapGesture(
-                            longitude: currentLocationVM.longitude,
-                            latitude: currentLocationVM.latitude,
-                            xy: currentLocationVM.xy,
-                            locality: currentLocationVM.locality,
-                            subLocality: currentLocationVM.subLocality
-                        )
-                    }
-                    .opacity(viewModel.showLoadRetryButton ? 1 : 0)
+            .onChange(of: viewModel.retryInitialReq) { newValue in
+                if newValue {
+                    viewModel.retryAndShowNoticeFloater(
+                        longitude: currentLocationVM.longitude,
+                        latitude: currentLocationVM.latitude,
+                        xy: currentLocationVM.xy,
+                        locality: currentLocationVM.locality,
+                        subLocality: currentLocationVM.subLocality
+                    )
+                }
             }
             .todayViewControllerBackground(
                 isDayMode: contentVM.isDayMode,

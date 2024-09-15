@@ -20,7 +20,7 @@ final class WeeklyWeatherVM: ObservableObject {
     @Published var isMidtermForecastSkyStateLoaded: Bool = false
     @Published var isMidtermForecastTempLoaded: Bool = false
     @Published var isWeeklyWeatherInformationsLoaded: Bool = false
-    @Published var showLoadRetryButton: Bool = false
+    @Published var retryInitialReq: Bool = false
     @Published var showNoticeFloater: Bool = false
     
     var noticeMessage: String = ""
@@ -401,8 +401,8 @@ extension WeeklyWeatherVM {
         }
     }
     
-    func retryButtonOnTapGesture(xy: (String, String), fullAddress: String) {
-        showLoadRetryButton = false
+    func retryAndShowNoticeFloater(xy: (String, String), fullAddress: String) {
+        retryInitialReq = false
         noticeMessage = """
                 재시도 합니다.
                 기상청 서버 네트워크에 따라 속도가 느려질 수 있습니다 :)
@@ -464,7 +464,7 @@ extension WeeklyWeatherVM {
     }
     
     func initializeTaskAndTimer() {
-        showLoadRetryButton = false
+        retryInitialReq = false
         
         initializeTask()
         initializeTimer()
@@ -501,7 +501,7 @@ extension WeeklyWeatherVM {
             
         } else if timerNum == 8 {
             initializeTimer()
-            showLoadRetryButton = true
+            retryInitialReq = true
         }
     }
 }
