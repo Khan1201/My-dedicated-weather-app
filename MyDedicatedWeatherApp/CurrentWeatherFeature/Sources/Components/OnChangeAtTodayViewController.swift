@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Domain
+import Core
 
 struct OnChangeAtTodayViewController: ViewModifier {
     @Binding var disableTabBarTouch: Bool

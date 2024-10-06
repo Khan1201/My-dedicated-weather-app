@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Domain
+import Core
 
 @main
 struct MyDedicatedWeatherAppApp: App {

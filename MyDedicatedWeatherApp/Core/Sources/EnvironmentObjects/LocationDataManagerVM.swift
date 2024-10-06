@@ -8,6 +8,7 @@
 import Foundation
 import CoreLocation
 import UIKit
+import Domain
 
 public final class LocationDataManagerVM: NSObject, ObservableObject {
     

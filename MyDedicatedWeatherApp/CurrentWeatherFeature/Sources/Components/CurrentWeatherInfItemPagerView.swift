@@ -7,7 +7,7 @@
 
 import SwiftUI
 import SwiftUIPager
-import Domain
+import Core
 
 struct CurrentWeatherInfItemPagerView: View {
     
