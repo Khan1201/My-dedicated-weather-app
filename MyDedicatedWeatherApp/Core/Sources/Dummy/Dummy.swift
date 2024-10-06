@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Domain
 
 public final class Dummy {
     public static let shared = Dummy()
@@ -19,15 +20,6 @@ public final class Dummy {
             oneHourPrecipitation: ("", ""),
             weatherImage: "",
             skyType: .cloudy
-        )
-    }
-    
-    public func SunAndMoonriseBase() -> SunAndMoonriseBase {
-        return .init(
-            sunrise: "",
-            sunset: "",
-            moonrise: "",
-            moonset: ""
         )
     }
     
