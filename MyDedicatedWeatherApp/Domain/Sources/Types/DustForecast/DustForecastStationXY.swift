@@ -1,5 +1,5 @@
 //
-//  DustForecastStationXYBase.swift
+//  DustForecastStationXY.swift
 //  MyDedicatedWeatherApp
 //
 //  Created by 윤형석 on 2023/06/18.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct DustForecastStationXYBase: Decodable {
+public struct DustForecastStationXY: Decodable {
     
     public let sggName: String
     public let umdName: String

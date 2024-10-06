@@ -10,9 +10,9 @@ import Core
 import Domain
 
 public protocol MidtermForecastRequestable {
-    func requestMidTermForecastTempItems(serviceKey: String, fullAddress: String) async -> Result<PublicDataRes<MidTermForecastTemperatureBase>, APIError>
+    func requestMidTermForecastTempItems(serviceKey: String, fullAddress: String) async -> Result<PublicDataRes<MidTermForecastTemperature>, APIError>
     
-    func requestMidTermForecastSkyStateItems(serviceKey: String, fullAddress: String) async -> Result<PublicDataRes<MidTermForecastSkyStateBase>, APIError>
+    func requestMidTermForecastSkyStateItems(serviceKey: String, fullAddress: String) async -> Result<PublicDataRes<MidTermForecastSkyState>, APIError>
 }
 
 public struct MidTermForecastService: MidtermForecastRequestable {
@@ -22,7 +22,7 @@ public struct MidTermForecastService: MidtermForecastRequestable {
         self.util = util
     }
     
-    public func requestMidTermForecastTempItems(serviceKey: String, fullAddress: String) async -> Result<PublicDataRes<MidTermForecastTemperatureBase>, APIError> {
+    public func requestMidTermForecastTempItems(serviceKey: String, fullAddress: String) async -> Result<PublicDataRes<MidTermForecastTemperature>, APIError> {
         let parameters: MidTermForecastReq = MidTermForecastReq(
             serviceKey: serviceKey,
             regId: util.regOrStnIdPar(fullAddress: fullAddress, reqType: .temperature),
@@ -35,13 +35,13 @@ public struct MidTermForecastService: MidtermForecastRequestable {
             method: .get,
             parameters: parameters,
             headers: nil,
-            resultType: PublicDataRes<MidTermForecastTemperatureBase>.self
+            resultType: PublicDataRes<MidTermForecastTemperature>.self
         )
         
         return result
     }
     
-    public func requestMidTermForecastSkyStateItems(serviceKey: String, fullAddress: String) async -> Result<PublicDataRes<MidTermForecastSkyStateBase>, APIError> {
+    public func requestMidTermForecastSkyStateItems(serviceKey: String, fullAddress: String) async -> Result<PublicDataRes<MidTermForecastSkyState>, APIError> {
         let parameters: MidTermForecastReq = MidTermForecastReq(
             serviceKey: serviceKey,
             regId: util.regOrStnIdPar(fullAddress: fullAddress, reqType: .skystate),
@@ -54,7 +54,7 @@ public struct MidTermForecastService: MidtermForecastRequestable {
             method: .get,
             parameters: parameters,
             headers: nil,
-            resultType: PublicDataRes<MidTermForecastSkyStateBase>.self
+            resultType: PublicDataRes<MidTermForecastSkyState>.self
         )
         
         return result

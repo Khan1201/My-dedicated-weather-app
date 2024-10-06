@@ -10,7 +10,7 @@ import Core
 import Domain
 
 public protocol KakaoAddressRequestable {
-    func requestKaKaoAddressBy(apiKey: String, longitude: String, latitude: String) async -> Result<KakaoAddressBase.DocumentsBase, APIError>
+    func requestKaKaoAddressBy(apiKey: String, longitude: String, latitude: String) async -> Result<KakaoAddress.DocumentsBase, APIError>
 }
 
 public struct KakaoAddressService: KakaoAddressRequestable {
@@ -21,7 +21,7 @@ public struct KakaoAddressService: KakaoAddressRequestable {
     }
     
     public func requestKaKaoAddressBy(apiKey: String, longitude: String, latitude: String) async
-    -> Result<KakaoAddressBase.DocumentsBase, APIError> {
+    -> Result<KakaoAddress.DocumentsBase, APIError> {
         let parameters = KakaoAddressReq(x: longitude, y: latitude)
         let header = validate.kakaoHeader(apiKey: apiKey)
 
@@ -30,7 +30,7 @@ public struct KakaoAddressService: KakaoAddressRequestable {
             method: .get,
             parameters: parameters,
             headers: header,
-            resultType: KakaoAddressBase.DocumentsBase.self
+            resultType: KakaoAddress.DocumentsBase.self
         )
         
         return result

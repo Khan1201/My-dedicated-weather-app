@@ -1,6 +1,6 @@
 //
-//  File.swift
-//  
+//  MidtermReqType.swift
+//
 //
 //  Created by 윤형석 on 10/6/24.
 //

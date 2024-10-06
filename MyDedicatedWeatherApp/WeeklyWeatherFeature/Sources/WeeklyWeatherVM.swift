@@ -176,9 +176,9 @@ extension WeeklyWeatherVM {
      Set `weeklyWeatherInformations`, `weeklyChartInformation` (오늘 ~ 내일까지의 최저, 최고 온도 및 하늘정보 image, 강수확률 데이터)
      - parameter items: requestShortForecastItems() 결과 데이터
      */
-    func setWeeklyWeatherInformationsAndWeeklyChartInformation(one2twoDay items: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>]) {
+    func setWeeklyWeatherInformationsAndWeeklyChartInformation(one2twoDay items: [VeryShortOrShortTermForecast<ShortTermForecastCategory>]) {
         
-        func minMaxItem(by filteredItems: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>]) -> (String, String) {
+        func minMaxItem(by filteredItems: [VeryShortOrShortTermForecast<ShortTermForecastCategory>]) -> (String, String) {
             var minMaxResult: (Int, Int) = (0, 0)
             
             for (index, item) in filteredItems.enumerated() {
@@ -271,7 +271,7 @@ extension WeeklyWeatherVM {
      Set `WeeklyWeatherInformations`(3일 ~ 10일 까지의 최소, 최고 온도 데이터)
      - parameter item: requestMidTermForecastTempItems() 결과 데이터
      */
-    func setWeeklyWeatherInformationsMinMaxTemp(three2tenDay item: MidTermForecastTemperatureBase) {
+    func setWeeklyWeatherInformationsMinMaxTemp(three2tenDay item: MidTermForecastTemperature) {
         
         guard weeklyWeatherInformations.count >= 10 else { return }
         
@@ -301,7 +301,7 @@ extension WeeklyWeatherVM {
     }
     
     /// +3 ~ +7 정보 set
-    func setWeeklyChartInformationMinMaxTemp(three2tenDay item: MidTermForecastTemperatureBase) {
+    func setWeeklyChartInformationMinMaxTemp(three2tenDay item: MidTermForecastTemperature) {
         
         guard weeklyChartInformation.maxTemps.count >= 7 && weeklyChartInformation.minTemps.count >= 7 else { return }
         
@@ -325,7 +325,7 @@ extension WeeklyWeatherVM {
      Set `weeklyWeatherInformations`(3일 ~ 10일 까지의 하늘정보 image, 강수확률 데이터)
      - parameter item: requestMidTermForecastSkyStateItems() 결과 데이터
      */
-    func setWeeklyWeatherInformationsImageAndRainPercent(three2tenDay item: MidTermForecastSkyStateBase) {
+    func setWeeklyWeatherInformationsImageAndRainPercent(three2tenDay item: MidTermForecastSkyState) {
         
         func weatherImage(wf: String) -> String {
             let wfToImageString = midTermForecastUtil.remakeSkyStateValueToImageString(value: wf)
@@ -360,7 +360,7 @@ extension WeeklyWeatherVM {
     }
     
     /// +3 ~ +10 set
-    func setWeeklyChartInformationImageAndRainPercent(three2tenDay item: MidTermForecastSkyStateBase) {
+    func setWeeklyChartInformationImageAndRainPercent(three2tenDay item: MidTermForecastSkyState) {
         
         func weatherImageAndRainfallPercent(wf: String, rnSt: Int) -> (String, String) {
             let wfToImageString = midTermForecastUtil.remakeSkyStateValueToImageString(value: wf)

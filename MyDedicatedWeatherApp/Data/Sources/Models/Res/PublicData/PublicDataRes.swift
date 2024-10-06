@@ -39,10 +39,10 @@ public struct PublicDataRes<T>: Decodable where T: Decodable {
         self.items = nil
         
         // 초단기 or 단기 예보 or 중기 예보(온도, 하늘 상태) request 일 때, items가 아닌 item[]으로 result 들어옴
-        if T.Type.self == VeryShortOrShortTermForecastBase<VeryShortTermForecastCategory>.Type.self ||
-            T.Type.self == VeryShortOrShortTermForecastBase<ShortTermForecastCategory>.Type.self ||
-            T.Type.self == MidTermForecastTemperatureBase.Type.self ||
-            T.Type.self == MidTermForecastSkyStateBase.Type.self {
+        if T.Type.self == VeryShortOrShortTermForecast<VeryShortTermForecastCategory>.Type.self ||
+            T.Type.self == VeryShortOrShortTermForecast<ShortTermForecastCategory>.Type.self ||
+            T.Type.self == MidTermForecastTemperature.Type.self ||
+            T.Type.self == MidTermForecastSkyState.Type.self {
             let itemsKeys = try bodyKeys.nestedContainer(keyedBy: ItemsKeys.self, forKey: .items)
             self.item = try itemsKeys.decodeIfPresent([T].self, forKey: .item)
             

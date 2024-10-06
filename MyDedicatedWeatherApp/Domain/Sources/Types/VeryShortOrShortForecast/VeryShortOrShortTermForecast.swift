@@ -1,5 +1,5 @@
 //
-//  VeryShortOrShortTermForecastBase.swift
+//  VeryShortOrShortTermForecast.swift
 //  MyDedicatedWeatherApp
 //
 //  Created by 윤형석 on 2023/05/03.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct VeryShortOrShortTermForecastBase<T: Decodable>: Decodable {
+public struct VeryShortOrShortTermForecast<T: Decodable>: Decodable {
     
     public init(baseDate: String, baseTime: String, category: T, fcstDate: String, fcstTime: String, fcstValue: String) {
         self.baseDate = baseDate
@@ -32,7 +32,7 @@ public struct VeryShortOrShortTermForecastBase<T: Decodable>: Decodable {
     }
 }
 
-extension VeryShortOrShortTermForecastBase {
+extension VeryShortOrShortTermForecast {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.baseDate = try container.decode(String.self, forKey: .baseDate)

@@ -1,5 +1,5 @@
 //
-//  DustForecastStationBase.swift
+//  DustForecastStation.swift
 //  MyDedicatedWeatherApp
 //
 //  Created by 윤형석 on 2023/06/18.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct DustForecastStationBase: Codable {
+public struct DustForecastStation: Codable {
     
     public let addr: String
     public let stationName: String

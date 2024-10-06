@@ -156,7 +156,7 @@ struct WeatherWidgetVM {
 extension WeatherWidgetVM {
     
     /// Return 초단기예보 items
-    func requestVeryShortItems() async -> [VeryShortOrShortTermForecastBase<VeryShortTermForecastCategory>] {
+    func requestVeryShortItems() async -> [VeryShortOrShortTermForecast<VeryShortTermForecastCategory>] {
         let x = UserDefaults.shared.string(forKey: UserDefaultsKeys.x) ?? ""
         let y = UserDefaults.shared.string(forKey: UserDefaultsKeys.y) ?? ""
         
@@ -184,7 +184,7 @@ extension WeatherWidgetVM {
     }
     
     /// Return 단기예보 items
-    func requestShortForecastItems() async -> [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>] {
+    func requestShortForecastItems() async -> [VeryShortOrShortTermForecast<ShortTermForecastCategory>] {
         let x = UserDefaults.shared.string(forKey: UserDefaultsKeys.x) ?? ""
         let y = UserDefaults.shared.string(forKey: UserDefaultsKeys.y) ?? ""
         
@@ -214,7 +214,7 @@ extension WeatherWidgetVM {
     
     /// '단기예보' 에서의 최소, 최대 온도 값 요청 위해 및
     /// 02:00 or 23:00 으로 호출해야 하므로, 따로 다시 요청한다.
-    func requestTodayMinMaxTemp() async -> [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>] {
+    func requestTodayMinMaxTemp() async -> [VeryShortOrShortTermForecast<ShortTermForecastCategory>] {
         let x = UserDefaults.shared.string(forKey: UserDefaultsKeys.x) ?? ""
         let y = UserDefaults.shared.string(forKey: UserDefaultsKeys.y) ?? ""
         
@@ -277,7 +277,7 @@ extension WeatherWidgetVM {
 //    }
     
     /// Return 미세먼지 및 초미세먼지 items
-    func requestRealTimeFindDustAndUltraFindDustItems() async -> [RealTimeFindDustForecastBase] {
+    func requestRealTimeFindDustAndUltraFindDustItems() async -> [RealTimeFindDustForecast] {
         let stationName: String = UserDefaults.shared.string(forKey: UserDefaultsKeys.dustStationName) ?? ""
 
         let result = await dustForecastService.requestRealTimeFindDustForecastItems(
@@ -304,7 +304,7 @@ extension WeatherWidgetVM {
     }
     
     /// Return 중기예보(3~ 10일)의 temperature items
-    func requestMidTermForecastTempItems() async -> [MidTermForecastTemperatureBase] {
+    func requestMidTermForecastTempItems() async -> [MidTermForecastTemperature] {
         let fullAddress: String = UserDefaults.shared.string(forKey: UserDefaultsKeys.fullAddress) ?? ""
         
         let result = await midTermForecastService.requestMidTermForecastTempItems(
@@ -331,7 +331,7 @@ extension WeatherWidgetVM {
     }
     
     /// Return 중기예보(3~ 10일)의 하늘상태 items
-    func requestMidTermForecastSkyStateItems() async -> [MidTermForecastSkyStateBase] {
+    func requestMidTermForecastSkyStateItems() async -> [MidTermForecastSkyState] {
         let fullAddress: String = UserDefaults.shared.string(forKey: UserDefaultsKeys.fullAddress) ?? ""
         
         let result = await midTermForecastService.requestMidTermForecastSkyStateItems(
@@ -363,7 +363,7 @@ extension WeatherWidgetVM {
 extension WeatherWidgetVM {
     
     func applyVeryShortForecastData(
-        _ items: [VeryShortOrShortTermForecastBase<VeryShortTermForecastCategory>],
+        _ items: [VeryShortOrShortTermForecast<VeryShortTermForecastCategory>],
         to result: inout SimpleEntry,
         sunrise: String,
         sunset: String
@@ -420,14 +420,14 @@ extension WeatherWidgetVM {
     }
     
     func applyShortForecastData(
-        _ items: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>],
-        itemsForMinMaxTemperature: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>],
+        _ items: [VeryShortOrShortTermForecast<ShortTermForecastCategory>],
+        itemsForMinMaxTemperature: [VeryShortOrShortTermForecast<ShortTermForecastCategory>],
         currentTemperature: String,
         to result: inout SimpleEntry,
         sunrise: String,
         sunset: String
     ) {
-        func minMaxTemperature(_ items: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>]) -> (String, String) {
+        func minMaxTemperature(_ items: [VeryShortOrShortTermForecast<ShortTermForecastCategory>]) -> (String, String) {
             let todayDate = Date().toString(format: "yyyyMMdd")
             
             let filteredItems = items.filter( {$0.category == .TMP && $0.fcstDate == todayDate} )
@@ -525,7 +525,7 @@ extension WeatherWidgetVM {
     }
     
     func applyRealTimeFindDustAndUltraFindDustItems(
-        _ items: [RealTimeFindDustForecastBase],
+        _ items: [RealTimeFindDustForecast],
         to result: inout SimpleEntry
     ) {
         guard let item = items.first else {
@@ -551,8 +551,8 @@ extension WeatherWidgetVM {
     }
     
     func applyMidtermForecastTemperatureSkyStateItems(
-        _ temperatureItems: [MidTermForecastTemperatureBase],
-        _ skyStateItems: [MidTermForecastSkyStateBase],
+        _ temperatureItems: [MidTermForecastTemperature],
+        _ skyStateItems: [MidTermForecastSkyState],
         to result: inout SimpleEntry
     ) {
 
@@ -628,8 +628,8 @@ extension WeatherWidgetVM {
     
     /// Return +3 ~ 5일의 weekly weather items
     func weeklyWeatherItemsByThreeToFiveDays(
-        _ temperatureItems: [MidTermForecastTemperatureBase],
-        _ skyStateItems: [MidTermForecastSkyStateBase]) -> [LargeFamilyData.WeeklyWeatherItem] {
+        _ temperatureItems: [MidTermForecastTemperature],
+        _ skyStateItems: [MidTermForecastSkyState]) -> [LargeFamilyData.WeeklyWeatherItem] {
             
             var result: [LargeFamilyData.WeeklyWeatherItem] = []
             let currentDate: Date = Date()
@@ -662,7 +662,7 @@ extension WeatherWidgetVM {
     
     /// Return +3 ~ 5일의 min max temperatures
     func midtermForcastMinMaxTemperatureItems(
-        _ items: [MidTermForecastTemperatureBase]
+        _ items: [MidTermForecastTemperature]
     ) -> [(String, String)] {
         guard let item = items.first else {
             commonUtil.printError(
@@ -682,7 +682,7 @@ extension WeatherWidgetVM {
     
     /// Return +3 ~ 5일의 weather image items
     func midtermForecastWeatherImageItems(
-        _ items: [MidTermForecastSkyStateBase]
+        _ items: [MidTermForecastSkyState]
     ) -> [String] {
         guard let item = items.first else {
             commonUtil.printError(
@@ -702,7 +702,7 @@ extension WeatherWidgetVM {
     
     /// Return +3 ~ 5일의 rain percent items
     func midtermForecastRainPercentItems(
-        _ items: [MidTermForecastSkyStateBase]
+        _ items: [MidTermForecastSkyState]
     ) -> [String] {
         guard let item = items.first else {
             commonUtil.printError(
@@ -721,7 +721,7 @@ extension WeatherWidgetVM {
     
     /// Return +1 ~ 2일의 weekly weather items
     func weeklyWeatherItemsByOneToTwoDays(
-        _ items: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>]) -> [LargeFamilyData.WeeklyWeatherItem] {
+        _ items: [VeryShortOrShortTermForecast<ShortTermForecastCategory>]) -> [LargeFamilyData.WeeklyWeatherItem] {
             
             let minMaxTemperatureItems: [(String, String)] = shortTermForecastMinMaxTemperatureItems(items)
             let weatherImageItems: [String] = shortTermForecastWeatherImageItems(items)
@@ -761,10 +761,10 @@ extension WeatherWidgetVM {
     
     /// Return +1 ~ 2일의 min max temperatures
     func shortTermForecastMinMaxTemperatureItems(
-        _ items: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>]
+        _ items: [VeryShortOrShortTermForecast<ShortTermForecastCategory>]
     ) -> [(String, String)]
     {
-        func minMaxItem(by filteredItems: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>]) -> (String, String) {
+        func minMaxItem(by filteredItems: [VeryShortOrShortTermForecast<ShortTermForecastCategory>]) -> (String, String) {
             var minMaxResult: (Int, Int) = (0, 0)
             
             for (index, item) in filteredItems.enumerated() {
@@ -806,7 +806,7 @@ extension WeatherWidgetVM {
     
     /// Return +1 ~ 2일의 weather image items
     func shortTermForecastWeatherImageItems(
-        _ items: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>]
+        _ items: [VeryShortOrShortTermForecast<ShortTermForecastCategory>]
     ) -> [String] {
         let tommorrowDate: String = Date().toString(byAdding: 1, format: "yyyyMMdd")
         let twoDaysLaterDate: String = Date().toString(byAdding: 2, format: "yyyyMMdd")
@@ -833,7 +833,7 @@ extension WeatherWidgetVM {
     
     /// Return +1 ~ 2일의 rain percent items
     func shortTermForecastRainPearcentItems(
-        _ items: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>]
+        _ items: [VeryShortOrShortTermForecast<ShortTermForecastCategory>]
     ) -> [String] {
         let tommorrowDate: String = Date().toString(byAdding: 1, format: "yyyyMMdd")
         let twoDaysLaterDate: String = Date().toString(byAdding: 2, format: "yyyyMMdd")

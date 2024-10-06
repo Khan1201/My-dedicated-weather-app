@@ -331,7 +331,7 @@ extension CurrentWeatherVM {
      - parameter items: [초단기예보 Model]
      */
     @MainActor
-    func setCurrentTemperature(items: [VeryShortOrShortTermForecastBase<VeryShortTermForecastCategory>]) {
+    func setCurrentTemperature(items: [VeryShortOrShortTermForecast<VeryShortTermForecastCategory>]) {
         currentTemperature = items[24].fcstValue
     }
     
@@ -341,7 +341,7 @@ extension CurrentWeatherVM {
      - parameter items: [초단기예보 Model]
      */
     @MainActor
-    func setCurrentWeatherInformation(items: [VeryShortOrShortTermForecastBase<VeryShortTermForecastCategory>]) {
+    func setCurrentWeatherInformation(items: [VeryShortOrShortTermForecast<VeryShortTermForecastCategory>]) {
         let currentTemperature = items[24]
         let currentWindSpeed = items[54]
         let currentWetPercent = items[30]
@@ -381,7 +381,7 @@ extension CurrentWeatherVM {
      - parameter items: [초단기예보 Model]
      */
     @MainActor
-    func setTodayWeatherInformations(items: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>]) {
+    func setTodayWeatherInformations(items: [VeryShortOrShortTermForecast<ShortTermForecastCategory>]) {
         todayWeatherInformations = []
         
         let skipValue = shortTermForecastUtil.todayWeatherIndexSkipValue
@@ -431,7 +431,7 @@ extension CurrentWeatherVM {
     /// Set `todayMinMaxTemperature` variable
     /// - parameter items: 단기예보 response items
     @MainActor
-    func setTodayMinMaxTemperature(_ items: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>]) {
+    func setTodayMinMaxTemperature(_ items: [VeryShortOrShortTermForecast<ShortTermForecastCategory>]) {
         let todayDate = Date().toString(format: "yyyyMMdd")
         
         let filteredItems = items.filter( {$0.category == .TMP && $0.fcstDate == todayDate} )
@@ -451,7 +451,7 @@ extension CurrentWeatherVM {
      - parameter items: [초단기예보 Model]
      */
     @MainActor
-    func setCurrentWeatherImgAndAnimationImg(items: [VeryShortOrShortTermForecastBase<VeryShortTermForecastCategory>]) {
+    func setCurrentWeatherImgAndAnimationImg(items: [VeryShortOrShortTermForecast<VeryShortTermForecastCategory>]) {
         let firstPTYItem = items[6] // 강수 형태 first
         let firstSKYItem = items[18] // 하늘 상태 first
         
@@ -479,7 +479,7 @@ extension CurrentWeatherVM {
     /// Set 미세먼지, 초미세먼지
     /// - parameter item: 미세먼지 요청 response
     @MainActor
-    func setCurrentFineDustAndUltraFineDustTuple(_ item: RealTimeFindDustForecastBase) {
+    func setCurrentFineDustAndUltraFineDustTuple(_ item: RealTimeFindDustForecast) {
         currentFineDustTuple = fineDustLookUpUtil.remakeFindDustValue(value: item.pm10Value)
         currentUltraFineDustTuple = fineDustLookUpUtil.remakeUltraFindDustValue(value: item.pm25Value)
         isFineDustLoadCompleted = true
@@ -488,7 +488,7 @@ extension CurrentWeatherVM {
     /// Set 세부주소
     /// - parameter items: 카카오 주소 요청 response
     @MainActor
-    func setSubLocalityByKakaoAddress(_ items: [KakaoAddressBase.AddressBase]) {
+    func setSubLocalityByKakaoAddress(_ items: [KakaoAddress.AddressBase]) {
         guard items.count > 0 else { return }
         subLocalityByKakaoAddress = items[0].address.subLocality
         isKakaoAddressLoadCompleted = true
@@ -504,7 +504,7 @@ extension CurrentWeatherVM {
     /// Set XY좌표(미세먼지 측정소 이름 get 요청에 필요)
     /// - parameter items: 측정소 xy 좌표 요청 response
     /// - parameter locality: 측정소 xy좌표 요청 response에서 필터하기 위한것
-    func setDustStationRequestParamXY(items: [DustForecastStationXYBase]?, locality: String) {
+    func setDustStationRequestParamXY(items: [DustForecastStationXY]?, locality: String) {
         guard let items = items else { return }
         guard let item = items.first( where: { $0.sidoName.contains(locality) } ) else { return }
         DustStationRequestParam.tmXAndtmY = (item.tmX, item.tmY)
@@ -512,7 +512,7 @@ extension CurrentWeatherVM {
     
     /// Set 미세먼지 측정소 이름  (미세먼지 아이템 get 요청에 필요)
     /// - parameter items: 측정소 측정소 이름 요청 response
-    func setDustStationRequestParamStationName(_ items: [DustForecastStationBase]?) {
+    func setDustStationRequestParamStationName(_ items: [DustForecastStation]?) {
         guard let items = items, let item = items.first else { return }
         DustStationRequestParam.stationName = item.stationName
     }

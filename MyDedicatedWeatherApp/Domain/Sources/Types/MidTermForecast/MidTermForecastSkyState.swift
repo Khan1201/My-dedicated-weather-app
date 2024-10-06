@@ -1,5 +1,5 @@
 //
-//  MidTermForecastSkyStateBase.swift
+//  MidTermForecastSkyState.swift
 //  MyDedicatedWeatherApp
 //
 //  Created by 윤형석 on 2023/08/09.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct MidTermForecastSkyStateBase: Decodable {
+public struct MidTermForecastSkyState: Decodable {
     public let rnSt3Am: Int // 강수 확률
     public let rnSt4Am: Int
     public let rnSt5Am: Int

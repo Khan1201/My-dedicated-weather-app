@@ -1,11 +1,13 @@
 //
-//  File 2.swift
-//  
+//  ShortTermForecastCategory.swift
+//
 //
 //  Created by 윤형석 on 10/6/24.
 //
 
 import Foundation
+
+// MARK: - 단기예보 값 types
 
 public enum ShortTermForecastCategory: String, Codable {
     

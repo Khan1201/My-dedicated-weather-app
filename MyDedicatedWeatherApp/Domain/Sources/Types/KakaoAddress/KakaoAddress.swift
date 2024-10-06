@@ -1,5 +1,5 @@
 //
-//  KakaoAddressBase.swift
+//  KakaoAddress.swift
 //  MyDedicatedWeatherApp
 //
 //  Created by 윤형석 on 2023/06/29.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct KakaoAddressBase: Encodable {
+public struct KakaoAddress: Encodable {
     public let fullAddress: String
     public let subLocality: String // 성수동 1가
     
@@ -32,17 +32,17 @@ public struct KakaoAddressBase: Encodable {
     }
     
     public struct AddressBase: Decodable {
-        public init(road_address: KakaoAddressBase?, address: KakaoAddressBase) {
+        public init(road_address: KakaoAddress?, address: KakaoAddress) {
             self.road_address = road_address
             self.address = address
         }
         
-        public let road_address: KakaoAddressBase?
-        public let address: KakaoAddressBase
+        public let road_address: KakaoAddress?
+        public let address: KakaoAddress
     }
 }
 
-extension KakaoAddressBase: Decodable {
+extension KakaoAddress: Decodable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.fullAddress = try container.decode(String.self, forKey: .address_name)

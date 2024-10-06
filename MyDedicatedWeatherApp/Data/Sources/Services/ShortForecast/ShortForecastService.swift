@@ -10,9 +10,9 @@ import Core
 import Domain
 
 public protocol ShortForecastRequestable {
-    func requestShortForecastItems(serviceKey: String, xy: Gps2XY.LatXLngY, reqRow: String) async -> Result<PublicDataRes<VeryShortOrShortTermForecastBase<ShortTermForecastCategory>>, APIError>
+    func requestShortForecastItems(serviceKey: String, xy: Gps2XY.LatXLngY, reqRow: String) async -> Result<PublicDataRes<VeryShortOrShortTermForecast<ShortTermForecastCategory>>, APIError>
     
-    func requestTodayMinMaxTemp(serviceKey: String, xy: Gps2XY.LatXLngY) async -> Result<PublicDataRes<VeryShortOrShortTermForecastBase<ShortTermForecastCategory>>, APIError>
+    func requestTodayMinMaxTemp(serviceKey: String, xy: Gps2XY.LatXLngY) async -> Result<PublicDataRes<VeryShortOrShortTermForecast<ShortTermForecastCategory>>, APIError>
 }
 
 public struct ShortForecastService: ShortForecastRequestable {
@@ -22,7 +22,7 @@ public struct ShortForecastService: ShortForecastRequestable {
         self.util = util
     }
     
-    public func requestShortForecastItems(serviceKey: String, xy: Gps2XY.LatXLngY, reqRow: String) async -> Result<PublicDataRes<VeryShortOrShortTermForecastBase<ShortTermForecastCategory>>, APIError> {
+    public func requestShortForecastItems(serviceKey: String, xy: Gps2XY.LatXLngY, reqRow: String) async -> Result<PublicDataRes<VeryShortOrShortTermForecast<ShortTermForecastCategory>>, APIError> {
         let parameters = VeryShortOrShortTermForecastReq(
             serviceKey: serviceKey,
             numOfRows: reqRow,
@@ -37,13 +37,13 @@ public struct ShortForecastService: ShortForecastRequestable {
             method: .get,
             parameters: parameters,
             headers: nil,
-            resultType: PublicDataRes<VeryShortOrShortTermForecastBase<ShortTermForecastCategory>>.self
+            resultType: PublicDataRes<VeryShortOrShortTermForecast<ShortTermForecastCategory>>.self
         )
         
         return result
     }
     
-    public func requestTodayMinMaxTemp(serviceKey: String, xy: Gps2XY.LatXLngY) async -> Result<PublicDataRes<VeryShortOrShortTermForecastBase<ShortTermForecastCategory>>, APIError> {
+    public func requestTodayMinMaxTemp(serviceKey: String, xy: Gps2XY.LatXLngY) async -> Result<PublicDataRes<VeryShortOrShortTermForecast<ShortTermForecastCategory>>, APIError> {
         let parameters = VeryShortOrShortTermForecastReq(
             serviceKey: serviceKey,
             numOfRows: "300",
@@ -58,7 +58,7 @@ public struct ShortForecastService: ShortForecastRequestable {
             method: .get,
             parameters: parameters,
             headers: nil,
-            resultType: PublicDataRes<VeryShortOrShortTermForecastBase<ShortTermForecastCategory>>.self
+            resultType: PublicDataRes<VeryShortOrShortTermForecast<ShortTermForecastCategory>>.self
         )
         
         return result

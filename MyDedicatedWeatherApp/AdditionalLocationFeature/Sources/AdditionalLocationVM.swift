@@ -141,7 +141,7 @@ extension AdditionalLocationVM {
     /// '단기예보' 에서의 최소, 최대 온도 값 요청 위해 및
     /// 02:00 or 23:00 으로 호출해야 하므로, 따로 다시 요청한다.
     func requestTodayMinMaxTemp(xy: Gps2XY.LatXLngY, currentTemp: String) async -> (String, String) {
-        func filteredMinMax(_ items: [VeryShortOrShortTermForecastBase<ShortTermForecastCategory>], currentTemp: String) -> (String, String) {
+        func filteredMinMax(_ items: [VeryShortOrShortTermForecast<ShortTermForecastCategory>], currentTemp: String) -> (String, String) {
             let todayDate = Date().toString(format: "yyyyMMdd")
             
             let filteredItems = items.filter( {$0.category == .TMP && $0.fcstDate == todayDate} )

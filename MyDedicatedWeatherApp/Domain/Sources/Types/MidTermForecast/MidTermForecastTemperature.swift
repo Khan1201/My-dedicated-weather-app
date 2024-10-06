@@ -1,5 +1,5 @@
 //
-//  MidTermForecastTemperatureBase.swift
+//  MidTermForecastTemperature.swift
 //  MyDedicatedWeatherApp
 //
 //  Created by 윤형석 on 2023/04/30.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct MidTermForecastTemperatureBase {
+public struct MidTermForecastTemperature {
     
     public init(regId: String, taMin3: Int, taMax3: Int, taMin4: Int, taMax4: Int, taMin5: Int, taMax5: Int, taMin6: Int, taMax6: Int, taMin7: Int, taMax7: Int, taMin8: Int, taMax8: Int, taMin9: Int, taMax9: Int, taMin10: Int, taMax10: Int) {
         self.regId = regId
@@ -68,7 +68,7 @@ public struct MidTermForecastTemperatureBase {
     }
 }
 
-extension MidTermForecastTemperatureBase: Decodable {
+extension MidTermForecastTemperature: Decodable {
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
