@@ -1,4 +1,4 @@
-# 날씨 모아🌈
+# 🌈 날씨 모아
 <img width="250" alt="image" src="https://github.com/user-attachments/assets/72bdd15d-9fba-455a-94a9-462c9689b9bb">
 <img width="250" alt="image" src="https://github.com/user-attachments/assets/2264bc54-d8ba-4d3b-bf6a-b33c2ba44b31">
 <img width="250" alt="image" src="https://github.com/user-attachments/assets/78f16c36-dad7-425d-8b00-863645f0d9bb">
@@ -7,23 +7,23 @@
 
 <br>
 
-## 현재날씨, 주간예보 소개
+##  ❄️  현재날씨, 주간예보 소개
 https://github.com/user-attachments/assets/666179f3-ccf4-49ac-862a-bd4b784870ef
 
 <br>
 
-## 지역 추가 소개
+##  ☃️ 지역 추가 소개
 https://github.com/user-attachments/assets/699239b0-b10d-42a7-b424-532e82d3a715
 
 <br>
 
-## 시작 동기
+## 1️⃣ 시작 동기
 - 기존 날씨 앱에서 ‘한눈에 볼 수 없는 불편함’으로 인해 시작하게 됨
 - 새로운 기술을 현업에 적용하기 전 먼저 사용해보고, 학습한 것을 바로 적용해보기 위한 토이 프로젝트 (위젯, 모듈화 등)
 
 <br>
 
-## 설명
+## 2️⃣ 설명
 - 공공데이터를 이용한 날씨 앱
 - 일출 및 일몰 시간, 강수량, 바람 속도, 미세먼지, 온도, 시간대별 온도, 주간예보 등 '한눈에 볼 수 있도록'에 초점
 - Day or Night 모드 지원, 해당 모드에 따른 애니메이션 및 이미지 변화
@@ -32,7 +32,7 @@ https://github.com/user-attachments/assets/699239b0-b10d-42a7-b424-532e82d3a715
 - 공공 데이터 특성상 통신이 느릴 때가 있으므로, 통신 지연 Notice Floater 제공 및 재시도 기능 제공
 <br>
 
-## 고민한 점
+## 3️⃣ 고민한 점
 - 공공 데이터 통신 속도가 느릴땐 어떻게 대처해야 할 까 ?
   
    -> 2초 이상 지연 시 - Notice Floater 제공,
@@ -62,7 +62,7 @@ https://github.com/user-attachments/assets/699239b0-b10d-42a7-b424-532e82d3a715
 
 <br>
 
-## 기술 스택
+## 4️⃣ 기술 스택
 - SwiftUI + MVVM
 - Async / Await
 - SPM Modulaization
