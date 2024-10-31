@@ -52,6 +52,8 @@ final class CurrentWeatherVM: ObservableObject {
     var timerNum: Int = 0
     var currentTask: Task<(), Never>?
     
+    private var bag: Set<AnyCancellable> = .init()
+    
     private enum DustStationRequestParam {
         static var tmXAndtmY: (String, String) = ("","")
         static var stationName: String = ""
@@ -86,13 +88,35 @@ final class CurrentWeatherVM: ObservableObject {
         self.shortForecastService = shortForecastService
         self.dustForecastService = dustForecastService
         self.kakaoAddressService = kakaoAddressService
+        
+        sinkIsAllLoaded()
+    }
+}
+
+// MARK: - Sink Funcs..
+
+extension CurrentWeatherVM {
+    private func sinkIsAllLoaded() {
+        let zipFirst = Publishers.Zip4($isCurrentWeatherInformationLoaded, $isCurrentWeatherAnimationSetCompleted, $isFineDustLoaded, $isKakaoAddressLoaded)
+        let zipSecond = Publishers.Zip3($isMinMaxTempLoaded, $isSunriseSunsetLoaded, $isTodayWeatherInformationLoaded)
+        
+        Publishers.Zip(zipFirst, zipSecond)
+            .sink { [weak self] results in
+                guard let self = self else { return }
+                let isZipFirstAllLoaded: Bool = results.0.0 && results.0.1 && results.0.2 && results.0.3
+                let isZipSecondAllLoaded: Bool = results.1.0 && results.1.1 && results.1.2
+                guard isZipFirstAllLoaded && isZipSecondAllLoaded else { return }
+                isAllLoaded = true
+                CustomHapticGenerator.impact(style: .soft)
+                initializeTaskAndTimer()
+            }
+            .store(in: &bag)
     }
 }
 
 // MARK: - Request HTTP..
 
 extension CurrentWeatherVM {
-    
     /**
      Request 초 단기예보 Items
      - parameter xy: 공공데이터 값으로 변환된 X, Y
@@ -516,24 +540,6 @@ extension CurrentWeatherVM {
         guard let items = items, let item = items.first else { return }
         DustStationRequestParam.stationName = item.stationName
     }
-    
-    /**
-     Set `isAllLoadCompleted` variable
-     
-     */
-    func setIsAllLoadCompleted() {
-        
-        isAllLoadCompleted = // 7 values
-        (isCurrentWeatherInformationLoadCompleted &&
-         isCurrentWeatherAnimationSetCompleted && isFineDustLoadCompleted &&
-         isKakaoAddressLoadCompleted && isMinMaxTempLoadCompleted &&
-         isSunriseSunsetLoadCompleted && isTodayWeatherInformationLoadCompleted)
-        
-        if isAllLoadCompleted {
-            CustomHapticGenerator.impact(style: .soft)
-            initializeTaskAndTimer()
-        }
-    }
 }
 
 // MARK: - View On Appear, Task Actions..
@@ -681,10 +687,6 @@ extension CurrentWeatherVM {
                 subLocality: subLocality
             )
         }
-    }
-    
-    func loadCompletedVariablesOnChangeAction() {
-        setIsAllLoadCompleted()
     }
 }
 

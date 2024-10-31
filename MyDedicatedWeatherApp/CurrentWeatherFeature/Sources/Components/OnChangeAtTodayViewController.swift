@@ -24,16 +24,7 @@ struct OnChangeAtTodayViewController: ViewModifier {
                     locality: locationDataManagerVM.currentLocality
                 )
             }
-            // 7 values..
-            .onChange(of: viewModel.isCurrentWeatherInformationLoadCompleted &&
-                      viewModel.isCurrentWeatherAnimationSetCompleted &&
-                      viewModel.isFineDustLoadCompleted &&
-                      viewModel.isKakaoAddressLoadCompleted &&
-                      viewModel.isMinMaxTempLoadCompleted &&
-                      viewModel.isSunriseSunsetLoadCompleted &&
-                      viewModel.isTodayWeatherInformationLoadCompleted
-            ) { _ in
-                viewModel.loadCompletedVariablesOnChangeAction()
+            .onChange(of: viewModel.isAllLoaded) { newValue in
                 disableTabBarTouch = false
                 contentVM.isLocationChanged = true
             }
