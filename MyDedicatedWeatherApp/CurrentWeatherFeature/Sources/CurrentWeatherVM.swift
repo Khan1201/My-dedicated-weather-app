@@ -12,7 +12,6 @@ import Data
 import Core
 
 final class CurrentWeatherVM: ObservableObject {
-    @Published private(set) var errorMessage: String = ""
     @Published private(set) var currentTemperature: String = "00"
     @Published private(set) var currentWeatherAnimationImg: String = ""
     @Published private(set) var currentWeatherImage: String = ""
@@ -151,10 +150,8 @@ extension CurrentWeatherVM {
             
             let durationTime = CFAbsoluteTimeGetCurrent() - startTime
             print("초단기 req 소요시간: \(durationTime)")
-        case .failure:
-            DispatchQueue.main.async {
-                self.errorMessage = "API 통신 에러"
-            }
+        case .failure(let error):
+            CustomLogger.error("\(error)")
         }
     }
     
@@ -202,10 +199,8 @@ extension CurrentWeatherVM {
             
             let reqEndTime = CFAbsoluteTimeGetCurrent() - reqStartTime
             print("단기 req 호출 소요시간: \(reqEndTime)")
-        case .failure:
-            DispatchQueue.main.async {
-                self.errorMessage = "API 통신 에러"
-            }
+        case .failure(let error):
+            CustomLogger.error("\(error)")
         }
     }
     
@@ -224,10 +219,8 @@ extension CurrentWeatherVM {
             
             let reqEndTime = CFAbsoluteTimeGetCurrent() - reqStartTime
             print("단기 req(최소, 최대 온도 값) 호출 소요시간: \(reqEndTime)")
-        case .failure:
-            DispatchQueue.main.async {
-                self.errorMessage = "API 통신 에러"
-            }
+        case .failure(let error):
+            CustomLogger.error("\(error)")
         }
     }
     
@@ -246,10 +239,8 @@ extension CurrentWeatherVM {
             
             let reqEndTime = CFAbsoluteTimeGetCurrent() - reqStartTime
             print("미세먼지 item 호출 소요시간: \(reqEndTime)")
-        case .failure:
-            DispatchQueue.main.async {
-                self.errorMessage = "API 통신 에러"
-            }
+        case .failure(let error):
+            CustomLogger.error("\(error)")
         }
     }
     
@@ -270,10 +261,8 @@ extension CurrentWeatherVM {
                 
             let reqEndTime = CFAbsoluteTimeGetCurrent() - reqStartTime
             print("미세먼지 측정소 xy좌표 get 호출 소요시간: \(reqEndTime)")
-        case .failure:
-            DispatchQueue.main.async {
-                self.errorMessage = "API 통신 에러"
-            }
+        case .failure(let error):
+            CustomLogger.error("\(error)")
         }
     }
     
@@ -296,10 +285,8 @@ extension CurrentWeatherVM {
 
             let reqEndTime = CFAbsoluteTimeGetCurrent() - reqStartTime
             print("미세먼지 측정소 get 호출 소요시간: \(reqEndTime)")
-        case .failure:
-            DispatchQueue.main.async {
-                self.errorMessage = "API 통신 에러"
-            }
+        case .failure(let error):
+            CustomLogger.error("\(error)")
         }
     }
     
@@ -337,10 +324,8 @@ extension CurrentWeatherVM {
 
             let durationTime = CFAbsoluteTimeGetCurrent() - startTime
             print("카카오 주소 req 소요시간: \(durationTime)")
-        case .failure:
-            DispatchQueue.main.async {
-                self.errorMessage = "API 통신 에러"
-            }
+        case .failure(let error):
+            CustomLogger.error("\(error)")
         }
     }
 }
