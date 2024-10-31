@@ -32,15 +32,15 @@ final class CurrentWeatherVM: ObservableObject {
     @Published private(set) var sunriseAndSunsetHHmm: (String, String) = ("0000", "0000")
     
     /// Load Completed Variables..(7 values)
-    @Published private(set) var isCurrentWeatherInformationLoadCompleted: Bool = false
+    @Published private(set) var isCurrentWeatherInformationLoaded: Bool = false
     @Published private(set) var isCurrentWeatherAnimationSetCompleted: Bool = false
-    @Published private(set) var isFineDustLoadCompleted: Bool = false
-    @Published private(set) var isKakaoAddressLoadCompleted: Bool = false
-    @Published private(set) var isMinMaxTempLoadCompleted: Bool = false
-    @Published private(set) var isSunriseSunsetLoadCompleted: Bool = false
-    @Published private(set) var isTodayWeatherInformationLoadCompleted: Bool = false
+    @Published private(set) var isFineDustLoaded: Bool = false
+    @Published private(set) var isKakaoAddressLoaded: Bool = false
+    @Published private(set) var isMinMaxTempLoaded: Bool = false
+    @Published private(set) var isSunriseSunsetLoaded: Bool = false
+    @Published private(set) var isTodayWeatherInformationLoaded: Bool = false
     
-    @Published private(set) var isAllLoadCompleted: Bool = false
+    @Published private(set) var isAllLoaded: Bool = false
     @Published var retryInitialReq: Bool = false
     @Published var showNoticeFloater: Bool = false
     
@@ -372,7 +372,7 @@ extension CurrentWeatherVM {
         )
         
         contentVM.setSkyKeyword(veryShortTermForecastWeatherInf.skyType.backgroundImageKeyword)
-        isCurrentWeatherInformationLoadCompleted = true
+        isCurrentWeatherInformationLoaded = true
     }
     
     /**
@@ -425,7 +425,7 @@ extension CurrentWeatherVM {
             ptyIndex += step
             popIndex += step
         }
-        isTodayWeatherInformationLoadCompleted = true
+        isTodayWeatherInformationLoaded = true
     }
     
     /// Set `todayMinMaxTemperature` variable
@@ -442,7 +442,7 @@ extension CurrentWeatherVM {
         let max = filteredTemps.max() ?? 0
         
         todayMinMaxTemperature = (min.toString, max.toString)
-        isMinMaxTempLoadCompleted = true
+        isMinMaxTempLoaded = true
     }
     
     /**
@@ -482,7 +482,7 @@ extension CurrentWeatherVM {
     func setCurrentFineDustAndUltraFineDustTuple(_ item: RealTimeFindDustForecast) {
         currentFineDustTuple = fineDustLookUpUtil.remakeFindDustValue(value: item.pm10Value)
         currentUltraFineDustTuple = fineDustLookUpUtil.remakeUltraFindDustValue(value: item.pm25Value)
-        isFineDustLoadCompleted = true
+        isFineDustLoaded = true
     }
     
     /// Set 세부주소
@@ -491,14 +491,14 @@ extension CurrentWeatherVM {
     func setSubLocalityByKakaoAddress(_ items: [KakaoAddress.AddressBase]) {
         guard items.count > 0 else { return }
         subLocalityByKakaoAddress = items[0].address.subLocality
-        isKakaoAddressLoadCompleted = true
+        isKakaoAddressLoaded = true
     }
     
     /// Set 일출, 일몰 시간
     /// - parameter item: 일출 일몰 요청 response
     func setSunriseAndSunsetHHmm(sunrise: String, sunset: String) {
         sunriseAndSunsetHHmm = (sunrise, sunset)
-        isSunriseSunsetLoadCompleted = true
+        isSunriseSunsetLoaded = true
     }
     
     /// Set XY좌표(미세먼지 측정소 이름 get 요청에 필요)
@@ -693,13 +693,13 @@ extension CurrentWeatherVM {
 extension CurrentWeatherVM {
     
     func initLoadCompletedVariables() {
-        isCurrentWeatherInformationLoadCompleted = false
+        isCurrentWeatherInformationLoaded = false
         isCurrentWeatherAnimationSetCompleted = false
-        isFineDustLoadCompleted = false
-        isKakaoAddressLoadCompleted = false
-        isMinMaxTempLoadCompleted = false
-        isSunriseSunsetLoadCompleted = false
-        isTodayWeatherInformationLoadCompleted = false
+        isFineDustLoaded = false
+        isKakaoAddressLoaded = false
+        isMinMaxTempLoaded = false
+        isSunriseSunsetLoaded = false
+        isTodayWeatherInformationLoaded = false
     }
     
     func initializeTask() {

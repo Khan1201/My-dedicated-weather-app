@@ -44,11 +44,11 @@ public struct CurrentWeatherView: View {
                         viewModel: viewModel,
                         pageIndex: $pageIndex,
                         page: page,
-                        isLoadCompleted: viewModel.isTodayWeatherInformationLoadCompleted
+                        isLoadCompleted: viewModel.isTodayWeatherInformationLoaded
                     )
                     .overlay(alignment: isFirstPage ? .topTrailing : .topLeading) {
                         LeftOrRightAnimationView(page: $page, pageIndex: $pageIndex)
-                            .opacity(viewModel.isTodayWeatherInformationLoadCompleted ? 1: 0)
+                            .opacity(viewModel.isTodayWeatherInformationLoaded ? 1: 0)
                     }
                 }
                 
@@ -61,7 +61,7 @@ public struct CurrentWeatherView: View {
                     isDayMode: contentVM.isDayMode
                 )
                 .padding(.horizontal, 26)
-                .loadingProgressLottie(isLoadingCompleted: viewModel.isTodayWeatherInformationLoadCompleted)
+                .loadingProgressLottie(isLoadingCompleted: viewModel.isTodayWeatherInformationLoaded)
             }
             .padding(.top, 25)
             .frame(height: UIScreen.screenHeight, alignment: .center)
@@ -78,8 +78,8 @@ public struct CurrentWeatherView: View {
             }
             .todayViewControllerBackground(
                 isDayMode: contentVM.isDayMode,
-                isSunriseSunsetLoadCompleted: viewModel.isSunriseSunsetLoadCompleted,
-                isAllLoadCompleted: viewModel.isAllLoadCompleted,
+                isSunriseSunsetLoadCompleted: viewModel.isSunriseSunsetLoaded,
+                isAllLoadCompleted: viewModel.isAllLoaded,
                 skyType: viewModel.currentWeatherInformation.skyType
             )
             .onChangeAtTodayViewController(disableTabBarTouch: $disableTabBarTouch)
@@ -148,16 +148,16 @@ extension CurrentWeatherView {
                 CurrentLocationAndDateView(
                     location: currentLocationVM.locality,
                     subLocation: currentLocationVM.subLocality,
-                    showRefreshButton: viewModel.isAllLoadCompleted,
+                    showRefreshButton: viewModel.isAllLoaded,
                     openAdditionalLocationView: $viewModel.openAdditionalLocationView,
                     refreshButtonOnTapGesture: viewModel.refreshButtonOnTapGesture
                 )
                 .padding(.leading, 40)
-                .loadingProgressLottie(isLoadingCompleted: viewModel.isKakaoAddressLoadCompleted)
+                .loadingProgressLottie(isLoadingCompleted: viewModel.isKakaoAddressLoaded)
                                 
                 Spacer()
                 
-                if viewModel.isSunriseSunsetLoadCompleted {
+                if viewModel.isSunriseSunsetLoaded {
                     TodaySunriseSunsetView(
                         sunriseTime: viewModel.sunriseAndSunsetHHmm.0,
                         sunsetTime: viewModel.sunriseAndSunsetHHmm.1,
@@ -181,7 +181,7 @@ extension CurrentWeatherView {
                     isDayMode: contentVM.isDayMode
                 )
                 .loadingProgressLottie(
-                    isLoadingCompleted: viewModel.isCurrentWeatherInformationLoadCompleted && viewModel.isMinMaxTempLoadCompleted
+                    isLoadingCompleted: viewModel.isCurrentWeatherInformationLoaded && viewModel.isMinMaxTempLoaded
                 )
             }
             .padding(.leading, 50)
