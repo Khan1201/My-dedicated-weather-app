@@ -376,7 +376,7 @@ extension CurrentWeatherVM {
                 value: currentWindSpeed.fcstValue
             ),
             wetPercent: ("\(currentWetPercent.fcstValue)%", ""),
-            oneHourPrecipitation: commonForecastUtil.remakeOneHourPrecipitationValueByVeryShortTermOrShortTermForecast(
+            oneHourPrecipitation: commonForecastUtil.remakeOneHourPrecipitation(
                 value: currentOneHourPrecipitation.fcstValue
             ),
             weatherImage: veryShortTermForecastWeatherInf.imageString,

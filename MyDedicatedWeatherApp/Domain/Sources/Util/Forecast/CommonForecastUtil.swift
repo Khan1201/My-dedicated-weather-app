@@ -122,7 +122,7 @@ public struct CommonForecastUtil {
      - parameter dayJson: 05 ~ 18 시 json file name
      - parameter nightJson: 19 ~ 04 시 json file name
      */
-    public func decideAnimationWhetherDayOrNight(
+    public func decideAnimationDayOrNight(
         sunTime: SunTime,
         dayJson: String,
         nightJson: String
@@ -141,7 +141,7 @@ public struct CommonForecastUtil {
      - parameter dayImageString: 05 ~ 18 시 image string
      - parameter nightImageString: 19 ~ 04 시 image string
      */
-    public func decideImageWhetherDayOrNight(
+    public func decideImageDayOrNight(
         sunTime: SunTime,
         dayImageString: String,
         nightImgString: String
@@ -160,7 +160,7 @@ public struct CommonForecastUtil {
      
      - parameter value: 예보 조회 response 1시간 강수량 값
      */
-    public func remakeOneHourPrecipitationValueByVeryShortTermOrShortTermForecast(value: String) -> (String, String) {
+    public func remakeOneHourPrecipitation(value: String) -> (String, String) {
         
         if value == "강수없음" {
             return ("비 없음", "")
@@ -223,7 +223,7 @@ public struct CommonForecastUtil {
             )
             
         case "3", "7":
-            let animationJson = self.decideAnimationWhetherDayOrNight(
+            let animationJson = self.decideAnimationDayOrNight(
                 sunTime: sunTime,
                 dayJson: "SnowLottie",
                 nightJson: "SnowNightLottie"
@@ -234,7 +234,7 @@ public struct CommonForecastUtil {
                 imageString: isAnimationImage ? animationJson : "weather_snow"
             )
         case "4":
-            let animationJson = self.decideAnimationWhetherDayOrNight(
+            let animationJson = self.decideAnimationDayOrNight(
                 sunTime: sunTime,
                 dayJson: "RainShowerLottie",
                 nightJson: "RainShowerNightLottie"
@@ -247,7 +247,7 @@ public struct CommonForecastUtil {
             )
             
         case "5":
-            let animationJson = self.decideAnimationWhetherDayOrNight(
+            let animationJson = self.decideAnimationDayOrNight(
                 sunTime: sunTime,
                 dayJson: "RainShowerLottie",
                 nightJson: "RainShowerNightLottie"
@@ -297,12 +297,12 @@ public struct CommonForecastUtil {
         
         switch value {
         case "1":
-            let animationJson = self.decideAnimationWhetherDayOrNight(
+            let animationJson = self.decideAnimationDayOrNight(
                 sunTime: sunTime,
                 dayJson: "SunnyLottie",
                 nightJson: "SunnyNightLottie"
             )
-            let imageString = self.decideImageWhetherDayOrNight(
+            let imageString = self.decideImageDayOrNight(
                 sunTime: sunTime,
                 dayImageString: "weather_sunny",
                 nightImgString: "weather_sunny_night"
@@ -314,12 +314,12 @@ public struct CommonForecastUtil {
             )
             
         case "3":
-            let animationJson = self.decideAnimationWhetherDayOrNight(
+            let animationJson = self.decideAnimationDayOrNight(
                 sunTime: sunTime,
                 dayJson: "CloudManyLottie",
                 nightJson: "CloudManyNightLottie"
             )
-            let imageString = self.decideImageWhetherDayOrNight(
+            let imageString = self.decideImageDayOrNight(
                 sunTime: sunTime,
                 dayImageString: "weather_cloud_many",
                 nightImgString: "weather_cloud_many_night"
