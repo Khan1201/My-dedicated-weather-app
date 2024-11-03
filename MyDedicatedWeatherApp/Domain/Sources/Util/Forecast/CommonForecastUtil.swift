@@ -160,34 +160,14 @@ public struct CommonForecastUtil {
      
      - parameter value: 예보 조회 response 1시간 강수량 값
      */
-    public func remakeOneHourPrecipitation(value: String) -> (String, String) {
-        
-        if value == "강수없음" {
-            return ("비 없음", "")
-            
-        } else if value == "30.0~50.0mm" || value == "50.0mm 이상" {
-            return ("매우 강한 비", "30mm 이상")
-            
-        } else {
-            let stringToDouble: Double = Double(value.replacingOccurrences(of: "mm", with: "")) ?? 0
-            
-            switch stringToDouble {
-                
-            case 1.0...2.9:
-                return ("약한 비", value)
-                
-            case 3.0...14.9:
-                return ("보통 비", value)
-                
-            case 15.0...29.9:
-                return ("강한 비", value)
-                
-            default:
-                return ("알 수 없음", "")
-            }
-        }
+    public func convertPrecipitation(rawValue: String) -> String {
+        return PrecipitationConverter.convert(rawValue: rawValue)
     }
     
+    public func precipitationValueToShort(rawValue: String) -> String {
+        return PrecipitationConverter.toShortValue(rawValue)
+    }
+
     /**
      초단기예보 or 단기예보의 강수량 값 -> (강수량 String, 강수량 Img String)
      
