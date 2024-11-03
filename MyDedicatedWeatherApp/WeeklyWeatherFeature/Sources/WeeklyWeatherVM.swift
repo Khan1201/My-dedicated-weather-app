@@ -199,6 +199,11 @@ extension WeeklyWeatherVM {
         
         let tommorrowDate: String = Date().toString(byAdding: 1, format: "yyyyMMdd")
         let twoDaysLaterDate: String = Date().toString(byAdding: 2, format: "yyyyMMdd")
+        let sunTime: SunTime = .init(
+            currentHHmm: "1200",
+            sunriseHHmm: "0600",
+            sunsetHHmm: "2000"
+        )
         
         // 각 변수에는 오늘, 내일 데이터 포함 (count == 2)
         var precipitationPercentes: [String] = []
@@ -226,9 +231,7 @@ extension WeeklyWeatherVM {
             skyStateImageStrings.append(
                 self.commonForecastUtil.remakeSkyStateValueByVeryShortTermOrShortTermForecast(
                     skyStateFilteredItems[i].fcstValue,
-                    hhMMForDayOrNightImage: "1200",
-                    sunrise: "0600",
-                    sunset: "2000",
+                    sunTime: sunTime,
                     isAnimationImage: false
                 ).imageString
             )

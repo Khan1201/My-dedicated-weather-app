@@ -65,7 +65,14 @@ extension ContentVM {
     
     public func setIsDayMode(sunriseHHmm: String, sunsetHHmm: String) {
         let currentHHmm = Date().toString(format: "HHmm")
-        let result = commonForecastUtil.isDayMode(hhMM: currentHHmm, sunrise: sunriseHHmm, sunset: sunsetHHmm)
+        let sunTime: SunTime = .init(
+            currentHHmm: currentHHmm,
+            sunriseHHmm: sunriseHHmm,
+            sunsetHHmm: sunsetHHmm
+        )
+        let result = commonForecastUtil.isDayMode(
+            sunTime: sunTime
+        )
         isDayMode = result
     }
     

@@ -119,13 +119,16 @@ extension AdditionalLocationVM {
             
             let firstPTYItem = items[6]
             let firstSKYItem = items[18]
+            let sunTime: SunTime = .init(
+                currentHHmm: firstPTYItem.fcstTime,
+                sunriseHHmm: sunriseAndsunsetHHmm.0,
+                sunsetHHmm: sunriseAndsunsetHHmm.1
+            )
             
             let weatherImage = commonForecastUtil.veryShortOrShortTermForecastWeatherDescriptionAndSkyTypeAndImageString(
                 ptyValue: firstPTYItem.fcstValue,
                 skyValue: firstSKYItem.fcstValue,
-                hhMMForDayOrNightImage: firstPTYItem.fcstTime,
-                sunrise: sunriseAndsunsetHHmm.0,
-                sunset: sunriseAndsunsetHHmm.1,
+                sunTime: sunTime,
                 isAnimationImage: false
             ).imageString
             

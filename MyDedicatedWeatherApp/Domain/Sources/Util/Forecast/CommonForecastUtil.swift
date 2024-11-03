@@ -107,13 +107,8 @@ public struct CommonForecastUtil {
      - parameter sunrise: 일출 시간
      - parameter sunset: 일몰 시간
      */
-    public func isDayMode(hhMM: String, sunrise: String, sunset: String) -> Bool {
-        
-        let hhMMToInt = Int(hhMM) ?? 0
-        let sunriseToInt = Int(sunrise) ?? 0
-        let sunsetToInt = Int(sunset) ?? 0
-        
-        if hhMMToInt > sunriseToInt && hhMMToInt < sunsetToInt {
+    public func isDayMode(sunTime: SunTime) -> Bool {
+        if sunTime.currentHHmm.toInt > sunTime.sunriseHHmm.toInt && sunTime.currentHHmm.toInt < sunTime.sunsetHHmm.toInt {
             return true
             
         } else  {
@@ -128,14 +123,11 @@ public struct CommonForecastUtil {
      - parameter nightJson: 19 ~ 04 시 json file name
      */
     public func decideAnimationWhetherDayOrNight(
-        hhMM: String,
-        sunrise: String,
-        sunset: String,
+        sunTime: SunTime,
         dayJson: String,
         nightJson: String
     ) -> String {
-        
-        if isDayMode(hhMM: hhMM, sunrise: sunrise, sunset: sunset) {
+        if isDayMode(sunTime: sunTime) {
             return dayJson
             
         } else {
@@ -150,14 +142,12 @@ public struct CommonForecastUtil {
      - parameter nightImageString: 19 ~ 04 시 image string
      */
     public func decideImageWhetherDayOrNight(
-        hhMM: String,
-        sunrise: String,
-        sunset:  String ,
+        sunTime: SunTime,
         dayImageString: String,
         nightImgString: String
     ) -> String {
         
-        if isDayMode(hhMM: hhMM, sunrise: sunrise, sunset: sunset) {
+        if isDayMode(sunTime: sunTime) {
             return dayImageString
             
         } else {
@@ -205,9 +195,7 @@ public struct CommonForecastUtil {
      */
     public func remakePrecipitaionTypeValueByVeryShortTermOrShortTermForecast(
         _ value: String,
-        hhMMForDayOrNightImage: String,
-        sunrise: String,
-        sunset: String,
+        sunTime: SunTime,
         isAnimationImage: Bool
     ) -> Weather.DescriptionAndSkyTypeAndImageString {
         
@@ -236,9 +224,7 @@ public struct CommonForecastUtil {
             
         case "3", "7":
             let animationJson = self.decideAnimationWhetherDayOrNight(
-                hhMM: hhMMForDayOrNightImage,
-                sunrise: sunrise,
-                sunset: sunset,
+                sunTime: sunTime,
                 dayJson: "SnowLottie",
                 nightJson: "SnowNightLottie"
             )
@@ -249,9 +235,7 @@ public struct CommonForecastUtil {
             )
         case "4":
             let animationJson = self.decideAnimationWhetherDayOrNight(
-                hhMM: hhMMForDayOrNightImage,
-                sunrise: sunrise,
-                sunset: sunset,
+                sunTime: sunTime,
                 dayJson: "RainShowerLottie",
                 nightJson: "RainShowerNightLottie"
             )
@@ -264,9 +248,7 @@ public struct CommonForecastUtil {
             
         case "5":
             let animationJson = self.decideAnimationWhetherDayOrNight(
-                hhMM: hhMMForDayOrNightImage,
-                sunrise: sunrise,
-                sunset: sunset,
+                sunTime: sunTime,
                 dayJson: "RainShowerLottie",
                 nightJson: "RainShowerNightLottie"
             )
@@ -309,25 +291,19 @@ public struct CommonForecastUtil {
      */
     public func remakeSkyStateValueByVeryShortTermOrShortTermForecast(
         _ value: String,
-        hhMMForDayOrNightImage: String,
-        sunrise: String,
-        sunset: String,
+        sunTime: SunTime,
         isAnimationImage: Bool
     ) -> Weather.DescriptionAndSkyTypeAndImageString {
         
         switch value {
         case "1":
             let animationJson = self.decideAnimationWhetherDayOrNight(
-                hhMM: hhMMForDayOrNightImage,
-                sunrise: sunrise,
-                sunset: sunset,
+                sunTime: sunTime,
                 dayJson: "SunnyLottie",
                 nightJson: "SunnyNightLottie"
             )
             let imageString = self.decideImageWhetherDayOrNight(
-                hhMM: hhMMForDayOrNightImage,
-                sunrise: sunrise,
-                sunset: sunset,
+                sunTime: sunTime,
                 dayImageString: "weather_sunny",
                 nightImgString: "weather_sunny_night"
             )
@@ -339,16 +315,12 @@ public struct CommonForecastUtil {
             
         case "3":
             let animationJson = self.decideAnimationWhetherDayOrNight(
-                hhMM: hhMMForDayOrNightImage,
-                sunrise: sunrise,
-                sunset: sunset,
+                sunTime: sunTime,
                 dayJson: "CloudManyLottie",
                 nightJson: "CloudManyNightLottie"
             )
             let imageString = self.decideImageWhetherDayOrNight(
-                hhMM: hhMMForDayOrNightImage,
-                sunrise: sunrise,
-                sunset: sunset,
+                sunTime: sunTime,
                 dayImageString: "weather_cloud_many",
                 nightImgString: "weather_cloud_many_night"
             )
@@ -383,27 +355,21 @@ public struct CommonForecastUtil {
     public func veryShortOrShortTermForecastWeatherDescriptionAndSkyTypeAndImageString(
         ptyValue: String,
         skyValue: String,
-        hhMMForDayOrNightImage: String,
-        sunrise: String,
-        sunset: String,
+        sunTime: SunTime,
         isAnimationImage: Bool
     ) -> Weather.DescriptionAndSkyTypeAndImageString {
         
         if ptyValue != "0" {
             return remakePrecipitaionTypeValueByVeryShortTermOrShortTermForecast(
                 ptyValue,
-                hhMMForDayOrNightImage: hhMMForDayOrNightImage,
-                sunrise: sunrise,
-                sunset: sunset,
+                sunTime: sunTime,
                 isAnimationImage: isAnimationImage
             )
             
         } else {
             return remakeSkyStateValueByVeryShortTermOrShortTermForecast(
                 skyValue,
-                hhMMForDayOrNightImage: hhMMForDayOrNightImage,
-                sunrise: sunrise,
-                sunset: sunset,
+                sunTime: sunTime,
                 isAnimationImage: isAnimationImage
             )
         }

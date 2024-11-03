@@ -387,15 +387,19 @@ extension WeatherWidgetVM {
             commonForecastUtil.veryShortOrShortTermForecastWeatherDescriptionAndSkyTypeAndImageString(
                 ptyValue: rainState,
                 skyValue: skyState,
-                hhMMForDayOrNightImage: targetTime,
-                sunrise: sunrise,
-                sunset: sunset,
+                sunTime: .init(
+                    currentHHmm: targetTime,
+                    sunriseHHmm: sunrise,
+                    sunsetHHmm: sunset
+                ),
                 isAnimationImage: false
             ).imageString
             result.isDayMode = commonForecastUtil.isDayMode(
-                hhMM: Date().toString(format: "HHmm"),
-                sunrise: sunrise,
-                sunset: sunset
+                sunTime: .init(
+                    currentHHmm: Date().toString(format: "HHmm"),
+                    sunriseHHmm: sunrise,
+                    sunsetHHmm: sunset
+                )
             )
             
             commonUtil.printSuccess(
@@ -450,6 +454,11 @@ extension WeatherWidgetVM {
         
         var step = 12
         let loopCount = shortForecastUtil.todayWeatherLoopCount
+        let sunTime: SunTime = .init(
+            currentHHmm: items[ptyIndex].fcstTime,
+            sunriseHHmm: sunrise,
+            sunsetHHmm: sunset
+        )
 
         var tempResult: [MediumFamilyData.TodayWeatherItem] = []
         
@@ -471,9 +480,7 @@ extension WeatherWidgetVM {
                     let weatherImage = commonForecastUtil.veryShortOrShortTermForecastWeatherDescriptionAndSkyTypeAndImageString(
                         ptyValue: items[ptyIndex].fcstValue,
                         skyValue: items[skyIndex].fcstValue,
-                        hhMMForDayOrNightImage: items[ptyIndex].fcstTime,
-                        sunrise: sunrise,
-                        sunset: sunset,
+                        sunTime: sunTime,
                         isAnimationImage: false
                     ).imageString
                     
@@ -810,6 +817,12 @@ extension WeatherWidgetVM {
     ) -> [String] {
         let tommorrowDate: String = Date().toString(byAdding: 1, format: "yyyyMMdd")
         let twoDaysLaterDate: String = Date().toString(byAdding: 2, format: "yyyyMMdd")
+        let sunTime: SunTime = .init(
+            currentHHmm: "1200",
+            sunriseHHmm: "0600",
+            sunsetHHmm: "2000"
+        )
+        
         var result: [String] = []
         
         let skyStateFilteredItems = items.filter { item in
@@ -820,9 +833,7 @@ extension WeatherWidgetVM {
             result.append(
                 commonForecastUtil.remakeSkyStateValueByVeryShortTermOrShortTermForecast(
                     skyStateFilteredItems[i].fcstValue,
-                    hhMMForDayOrNightImage: "1200",
-                    sunrise: "0600",
-                    sunset: "2000",
+                    sunTime: sunTime,
                     isAnimationImage: false
                 ).imageString
             )

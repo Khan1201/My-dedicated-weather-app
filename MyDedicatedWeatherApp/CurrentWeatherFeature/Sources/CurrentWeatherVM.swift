@@ -357,13 +357,16 @@ extension CurrentWeatherVM {
         let currentOneHourPrecipitation = items[12]
         let firstPTYItem = items[6]
         let firstSKYItem = items[18]
+        let sunTime: SunTime = .init(
+            currentHHmm: firstPTYItem.fcstTime,
+            sunriseHHmm: sunriseAndSunsetHHmm.0,
+            sunsetHHmm: sunriseAndSunsetHHmm.1
+        )
         
         let veryShortTermForecastWeatherInf = commonForecastUtil.veryShortOrShortTermForecastWeatherDescriptionAndSkyTypeAndImageString(
             ptyValue: firstPTYItem.fcstValue,
             skyValue: firstSKYItem.fcstValue,
-            hhMMForDayOrNightImage: firstPTYItem.fcstTime,
-            sunrise: sunriseAndSunsetHHmm.0,
-            sunset: sunriseAndSunsetHHmm.1,
+            sunTime: sunTime,
             isAnimationImage: false
         )
         
@@ -401,6 +404,11 @@ extension CurrentWeatherVM {
         var popIndex = 7 + skipValue
         var step = 12
         let loopCount = shortTermForecastUtil.todayWeatherLoopCount
+        let sunTime: SunTime = .init(
+            currentHHmm: items[tempIndex].fcstTime,
+            sunriseHHmm: self.sunriseAndSunsetHHmm.0,
+            sunsetHHmm: self.sunriseAndSunsetHHmm.1
+        )
         
         // 각 index 해당하는 값(시간에 해당하는 값) append
         for _ in 0..<loopCount {
@@ -415,9 +423,7 @@ extension CurrentWeatherVM {
             let weatherImage: Weather.DescriptionAndSkyTypeAndImageString = commonForecastUtil.veryShortOrShortTermForecastWeatherDescriptionAndSkyTypeAndImageString(
                 ptyValue: items[ptyIndex].fcstValue,
                 skyValue: items[skyIndex].fcstValue,
-                hhMMForDayOrNightImage: items[tempIndex].fcstTime,
-                sunrise: self.sunriseAndSunsetHHmm.0,
-                sunset: self.sunriseAndSunsetHHmm.1,
+                sunTime: sunTime,
                 isAnimationImage: false
             )
             
@@ -463,22 +469,23 @@ extension CurrentWeatherVM {
     func setCurrentWeatherImgAndAnimationImg(items: [VeryShortOrShortTermForecast<VeryShortTermForecastCategory>]) {
         let firstPTYItem = items[6] // 강수 형태 first
         let firstSKYItem = items[18] // 하늘 상태 first
+        let sunTime: SunTime = .init(
+            currentHHmm: firstPTYItem.fcstTime,
+            sunriseHHmm: sunriseAndSunsetHHmm.0,
+            sunsetHHmm: sunriseAndSunsetHHmm.1
+        )
         
         currentWeatherAnimationImg = commonForecastUtil.veryShortOrShortTermForecastWeatherDescriptionAndSkyTypeAndImageString(
             ptyValue: firstPTYItem.fcstValue,
             skyValue: firstSKYItem.fcstValue,
-            hhMMForDayOrNightImage: firstPTYItem.fcstTime,
-            sunrise: sunriseAndSunsetHHmm.0,
-            sunset: sunriseAndSunsetHHmm.1,
+            sunTime: sunTime,
             isAnimationImage: true
         ).imageString
         
         currentWeatherImage = commonForecastUtil.veryShortOrShortTermForecastWeatherDescriptionAndSkyTypeAndImageString(
             ptyValue: firstPTYItem.fcstValue,
             skyValue: firstSKYItem.fcstValue,
-            hhMMForDayOrNightImage: firstPTYItem.fcstTime,
-            sunrise: sunriseAndSunsetHHmm.0,
-            sunset: sunriseAndSunsetHHmm.1,
+            sunTime: sunTime,
             isAnimationImage: false
         ).imageString
         
