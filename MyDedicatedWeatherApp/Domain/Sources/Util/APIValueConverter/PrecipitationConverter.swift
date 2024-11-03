@@ -8,30 +8,25 @@
 import Foundation
 
 public struct PrecipitationConverter: APIValueConverter {
-    
-    static public func convert(rawValue: String) -> String {
+    static public func convert(rawValue: String) -> any APIValue {
         if rawValue == "강수없음" {
-            return ("비 없음")
+            return PrecipitationType.noRain
             
         } else if rawValue == "30.0~50.0mm" || rawValue == "50.0mm 이상" {
-            return ("매우 강한 비")
+            return PrecipitationType.heavyRain
             
         } else {
             let stringToDouble: Double = Double(rawValue.replacingOccurrences(of: "mm", with: "")) ?? 0
             
             switch stringToDouble {
-                
             case 1.0...2.9:
-                return ("약한 비")
-                
+                return PrecipitationType.lightRain
             case 3.0...14.9:
-                return ("보통 비")
-                
+                return PrecipitationType.normalRain
             case 15.0...29.9:
-                return ("강한 비")
-                
+                return PrecipitationType.heavyRain
             default:
-                return ("알 수 없음")
+                return PrecipitationType.none
             }
         }
     }
@@ -40,11 +35,9 @@ public struct PrecipitationConverter: APIValueConverter {
         if rawValue == "강수없음" {
             return ""
         }
-        
         if rawValue == "30.0~50.0mm" || rawValue == "50.0mm 이상" {
             return "30mm 이상"
         }
-        
         return rawValue
     }
 }

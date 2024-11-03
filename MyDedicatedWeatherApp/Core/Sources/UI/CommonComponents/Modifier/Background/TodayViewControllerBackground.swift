@@ -12,9 +12,9 @@ public struct TodayViewControllerBackground: ViewModifier {
     let isDayMode: Bool
     let isSunriseSunsetLoadCompleted: Bool
     let isAllLoadCompleted: Bool
-    let skyType: Weather.SkyType
+    let skyType: SkyType
     
-    public init(isDayMode: Bool, isSunriseSunsetLoadCompleted: Bool, isAllLoadCompleted: Bool, skyType: Weather.SkyType) {
+    public init(isDayMode: Bool, isSunriseSunsetLoadCompleted: Bool, isAllLoadCompleted: Bool, skyType: SkyType) {
         self.isDayMode = isDayMode
         self.isSunriseSunsetLoadCompleted = isSunriseSunsetLoadCompleted
         self.isAllLoadCompleted = isAllLoadCompleted
@@ -32,22 +32,7 @@ public struct TodayViewControllerBackground: ViewModifier {
             case .sunny:
                 return isDayMode ? "Day" : "Night"
                 
-            case .cloudy:
-                return ""
-                
-            case .blur:
-                return ""
-                
-            case .rainy:
-                return ""
-
-            case .snow:
-                return ""
-
-            case .thunder:
-                return ""
-                
-            case .none:
+            default:
                 return ""
             }
         }
@@ -62,19 +47,7 @@ public struct TodayViewControllerBackground: ViewModifier {
             case .cloudy:
                 return -35
                 
-            case .blur:
-                return 0
-                
-            case .rainy:
-                return 0
-                
-            case .snow:
-                return 0
-                
-            case .thunder:
-                return 0
-                
-            case .none:
+            default:
                 return 0
             }
         }
@@ -132,7 +105,7 @@ extension View {
         isDayMode: Bool,
         isSunriseSunsetLoadCompleted: Bool,
         isAllLoadCompleted: Bool,
-        skyType: Weather.SkyType
+        skyType: SkyType
     ) -> some View {
         modifier(TodayViewControllerBackground(
             isDayMode: isDayMode, 

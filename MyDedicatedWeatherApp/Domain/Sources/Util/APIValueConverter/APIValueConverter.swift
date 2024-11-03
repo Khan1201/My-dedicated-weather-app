@@ -8,5 +8,9 @@
 import Foundation
 
 protocol APIValueConverter {
-    static func convert(rawValue: String) -> String
+    static func convert(rawValue: String) -> APIValue
+}
+
+public protocol APIValue {
+    var toDescription: String { get }
 }

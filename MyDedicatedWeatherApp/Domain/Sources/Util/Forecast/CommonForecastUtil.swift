@@ -161,7 +161,7 @@ public struct CommonForecastUtil {
      - parameter value: 예보 조회 response 1시간 강수량 값
      */
     public func convertPrecipitation(rawValue: String) -> String {
-        return PrecipitationConverter.convert(rawValue: rawValue)
+        return PrecipitationConverter.convert(rawValue: rawValue).toDescription
     }
     
     public func precipitationValueToShort(rawValue: String) -> String {
