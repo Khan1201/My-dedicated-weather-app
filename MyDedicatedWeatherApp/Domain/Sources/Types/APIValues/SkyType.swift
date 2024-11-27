@@ -35,43 +35,94 @@ public enum SkyType: String, APIValue {
         case .rainy:
             return "비"
         case .rainyAndSnow:
-             return "비/눈"
+            return "비/눈"
         case .rainDropAndSnow:
             return "빗방울 / 눈날림"
         case .snow:
-             return "눈"
+            return "눈"
         case .thunder:
-             return "번개"
+            return "번개"
         case .none:
-            return "없음"
+            return "알 수 없음"
         }
     }
-        
-    public var backgroundImageKeyword: String {
+    
+    public var backgroundImage: String {
         switch self {
         case .sunny:
-            return "sunny"
+            return "background_weather_sunny"
         case .cloudy, .blur, .rainy, .snow, .thunder:
-            return "blur"
+            return "background_weather_blur"
         default:
             return ""
         }
     }
     
-    public var backgroundLottieKeyword: String {
+    public func image(isDayMode: Bool) -> String {
         switch self {
         case .sunny:
-            return "Sunny"
+            isDayMode ? "weather_sunny" : "weather_sunny_night"
         case .cloudy:
-            return "Cloudy"
+            isDayMode ? "weather_cloud_many" : "weather_cloud_many_night"
+        case .blur:
+            "weather_blur"
+        case .shower, .rainDrop:
+            "weather_rain_small"
         case .rainy:
-            return "Rainy"
+            "weather_rain"
+        case .rainyAndSnow, .rainDropAndSnow:
+            "weather_rain_snow"
         case .snow:
-            return "Snow"
-        case .thunder:
-            return "Thunder"
+            "weather_snow"
+        default:
+            "load_fail"
+        }
+    }
+    
+    public func lottie(isDayMode: Bool) -> String {
+        switch self {
+        case .sunny:
+            isDayMode ? "SunnyLottie" : "SunnyNightLottie"
+        case .cloudy:
+            isDayMode ? "CloudManyLottie" : "CloudManyNightLottie"
+        case .blur:
+            "BlurLottie"
+        case .rainDrop, .shower:
+            isDayMode ? "RainShowerLottie" : "RainShowerNightLottie"        
+        case .rainy:
+            "RainManyLottie"
+        case .rainyAndSnow, .rainDropAndSnow:
+            "RainSnowLottie"
+        case .snow:
+            isDayMode ? "SnowLottie" : "SnowNightLottie"
+        default:
+            "LoadFailLottie"
+        }
+    }
+    
+    public func backgroundLottie(isDayMode: Bool) -> String {
+        switch self {
+        case .sunny:
+            return isDayMode ? "BackgroundSunnyDayLottie" : "BackgroundSunnyNightLottie"
+        case .cloudy:
+            return "BackgroundCloudyLottie"
+        case .rainy:
+            return "BackgroundRainyLottie"
+        case .snow:
+            return "BackgroundSnowLottie"
         default:
             return ""
+        }
+    }
+    
+    public func lottieOffset(isDayMode: Bool) -> Double {
+        switch self {
+        case .sunny:
+            return isDayMode ? -220 : 0
+        case .cloudy:
+            return -35
+        default:
+            return 0
         }
     }
 }
