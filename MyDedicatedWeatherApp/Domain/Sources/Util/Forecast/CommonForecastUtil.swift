@@ -167,164 +167,6 @@ public struct CommonForecastUtil {
     public func precipitationValueToShort(rawValue: String) -> String {
         return PrecipitationConverter.toShortValue(rawValue)
     }
-
-    /**
-     초단기예보 or 단기예보의 강수량 값 -> (강수량 String, 강수량 Img String)
-     
-     - parameter value: 예보 조회 response 바람속도 값
-     */
-    public func remakePrecipitaionTypeValueByVeryShortTermOrShortTermForecast(
-        _ value: String,
-        sunTime: SunTime,
-        isAnimationImage: Bool
-    ) -> Weather.DescriptionAndSkyTypeAndImageString {
-        
-        switch value {
-            
-        case "0":
-            return Weather.DescriptionAndSkyTypeAndImageString(
-                description: "없음",
-                skyType: .none,
-                imageString: ""
-            )
-            
-        case "1":
-            return Weather.DescriptionAndSkyTypeAndImageString(
-                description: "비",
-                skyType: .rainy,
-                imageString: isAnimationImage ? "RainManyLottie" : "weather_rain"
-            )
-            
-        case "2":
-            return Weather.DescriptionAndSkyTypeAndImageString(
-                description: "비/눈",
-                skyType: .snow,
-                imageString: isAnimationImage ? "RainSnowLottie" : "weather_rain_snow"
-            )
-            
-        case "3", "7":
-            let animationJson = self.decideAnimationDayOrNight(
-                sunTime: sunTime,
-                dayJson: "SnowLottie",
-                nightJson: "SnowNightLottie"
-            )
-            return Weather.DescriptionAndSkyTypeAndImageString(
-                description: "눈",
-                skyType: .snow,
-                imageString: isAnimationImage ? animationJson : "weather_snow"
-            )
-        case "4":
-            let animationJson = self.decideAnimationDayOrNight(
-                sunTime: sunTime,
-                dayJson: "RainShowerLottie",
-                nightJson: "RainShowerNightLottie"
-            )
-            
-            return Weather.DescriptionAndSkyTypeAndImageString(
-                description: "소나기",
-                skyType: .rainy,
-                imageString: isAnimationImage ? animationJson : "weather_rain_small"
-            )
-            
-        case "5":
-            let animationJson = self.decideAnimationDayOrNight(
-                sunTime: sunTime,
-                dayJson: "RainShowerLottie",
-                nightJson: "RainShowerNightLottie"
-            )
-            
-            return Weather.DescriptionAndSkyTypeAndImageString(
-                description: "빗방울",
-                skyType: .rainy,
-                imageString: isAnimationImage ? animationJson : "weather_rain_small"
-            )
-            
-        case "6":
-//            let animationJson = self.decideAnimationWhetherDayOrNight(
-//                hhMM: hhMMForDayOrNightImage,
-//                sunrise: sunrise,
-//                sunset: sunset,
-//                dayJson: "SnowLottie",
-//                nightJson: "SnowNightLottie"
-//            )
- 
-            return Weather.DescriptionAndSkyTypeAndImageString(
-                description: "빗방울 / 눈날림",
-                skyType: .snow,
-                imageString: isAnimationImage ? "RainSnowLottie" : "weather_rain_snow"
-            )
-            
-        default:
-            return Weather.DescriptionAndSkyTypeAndImageString(
-                description: "알 수 없음",
-                skyType: .none,
-                imageString: "load_fail"
-            )
-        }
-    }
-    
-    /**
-     초단기예보 or 단기예보의 하늘상태  값 -> (하늘상태 String, 하늘상태 Img String)
-     
-     - parameter value: 예보 조회 response 하늘상태 값,
-     - parameter isAnimationImage: is image is animation or basic
-     */
-    public func remakeSkyStateValueByVeryShortTermOrShortTermForecast(
-        _ value: String,
-        sunTime: SunTime,
-        isAnimationImage: Bool
-    ) -> Weather.DescriptionAndSkyTypeAndImageString {
-        
-        switch value {
-        case "1":
-            let animationJson = self.decideAnimationDayOrNight(
-                sunTime: sunTime,
-                dayJson: "SunnyLottie",
-                nightJson: "SunnyNightLottie"
-            )
-            let imageString = self.decideImageDayOrNight(
-                sunTime: sunTime,
-                dayImageString: "weather_sunny",
-                nightImgString: "weather_sunny_night"
-            )
-            return Weather.DescriptionAndSkyTypeAndImageString(
-                description: "맑음",
-                skyType: .sunny,
-                imageString: isAnimationImage ? animationJson : imageString
-            )
-            
-        case "3":
-            let animationJson = self.decideAnimationDayOrNight(
-                sunTime: sunTime,
-                dayJson: "CloudManyLottie",
-                nightJson: "CloudManyNightLottie"
-            )
-            let imageString = self.decideImageDayOrNight(
-                sunTime: sunTime,
-                dayImageString: "weather_cloud_many",
-                nightImgString: "weather_cloud_many_night"
-            )
-            return Weather.DescriptionAndSkyTypeAndImageString(
-                description: "구름많음",
-                skyType: .cloudy,
-                imageString: isAnimationImage ? animationJson : imageString
-            )
-            
-        case "4":
-            return Weather.DescriptionAndSkyTypeAndImageString(
-                description: "흐림",
-                skyType: .blur,
-                imageString: isAnimationImage ? "BlurLottie" : "weather_blur"
-            )
-            
-        default:
-            return Weather.DescriptionAndSkyTypeAndImageString(
-                description: "알 수 없음",
-                skyType: .none,
-                imageString: isAnimationImage ? "LoadFailLottie" :  "load_fail"
-            )
-        }
-    }
     
     /**
      초단기예보 강수량 값, 하늘상태 값 -> (날씨 String,  날씨 이미지 String)
@@ -332,27 +174,24 @@ public struct CommonForecastUtil {
      - parameter ptyValue: 강수량 값,
      - parameter skyValue: 하늘상태 값
      */
-    public func veryShortOrShortTermForecastWeatherDescriptionAndSkyTypeAndImageString(
+    public func skyTypeOfVeryShortOrShortForecast(
         ptyValue: String,
-        skyValue: String,
-        sunTime: SunTime,
-        isAnimationImage: Bool
-    ) -> Weather.DescriptionAndSkyTypeAndImageString {
-        
+        skyValue: String
+    ) -> APIValue {
         if ptyValue != "0" {
-            return remakePrecipitaionTypeValueByVeryShortTermOrShortTermForecast(
-                ptyValue,
-                sunTime: sunTime,
-                isAnimationImage: isAnimationImage
-            )
+            return PrecipitationStateConverter.convert(rawValue: ptyValue)
             
         } else {
-            return remakeSkyStateValueByVeryShortTermOrShortTermForecast(
-                skyValue,
-                sunTime: sunTime,
-                isAnimationImage: isAnimationImage
-            )
+            return SkyStateConverter.convert(rawValue: skyValue)
         }
+    }
+    
+    public func convertPrecipitationState(rawValue: String) -> APIValue {
+        return PrecipitationStateConverter.convert(rawValue: rawValue)
+    }
+    
+    public func convertSkyState(rawValue: String) -> APIValue {
+        return SkyStateConverter.convert(rawValue: rawValue)
     }
     
     /**
