@@ -229,11 +229,7 @@ extension WeeklyWeatherVM {
         for i in 0..<skyStateFilteredItems.count {
             precipitationPercentes.append(percentFilteredItems[i].fcstValue)
             skyStateImageStrings.append(
-                self.commonForecastUtil.remakeSkyStateValueByVeryShortTermOrShortTermForecast(
-                    skyStateFilteredItems[i].fcstValue,
-                    sunTime: sunTime,
-                    isAnimationImage: false
-                ).image(isDayMode: sunTime.isDayMode)
+                self.commonForecastUtil.skyStateOfVeryShortShortForecast(skyStateFilteredItems[i].fcstValue).image(isDayMode: sunTime.isDayMode)
             )
         }
         

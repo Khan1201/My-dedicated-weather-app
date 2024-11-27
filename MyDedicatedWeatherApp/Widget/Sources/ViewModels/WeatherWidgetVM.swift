@@ -395,13 +395,11 @@ extension WeatherWidgetVM {
                 ptyValue: rainState,
                 skyValue: skyState
             ).image(isDayMode: sunTime.isDayMode)
-            result.isDayMode = commonForecastUtil.isDayMode(
-                sunTime: .init(
-                    currentHHmm: Date().toString(format: "HHmm"),
-                    sunriseHHmm: sunrise,
-                    sunsetHHmm: sunset
-                )
-            )
+            result.isDayMode = SunTime(
+                currentHHmm: Date().toString(format: "HHmm"),
+                sunriseHHmm: sunrise,
+                sunsetHHmm: sunset
+            ).isDayMode
             
             commonUtil.printSuccess(
                 funcTitle: "applyVeryShortForecastData",
@@ -830,11 +828,7 @@ extension WeatherWidgetVM {
         
         for i in 0..<skyStateFilteredItems.count {
             result.append(
-                commonForecastUtil.remakeSkyStateValueByVeryShortTermOrShortTermForecast(
-                    skyStateFilteredItems[i].fcstValue,
-                    sunTime: sunTime,
-                    isAnimationImage: false
-                ).image(isDayMode: sunTime.isDayMode)
+                commonForecastUtil.skyStateOfVeryShortShortForecast(skyStateFilteredItems[i].fcstValue).image(isDayMode: sunTime.isDayMode)
             )
         }
         

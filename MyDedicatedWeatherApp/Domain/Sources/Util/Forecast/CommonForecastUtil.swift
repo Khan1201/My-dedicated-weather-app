@@ -112,6 +112,18 @@ public struct CommonForecastUtil {
     public func precipitationValueToShort(rawValue: String) -> String {
         return PrecipitationConverter.toShortValue(rawValue)
     }
+
+    public func precipitaionStateOfVeryShortOrShortForecast(
+        _ value: String
+    ) -> APIValue {
+        return PrecipitationStateConverter.convert(rawValue: value)
+    }
+    
+    public func skyStateOfVeryShortShortForecast(
+        _ value: String
+    ) -> APIValue {
+        return SkyStateConverter.convert(rawValue: value)
+    }
     
     /**
      초단기예보 강수량 값, 하늘상태 값 -> (날씨 String,  날씨 이미지 String)
@@ -124,10 +136,10 @@ public struct CommonForecastUtil {
         skyValue: String
     ) -> APIValue {
         if ptyValue != "0" {
-            return PrecipitationStateConverter.convert(rawValue: ptyValue)
+            return precipitaionStateOfVeryShortOrShortForecast(ptyValue)
             
         } else {
-            return SkyStateConverter.convert(rawValue: skyValue)
+            return skyStateOfVeryShortShortForecast(skyValue)
         }
     }
     
