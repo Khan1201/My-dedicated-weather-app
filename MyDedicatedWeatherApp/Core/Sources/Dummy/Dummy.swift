@@ -19,7 +19,7 @@ public final class Dummy {
             wetPercent: ("", ""),
             oneHourPrecipitation: ("", ""),
             weatherImage: "",
-            skyType: .cloudy
+            skyType: SkyType.cloudy
         )
     }
     
