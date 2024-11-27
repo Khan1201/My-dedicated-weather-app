@@ -18,3 +18,14 @@ public struct SunTime {
         self.sunsetHHmm = sunsetHHmm
     }
 }
+
+extension SunTime {
+    public var isDayMode: Bool {
+        if currentHHmm.toInt > sunriseHHmm.toInt && currentHHmm.toInt < sunsetHHmm.toInt {
+            return true
+            
+        } else  {
+            return false
+        }
+    }
+}
