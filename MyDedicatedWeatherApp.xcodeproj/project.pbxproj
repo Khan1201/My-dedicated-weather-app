@@ -8,24 +8,18 @@
 
 /* Begin PBXBuildFile section */
 		BC251F2B2A76A2F8004CE9CF /* LoadingLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BC251F2A2A76A2F8004CE9CF /* LoadingLottie.json */; };
-		BC307E1E2A7934B60008800A /* BackgroundRainyLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BC307E1D2A7934B60008800A /* BackgroundRainyLottie.json */; };
 		BC307E202A7935D60008800A /* LocationLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BC307E1F2A7935D60008800A /* LocationLottie.json */; };
-		BC307E222A79371F0008800A /* BackgroundSnowLottie1.json in Resources */ = {isa = PBXBuildFile; fileRef = BC307E212A79371F0008800A /* BackgroundSnowLottie1.json */; };
-		BC307E2B2A794A760008800A /* BackgroundSunnyDayLottie1.json in Resources */ = {isa = PBXBuildFile; fileRef = BC307E2A2A794A760008800A /* BackgroundSunnyDayLottie1.json */; };
 		BC5D13752C9588AA0076F6C8 /* Env.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = BC5D13742C9588AA0076F6C8 /* Env.xcconfig */; };
 		BC5D13792C9594E30076F6C8 /* WeeklyWeatherFeature in Frameworks */ = {isa = PBXBuildFile; productRef = BC5D13782C9594E30076F6C8 /* WeeklyWeatherFeature */; };
 		BC5D137D2C9597FF0076F6C8 /* SettingFeature in Frameworks */ = {isa = PBXBuildFile; productRef = BC5D137C2C9597FF0076F6C8 /* SettingFeature */; };
 		BC5EF9052AE6AF7300636A95 /* LaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5EF9042AE6AF7300636A95 /* LaunchScreen.swift */; };
 		BC71DEE72C72C4F200313D6F /* Core in Frameworks */ = {isa = PBXBuildFile; productRef = BC71DEE62C72C4F200313D6F /* Core */; };
 		BC723C652B57D25A0086BAAB /* RainSnowLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BC723C642B57D25A0086BAAB /* RainSnowLottie.json */; };
-		BC723C672B57D54C0086BAAB /* BackgroundSnowLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BC723C662B57D54C0086BAAB /* BackgroundSnowLottie.json */; };
 		BC76BABE2BAB048400DA19A8 /* VeryShortForecastUnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC76BABD2BAB048400DA19A8 /* VeryShortForecastUnitTests.swift */; };
 		BC76BACA2BAB071900DA19A8 /* VeryShortForecastServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC76BAC92BAB071900DA19A8 /* VeryShortForecastServiceMock.swift */; };
 		BC76BACD2BAB087E00DA19A8 /* ApiRequesterMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC76BACC2BAB087E00DA19A8 /* ApiRequesterMock.swift */; };
 		BC76BACF2BAB0D9300DA19A8 /* VeryShortForecastMockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC76BACE2BAB0D9300DA19A8 /* VeryShortForecastMockData.swift */; };
 		BC76BAD32BAB189E00DA19A8 /* VeryShortForecastUtilMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC76BAD22BAB189E00DA19A8 /* VeryShortForecastUtilMock.swift */; };
-		BC78EFE92A7A922900DC3352 /* BackgroundSunnyNightLottie1.json in Resources */ = {isa = PBXBuildFile; fileRef = BC78EFE82A7A922900DC3352 /* BackgroundSunnyNightLottie1.json */; };
-		BC78EFEB2A7A92B700DC3352 /* BackgroundCloudyLottie1.json in Resources */ = {isa = PBXBuildFile; fileRef = BC78EFEA2A7A92B700DC3352 /* BackgroundCloudyLottie1.json */; };
 		BC956E142C7A211800600330 /* Widget in Frameworks */ = {isa = PBXBuildFile; productRef = BC956E132C7A211800600330 /* Widget */; };
 		BC9C76D72C650F2800EFA0FE /* Data in Frameworks */ = {isa = PBXBuildFile; productRef = BC9C76D62C650F2800EFA0FE /* Data */; };
 		BC9C76D92C65106A00EFA0FE /* Domain in Frameworks */ = {isa = PBXBuildFile; productRef = BC9C76D82C65106A00EFA0FE /* Domain */; };
@@ -38,6 +32,11 @@
 		BCA30F7C29FE203A0078D0B1 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA30F7B29FE203A0078D0B1 /* MainTabView.swift */; };
 		BCA30F7E29FE203A0078D0B1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BCA30F7D29FE203A0078D0B1 /* Assets.xcassets */; };
 		BCA30F8129FE203B0078D0B1 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BCA30F8029FE203B0078D0B1 /* Preview Assets.xcassets */; };
+		BCAADFD92CF7721D000CD396 /* BackgroundRainyLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BCAADFD42CF7721D000CD396 /* BackgroundRainyLottie.json */; };
+		BCAADFDA2CF7721D000CD396 /* BackgroundCloudyLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BCAADFD52CF7721D000CD396 /* BackgroundCloudyLottie.json */; };
+		BCAADFDB2CF7721D000CD396 /* BackgroundSunnyNightLottie1.json in Resources */ = {isa = PBXBuildFile; fileRef = BCAADFD62CF7721D000CD396 /* BackgroundSunnyNightLottie1.json */; };
+		BCAADFDC2CF7721D000CD396 /* BackgroundSnowLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BCAADFD72CF7721D000CD396 /* BackgroundSnowLottie.json */; };
+		BCAADFDD2CF7721D000CD396 /* BackgroundSunnyDayLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BCAADFD82CF7721D000CD396 /* BackgroundSunnyDayLottie.json */; };
 		BCB532132A75114100DC2B33 /* CloudManyNightLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BCB532062A75114100DC2B33 /* CloudManyNightLottie.json */; };
 		BCB532142A75114100DC2B33 /* SunnyLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BCB532072A75114100DC2B33 /* SunnyLottie.json */; };
 		BCB532152A75114100DC2B33 /* LoadFailLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BCB532082A75114100DC2B33 /* LoadFailLottie.json */; };
@@ -113,10 +112,7 @@
 		BC15D43C2AA60AC8006DC537 /* MyDedicatedWeatherApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MyDedicatedWeatherApp.entitlements; sourceTree = "<group>"; };
 		BC15D43D2AA60B00006DC537 /* WeatherWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WeatherWidgetExtension.entitlements; sourceTree = "<group>"; };
 		BC251F2A2A76A2F8004CE9CF /* LoadingLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LoadingLottie.json; sourceTree = "<group>"; };
-		BC307E1D2A7934B60008800A /* BackgroundRainyLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BackgroundRainyLottie.json; sourceTree = "<group>"; };
 		BC307E1F2A7935D60008800A /* LocationLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LocationLottie.json; sourceTree = "<group>"; };
-		BC307E212A79371F0008800A /* BackgroundSnowLottie1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BackgroundSnowLottie1.json; sourceTree = "<group>"; };
-		BC307E2A2A794A760008800A /* BackgroundSunnyDayLottie1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BackgroundSunnyDayLottie1.json; sourceTree = "<group>"; };
 		BC4928072C5BC9E2008ECD9D /* Data */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Data; path = MyDedicatedWeatherApp/Data; sourceTree = "<group>"; };
 		BC4928082C5BCA0D008ECD9D /* CurrentWeatherFeature */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = CurrentWeatherFeature; path = MyDedicatedWeatherApp/CurrentWeatherFeature; sourceTree = "<group>"; };
 		BC4928092C5BCB53008ECD9D /* Core */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Core; path = MyDedicatedWeatherApp/Core; sourceTree = "<group>"; };
@@ -127,15 +123,12 @@
 		BC5D137A2C9596DE0076F6C8 /* SettingFeature */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SettingFeature; path = MyDedicatedWeatherApp/SettingFeature; sourceTree = "<group>"; };
 		BC5EF9042AE6AF7300636A95 /* LaunchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreen.swift; sourceTree = "<group>"; };
 		BC723C642B57D25A0086BAAB /* RainSnowLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = RainSnowLottie.json; sourceTree = "<group>"; };
-		BC723C662B57D54C0086BAAB /* BackgroundSnowLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BackgroundSnowLottie.json; sourceTree = "<group>"; };
 		BC76BABB2BAB048400DA19A8 /* MyDedicatedWeatherUnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MyDedicatedWeatherUnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BC76BABD2BAB048400DA19A8 /* VeryShortForecastUnitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VeryShortForecastUnitTests.swift; sourceTree = "<group>"; };
 		BC76BAC92BAB071900DA19A8 /* VeryShortForecastServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VeryShortForecastServiceMock.swift; sourceTree = "<group>"; };
 		BC76BACC2BAB087E00DA19A8 /* ApiRequesterMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiRequesterMock.swift; sourceTree = "<group>"; };
 		BC76BACE2BAB0D9300DA19A8 /* VeryShortForecastMockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VeryShortForecastMockData.swift; sourceTree = "<group>"; };
 		BC76BAD22BAB189E00DA19A8 /* VeryShortForecastUtilMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VeryShortForecastUtilMock.swift; sourceTree = "<group>"; };
-		BC78EFE82A7A922900DC3352 /* BackgroundSunnyNightLottie1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BackgroundSunnyNightLottie1.json; sourceTree = "<group>"; };
-		BC78EFEA2A7A92B700DC3352 /* BackgroundCloudyLottie1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BackgroundCloudyLottie1.json; sourceTree = "<group>"; };
 		BC956E122C7A200000600330 /* Widget */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Widget; path = MyDedicatedWeatherApp/Widget; sourceTree = "<group>"; };
 		BCA30F7629FE20390078D0B1 /* MyDedicatedWeatherApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyDedicatedWeatherApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCA30F7929FE203A0078D0B1 /* MyDedicatedWeatherAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDedicatedWeatherAppApp.swift; sourceTree = "<group>"; };
@@ -143,6 +136,11 @@
 		BCA30F7D29FE203A0078D0B1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BCA30F8029FE203B0078D0B1 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		BCA30FA829FE7D780078D0B1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BCAADFD42CF7721D000CD396 /* BackgroundRainyLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BackgroundRainyLottie.json; sourceTree = "<group>"; };
+		BCAADFD52CF7721D000CD396 /* BackgroundCloudyLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BackgroundCloudyLottie.json; sourceTree = "<group>"; };
+		BCAADFD62CF7721D000CD396 /* BackgroundSunnyNightLottie1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BackgroundSunnyNightLottie1.json; sourceTree = "<group>"; };
+		BCAADFD72CF7721D000CD396 /* BackgroundSnowLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BackgroundSnowLottie.json; sourceTree = "<group>"; };
+		BCAADFD82CF7721D000CD396 /* BackgroundSunnyDayLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BackgroundSunnyDayLottie.json; sourceTree = "<group>"; };
 		BCB532062A75114100DC2B33 /* CloudManyNightLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CloudManyNightLottie.json; sourceTree = "<group>"; };
 		BCB532072A75114100DC2B33 /* SunnyLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SunnyLottie.json; sourceTree = "<group>"; };
 		BCB532082A75114100DC2B33 /* LoadFailLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LoadFailLottie.json; sourceTree = "<group>"; };
@@ -352,12 +350,11 @@
 		BC78EFEC2A7A9F3600DC3352 /* BackgroundLottie */ = {
 			isa = PBXGroup;
 			children = (
-				BC307E2A2A794A760008800A /* BackgroundSunnyDayLottie1.json */,
-				BC78EFE82A7A922900DC3352 /* BackgroundSunnyNightLottie1.json */,
-				BC78EFEA2A7A92B700DC3352 /* BackgroundCloudyLottie1.json */,
-				BC307E1D2A7934B60008800A /* BackgroundRainyLottie.json */,
-				BC307E212A79371F0008800A /* BackgroundSnowLottie1.json */,
-				BC723C662B57D54C0086BAAB /* BackgroundSnowLottie.json */,
+				BCAADFD52CF7721D000CD396 /* BackgroundCloudyLottie.json */,
+				BCAADFD42CF7721D000CD396 /* BackgroundRainyLottie.json */,
+				BCAADFD72CF7721D000CD396 /* BackgroundSnowLottie.json */,
+				BCAADFD82CF7721D000CD396 /* BackgroundSunnyDayLottie.json */,
+				BCAADFD62CF7721D000CD396 /* BackgroundSunnyNightLottie1.json */,
 			);
 			path = BackgroundLottie;
 			sourceTree = "<group>";
@@ -602,9 +599,11 @@
 				BCB532132A75114100DC2B33 /* CloudManyNightLottie.json in Resources */,
 				BCB532142A75114100DC2B33 /* SunnyLottie.json in Resources */,
 				BCE4899F2A4EA32400A18B2B /* SpoqaHanSansNeo-Medium.otf in Resources */,
+				BCAADFDD2CF7721D000CD396 /* BackgroundSunnyDayLottie.json in Resources */,
 				BCE489C42A4EA33400A18B2B /* SpoqaHanSansNeo-Regular.eot in Resources */,
 				BCB5321E2A75114100DC2B33 /* BlurLottie.json in Resources */,
 				BCE4899C2A4EA32400A18B2B /* LICENSE in Resources */,
+				BCAADFDA2CF7721D000CD396 /* BackgroundCloudyLottie.json in Resources */,
 				BCB532192A75114100DC2B33 /* ThunderLottie.json in Resources */,
 				BCB532172A75114100DC2B33 /* SunnyNightLottie.json in Resources */,
 				BC5D13752C9588AA0076F6C8 /* Env.xcconfig in Resources */,
@@ -613,14 +612,14 @@
 				BC307E202A7935D60008800A /* LocationLottie.json in Resources */,
 				BCE489B92A4EA33400A18B2B /* SpoqaHanSansNeo-Bold.woff in Resources */,
 				BCE489C82A4EA33400A18B2B /* SpoqaHanSansNeo-Thin.eot in Resources */,
-				BC78EFEB2A7A92B700DC3352 /* BackgroundCloudyLottie1.json in Resources */,
+				BCAADFDC2CF7721D000CD396 /* BackgroundSnowLottie.json in Resources */,
 				BCE4899D2A4EA32400A18B2B /* SpoqaHanSansNeo-Light.otf in Resources */,
 				BCB532162A75114100DC2B33 /* RainShowerNightLottie.json in Resources */,
 				BCE4899E2A4EA32400A18B2B /* SpoqaHanSansNeo-Bold.otf in Resources */,
 				BCE489BF2A4EA33400A18B2B /* SpoqaHanSansNeo-Medium.woff in Resources */,
 				BCE489A02A4EA32400A18B2B /* SpoqaHanSansNeo-Regular.otf in Resources */,
 				BCB5321B2A75114100DC2B33 /* SnowLottie.json in Resources */,
-				BC78EFE92A7A922900DC3352 /* BackgroundSunnyNightLottie1.json in Resources */,
+				BCAADFDB2CF7721D000CD396 /* BackgroundSunnyNightLottie1.json in Resources */,
 				BCE489BD2A4EA33400A18B2B /* SpoqaHanSansNeo-Regular.woff2 in Resources */,
 				BCB5321A2A75114100DC2B33 /* CloudManyLottie.json in Resources */,
 				BC251F2B2A76A2F8004CE9CF /* LoadingLottie.json in Resources */,
@@ -628,17 +627,14 @@
 				BCE489C92A4EA33400A18B2B /* SpoqaHanSansNeo-Medium.eot in Resources */,
 				BCE489C12A4EA33400A18B2B /* SpoqaHanSansNeo-Thin.woff in Resources */,
 				BCE489C72A4EA33400A18B2B /* SpoqaHanSansNeo-Medium.woff2 in Resources */,
+				BCAADFD92CF7721D000CD396 /* BackgroundRainyLottie.json in Resources */,
 				BCE489BC2A4EA33400A18B2B /* SpoqaHanSansNeo-Thin.woff2 in Resources */,
 				BC723C652B57D25A0086BAAB /* RainSnowLottie.json in Resources */,
-				BC307E1E2A7934B60008800A /* BackgroundRainyLottie.json in Resources */,
 				BCE489B72A4EA33400A18B2B /* SpoqaHanSansNeo-Regular.woff in Resources */,
 				BCE489B82A4EA33400A18B2B /* SpoqaHanSansNeo-Bold.eot in Resources */,
 				BCE489BA2A4EA33400A18B2B /* SpoqaHanSansNeo-Light.woff2 in Resources */,
 				BCE489BE2A4EA33400A18B2B /* SpoqaHanSansNeo-Bold.woff2 in Resources */,
-				BC307E2B2A794A760008800A /* BackgroundSunnyDayLottie1.json in Resources */,
 				BCA30F8129FE203B0078D0B1 /* Preview Assets.xcassets in Resources */,
-				BC307E222A79371F0008800A /* BackgroundSnowLottie1.json in Resources */,
-				BC723C672B57D54C0086BAAB /* BackgroundSnowLottie.json in Resources */,
 				BCB5321C2A75114100DC2B33 /* SnowNightLottie.json in Resources */,
 				BCA30F7E29FE203A0078D0B1 /* Assets.xcassets in Resources */,
 				BCE489C62A4EA33400A18B2B /* SpoqaHanSansNeo-Light.eot in Resources */,
