@@ -70,10 +70,7 @@ extension ContentVM {
             sunriseHHmm: sunriseHHmm,
             sunsetHHmm: sunsetHHmm
         )
-        let result = commonForecastUtil.isDayMode(
-            sunTime: sunTime
-        )
-        isDayMode = result
+        isDayMode = sunTime.isDayMode
     }
     
     public func setSkyType(_ value: APIValue) {
