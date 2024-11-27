@@ -125,12 +125,10 @@ extension AdditionalLocationVM {
                 sunsetHHmm: sunriseAndsunsetHHmm.1
             )
             
-            let weatherImage = commonForecastUtil.veryShortOrShortTermForecastWeatherDescriptionAndSkyTypeAndImageString(
+            let weatherImage = commonForecastUtil.skyTypeOfVeryShortOrShortForecast(
                 ptyValue: firstPTYItem.fcstValue,
-                skyValue: firstSKYItem.fcstValue,
-                sunTime: sunTime,
-                isAnimationImage: false
-            ).imageString
+                skyValue: firstSKYItem.fcstValue
+            ).image(isDayMode: sunTime.isDayMode)
             
             let temp = items[24].fcstValue
                         

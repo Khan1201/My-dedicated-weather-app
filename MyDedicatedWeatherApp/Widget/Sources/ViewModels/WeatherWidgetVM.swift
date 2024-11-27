@@ -379,22 +379,22 @@ extension WeatherWidgetVM {
             let rainState = items[6].fcstValue
             let skyState = items[18].fcstValue
             
+            let sunTime: SunTime = .init(
+                currentHHmm: targetTime,
+                sunriseHHmm: sunrise,
+                sunsetHHmm: sunset
+            )
+            
             result.smallFamilyData.currentWeatherItem.currentTemperature = currentTemperature
             result.smallFamilyData.currentWeatherItem.wind = commonForecastUtil.remakeWindSpeedValueByVeryShortTermOrShortTermForecast(value: currentWindSpeed).0
             result.smallFamilyData.currentWeatherItem.wetPercent = currentWetPercent
             result.smallFamilyData.currentWeatherItem.precipitation =
             commonForecastUtil.convertPrecipitation(rawValue: currentOneHourPrecipitation)
             result.smallFamilyData.currentWeatherItem.weatherImage =
-            commonForecastUtil.veryShortOrShortTermForecastWeatherDescriptionAndSkyTypeAndImageString(
+            commonForecastUtil.skyTypeOfVeryShortOrShortForecast(
                 ptyValue: rainState,
-                skyValue: skyState,
-                sunTime: .init(
-                    currentHHmm: targetTime,
-                    sunriseHHmm: sunrise,
-                    sunsetHHmm: sunset
-                ),
-                isAnimationImage: false
-            ).imageString
+                skyValue: skyState
+            ).image(isDayMode: sunTime.isDayMode)
             result.isDayMode = commonForecastUtil.isDayMode(
                 sunTime: .init(
                     currentHHmm: Date().toString(format: "HHmm"),
@@ -478,12 +478,10 @@ extension WeatherWidgetVM {
                 if i <= 5 {
                     let time = commonUtil.convertAMOrPMFromHHmm(items[tempIndex].fcstTime)
                     
-                    let weatherImage = commonForecastUtil.veryShortOrShortTermForecastWeatherDescriptionAndSkyTypeAndImageString(
+                    let weatherImage = commonForecastUtil.skyTypeOfVeryShortOrShortForecast(
                         ptyValue: items[ptyIndex].fcstValue,
-                        skyValue: items[skyIndex].fcstValue,
-                        sunTime: sunTime,
-                        isAnimationImage: false
-                    ).imageString
+                        skyValue: items[skyIndex].fcstValue
+                    ).image(isDayMode: sunTime.isDayMode)
                     
                     let precipitation = items[popIndex].fcstValue
                     let temperature = items[tempIndex].fcstValue
@@ -836,7 +834,7 @@ extension WeatherWidgetVM {
                     skyStateFilteredItems[i].fcstValue,
                     sunTime: sunTime,
                     isAnimationImage: false
-                ).imageString
+                ).image(isDayMode: sunTime.isDayMode)
             )
         }
         

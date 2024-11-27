@@ -233,7 +233,7 @@ extension WeeklyWeatherVM {
                     skyStateFilteredItems[i].fcstValue,
                     sunTime: sunTime,
                     isAnimationImage: false
-                ).imageString
+                ).image(isDayMode: sunTime.isDayMode)
             )
         }
         

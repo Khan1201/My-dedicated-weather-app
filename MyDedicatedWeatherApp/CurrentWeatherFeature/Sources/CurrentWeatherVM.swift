@@ -363,11 +363,9 @@ extension CurrentWeatherVM {
             sunsetHHmm: sunriseAndSunsetHHmm.1
         )
         
-        let veryShortTermForecastWeatherInf = commonForecastUtil.veryShortOrShortTermForecastWeatherDescriptionAndSkyTypeAndImageString(
+        let skyType = commonForecastUtil.skyTypeOfVeryShortOrShortForecast(
             ptyValue: firstPTYItem.fcstValue,
-            skyValue: firstSKYItem.fcstValue,
-            sunTime: sunTime,
-            isAnimationImage: false
+            skyValue: firstSKYItem.fcstValue
         )
         
         currentWeatherInformation = Weather.CurrentInformation(
@@ -382,11 +380,10 @@ extension CurrentWeatherVM {
                 ),
                 commonForecastUtil.precipitationValueToShort(rawValue: currentOneHourPrecipitation.fcstValue)
             ),
-            weatherImage: veryShortTermForecastWeatherInf.imageString,
-            skyType: veryShortTermForecastWeatherInf.skyType
+            weatherImage: skyType.image(isDayMode: sunTime.isDayMode),
+            skyType: skyType
         )
-        
-        contentVM.setSkyKeyword(veryShortTermForecastWeatherInf.skyType.backgroundImageKeyword)
+        contentVM.setSkyType(skyType)
         isCurrentWeatherInformationLoaded = true
     }
     
@@ -423,16 +420,14 @@ extension CurrentWeatherVM {
             
             step = isExistTmxOrTmn ? 13 : 12
 
-            let weatherImage: Weather.DescriptionAndSkyTypeAndImageString = commonForecastUtil.veryShortOrShortTermForecastWeatherDescriptionAndSkyTypeAndImageString(
+            let skyType = commonForecastUtil.skyTypeOfVeryShortOrShortForecast(
                 ptyValue: items[ptyIndex].fcstValue,
-                skyValue: items[skyIndex].fcstValue,
-                sunTime: sunTime,
-                isAnimationImage: false
+                skyValue: items[skyIndex].fcstValue
             )
             
             let todayWeather = Weather.TodayInformation(
                 time: CommonUtil.shared.convertAMOrPMFromHHmm(items[tempIndex].fcstTime),
-                weatherImage: weatherImage.imageString,
+                weatherImage: skyType.image(isDayMode: sunTime.isDayMode),
                 precipitation: items[popIndex].fcstValue,
                 temperature: items[tempIndex].fcstValue
             )
@@ -478,19 +473,15 @@ extension CurrentWeatherVM {
             sunsetHHmm: sunriseAndSunsetHHmm.1
         )
         
-        currentWeatherAnimationImg = commonForecastUtil.veryShortOrShortTermForecastWeatherDescriptionAndSkyTypeAndImageString(
+        currentWeatherAnimationImg = commonForecastUtil.skyTypeOfVeryShortOrShortForecast(
             ptyValue: firstPTYItem.fcstValue,
-            skyValue: firstSKYItem.fcstValue,
-            sunTime: sunTime,
-            isAnimationImage: true
-        ).imageString
+            skyValue: firstSKYItem.fcstValue
+        ).lottie(isDayMode: sunTime.isDayMode)
         
-        currentWeatherImage = commonForecastUtil.veryShortOrShortTermForecastWeatherDescriptionAndSkyTypeAndImageString(
+        currentWeatherImage = commonForecastUtil.skyTypeOfVeryShortOrShortForecast(
             ptyValue: firstPTYItem.fcstValue,
-            skyValue: firstSKYItem.fcstValue,
-            sunTime: sunTime,
-            isAnimationImage: false
-        ).imageString
+            skyValue: firstSKYItem.fcstValue
+        ).image(isDayMode: sunTime.isDayMode)
         
         isCurrentWeatherAnimationSetCompleted = true
     }
