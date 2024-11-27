@@ -19,7 +19,7 @@ public final class ContentVM: ObservableObject {
     @Published public var isRefreshed: Bool = false
     @Published public var isLocationChanged: Bool = false
     
-    @Published public private(set) var skyKeyword: String = ""
+    @Published public private(set) var skyType: APIValue?
     @Published public private(set) var isDayMode: Bool = false
     
     var commonForecastUtil = CommonForecastUtil()
@@ -76,7 +76,7 @@ extension ContentVM {
         isDayMode = result
     }
     
-    public func setSkyKeyword(_ value: String) {
-        skyKeyword = value
+    public func setSkyType(_ value: APIValue) {
+        skyType = value
     }
 }

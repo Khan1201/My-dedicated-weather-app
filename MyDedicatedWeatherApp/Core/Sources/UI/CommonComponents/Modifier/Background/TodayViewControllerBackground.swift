@@ -12,9 +12,9 @@ public struct TodayViewControllerBackground: ViewModifier {
     let isDayMode: Bool
     let isSunriseSunsetLoadCompleted: Bool
     let isAllLoadCompleted: Bool
-    let skyType: SkyType
+    let skyType: APIValue
     
-    public init(isDayMode: Bool, isSunriseSunsetLoadCompleted: Bool, isAllLoadCompleted: Bool, skyType: SkyType) {
+    public init(isDayMode: Bool, isSunriseSunsetLoadCompleted: Bool, isAllLoadCompleted: Bool, skyType: APIValue) {
         self.isDayMode = isDayMode
         self.isSunriseSunsetLoadCompleted = isSunriseSunsetLoadCompleted
         self.isAllLoadCompleted = isAllLoadCompleted
@@ -22,41 +22,11 @@ public struct TodayViewControllerBackground: ViewModifier {
     }
     
     public func body(content: Content) -> some View {
-        
-        let isSunnyDay: Bool = skyType == .sunny && isDayMode ? true : false
-        
-        var dayOrNightString: String {
-            
-            switch skyType {
-                
-            case .sunny:
-                return isDayMode ? "Day" : "Night"
-                
-            default:
-                return ""
-            }
-        }
-        
-        var lottieOffset: CGFloat {
-            
-            switch skyType {
-                
-            case .sunny:
-                return isDayMode ? -220 : 0
-                
-            case .cloudy:
-                return -35
-                
-            default:
-                return 0
-            }
-        }
-        
         content
             .background {
                 VStack(alignment: .leading, spacing: 0) {
                     if isDayMode && isSunriseSunsetLoadCompleted {
-                        Image("background_weather_\(skyType.backgroundImageKeyword)")
+                        Image(skyType.backgroundImage)
                             .resizable()
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                             .transition(AnyTransition.opacity.animation(.easeInOut(duration: 2)))
@@ -89,11 +59,11 @@ public struct TodayViewControllerBackground: ViewModifier {
                     view
                         .overlay(alignment: .top) {
                             LottieView(
-                                jsonName: "Background\(skyType.backgroundLottieKeyword)\(dayOrNightString)Lottie",
+                                jsonName: skyType.backgroundLottie(isDayMode: isDayMode),
                                 loopMode: .loop,
-                                speed: isSunnyDay ? 1.8 : 1.0
+                                speed: 1.8
                             )
-                            .offset(y: lottieOffset)
+                            .offset(y: skyType.lottieOffset(isDayMode: isDayMode))
                         }
                 }
             }
@@ -105,7 +75,7 @@ extension View {
         isDayMode: Bool,
         isSunriseSunsetLoadCompleted: Bool,
         isAllLoadCompleted: Bool,
-        skyType: SkyType
+        skyType: APIValue
     ) -> some View {
         modifier(TodayViewControllerBackground(
             isDayMode: isDayMode, 

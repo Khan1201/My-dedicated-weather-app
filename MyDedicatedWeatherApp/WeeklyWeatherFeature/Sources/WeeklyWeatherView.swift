@@ -82,7 +82,7 @@ public struct WeeklyWeatherView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
         .weekViewControllerBackground(
             isDayMode: contentVM.isDayMode,
-            skyKeyword: contentVM.skyKeyword
+            skyType: contentVM.skyType
         )
         .bottomNoticeFloater(
             isPresented: $viewModel.showNoticeFloater,

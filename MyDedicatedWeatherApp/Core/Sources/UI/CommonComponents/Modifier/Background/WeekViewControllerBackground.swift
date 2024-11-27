@@ -6,22 +6,23 @@
 //
 
 import SwiftUI
+import Domain
 
 public struct WeekViewControllerBackground: ViewModifier {
     let isDayMode: Bool
-    let skyKeyword: String
+    let skyType: APIValue?
     
-    public init(isDayMode: Bool, skyKeyword: String) {
+    public init(isDayMode: Bool, skyType: APIValue?) {
         self.isDayMode = isDayMode
-        self.skyKeyword = skyKeyword
+        self.skyType = skyType
     }
     
     public func body(content: Content) -> some View {
         content
             .background {
                 VStack(alignment: .leading, spacing: 0) {
-                    if isDayMode {
-                        Image("background_weather_\(skyKeyword)")
+                    if let skyType = skyType, isDayMode {
+                        Image(skyType.backgroundImage)
                             .resizable()
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                             .overlay {
@@ -54,7 +55,7 @@ public struct WeekViewControllerBackground: ViewModifier {
 }
 
 extension View {
-    public func weekViewControllerBackground(isDayMode: Bool, skyKeyword: String) -> some View {
-        modifier(WeekViewControllerBackground(isDayMode: isDayMode, skyKeyword: skyKeyword))
+    public func weekViewControllerBackground(isDayMode: Bool, skyType: APIValue?) -> some View {
+        modifier(WeekViewControllerBackground(isDayMode: isDayMode, skyType: skyType))
     }
 }
