@@ -363,7 +363,7 @@ extension CurrentWeatherVM {
             sunsetHHmm: sunriseAndSunsetHHmm.1
         )
         
-        let skyType = commonForecastUtil.skyStateOfVeryShortOrShortForecast(
+        let skyType = commonForecastUtil.convertPrecipitationSkyStateOrSkyState(
             ptyValue: firstPTYItem.fcstValue,
             skyValue: firstSKYItem.fcstValue
         )
@@ -418,7 +418,7 @@ extension CurrentWeatherVM {
             
             step = isExistTmxOrTmn ? 13 : 12
 
-            let skyType = commonForecastUtil.skyStateOfVeryShortOrShortForecast(
+            let skyType = commonForecastUtil.convertPrecipitationSkyStateOrSkyState(
                 ptyValue: items[ptyIndex].fcstValue,
                 skyValue: items[skyIndex].fcstValue
             )
@@ -471,12 +471,12 @@ extension CurrentWeatherVM {
             sunsetHHmm: sunriseAndSunsetHHmm.1
         )
         
-        currentWeatherAnimationImg = commonForecastUtil.skyStateOfVeryShortOrShortForecast(
+        currentWeatherAnimationImg = commonForecastUtil.convertPrecipitationSkyStateOrSkyState(
             ptyValue: firstPTYItem.fcstValue,
             skyValue: firstSKYItem.fcstValue
         ).lottie(isDayMode: sunTime.isDayMode)
         
-        currentWeatherImage = commonForecastUtil.skyStateOfVeryShortOrShortForecast(
+        currentWeatherImage = commonForecastUtil.convertPrecipitationSkyStateOrSkyState(
             ptyValue: firstPTYItem.fcstValue,
             skyValue: firstSKYItem.fcstValue
         ).image(isDayMode: sunTime.isDayMode)
