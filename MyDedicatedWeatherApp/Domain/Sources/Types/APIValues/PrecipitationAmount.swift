@@ -1,5 +1,5 @@
 //
-//  PrecipitationAmountType.swift
+//  PrecipitationAmount.swift
 //
 //
 //  Created by 윤형석 on 11/3/24.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum PrecipitationAmountType: APIValue {
+public enum PrecipitationAmount: APIValue {
     case noRain, lightRain, normalRain, heavyRain, veryHeavyRain, none
     
     public var toDescription: String {
