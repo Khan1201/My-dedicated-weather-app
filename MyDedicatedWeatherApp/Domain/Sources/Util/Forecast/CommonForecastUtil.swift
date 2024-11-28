@@ -156,27 +156,7 @@ public struct CommonForecastUtil {
      
      - parameter value: 예보 조회 response 바람속도 값
      */
-    public func remakeWindSpeedValueByVeryShortTermOrShortTermForecast(value: String) -> (String, String) {
-        
-        let stringToDouble = Double(value) ?? 0.0
-        
-        switch stringToDouble {
-            
-        case 0.0...3.9:
-            return ("약한 바람", "\(value)m/s")
-            
-        case 4.0...8.9:
-            return ("약간 강한 바람", "\(value)m/s")
-            
-        case 9.0...13.9:
-            return ("강한 바람", "\(value)m/s")
-            
-        case _ where stringToDouble > 13.9:
-            
-            return ("매우 강한 바람", "\(value)m/s")
-            
-        default:
-            return ("알 수 없음", "")
-        }
+    public func convertWindSpeed(rawValue: String) -> APIValue {
+        return WindSpeedConverter.convert(rawValue: rawValue)
     }
 }

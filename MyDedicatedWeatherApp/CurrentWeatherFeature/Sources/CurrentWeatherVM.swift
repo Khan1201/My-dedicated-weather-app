@@ -370,9 +370,7 @@ extension CurrentWeatherVM {
         
         currentWeatherInformation = Weather.CurrentInformation(
             temperature: currentTemperature.fcstValue,
-            windSpeed: commonForecastUtil.remakeWindSpeedValueByVeryShortTermOrShortTermForecast(
-                value: currentWindSpeed.fcstValue
-            ),
+            windSpeed: (commonForecastUtil.convertWindSpeed(rawValue: currentWindSpeed.fcstValue).toDescription, "\(currentWindSpeed.fcstValue)ms"),
             wetPercent: ("\(currentWetPercent.fcstValue)%", ""),
             oneHourPrecipitation: (
                 commonForecastUtil.convertPrecipitation(
