@@ -1,5 +1,5 @@
 //
-// PrecipitationConverter.swift
+// PrecipitationAmountConverter.swift
 //
 //
 //  Created by 윤형석 on 11/3/24.
@@ -7,26 +7,26 @@
 
 import Foundation
 
-public struct PrecipitationConverter: APIValueConverter {
+public struct PrecipitationAmountConverter: APIValueConverter {
     static public func convert(rawValue: String) -> any APIValue {
         if rawValue == "강수없음" {
-            return PrecipitationType.noRain
+            return PrecipitationAmountType.noRain
             
         } else if rawValue == "30.0~50.0mm" || rawValue == "50.0mm 이상" {
-            return PrecipitationType.heavyRain
+            return PrecipitationAmountType.heavyRain
             
         } else {
             let stringToDouble: Double = Double(rawValue.replacingOccurrences(of: "mm", with: "")) ?? 0
             
             switch stringToDouble {
             case 1.0...2.9:
-                return PrecipitationType.lightRain
+                return PrecipitationAmountType.lightRain
             case 3.0...14.9:
-                return PrecipitationType.normalRain
+                return PrecipitationAmountType.normalRain
             case 15.0...29.9:
-                return PrecipitationType.heavyRain
+                return PrecipitationAmountType.heavyRain
             default:
-                return PrecipitationType.none
+                return PrecipitationAmountType.none
             }
         }
     }

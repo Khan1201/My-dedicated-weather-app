@@ -389,7 +389,7 @@ extension WeatherWidgetVM {
             result.smallFamilyData.currentWeatherItem.wind = commonForecastUtil.convertWindSpeed(rawValue: currentWindSpeed).toDescription
             result.smallFamilyData.currentWeatherItem.wetPercent = currentWetPercent
             result.smallFamilyData.currentWeatherItem.precipitation =
-            commonForecastUtil.convertPrecipitation(rawValue: currentOneHourPrecipitation)
+            commonForecastUtil.convertPrecipitationAmount(rawValue: currentOneHourPrecipitation)
             result.smallFamilyData.currentWeatherItem.weatherImage =
             commonForecastUtil.skyTypeOfVeryShortOrShortForecast(
                 ptyValue: rainState,

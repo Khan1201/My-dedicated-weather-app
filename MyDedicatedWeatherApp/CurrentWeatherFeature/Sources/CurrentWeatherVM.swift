@@ -373,7 +373,7 @@ extension CurrentWeatherVM {
             windSpeed: (commonForecastUtil.convertWindSpeed(rawValue: currentWindSpeed.fcstValue).toDescription, "\(currentWindSpeed.fcstValue)ms"),
             wetPercent: ("\(currentWetPercent.fcstValue)%", ""),
             oneHourPrecipitation: (
-                commonForecastUtil.convertPrecipitation(
+                commonForecastUtil.convertPrecipitationAmount(
                     rawValue: currentOneHourPrecipitation.fcstValue
                 ),
                 commonForecastUtil.precipitationValueToShort(rawValue: currentOneHourPrecipitation.fcstValue)
