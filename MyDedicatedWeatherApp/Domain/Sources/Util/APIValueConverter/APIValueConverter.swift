@@ -18,7 +18,6 @@ public protocol APIValue {
     func image(isDayMode: Bool) -> String
     func lottie(isDayMode: Bool) -> String
     func lottieOffset(isDayMode: Bool) -> Double
-    
 }
 
 extension APIValue {
