@@ -131,7 +131,7 @@ public struct CommonForecastUtil {
      - parameter ptyValue: 강수량 값,
      - parameter skyValue: 하늘상태 값
      */
-    public func skyTypeOfVeryShortOrShortForecast(
+    public func skyStateOfVeryShortOrShortForecast(
         ptyValue: String,
         skyValue: String
     ) -> APIValue {

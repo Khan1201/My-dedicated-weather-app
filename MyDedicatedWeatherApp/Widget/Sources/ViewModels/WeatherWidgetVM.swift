@@ -391,7 +391,7 @@ extension WeatherWidgetVM {
             result.smallFamilyData.currentWeatherItem.precipitation =
             commonForecastUtil.convertPrecipitationAmount(rawValue: currentOneHourPrecipitation)
             result.smallFamilyData.currentWeatherItem.weatherImage =
-            commonForecastUtil.skyTypeOfVeryShortOrShortForecast(
+            commonForecastUtil.skyStateOfVeryShortOrShortForecast(
                 ptyValue: rainState,
                 skyValue: skyState
             ).image(isDayMode: sunTime.isDayMode)
@@ -476,7 +476,7 @@ extension WeatherWidgetVM {
                 if i <= 5 {
                     let time = commonUtil.convertAMOrPMFromHHmm(items[tempIndex].fcstTime)
                     
-                    let weatherImage = commonForecastUtil.skyTypeOfVeryShortOrShortForecast(
+                    let weatherImage = commonForecastUtil.skyStateOfVeryShortOrShortForecast(
                         ptyValue: items[ptyIndex].fcstValue,
                         skyValue: items[skyIndex].fcstValue
                     ).image(isDayMode: sunTime.isDayMode)

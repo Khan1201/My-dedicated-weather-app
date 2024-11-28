@@ -11,21 +11,21 @@ public struct PrecipitationSkyStateConverter: APIValueConverter {
     static func convert(rawValue: String) -> any APIValue {
         switch rawValue {
         case "0":
-            return SkyType.none
+            return SkyState.none
         case "1":
-            return SkyType.rainy
+            return SkyState.rainy
         case "2":
-            return SkyType.rainyAndSnow
+            return SkyState.rainyAndSnow
         case "3", "7":
-            return SkyType.snow
+            return SkyState.snow
         case "4":
-            return SkyType.shower
+            return SkyState.shower
         case "5":
-            return SkyType.rainDrop
+            return SkyState.rainDrop
         case "6":
-            return SkyType.rainDropAndSnow
+            return SkyState.rainDropAndSnow
         default:
-            return SkyType.none
+            return SkyState.none
         }
     }
 }

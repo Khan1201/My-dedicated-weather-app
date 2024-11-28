@@ -13,13 +13,13 @@ public struct SkyStateConverter: APIValueConverter {
     static func convert(rawValue: String) -> any APIValue {
         switch rawValue {
         case "1":
-            return SkyType.sunny
+            return SkyState.sunny
         case "3":
-            return SkyType.cloudy
+            return SkyState.cloudy
         case "4":
-            return SkyType.blur
+            return SkyState.blur
         default:
-            return SkyType.none
+            return SkyState.none
         }
     }
 }

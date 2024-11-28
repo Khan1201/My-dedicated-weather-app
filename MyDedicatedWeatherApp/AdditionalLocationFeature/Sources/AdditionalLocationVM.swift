@@ -125,7 +125,7 @@ extension AdditionalLocationVM {
                 sunsetHHmm: sunriseAndsunsetHHmm.1
             )
             
-            let weatherImage = commonForecastUtil.skyTypeOfVeryShortOrShortForecast(
+            let weatherImage = commonForecastUtil.skyStateOfVeryShortOrShortForecast(
                 ptyValue: firstPTYItem.fcstValue,
                 skyValue: firstSKYItem.fcstValue
             ).image(isDayMode: sunTime.isDayMode)

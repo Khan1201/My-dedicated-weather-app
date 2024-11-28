@@ -1,5 +1,5 @@
 //
-//  SkyType.swift
+//  SkyState.swift
 //
 //
 //  Created by 윤형석 on 11/3/24.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum SkyType: String, APIValue {
+public enum SkyState: String, APIValue {
     case sunny,
          cloudy,
          blur,

@@ -15,14 +15,14 @@ public struct Weather {
     public init() { }
     
     public struct DescriptionAndSkyTypeAndImageString {
-        public init(description: String, skyType: SkyType, imageString: String) {
+        public init(description: String, skyType: SkyState, imageString: String) {
             self.description = description
             self.skyType = skyType
             self.imageString = imageString
         }
         
         public let description: String
-        public let skyType: SkyType
+        public let skyType: SkyState
         public let imageString: String
     }
     
