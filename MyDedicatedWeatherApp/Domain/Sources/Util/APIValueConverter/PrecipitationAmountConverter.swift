@@ -7,8 +7,8 @@
 
 import Foundation
 
-public struct PrecipitationAmountConverter: APIValueConverter {
-    static public func convert(rawValue: String) -> any APIValue {
+public struct PrecipitationAmountConverter: WeatherAPIValueConverter {
+    static public func convert(rawValue: String) -> any WeatherAPIValue {
         if rawValue == "강수없음" {
             return PrecipitationAmount.noRain
             

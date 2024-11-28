@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum WindSpeed: APIValue {
+public enum WindSpeed: WeatherAPIValue {
     case weak, littleStrong, strong, veryStrong, none
     
     public var toDescription: String {

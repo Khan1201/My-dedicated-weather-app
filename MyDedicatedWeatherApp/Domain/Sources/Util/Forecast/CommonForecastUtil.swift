@@ -122,7 +122,7 @@ public struct CommonForecastUtil {
     public func convertPrecipitationSkyStateOrSkyState(
         ptyValue: String,
         skyValue: String
-    ) -> APIValue {
+    ) -> WeatherAPIValue {
         if ptyValue != "0" {
             return convertPrecipitationSkyState(rawValue: ptyValue)
             
@@ -131,11 +131,11 @@ public struct CommonForecastUtil {
         }
     }
     
-    public func convertPrecipitationSkyState(rawValue: String) -> APIValue {
+    public func convertPrecipitationSkyState(rawValue: String) -> WeatherAPIValue {
         return PrecipitationSkyStateConverter.convert(rawValue: rawValue)
     }
     
-    public func convertSkyState(rawValue: String) -> APIValue {
+    public func convertSkyState(rawValue: String) -> WeatherAPIValue {
         return SkyStateConverter.convert(rawValue: rawValue)
     }
     
@@ -144,7 +144,7 @@ public struct CommonForecastUtil {
      
      - parameter value: 예보 조회 response 바람속도 값
      */
-    public func convertWindSpeed(rawValue: String) -> APIValue {
+    public func convertWindSpeed(rawValue: String) -> WeatherAPIValue {
         return WindSpeedConverter.convert(rawValue: rawValue)
     }
 }

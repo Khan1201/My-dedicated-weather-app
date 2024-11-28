@@ -7,11 +7,11 @@
 
 import Foundation
 
-protocol APIValueConverter {
-    static func convert(rawValue: String) -> APIValue
+protocol WeatherAPIValueConverter {
+    static func convert(rawValue: String) -> WeatherAPIValue
 }
 
-public protocol APIValue {
+public protocol WeatherAPIValue {
     var toDescription: String { get }
     var backgroundImage: String { get }
     func backgroundLottie(isDayMode: Bool) -> String
@@ -20,7 +20,7 @@ public protocol APIValue {
     func lottieOffset(isDayMode: Bool) -> Double
 }
 
-extension APIValue {
+extension WeatherAPIValue {
     public var backgroundImage: String { return "" }
     public func backgroundLottie(isDayMode: Bool) -> String { return "" }
     public func image(isDayMode: Bool) -> String { return "" }

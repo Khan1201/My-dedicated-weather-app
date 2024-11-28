@@ -12,9 +12,9 @@ public struct TodayViewControllerBackground: ViewModifier {
     let isDayMode: Bool
     let isSunriseSunsetLoadCompleted: Bool
     let isAllLoadCompleted: Bool
-    let skyType: APIValue
+    let skyType: WeatherAPIValue
     
-    public init(isDayMode: Bool, isSunriseSunsetLoadCompleted: Bool, isAllLoadCompleted: Bool, skyType: APIValue) {
+    public init(isDayMode: Bool, isSunriseSunsetLoadCompleted: Bool, isAllLoadCompleted: Bool, skyType: WeatherAPIValue) {
         self.isDayMode = isDayMode
         self.isSunriseSunsetLoadCompleted = isSunriseSunsetLoadCompleted
         self.isAllLoadCompleted = isAllLoadCompleted
@@ -75,7 +75,7 @@ extension View {
         isDayMode: Bool,
         isSunriseSunsetLoadCompleted: Bool,
         isAllLoadCompleted: Bool,
-        skyType: APIValue
+        skyType: WeatherAPIValue
     ) -> some View {
         modifier(TodayViewControllerBackground(
             isDayMode: isDayMode, 

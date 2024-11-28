@@ -9,8 +9,8 @@ import Foundation
 
 import Foundation
 
-public struct SkyStateConverter: APIValueConverter {
-    static func convert(rawValue: String) -> any APIValue {
+public struct SkyStateConverter: WeatherAPIValueConverter {
+    static func convert(rawValue: String) -> any WeatherAPIValue {
         switch rawValue {
         case "1":
             return SkyState.sunny

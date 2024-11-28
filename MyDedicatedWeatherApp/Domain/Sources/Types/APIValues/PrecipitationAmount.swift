@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum PrecipitationAmount: APIValue {
+public enum PrecipitationAmount: WeatherAPIValue {
     case noRain, lightRain, normalRain, heavyRain, veryHeavyRain, none
     
     public var toDescription: String {

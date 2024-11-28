@@ -10,9 +10,9 @@ import Domain
 
 public struct WeekViewControllerBackground: ViewModifier {
     let isDayMode: Bool
-    let skyType: APIValue?
+    let skyType: WeatherAPIValue?
     
-    public init(isDayMode: Bool, skyType: APIValue?) {
+    public init(isDayMode: Bool, skyType: WeatherAPIValue?) {
         self.isDayMode = isDayMode
         self.skyType = skyType
     }
@@ -55,7 +55,7 @@ public struct WeekViewControllerBackground: ViewModifier {
 }
 
 extension View {
-    public func weekViewControllerBackground(isDayMode: Bool, skyType: APIValue?) -> some View {
+    public func weekViewControllerBackground(isDayMode: Bool, skyType: WeatherAPIValue?) -> some View {
         modifier(WeekViewControllerBackground(isDayMode: isDayMode, skyType: skyType))
     }
 }

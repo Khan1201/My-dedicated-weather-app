@@ -7,8 +7,8 @@
 
 import Foundation
 
-public class WindSpeedConverter: APIValueConverter {
-    static func convert(rawValue: String) -> any APIValue {
+public class WindSpeedConverter: WeatherAPIValueConverter {
+    static func convert(rawValue: String) -> any WeatherAPIValue {
         let toDouble = Double(rawValue) ?? 0.0
         switch toDouble {
         case 0.0...3.9:

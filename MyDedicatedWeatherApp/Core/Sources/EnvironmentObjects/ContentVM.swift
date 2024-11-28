@@ -19,7 +19,7 @@ public final class ContentVM: ObservableObject {
     @Published public var isRefreshed: Bool = false
     @Published public var isLocationChanged: Bool = false
     
-    @Published public private(set) var skyType: APIValue?
+    @Published public private(set) var skyType: WeatherAPIValue?
     @Published public private(set) var isDayMode: Bool = false
     
     var commonForecastUtil = CommonForecastUtil()
@@ -73,7 +73,7 @@ extension ContentVM {
         isDayMode = sunTime.isDayMode
     }
     
-    public func setSkyType(_ value: APIValue) {
+    public func setSkyType(_ value: WeatherAPIValue) {
         skyType = value
     }
 }

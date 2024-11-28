@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum SkyState: String, APIValue {
+public enum SkyState: String, WeatherAPIValue {
     case sunny,
          cloudy,
          blur,
