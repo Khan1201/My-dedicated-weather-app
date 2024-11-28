@@ -12,19 +12,19 @@ public class WindSpeedConverter: APIValueConverter {
         let toDouble = Double(rawValue) ?? 0.0
         switch toDouble {
         case 0.0...3.9:
-            return WindSpeedType.weak
+            return WindSpeed.weak
             
         case 4.0...8.9:
-            return WindSpeedType.littleStrong
+            return WindSpeed.littleStrong
 
         case 9.0...13.9:
-            return WindSpeedType.strong
+            return WindSpeed.strong
 
         case _ where toDouble > 13.9:
-            return WindSpeedType.veryStrong
+            return WindSpeed.veryStrong
 
         default:
-            return WindSpeedType.none
+            return WindSpeed.none
         }
     }
 }

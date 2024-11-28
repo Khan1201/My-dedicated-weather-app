@@ -1,5 +1,5 @@
 //
-//  WindSpeedType.swift
+//  WindSpeed.swift
 //
 //
 //  Created by 윤형석 on 11/29/24.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum WindSpeedType: APIValue {
+public enum WindSpeed: APIValue {
     case weak, littleStrong, strong, veryStrong, none
     
     public var toDescription: String {
