@@ -113,10 +113,10 @@ public struct CommonForecastUtil {
         return PrecipitationAmountConverter.toShortValue(rawValue)
     }
 
-    public func precipitaionStateOfVeryShortOrShortForecast(
+    public func precipitaionSkyStateOfVeryShortOrShortForecast(
         _ value: String
     ) -> APIValue {
-        return PrecipitationStateConverter.convert(rawValue: value)
+        return PrecipitationSkyStateConverter.convert(rawValue: value)
     }
     
     public func skyStateOfVeryShortShortForecast(
@@ -136,7 +136,7 @@ public struct CommonForecastUtil {
         skyValue: String
     ) -> APIValue {
         if ptyValue != "0" {
-            return precipitaionStateOfVeryShortOrShortForecast(ptyValue)
+            return precipitaionSkyStateOfVeryShortOrShortForecast(ptyValue)
             
         } else {
             return skyStateOfVeryShortShortForecast(skyValue)
@@ -144,7 +144,7 @@ public struct CommonForecastUtil {
     }
     
     public func convertPrecipitationState(rawValue: String) -> APIValue {
-        return PrecipitationStateConverter.convert(rawValue: rawValue)
+        return PrecipitationSkyStateConverter.convert(rawValue: rawValue)
     }
     
     public func convertSkyState(rawValue: String) -> APIValue {

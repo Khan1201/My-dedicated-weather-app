@@ -1,5 +1,5 @@
 //
-//  PrecipitationStateConverter.swift
+//  PrecipitationSkyStateConverter.swift
 //
 //
 //  Created by 윤형석 on 11/3/24.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct PrecipitationStateConverter: APIValueConverter {
+public struct PrecipitationSkyStateConverter: APIValueConverter {
     static func convert(rawValue: String) -> any APIValue {
         switch rawValue {
         case "0":
