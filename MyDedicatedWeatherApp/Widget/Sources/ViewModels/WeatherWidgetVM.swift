@@ -13,7 +13,7 @@ import Core
 struct WeatherWidgetVM {
     
     private let veryShortForecastService: VeryShortForecastRequestable
-    private let shortForecastService: ShortForecastRequestable
+    private let shortForecastService: ShortForecastService
     private let midTermForecastService: MidtermForecastService
     private let dustForecastService: DustForecastService
     
@@ -26,7 +26,7 @@ struct WeatherWidgetVM {
     
     init(
         veryShortForecastService: VeryShortForecastRequestable = VeryShortForecastService(),
-        shortForecastService: ShortForecastRequestable = ShortForecastService(),
+        shortForecastService: ShortForecastService = ShortForecastServiceImp(),
         midTermForecastService: MidtermForecastService = MidTermForecastServiceImp(),
         dustForecastService: DustForecastService = DustForecastServiceImp()
     ) {
@@ -58,12 +58,12 @@ struct WeatherWidgetVM {
         let veryShortForecastItems = await requestVeryShortItems()
         
         let shortForecastItems = Task {
-            let result = await requestShortForecastItems()
+            let result = await getTodayItems()
             return result
         }
         
         let shortForecastItemsForMinMaxTemperature = Task {
-            let result = await requestTodayMinMaxTemp()
+            let result = await getTodayMinMaxItems()
             return result
         }
         
@@ -101,12 +101,12 @@ struct WeatherWidgetVM {
         let veryShortForecastItems = await requestVeryShortItems()
         
         let shortForecastItems = Task {
-            let result = await requestShortForecastItems()
+            let result = await getTodayItems()
             return result
         }
         
         let shortForecastItemsForMinMaxTemperature = Task {
-            let result = await requestTodayMinMaxTemp()
+            let result = await getTodayMinMaxItems()
             return result
         }
         
@@ -184,11 +184,11 @@ extension WeatherWidgetVM {
     }
     
     /// Return 단기예보 items
-    func requestShortForecastItems() async -> [VeryShortOrShortTermForecast<ShortTermForecastCategory>] {
+    func getTodayItems() async -> [VeryShortOrShortTermForecast<ShortTermForecastCategory>] {
         let x = UserDefaults.shared.string(forKey: UserDefaultsKeys.x) ?? ""
         let y = UserDefaults.shared.string(forKey: UserDefaultsKeys.y) ?? ""
         
-        let result = await shortForecastService.requestShortForecastItems(
+        let result = await shortForecastService.getTodayItems(
             serviceKey: serviceKey,
             xy: .init(lat: 0, lng: 0, x: x.toInt, y: y.toInt),
             reqRow: "737"
@@ -196,12 +196,12 @@ extension WeatherWidgetVM {
                 
         switch result {
             
-        case .success(let result):
+        case .success(let items):
             commonUtil.printSuccess(
                 funcTitle: "requestShortItems()",
-                value: "\(result.item?.count ?? 0)개의 단기 예보 데이터 get"
+                value: "\(items.count)개의 단기 예보 데이터 get"
             )
-            return result.item ?? []
+            return items
             
         case .failure(_):
             commonUtil.printError(
@@ -214,23 +214,23 @@ extension WeatherWidgetVM {
     
     /// '단기예보' 에서의 최소, 최대 온도 값 요청 위해 및
     /// 02:00 or 23:00 으로 호출해야 하므로, 따로 다시 요청한다.
-    func requestTodayMinMaxTemp() async -> [VeryShortOrShortTermForecast<ShortTermForecastCategory>] {
+    func getTodayMinMaxItems() async -> [VeryShortOrShortTermForecast<ShortTermForecastCategory>] {
         let x = UserDefaults.shared.string(forKey: UserDefaultsKeys.x) ?? ""
         let y = UserDefaults.shared.string(forKey: UserDefaultsKeys.y) ?? ""
         
-        let result = await shortForecastService.requestTodayMinMaxTemp(
+        let result = await shortForecastService.getTodayMinMaxItems(
             serviceKey: serviceKey,
             xy: .init(lat: 0, lng: 0, x: x.toInt, y: y.toInt)
         )
         
         switch result {
             
-        case .success(let result):
+        case .success(let items):
             commonUtil.printSuccess(
                 funcTitle: "requestTodayMinMaxTemp()",
-                value: "\(result.item?.count ?? 0)개의 단기예보(MinMax) 데이터 get"
+                value: "\(items.count)개의 단기예보(MinMax) 데이터 get"
             )
-            return result.item ?? []
+            return items
             
         case .failure(_):
             commonUtil.printError(

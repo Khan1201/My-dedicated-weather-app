@@ -1,5 +1,5 @@
 //
-//  ShortForecastService.swift
+//  ShortForecastServiceImp.swift
 //  MyDedicatedWeatherApp
 //
 //  Created by 윤형석 on 3/13/24.
@@ -9,20 +9,14 @@ import Foundation
 import Core
 import Domain
 
-public protocol ShortForecastRequestable {
-    func requestShortForecastItems(serviceKey: String, xy: Gps2XY.LatXLngY, reqRow: String) async -> Result<PublicDataRes<VeryShortOrShortTermForecast<ShortTermForecastCategory>>, APIError>
-    
-    func requestTodayMinMaxTemp(serviceKey: String, xy: Gps2XY.LatXLngY) async -> Result<PublicDataRes<VeryShortOrShortTermForecast<ShortTermForecastCategory>>, APIError>
-}
-
-public struct ShortForecastService: ShortForecastRequestable {
+public struct ShortForecastServiceImp: ShortForecastService {
     private let util: ShortTermForecastUtil
     
     public init(util: ShortTermForecastUtil = ShortTermForecastUtil()) {
         self.util = util
     }
     
-    public func requestShortForecastItems(serviceKey: String, xy: Gps2XY.LatXLngY, reqRow: String) async -> Result<PublicDataRes<VeryShortOrShortTermForecast<ShortTermForecastCategory>>, APIError> {
+    public func getTodayItems(serviceKey: String, xy: Gps2XY.LatXLngY, reqRow: String) async -> Result<[VeryShortOrShortTermForecast<ShortTermForecastCategory>], APIError> {
         let parameters = VeryShortOrShortTermForecastReq(
             serviceKey: serviceKey,
             numOfRows: reqRow,
@@ -39,11 +33,10 @@ public struct ShortForecastService: ShortForecastRequestable {
             headers: nil,
             resultType: PublicDataRes<VeryShortOrShortTermForecast<ShortTermForecastCategory>>.self
         )
-        
-        return result
+        return result.map { $0.item ?? [] }
     }
     
-    public func requestTodayMinMaxTemp(serviceKey: String, xy: Gps2XY.LatXLngY) async -> Result<PublicDataRes<VeryShortOrShortTermForecast<ShortTermForecastCategory>>, APIError> {
+    public func getTodayMinMaxItems(serviceKey: String, xy: Gps2XY.LatXLngY) async -> Result<[VeryShortOrShortTermForecast<ShortTermForecastCategory>], APIError> {
         let parameters = VeryShortOrShortTermForecastReq(
             serviceKey: serviceKey,
             numOfRows: "300",
@@ -60,7 +53,6 @@ public struct ShortForecastService: ShortForecastRequestable {
             headers: nil,
             resultType: PublicDataRes<VeryShortOrShortTermForecast<ShortTermForecastCategory>>.self
         )
-        
-        return result
+        return result.map { $0.items ?? [] }
     }
 }

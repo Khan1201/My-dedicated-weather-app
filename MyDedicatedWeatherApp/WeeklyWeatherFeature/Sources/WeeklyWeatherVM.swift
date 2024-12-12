@@ -33,7 +33,7 @@ final class WeeklyWeatherVM: ObservableObject {
     private let commonForecastUtil: CommonForecastUtil = CommonForecastUtil()
     private let midTermForecastUtil: MidTermForecastUtil = MidTermForecastUtil()
     
-    private let shortForecastService: ShortForecastRequestable
+    private let shortForecastService: ShortForecastService
     private let midtermForecastService: MidtermForecastService
     
     private let publicApiKey: String = Bundle.main.object(forInfoDictionaryKey: "public_api_key") as? String ?? ""
@@ -48,7 +48,7 @@ final class WeeklyWeatherVM: ObservableObject {
     }
     
     init(
-        shortForecastService: ShortForecastRequestable = ShortForecastService(),
+        shortForecastService: ShortForecastService = ShortForecastServiceImp(),
         midtermForecastService: MidtermForecastService = MidTermForecastServiceImp()
     ) {
         self.shortForecastService = shortForecastService
@@ -66,25 +66,23 @@ extension WeeklyWeatherVM {
      
      - parameter xy: 공공데이터 값으로 변환된 X, Y
      */
-    func requestShortForecastItems(xy: (String, String)) async {
+    func getTodayItems(xy: (String, String)) async {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
-                
-        let result = await shortForecastService.requestShortForecastItems(
+        
+        let result = await shortForecastService.getTodayItems(
             serviceKey: publicApiKey,
             xy: .init(lat: 0, lng: 0, x: xy.0.toInt, y: xy.1.toInt),
             reqRow: "737"
         )
         
         switch result {
-        case .success(let success):
+        case .success(let items):
             let reqEndTime = CFAbsoluteTimeGetCurrent() - reqStartTime
             
             DispatchQueue.main.async {
-                if let item = success.item {
-                    self.setWeeklyWeatherInformationsAndWeeklyChartInformation(one2twoDay: item)
-                    self.isShortTermForecastLoaded = true
-                    print("주간예보 - 단기 req 호출 소요시간: \(reqEndTime)")
-                }
+                self.setWeeklyWeatherInformationsAndWeeklyChartInformation(one2twoDay: items)
+                self.isShortTermForecastLoaded = true
+                print("주간예보 - 단기 req 호출 소요시간: \(reqEndTime)")
             }
         case .failure:
             DispatchQueue.main.async {
@@ -160,7 +158,7 @@ extension WeeklyWeatherVM {
             }
             
             Task(priority: .high) {
-                await requestShortForecastItems(xy: xy)
+                await getTodayItems(xy: xy)
                 await getWeeklyTempItems(fullAddress: fullAddress)
                 await getWeeklySkyStateItems(fullAddress: fullAddress)
             }

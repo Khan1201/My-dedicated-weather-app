@@ -69,7 +69,7 @@ final class CurrentWeatherVM: ObservableObject {
     private var subscriptions: Set<AnyCancellable> = []
     
     private let veryShortForecastService: VeryShortForecastRequestable
-    private let shortForecastService: ShortForecastRequestable
+    private let shortForecastService: ShortForecastService
     private let dustForecastService: DustForecastService
     private let kakaoAddressService: KakaoAddressService
     
@@ -77,7 +77,7 @@ final class CurrentWeatherVM: ObservableObject {
         contentVM: ContentVM = ContentVM.shared,
         currentLocationVM: CurrentLocationVM = CurrentLocationVM.shared,
         veryShortForecastService: VeryShortForecastRequestable = VeryShortForecastService(),
-        shortForecastService: ShortForecastRequestable = ShortForecastService(),
+        shortForecastService: ShortForecastService = ShortForecastServiceImp(),
         dustForecastService: DustForecastService = DustForecastServiceImp(),
         kakaoAddressService: KakaoAddressService = KakaoAddressServiceImp()
     ) {
@@ -187,14 +187,13 @@ extension CurrentWeatherVM {
      - 2000: '+1시간' ~ '+76시간'
      - 2300: '+1시간' ~ '+73시간' (17:00 ~ 2300: 오늘 ~ 모레+1일 까지)
      */
-    func requestShortForecastItems(xy: Gps2XY.LatXLngY) async {
+    func getTodayItems(xy: Gps2XY.LatXLngY) async {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
 
-        let result = await shortForecastService.requestShortForecastItems(serviceKey: publicApiKey, xy: xy, reqRow: "300")
+        let result = await shortForecastService.getTodayItems(serviceKey: publicApiKey, xy: xy, reqRow: "300")
         
         switch result {
-        case .success(let success):
-            guard let items = success.item else { return }
+        case .success(let items):
             await setTodayWeatherInformations(items: items)
             
             let reqEndTime = CFAbsoluteTimeGetCurrent() - reqStartTime
@@ -207,14 +206,13 @@ extension CurrentWeatherVM {
     /// - parameter xy: 공공데이터 값으로 변환된 X, Y
     /// '단기예보' 에서의 최소, 최대 온도 값 요청 위해 및
     /// 02:00 or 23:00 으로 호출해야 하므로, 따로 다시 요청한다.
-    func requestTodayMinMaxTemp(xy: Gps2XY.LatXLngY) async {
+    func getTodayMinMaxItems(xy: Gps2XY.LatXLngY) async {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
 
-        let result = await shortForecastService.requestTodayMinMaxTemp(serviceKey: publicApiKey, xy: xy)
+        let result = await shortForecastService.getTodayMinMaxItems(serviceKey: publicApiKey, xy: xy)
         
         switch result {
-        case .success(let success):
-            guard let items = success.item else { return }
+        case .success(let items):
             await setTodayMinMaxTemperature(items)
             
             let reqEndTime = CFAbsoluteTimeGetCurrent() - reqStartTime
@@ -548,8 +546,8 @@ extension CurrentWeatherVM {
                         
             Task(priority: .high) {
                 await requestVeryShortForecastItems(xy: xy)
-                await requestShortForecastItems(xy: xy)
-                await requestTodayMinMaxTemp(xy: xy)
+                await getTodayItems(xy: xy)
+                await getTodayMinMaxItems(xy: xy)
             }
             
             Task(priority: .low) {
@@ -601,8 +599,8 @@ extension CurrentWeatherVM {
                         
                         Task(priority: .high) {
                             await self.requestVeryShortForecastItems(xy: xy)
-                            await self.requestShortForecastItems(xy: xy)
-                            await self.requestTodayMinMaxTemp(xy: xy)
+                            await self.getTodayItems(xy: xy)
+                            await self.getTodayMinMaxItems(xy: xy)
                         }
                         
                         Task(priority: .low) {
@@ -756,8 +754,8 @@ extension CurrentWeatherVM {
             
             Task(priority: .high) {
                 await requestVeryShortForecastItems(xy: convertedXY)
-                await requestShortForecastItems(xy: convertedXY)
-                await requestTodayMinMaxTemp(xy: convertedXY)
+                await getTodayItems(xy: convertedXY)
+                await getTodayMinMaxItems(xy: convertedXY)
             }
             
             Task(priority: .low) {

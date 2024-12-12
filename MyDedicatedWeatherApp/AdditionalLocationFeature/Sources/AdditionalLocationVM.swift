@@ -21,14 +21,14 @@ final class AdditionalLocationVM: ObservableObject {
     private let shortTermForecastUtil: ShortTermForecastUtil = ShortTermForecastUtil()
     
     private let veryShortForecastService: VeryShortForecastRequestable
-    private let shortForecastService: ShortForecastRequestable
+    private let shortForecastService: ShortForecastService
     
     private let publicApiKey: String = Bundle.main.object(forInfoDictionaryKey: "public_api_key") as? String ?? ""
     var currentTask: Task<(), Never>?
     
     init(
         veryShortForecastService: VeryShortForecastRequestable = VeryShortForecastService(),
-        shortForecastService: ShortForecastRequestable = ShortForecastService()
+        shortForecastService: ShortForecastService = ShortForecastServiceImp()
     ) {
         self.veryShortForecastService = veryShortForecastService
         self.shortForecastService = shortForecastService
@@ -141,7 +141,7 @@ extension AdditionalLocationVM {
     /// - parameter xy: 공공데이터 값으로 변환된 X, Y
     /// '단기예보' 에서의 최소, 최대 온도 값 요청 위해 및
     /// 02:00 or 23:00 으로 호출해야 하므로, 따로 다시 요청한다.
-    func requestTodayMinMaxTemp(xy: Gps2XY.LatXLngY, currentTemp: String) async -> (String, String) {
+    func getTodayMinMaxItems(xy: Gps2XY.LatXLngY, currentTemp: String) async -> (String, String) {
         func filteredMinMax(_ items: [VeryShortOrShortTermForecast<ShortTermForecastCategory>], currentTemp: String) -> (String, String) {
             let todayDate = Date().toString(format: "yyyyMMdd")
             
@@ -155,13 +155,12 @@ extension AdditionalLocationVM {
             return (min.toString, max.toString)
         }
         
-        let result = await shortForecastService.requestTodayMinMaxTemp(serviceKey: publicApiKey,xy: xy)
+        let result = await shortForecastService.getTodayMinMaxItems(serviceKey: publicApiKey,xy: xy)
 
         switch result {
-        case .success(let success):
-            guard let items = success.item else { return ("", "") }
+        case .success(let items):
             return filteredMinMax(items, currentTemp: currentTemp)
-        case .failure(let failure):
+        case .failure:
             return ("", "")
         }
     }
@@ -284,7 +283,7 @@ extension AdditionalLocationVM {
                             xy: xy,
                             sunriseAndsunsetHHmm: sunRiseAndSunSetHHmm
                         )
-                        let minMaxTemp = await self.requestTodayMinMaxTemp(
+                        let minMaxTemp = await self.getTodayMinMaxItems(
                             xy: xy,
                             currentTemp: currentWeatherImageAndTemp.1
                         )

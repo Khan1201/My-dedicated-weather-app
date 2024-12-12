@@ -31,7 +31,7 @@ public struct MidTermForecastServiceImp: MidtermForecastService {
             headers: nil,
             resultType: PublicDataRes<MidTermForecastTemperature>.self
         )
-        return result.map { $0.items ?? [] }
+        return result.map { $0.item ?? [] }
     }
     
     public func getSkyStateItems(serviceKey: String, fullAddress: String) async -> Result<[MidTermForecastSkyState], APIError> {
@@ -49,6 +49,6 @@ public struct MidTermForecastServiceImp: MidtermForecastService {
             headers: nil,
             resultType: PublicDataRes<MidTermForecastSkyState>.self
         )
-        return result.map { $0.items ?? [] }
+        return result.map { $0.item ?? [] }
     }
 }
