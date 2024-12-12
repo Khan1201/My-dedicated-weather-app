@@ -79,7 +79,7 @@ final class CurrentWeatherVM: ObservableObject {
         veryShortForecastService: VeryShortForecastRequestable = VeryShortForecastService(),
         shortForecastService: ShortForecastRequestable = ShortForecastService(),
         dustForecastService: DustForecastService = DustForecastServiceImp(),
-        kakaoAddressService: KakaoAddressService = KakaoAddressService()
+        kakaoAddressService: KakaoAddressService = KakaoAddressServiceImp()
     ) {
         self.contentVM = contentVM
         self.currentLocationVM = currentLocationVM
@@ -298,28 +298,28 @@ extension CurrentWeatherVM {
      Apple이 제공하는.reverseGeocodeLocation 에서 특정 기기에서 sublocality가 nil로 할당되므로
      kakao address request 에서 가져오도록 결정함.
      */
-    func requestKaKaoAddressBy(longitude: String, latitude: String, isCurrentLocationRequested: Bool) async {
+    func getKaKaoAddressBy(longitude: String, latitude: String, isCurrentLocationRequested: Bool) async {
         let startTime = CFAbsoluteTimeGetCurrent()
 
-        let result = await kakaoAddressService.requestKaKaoAddressBy(
+        let result = await kakaoAddressService.getKaKaoAddressBy(
             apiKey: kakaoApiKey,
             longitude: longitude,
             latitude: latitude
         )
         
         switch result {
-        case .success(let success):
-            await setSubLocalityByKakaoAddress(success.documents)
+        case .success(let item):
+            await setSubLocalityByKakaoAddress(item.documents)
             
-            guard success.documents.count > 0 else { return }
-            await currentLocationVM.setSubLocality(success.documents[0].address.subLocality)
+            guard item.documents.count > 0 else { return }
+            await currentLocationVM.setSubLocality(item.documents[0].address.subLocality)
             
             /// For Widget
             if isCurrentLocationRequested {
-                await self.currentLocationVM.setGPSSubLocality(success.documents[0].address.subLocality)
+                await self.currentLocationVM.setGPSSubLocality(item.documents[0].address.subLocality)
                 await self.currentLocationVM.setFullAddress(self.currentLocationVM.gpsFullAddress)
                 UserDefaults.setWidgetShared(self.subLocalityByKakaoAddress, to: .subLocality)
-                UserDefaults.setWidgetShared(success.documents[0].address.fullAddress, to: .fullAddress)
+                UserDefaults.setWidgetShared(item.documents[0].address.fullAddress, to: .fullAddress)
             }
 
             let durationTime = CFAbsoluteTimeGetCurrent() - startTime
@@ -553,7 +553,7 @@ extension CurrentWeatherVM {
             }
             
             Task(priority: .low) {
-                await requestKaKaoAddressBy(longitude: longLati.0, latitude: longLati.1, isCurrentLocationRequested: true)
+                await getKaKaoAddressBy(longitude: longLati.0, latitude: longLati.1, isCurrentLocationRequested: true)
                 await getXYOfDustStation(
                     subLocality: subLocalityByKakaoAddress,
                     locality: locality
@@ -606,7 +606,7 @@ extension CurrentWeatherVM {
                         }
                         
                         Task(priority: .low) {
-                            await self.requestKaKaoAddressBy(longitude: String(longitude), latitude: String(latitude), isCurrentLocationRequested: false)
+                            await self.getKaKaoAddressBy(longitude: String(longitude), latitude: String(latitude), isCurrentLocationRequested: false)
                             await self.getXYOfDustStation(
                                 subLocality: allLocality.subLocality,
                                 locality: allLocality.locality
@@ -761,7 +761,7 @@ extension CurrentWeatherVM {
             }
             
             Task(priority: .low) {
-                await requestKaKaoAddressBy(longitude: longitude, latitude: latitude, isCurrentLocationRequested: false)
+                await getKaKaoAddressBy(longitude: longitude, latitude: latitude, isCurrentLocationRequested: false)
                 await getXYOfDustStation(
                     subLocality: subLocality,
                     locality: locality
