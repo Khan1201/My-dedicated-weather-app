@@ -15,7 +15,7 @@ struct WeatherWidgetVM {
     private let veryShortForecastService: VeryShortForecastRequestable
     private let shortForecastService: ShortForecastRequestable
     private let midTermForecastService: MidtermForecastRequestable
-    private let dustForecastService: DustForecastRequestable
+    private let dustForecastService: DustForecastService
     
     private let serviceKey: String = Bundle.main.object(forInfoDictionaryKey: "public_api_key") as? String ?? ""
     private let commonForecastUtil: CommonForecastUtil = .init()
@@ -28,7 +28,7 @@ struct WeatherWidgetVM {
         veryShortForecastService: VeryShortForecastRequestable = VeryShortForecastService(),
         shortForecastService: ShortForecastRequestable = ShortForecastService(),
         midTermForecastService: MidtermForecastRequestable = MidTermForecastService(),
-        dustForecastService: DustForecastRequestable = DustForecastService()
+        dustForecastService: DustForecastService = DustForecastServiceImp()
     ) {
         self.veryShortForecastService = veryShortForecastService
         self.shortForecastService = shortForecastService
@@ -68,7 +68,7 @@ struct WeatherWidgetVM {
         }
         
         let realTimefindDustItems = Task {
-            let result = await requestRealTimeFindDustAndUltraFindDustItems()
+            let result = await getRealTimeDustItems()
             return result
         }
         
@@ -111,7 +111,7 @@ struct WeatherWidgetVM {
         }
         
         let realTimefindDustItems = Task {
-            let result = await requestRealTimeFindDustAndUltraFindDustItems()
+            let result = await getRealTimeDustItems()
             return result
         }
         
@@ -277,22 +277,22 @@ extension WeatherWidgetVM {
 //    }
     
     /// Return 미세먼지 및 초미세먼지 items
-    func requestRealTimeFindDustAndUltraFindDustItems() async -> [RealTimeFindDustForecast] {
+    func getRealTimeDustItems() async -> [RealTimeFindDustForecast] {
         let stationName: String = UserDefaults.shared.string(forKey: UserDefaultsKeys.dustStationName) ?? ""
 
-        let result = await dustForecastService.requestRealTimeFindDustForecastItems(
+        let result = await dustForecastService.getRealTimeDustItems(
             serviceKey: serviceKey,
             stationName: stationName
         )
         
         switch result {
             
-        case .success(let result):
+        case .success(let items):
             commonUtil.printSuccess(
-                funcTitle: "requestRealTimeFindDustAndUltraFindDustItems()",
-                value: "\(result.items?.count ?? 0)개의 미세먼지, 초 미세먼지 데이터 get"
+                funcTitle: "getRealTimeDustItems()",
+                value: "\(items.count)개의 미세먼지, 초 미세먼지 데이터 get"
             )
-            return result.items ?? []
+            return items
             
         case .failure(_):
             commonUtil.printError(

@@ -70,7 +70,7 @@ final class CurrentWeatherVM: ObservableObject {
     
     private let veryShortForecastService: VeryShortForecastRequestable
     private let shortForecastService: ShortForecastRequestable
-    private let dustForecastService: DustForecastRequestable
+    private let dustForecastService: DustForecastService
     private let kakaoAddressService: KakaoAddressService
     
     init(
@@ -78,7 +78,7 @@ final class CurrentWeatherVM: ObservableObject {
         currentLocationVM: CurrentLocationVM = CurrentLocationVM.shared,
         veryShortForecastService: VeryShortForecastRequestable = VeryShortForecastService(),
         shortForecastService: ShortForecastRequestable = ShortForecastService(),
-        dustForecastService: DustForecastRequestable = DustForecastService(),
+        dustForecastService: DustForecastService = DustForecastServiceImp(),
         kakaoAddressService: KakaoAddressService = KakaoAddressService()
     ) {
         self.contentVM = contentVM
@@ -227,14 +227,14 @@ extension CurrentWeatherVM {
     /**
      Request 실시간 미세먼지, 초미세먼지 Items request
      */
-    func requestRealTimeFindDustForecastItems() async {
+    func getRealTimeDustItems() async {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
 
-        let result = await dustForecastService.requestRealTimeFindDustForecastItems(serviceKey: publicApiKey, stationName: DustStationRequestParam.stationName)
+        let result = await dustForecastService.getRealTimeDustItems(serviceKey: publicApiKey, stationName: DustStationRequestParam.stationName)
         
         switch result {
-        case .success(let success):
-            guard let item = success.items?.first else { return }
+        case .success(let items):
+            guard let item = items.first else { return }
             await setCurrentFineDustAndUltraFineDustTuple(item)
             
             let reqEndTime = CFAbsoluteTimeGetCurrent() - reqStartTime
@@ -250,14 +250,14 @@ extension CurrentWeatherVM {
      - parameter subLocality: ex) 성수동 1가
      - parameter locality: ex) 서울특별시
      */
-    func requestDustForecastStationXY(subLocality: String, locality: String) async {
+    func getXYOfDustStation(subLocality: String, locality: String) async {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
         
-        let result = await dustForecastService.requestDustForecastStationXY(serviceKey: publicApiKey,subLocality: subLocality)
+        let result = await dustForecastService.getXYOfStation(serviceKey: publicApiKey, subLocality: subLocality)
         
         switch result {
-        case .success(let success):
-            setDustStationRequestParamXY(items: success.items, locality: locality)
+        case .success(let items):
+            setDustStationRequestParamXY(items: items, locality: locality)
                 
             let reqEndTime = CFAbsoluteTimeGetCurrent() - reqStartTime
             print("미세먼지 측정소 xy좌표 get 호출 소요시간: \(reqEndTime)")
@@ -271,17 +271,17 @@ extension CurrentWeatherVM {
      - parameter tmxAndtmY: 미세먼지 측정소 X, Y 좌표
      
      */
-    func requestDustForecastStation(tmXAndtmY: (String, String), isCurrentLocationRequested: Bool) async {
+    func getDustStationInfo(tmXAndtmY: (String, String), isCurrentLocationRequested: Bool) async {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
         
-        let result = await dustForecastService.requestDustForecastStation(serviceKey: publicApiKey,tmXAndtmY: tmXAndtmY)
+        let result = await dustForecastService.getStationInfo(serviceKey: publicApiKey, tmXAndtmY: tmXAndtmY)
         
         switch result {
-        case .success(let success):
-            setDustStationRequestParamStationName(success.items)
+        case .success(let items):
+            setDustStationRequestParamStationName(items)
             
-            guard let items = success.items, let item = items.first else { return }
-            UserDefaults.setWidgetShared(item.stationName, to: .dustStationName)
+            guard let firstItem = items.first else { return }
+            UserDefaults.setWidgetShared(firstItem.stationName, to: .dustStationName)
 
             let reqEndTime = CFAbsoluteTimeGetCurrent() - reqStartTime
             print("미세먼지 측정소 get 호출 소요시간: \(reqEndTime)")
@@ -554,12 +554,12 @@ extension CurrentWeatherVM {
             
             Task(priority: .low) {
                 await requestKaKaoAddressBy(longitude: longLati.0, latitude: longLati.1, isCurrentLocationRequested: true)
-                await requestDustForecastStationXY(
+                await getXYOfDustStation(
                     subLocality: subLocalityByKakaoAddress,
                     locality: locality
                 )
-                await requestDustForecastStation(tmXAndtmY: DustStationRequestParam.tmXAndtmY, isCurrentLocationRequested: true)
-                await requestRealTimeFindDustForecastItems()
+                await getDustStationInfo(tmXAndtmY: DustStationRequestParam.tmXAndtmY, isCurrentLocationRequested: true)
+                await getRealTimeDustItems()
             }
         }
     }
@@ -607,12 +607,12 @@ extension CurrentWeatherVM {
                         
                         Task(priority: .low) {
                             await self.requestKaKaoAddressBy(longitude: String(longitude), latitude: String(latitude), isCurrentLocationRequested: false)
-                            await self.requestDustForecastStationXY(
+                            await self.getXYOfDustStation(
                                 subLocality: allLocality.subLocality,
                                 locality: allLocality.locality
                             )
-                            await self.requestDustForecastStation(tmXAndtmY: DustStationRequestParam.tmXAndtmY, isCurrentLocationRequested: false)
-                            await self.requestRealTimeFindDustForecastItems()
+                            await self.getDustStationInfo(tmXAndtmY: DustStationRequestParam.tmXAndtmY, isCurrentLocationRequested: false)
+                            await self.getRealTimeDustItems()
                         }
                         
                         await self.currentLocationVM.setCoordinateAndAllLocality(
@@ -762,12 +762,12 @@ extension CurrentWeatherVM {
             
             Task(priority: .low) {
                 await requestKaKaoAddressBy(longitude: longitude, latitude: latitude, isCurrentLocationRequested: false)
-                await requestDustForecastStationXY(
+                await getXYOfDustStation(
                     subLocality: subLocality,
                     locality: locality
                 )
-                await requestDustForecastStation(tmXAndtmY: DustStationRequestParam.tmXAndtmY, isCurrentLocationRequested: false)
-                await requestRealTimeFindDustForecastItems()
+                await getDustStationInfo(tmXAndtmY: DustStationRequestParam.tmXAndtmY, isCurrentLocationRequested: false)
+                await getRealTimeDustItems()
             }
         }
     }
