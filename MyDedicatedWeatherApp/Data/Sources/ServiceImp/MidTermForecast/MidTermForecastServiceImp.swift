@@ -1,5 +1,5 @@
 //
-//  MidTermForecastService.swift
+//  MidTermForecastServiceImp.swift
 //  MyDedicatedWeatherApp
 //
 //  Created by 윤형석 on 3/13/24.
@@ -9,20 +9,14 @@ import Foundation
 import Core
 import Domain
 
-public protocol MidtermForecastRequestable {
-    func requestMidTermForecastTempItems(serviceKey: String, fullAddress: String) async -> Result<PublicDataRes<MidTermForecastTemperature>, APIError>
-    
-    func requestMidTermForecastSkyStateItems(serviceKey: String, fullAddress: String) async -> Result<PublicDataRes<MidTermForecastSkyState>, APIError>
-}
-
-public struct MidTermForecastService: MidtermForecastRequestable {
+public struct MidTermForecastServiceImp: MidtermForecastService {
     private let util: MidTermForecastUtil
     
     public init(util: MidTermForecastUtil = MidTermForecastUtil()) {
         self.util = util
     }
     
-    public func requestMidTermForecastTempItems(serviceKey: String, fullAddress: String) async -> Result<PublicDataRes<MidTermForecastTemperature>, APIError> {
+    public func getTempItems(serviceKey: String, fullAddress: String) async -> Result<[MidTermForecastTemperature], APIError> {
         let parameters: MidTermForecastReq = MidTermForecastReq(
             serviceKey: serviceKey,
             regId: util.regOrStnIdPar(fullAddress: fullAddress, reqType: .temperature),
@@ -37,11 +31,10 @@ public struct MidTermForecastService: MidtermForecastRequestable {
             headers: nil,
             resultType: PublicDataRes<MidTermForecastTemperature>.self
         )
-        
-        return result
+        return result.map { $0.items ?? [] }
     }
     
-    public func requestMidTermForecastSkyStateItems(serviceKey: String, fullAddress: String) async -> Result<PublicDataRes<MidTermForecastSkyState>, APIError> {
+    public func getSkyStateItems(serviceKey: String, fullAddress: String) async -> Result<[MidTermForecastSkyState], APIError> {
         let parameters: MidTermForecastReq = MidTermForecastReq(
             serviceKey: serviceKey,
             regId: util.regOrStnIdPar(fullAddress: fullAddress, reqType: .skystate),
@@ -56,7 +49,6 @@ public struct MidTermForecastService: MidtermForecastRequestable {
             headers: nil,
             resultType: PublicDataRes<MidTermForecastSkyState>.self
         )
-        
-        return result
+        return result.map { $0.items ?? [] }
     }
 }

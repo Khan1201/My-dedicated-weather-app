@@ -34,7 +34,7 @@ final class WeeklyWeatherVM: ObservableObject {
     private let midTermForecastUtil: MidTermForecastUtil = MidTermForecastUtil()
     
     private let shortForecastService: ShortForecastRequestable
-    private let midtermForecastService: MidtermForecastRequestable
+    private let midtermForecastService: MidtermForecastService
     
     private let publicApiKey: String = Bundle.main.object(forInfoDictionaryKey: "public_api_key") as? String ?? ""
     
@@ -49,7 +49,7 @@ final class WeeklyWeatherVM: ObservableObject {
     
     init(
         shortForecastService: ShortForecastRequestable = ShortForecastService(),
-        midtermForecastService: MidtermForecastRequestable = MidTermForecastService()
+        midtermForecastService: MidtermForecastService = MidTermForecastServiceImp()
     ) {
         self.shortForecastService = shortForecastService
         self.midtermForecastService = midtermForecastService
@@ -96,20 +96,20 @@ extension WeeklyWeatherVM {
     /**
      Request 중기예보 (3~ 10일) 최저, 최고 기온  Items
      */
-    func requestMidTermForecastTempItems(fullAddress: String) async {
+    func getWeeklyTempItems(fullAddress: String) async {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
         
-        let result = await midtermForecastService.requestMidTermForecastTempItems(
+        let result = await midtermForecastService.getTempItems(
             serviceKey: publicApiKey,
             fullAddress: fullAddress
         )
         
         switch result {
-        case .success(let success):
+        case .success(let items):
             let reqEndTime = CFAbsoluteTimeGetCurrent() - reqStartTime
             
             DispatchQueue.main.async {
-                if let item = success.item?.first {
+                if let item = items.first {
                     self.setWeeklyWeatherInformationsMinMaxTemp(three2tenDay: item)
                     self.setWeeklyChartInformationMinMaxTemp(three2tenDay: item)
                     self.isMidtermForecastTempLoaded = true
@@ -125,20 +125,20 @@ extension WeeklyWeatherVM {
     /**
      Request 중기예보 (3~ 10일) 하늘 상태, 강수 확률 items
      */
-    func requestMidTermForecastSkyStateItems(fullAddress: String) async {
+    func getWeeklySkyStateItems(fullAddress: String) async {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
         
-        let result = await midtermForecastService.requestMidTermForecastSkyStateItems(
+        let result = await midtermForecastService.getSkyStateItems(
             serviceKey: publicApiKey,
             fullAddress: fullAddress
         )
         
         switch result {
-        case .success(let success):
+        case .success(let items):
             let reqEndTime = CFAbsoluteTimeGetCurrent() - reqStartTime
             
             DispatchQueue.main.async {
-                if let item = success.item?.first {
+                if let item = items.first {
                     self.setWeeklyWeatherInformationsImageAndRainPercent(three2tenDay: item)
                     self.setWeeklyChartInformationImageAndRainPercent(three2tenDay: item)
                     self.isMidtermForecastSkyStateLoaded = true
@@ -161,8 +161,8 @@ extension WeeklyWeatherVM {
             
             Task(priority: .high) {
                 await requestShortForecastItems(xy: xy)
-                await requestMidTermForecastTempItems(fullAddress: fullAddress)
-                await requestMidTermForecastSkyStateItems(fullAddress: fullAddress)
+                await getWeeklyTempItems(fullAddress: fullAddress)
+                await getWeeklySkyStateItems(fullAddress: fullAddress)
             }
         }
     }

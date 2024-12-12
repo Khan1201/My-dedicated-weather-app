@@ -14,7 +14,7 @@ struct WeatherWidgetVM {
     
     private let veryShortForecastService: VeryShortForecastRequestable
     private let shortForecastService: ShortForecastRequestable
-    private let midTermForecastService: MidtermForecastRequestable
+    private let midTermForecastService: MidtermForecastService
     private let dustForecastService: DustForecastService
     
     private let serviceKey: String = Bundle.main.object(forInfoDictionaryKey: "public_api_key") as? String ?? ""
@@ -27,7 +27,7 @@ struct WeatherWidgetVM {
     init(
         veryShortForecastService: VeryShortForecastRequestable = VeryShortForecastService(),
         shortForecastService: ShortForecastRequestable = ShortForecastService(),
-        midTermForecastService: MidtermForecastRequestable = MidTermForecastService(),
+        midTermForecastService: MidtermForecastService = MidTermForecastServiceImp(),
         dustForecastService: DustForecastService = DustForecastServiceImp()
     ) {
         self.veryShortForecastService = veryShortForecastService
@@ -116,12 +116,12 @@ struct WeatherWidgetVM {
         }
         
         let midForecastTemperatureItems = Task {
-            let result = await requestMidTermForecastTempItems()
+            let result = await getMidTermForecastTempItems()
             return result
         }
         
         let midForecastSkyStateItems = Task {
-            let result = await requestMidTermForecastSkyStateItems()
+            let result = await getMidTermForecastSkyStateItems()
             return result
         }
         
@@ -304,22 +304,22 @@ extension WeatherWidgetVM {
     }
     
     /// Return 중기예보(3~ 10일)의 temperature items
-    func requestMidTermForecastTempItems() async -> [MidTermForecastTemperature] {
+    func getMidTermForecastTempItems() async -> [MidTermForecastTemperature] {
         let fullAddress: String = UserDefaults.shared.string(forKey: UserDefaultsKeys.fullAddress) ?? ""
         
-        let result = await midTermForecastService.requestMidTermForecastTempItems(
+        let result = await midTermForecastService.getTempItems(
             serviceKey: serviceKey,
             fullAddress: fullAddress
         )
         
         switch result {
             
-        case .success(let result):
+        case .success(let items):
             commonUtil.printSuccess(
                 funcTitle: "requestMidTermForecastTempItems()",
-                value: "\(result.item?.count ?? 0)개의 중기예보의 temperature 데이터 get"
+                value: "\(items.count)개의 중기예보의 temperature 데이터 get"
             )
-            return result.item ?? []
+            return items
             
         case .failure(_):
             commonUtil.printError(
@@ -331,22 +331,22 @@ extension WeatherWidgetVM {
     }
     
     /// Return 중기예보(3~ 10일)의 하늘상태 items
-    func requestMidTermForecastSkyStateItems() async -> [MidTermForecastSkyState] {
+    func getMidTermForecastSkyStateItems() async -> [MidTermForecastSkyState] {
         let fullAddress: String = UserDefaults.shared.string(forKey: UserDefaultsKeys.fullAddress) ?? ""
         
-        let result = await midTermForecastService.requestMidTermForecastSkyStateItems(
+        let result = await midTermForecastService.getSkyStateItems(
             serviceKey: serviceKey,
             fullAddress: fullAddress
         )
         
         switch result {
             
-        case .success(let result):
+        case .success(let items):
             commonUtil.printSuccess(
                 funcTitle: "rrequestMidTermForecastSkyStateItems()",
-                value: "\(result.item?.count ?? 0)개의 중기예보의 skyState 데이터 get"
+                value: "\(items.count)개의 중기예보의 skyState 데이터 get"
             )
-            return result.item ?? []
+            return items
             
         case .failure(_):
             commonUtil.printError(
