@@ -14,7 +14,7 @@ struct MyDedicatedWeatherAppApp: App {
         WindowGroup {
             MainTabView()
                 .environmentObject(CurrentLocationEO())
-                .environmentObject(ContentVM.shared)
+                .environmentObject(ContentEO())
         }
     }
 }

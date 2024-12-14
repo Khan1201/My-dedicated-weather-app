@@ -16,7 +16,7 @@ public struct CurrentWeatherView: View {
     
     @StateObject var viewModel: CurrentWeatherVM = CurrentWeatherVM()
     @StateObject var locationDataManagerVM = LocationDataManagerVM()
-    @EnvironmentObject var contentVM: ContentVM
+    @EnvironmentObject var contentEO: ContentEO
     @EnvironmentObject var currentLocationEO: CurrentLocationEO
     
     @State private var pagerHeight: CGFloat = 0
@@ -58,7 +58,7 @@ public struct CurrentWeatherView: View {
                 
                 TodayWeatherItemScrollView(
                     todayWeatherInformations: viewModel.todayWeatherInformations,
-                    isDayMode: contentVM.isDayMode
+                    isDayMode: contentEO.isDayMode
                 )
                 .padding(.horizontal, 26)
                 .loadingProgressLottie(isLoadingCompleted: viewModel.isTodayWeatherInformationLoaded)
@@ -77,7 +77,7 @@ public struct CurrentWeatherView: View {
                 }
             }
             .todayViewControllerBackground(
-                isDayMode: contentVM.isDayMode,
+                isDayMode: contentEO.isDayMode,
                 isSunriseSunsetLoadCompleted: viewModel.isSunriseSunsetLoaded,
                 isAllLoadCompleted: viewModel.isAllLoaded,
                 skyType: viewModel.currentWeatherInformation.skyType
@@ -105,6 +105,7 @@ public struct CurrentWeatherView: View {
             .onAppear {
                 locationDataManagerVM.currentLocationEODelegate = currentLocationEO
                 viewModel.currentLocationEODelegate = currentLocationEO
+                viewModel.contentEODelegate = contentEO
                 locationDataManagerVM.startUpdaitingLocation()
             }
             
@@ -166,7 +167,7 @@ extension CurrentWeatherView {
                     TodaySunriseSunsetView(
                         sunriseTime: viewModel.sunriseAndSunsetHHmm.0,
                         sunsetTime: viewModel.sunriseAndSunsetHHmm.1,
-                        isDayMode: contentVM.isDayMode
+                        isDayMode: contentEO.isDayMode
                     )
                     .padding(.trailing, 40)
                 }
@@ -183,7 +184,7 @@ extension CurrentWeatherView {
                 CurrentTempAndMinMaxTempView(
                     temp: viewModel.currentWeatherInformation.temperature,
                     minMaxTemp: viewModel.todayMinMaxTemperature,
-                    isDayMode: contentVM.isDayMode
+                    isDayMode: contentEO.isDayMode
                 )
                 .loadingProgressLottie(
                     isLoadingCompleted: viewModel.isCurrentWeatherInformationLoaded && viewModel.isMinMaxTempLoaded

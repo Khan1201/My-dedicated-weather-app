@@ -14,7 +14,7 @@ import SettingFeature
 
 struct MainTabView: View {
     
-    @EnvironmentObject var vm: ContentVM
+    @EnvironmentObject var vm: ContentEO
     
     var body: some View {
         

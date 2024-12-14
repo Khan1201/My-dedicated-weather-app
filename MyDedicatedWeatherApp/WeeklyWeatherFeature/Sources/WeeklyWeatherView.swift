@@ -12,7 +12,7 @@ import Core
 public struct WeeklyWeatherView: View {
     
     @StateObject var viewModel: WeeklyWeatherVM = WeeklyWeatherVM()
-    @EnvironmentObject var contentVM: ContentVM
+    @EnvironmentObject var contentEO: ContentEO
     @EnvironmentObject var currentLocationEO: CurrentLocationEO
     
     @State private var graphOpacity: CGFloat = 0
@@ -81,8 +81,8 @@ public struct WeeklyWeatherView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
         .weekViewControllerBackground(
-            isDayMode: contentVM.isDayMode,
-            skyType: contentVM.skyType
+            isDayMode: contentEO.isDayMode,
+            skyType: contentEO.skyType
         )
         .bottomNoticeFloater(
             isPresented: $viewModel.showNoticeFloater,
@@ -99,11 +99,11 @@ public struct WeeklyWeatherView: View {
                 )
             }
         }
-        .onChange(of: contentVM.isRefreshed) { newValue in
+        .onChange(of: contentEO.isRefreshed) { newValue in
             viewModel.isRefreshedOnChangeAction(newValue)
         }
-        .onChange(of: contentVM.isLocationChanged) { newValue in
-            contentVM.isLocationChanged = false
+        .onChange(of: contentEO.isLocationChanged) { newValue in
+            contentEO.isLocationChanged = false
             if newValue {
                 viewModel.isWeeklyWeatherInformationsLoaded = false
             }

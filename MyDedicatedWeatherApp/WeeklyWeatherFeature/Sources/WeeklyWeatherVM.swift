@@ -507,7 +507,7 @@ extension WeeklyWeatherVM {
 
 extension WeeklyWeatherVM {
     
-    ///  ContentVM의 isRefreshed state 변수가 바뀔때
+    ///  ContentEO의 isRefreshed state 변수가 바뀔때
     func isRefreshedOnChangeAction(_ value: Bool) {
         
         if value {

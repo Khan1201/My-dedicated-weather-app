@@ -59,7 +59,7 @@ final class CurrentWeatherVM: ObservableObject {
     }
     
     weak var currentLocationEODelegate: CurrentLocationEODelegate?
-    private let contentVM: ContentVM
+    weak var contentEODelegate: ContentEODelegate?
     
     private let commonForecastUtil: CommonForecastUtil = CommonForecastUtil()
     private let veryShortTermForecastUtil: VeryShortTermForecastUtil = VeryShortTermForecastUtil()
@@ -74,13 +74,11 @@ final class CurrentWeatherVM: ObservableObject {
     private let kakaoAddressService: KakaoAddressService
     
     init(
-        contentVM: ContentVM = ContentVM.shared,
         veryShortForecastService: VeryShortForecastService = VeryShortForecastServiceImp(),
         shortForecastService: ShortForecastService = ShortForecastServiceImp(),
         dustForecastService: DustForecastService = DustForecastServiceImp(),
         kakaoAddressService: KakaoAddressService = KakaoAddressServiceImp()
     ) {
-        self.contentVM = contentVM
         self.veryShortForecastService = veryShortForecastService
         self.shortForecastService = shortForecastService
         self.dustForecastService = dustForecastService
@@ -376,7 +374,7 @@ extension CurrentWeatherVM {
             weatherImage: skyType.image(isDayMode: sunTime.isDayMode),
             skyType: skyType
         )
-        contentVM.setSkyType(skyType)
+        contentEODelegate?.setSkyType(skyType)
         isCurrentWeatherInformationLoaded = true
     }
     
@@ -734,7 +732,7 @@ extension CurrentWeatherVM {
             let sunriseHHmm = sunrise.toString(format: "HHmm", timeZone: TimeZone(identifier: "UTC"))
             let sunsetHHmm = sunset.toString(format: "HHmm", timeZone: TimeZone(identifier: "UTC"))
             
-            contentVM.setIsDayMode(sunriseHHmm: sunriseHHmm, sunsetHHmm: sunsetHHmm)
+            contentEODelegate?.setIsDayMode(sunriseHHmm: sunriseHHmm, sunsetHHmm: sunsetHHmm)
             setSunriseAndSunsetHHmm(sunrise: sunriseHHmm, sunset: sunsetHHmm)
             print("일출: \(sunriseHHmm), 일몰: \(sunsetHHmm)")
         }

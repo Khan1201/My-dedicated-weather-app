@@ -1,5 +1,5 @@
 //
-//  ContentVM.swift
+//  ContentEO.swift
 //  MyDedicatedWeatherApp
 //
 //  Created by 윤형석 on 10/23/23.
@@ -8,10 +8,12 @@
 import Foundation
 import Domain
 
-public final class ContentVM: ObservableObject {
-    
-    public static let shared = ContentVM()
-    
+public protocol ContentEODelegate: AnyObject {
+    func setSkyType(_ value: WeatherAPIValue)
+    func setIsDayMode(sunriseHHmm: String, sunsetHHmm: String)
+}
+
+public final class ContentEO: ObservableObject {
     @Published public var currentTab: TabBarType = .current
     @Published public var isLoading: Bool = true
     @Published public var disableTabBarTouch: Bool = true
@@ -23,14 +25,14 @@ public final class ContentVM: ObservableObject {
     @Published public private(set) var isDayMode: Bool = false
     
     var commonForecastUtil = CommonForecastUtil()
-    
-    private init() {}
+  
+    public init() {}
 }
 
 
 // MARK: - On tap gestures..
 
-extension ContentVM {
+extension ContentEO {
     public func tabBarItemOnTapGesture(_ type: TabBarType) {
         if disableTabBarTouch {
             showNoticePopup = true
@@ -43,7 +45,7 @@ extension ContentVM {
 
 // MARK: - Life cycle funcs..
 
-extension ContentVM {
+extension ContentEO {
     public func loadingOnAppearAction() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
             self.isLoading = false
@@ -53,7 +55,7 @@ extension ContentVM {
 
 // MARK: - Set funcs..
 
-extension ContentVM {
+extension ContentEO: ContentEODelegate {
     
     public func setIsRefreshedActionWhenRefreshStart() {
         isRefreshed = true

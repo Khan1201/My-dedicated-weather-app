@@ -12,7 +12,7 @@ struct OnChangeAtTodayViewController: ViewModifier {
     @Binding var disableTabBarTouch: Bool
     @EnvironmentObject var viewModel: CurrentWeatherVM
     @EnvironmentObject var locationDataManagerVM: LocationDataManagerVM
-    @EnvironmentObject var contentVM: ContentVM
+    @EnvironmentObject var contentEO: ContentEO
     @EnvironmentObject var currentLocationEO: CurrentLocationEO
     
     func body(content: Content) -> some View {
@@ -26,7 +26,7 @@ struct OnChangeAtTodayViewController: ViewModifier {
             }
             .onChange(of: viewModel.isAllLoaded) { newValue in
                 disableTabBarTouch = false
-                contentVM.isLocationChanged = true
+                contentEO.isLocationChanged = true
             }
             .onChange(of: viewModel.isStartRefresh) { newValue in
                 viewModel.isStartRefreshOnChangeAction(
@@ -39,7 +39,7 @@ struct OnChangeAtTodayViewController: ViewModifier {
                 )
                 
                 if newValue {
-                    contentVM.setIsRefreshedActionWhenRefreshStart()
+                    contentEO.setIsRefreshedActionWhenRefreshStart()
                 }
             }
     }
