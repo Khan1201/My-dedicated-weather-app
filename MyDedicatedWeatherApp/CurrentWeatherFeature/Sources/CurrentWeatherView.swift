@@ -14,7 +14,7 @@ import AdditionalLocationFeature
 public struct CurrentWeatherView: View {
     @Binding var disableTabBarTouch: Bool
     
-    @StateObject var viewModel: CurrentWeatherVM = CurrentWeatherVM()
+    @StateObject var viewModel: CurrentWeatherVM = DI.currentWeatherVM()
     @StateObject var locationDataManagerVM = LocationDataManagerVM()
     @EnvironmentObject var contentEO: ContentEO
     @EnvironmentObject var currentLocationEO: CurrentLocationEO

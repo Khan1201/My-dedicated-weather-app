@@ -49,7 +49,7 @@ struct CurrentWeatherInfItemPagerView: View {
 struct CurrentWeatherInfItemPagerView_Previews: PreviewProvider {
     static var previews: some View {
         CurrentWeatherInfItemPagerView(
-            viewModel: CurrentWeatherVM(),
+            viewModel: DI.currentWeatherVM(),
             pageIndex: .constant(1),
             page: .first(),
             isLoadCompleted: true

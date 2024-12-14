@@ -61,12 +61,11 @@ final class CurrentWeatherVM: ObservableObject {
     weak var currentLocationEODelegate: CurrentLocationEODelegate?
     weak var contentEODelegate: ContentEODelegate?
     
-    private let commonForecastUtil: CommonForecastUtil = CommonForecastUtil()
-    private let veryShortTermForecastUtil: VeryShortTermForecastUtil = VeryShortTermForecastUtil()
-    private let shortTermForecastUtil: ShortTermForecastUtil = ShortTermForecastUtil()
-    private let midTermForecastUtil: MidTermForecastUtil = MidTermForecastUtil()
-    private let fineDustLookUpUtil: FineDustLookUpUtil = FineDustLookUpUtil()
-    private var subscriptions: Set<AnyCancellable> = []
+    private let commonForecastUtil: CommonForecastUtil
+    private let veryShortTermForecastUtil: VeryShortTermForecastUtil
+    private let shortTermForecastUtil: ShortTermForecastUtil
+    private let midTermForecastUtil: MidTermForecastUtil
+    private let fineDustLookUpUtil: FineDustLookUpUtil
     
     private let veryShortForecastService: VeryShortForecastService
     private let shortForecastService: ShortForecastService
@@ -74,11 +73,21 @@ final class CurrentWeatherVM: ObservableObject {
     private let kakaoAddressService: KakaoAddressService
     
     init(
-        veryShortForecastService: VeryShortForecastService = VeryShortForecastServiceImp(),
-        shortForecastService: ShortForecastService = ShortForecastServiceImp(),
-        dustForecastService: DustForecastService = DustForecastServiceImp(),
-        kakaoAddressService: KakaoAddressService = KakaoAddressServiceImp()
+        commonForecastUtil: CommonForecastUtil,
+        veryShortTermForecastUtil: VeryShortTermForecastUtil,
+        shortTermForecastUtil: ShortTermForecastUtil,
+        midTermForecastUtil: MidTermForecastUtil,
+        fineDustLookUpUtil: FineDustLookUpUtil,
+        veryShortForecastService: VeryShortForecastService,
+        shortForecastService: ShortForecastService,
+        dustForecastService: DustForecastService,
+        kakaoAddressService: KakaoAddressService
     ) {
+        self.commonForecastUtil = commonForecastUtil
+        self.veryShortTermForecastUtil = veryShortTermForecastUtil
+        self.shortTermForecastUtil = shortTermForecastUtil
+        self.midTermForecastUtil = midTermForecastUtil
+        self.fineDustLookUpUtil = fineDustLookUpUtil
         self.veryShortForecastService = veryShortForecastService
         self.shortForecastService = shortForecastService
         self.dustForecastService = dustForecastService
