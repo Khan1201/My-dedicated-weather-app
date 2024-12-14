@@ -58,8 +58,8 @@ final class CurrentWeatherVM: ObservableObject {
         static var stationName: String = ""
     }
     
+    weak var currentLocationEODelegate: CurrentLocationEODelegate?
     private let contentVM: ContentVM
-    private let currentLocationVM: CurrentLocationVM
     
     private let commonForecastUtil: CommonForecastUtil = CommonForecastUtil()
     private let veryShortTermForecastUtil: VeryShortTermForecastUtil = VeryShortTermForecastUtil()
@@ -75,14 +75,12 @@ final class CurrentWeatherVM: ObservableObject {
     
     init(
         contentVM: ContentVM = ContentVM.shared,
-        currentLocationVM: CurrentLocationVM = CurrentLocationVM.shared,
         veryShortForecastService: VeryShortForecastService = VeryShortForecastServiceImp(),
         shortForecastService: ShortForecastService = ShortForecastServiceImp(),
         dustForecastService: DustForecastService = DustForecastServiceImp(),
         kakaoAddressService: KakaoAddressService = KakaoAddressServiceImp()
     ) {
         self.contentVM = contentVM
-        self.currentLocationVM = currentLocationVM
         self.veryShortForecastService = veryShortForecastService
         self.shortForecastService = shortForecastService
         self.dustForecastService = dustForecastService
@@ -309,12 +307,12 @@ extension CurrentWeatherVM {
             await setSubLocalityByKakaoAddress(item.documents)
             
             guard item.documents.count > 0 else { return }
-            await currentLocationVM.setSubLocality(item.documents[0].address.subLocality)
+            await currentLocationEODelegate?.setSubLocality(item.documents[0].address.subLocality)
             
             /// For Widget
             if isCurrentLocationRequested {
-                await self.currentLocationVM.setGPSSubLocality(item.documents[0].address.subLocality)
-                await self.currentLocationVM.setFullAddress(self.currentLocationVM.gpsFullAddress)
+                await self.currentLocationEODelegate?.setGPSSubLocality(item.documents[0].address.subLocality)
+                await self.currentLocationEODelegate?.setFullAddressByGPS()
                 UserDefaults.setWidgetShared(self.subLocalityByKakaoAddress, to: .subLocality)
                 UserDefaults.setWidgetShared(item.documents[0].address.fullAddress, to: .fullAddress)
             }
@@ -612,7 +610,7 @@ extension CurrentWeatherVM {
                             await self.getRealTimeDustItems()
                         }
                         
-                        await self.currentLocationVM.setCoordinateAndAllLocality(
+                        await self.currentLocationEODelegate?.setCoordinateAndAllLocality(
                             xy: xy,
                             latitude: latitude,
                             longitude: longitude,

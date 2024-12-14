@@ -13,7 +13,7 @@ public struct WeeklyWeatherView: View {
     
     @StateObject var viewModel: WeeklyWeatherVM = WeeklyWeatherVM()
     @EnvironmentObject var contentVM: ContentVM
-    @EnvironmentObject var currentLocationVM: CurrentLocationVM
+    @EnvironmentObject var currentLocationEO: CurrentLocationEO
     
     @State private var graphOpacity: CGFloat = 0
     
@@ -24,15 +24,15 @@ public struct WeeklyWeatherView: View {
         
         VStack(alignment: .leading, spacing: 0) {
             CurrentLocationAndDateView(
-                location: currentLocationVM.locality,
-                subLocation: currentLocationVM.subLocality,
+                location: currentLocationEO.locality,
+                subLocation: currentLocationEO.subLocality,
                 showRefreshButton: viewModel.isWeeklyWeatherInformationsLoaded,
                 openAdditionalLocationView: .constant(false),
                 showLocationAddButton: false,
                 refreshButtonOnTapGesture: {
                     viewModel.refreshButtonOnTapGesture(
-                        xy: currentLocationVM.xy,
-                        fullAddress: currentLocationVM.fullAddress
+                        xy: currentLocationEO.xy,
+                        fullAddress: currentLocationEO.fullAddress
                     )
                 }
             )
@@ -94,8 +94,8 @@ public struct WeeklyWeatherView: View {
         .onChange(of: viewModel.retryInitialReq) { newValue in
             if newValue {
                 viewModel.retryAndShowNoticeFloater(
-                    xy: currentLocationVM.xy,
-                    fullAddress: currentLocationVM.fullAddress
+                    xy: currentLocationEO.xy,
+                    fullAddress: currentLocationEO.fullAddress
                 )
             }
         }
@@ -113,8 +113,8 @@ public struct WeeklyWeatherView: View {
         }
         .task(priority: .userInitiated) {
             viewModel.weeklyWeatherViewTaskAction(
-                xy: currentLocationVM.xy,
-                fullAddress: currentLocationVM.fullAddress
+                xy: currentLocationEO.xy,
+                fullAddress: currentLocationEO.fullAddress
             )
         }
     }

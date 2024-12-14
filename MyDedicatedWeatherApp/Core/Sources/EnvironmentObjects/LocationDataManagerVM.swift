@@ -16,12 +16,11 @@ public final class LocationDataManagerVM: NSObject, ObservableObject {
     @Published public var locationPermissonType: PermissionType = .notAllow
     @Published public var isLocationUpdated: Bool = false
     
-    private let currentLocationVM: CurrentLocationVM
+    public weak var currentLocationEODelegate: CurrentLocationEODelegate?
     private let commonForecastUtil: CommonForecastUtil = CommonForecastUtil()
 
     private var locationManager = CLLocationManager()
     public var longitudeAndLatitude: (String, String) {
-        
         return (
             String(locationManager.location?.coordinate.longitude ?? 0),
             String(locationManager.location?.coordinate.latitude ?? 0)
@@ -29,21 +28,15 @@ public final class LocationDataManagerVM: NSObject, ObservableObject {
     }
     
     public enum PermissionType {
-        
         case allow
         case notAllow
     }
     
-    public init(currentLocationVM: CurrentLocationVM = CurrentLocationVM.shared) {
-        self.currentLocationVM = currentLocationVM
+    public override init() {
         super.init()
         locationManager.delegate = self
     }
-    
-    public func requestLocationManager() {
-        locationManager.requestLocation()
-    }
-    
+
     public  func startUpdaitingLocation() {
         locationManager.startUpdatingLocation()
     }
@@ -62,7 +55,6 @@ public final class LocationDataManagerVM: NSObject, ObservableObject {
     }
     
     public func openAppSetting() {
-        
         guard let settingURL = URL(string: UIApplication.openSettingsURLString) else { return }
         
         if UIApplication.shared.canOpenURL(settingURL) {
@@ -87,7 +79,6 @@ extension LocationDataManagerVM: CLLocationManagerDelegate {
         switch manager.authorizationStatus {
             
         case .authorizedAlways, .authorizedWhenInUse:
-            manager.startUpdatingLocation()
             locationPermissonType = .allow
             
         case .restricted, .denied, .notDetermined:
@@ -128,11 +119,11 @@ extension LocationDataManagerVM: CLLocationManagerDelegate {
                 self.currentLocality = address.administrativeArea ?? ""
                 
                 Task {
-                    await self.currentLocationVM.setXY((String(xy.x), String(xy.y)))
-                    await self.currentLocationVM.setLatitude(latitude)
-                    await self.currentLocationVM.setLongitude(longitude)
-                    await self.currentLocationVM.setLocality(self.currentLocality)
-                    await self.currentLocationVM.setGPSLocality(self.currentLocality)
+                    await self.currentLocationEODelegate?.setXY((String(xy.x), String(xy.y)))
+                    await self.currentLocationEODelegate?.setLatitude(latitude)
+                    await self.currentLocationEODelegate?.setLongitude(longitude)
+                    await self.currentLocationEODelegate?.setLocality(self.currentLocality)
+                    await self.currentLocationEODelegate?.setGPSLocality(self.currentLocality)
                 }
                 
                 self.isLocationUpdated = true

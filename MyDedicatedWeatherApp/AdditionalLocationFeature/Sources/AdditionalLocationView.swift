@@ -15,7 +15,7 @@ public struct AdditionalLocationView: View {
     let finalLocationOnTapGesture: (AllLocality, Bool) -> Void // 주소 struct, isNewAdd
     
     @StateObject var vm: AdditionalLocationVM = AdditionalLocationVM()
-    @EnvironmentObject var currentLocationVM: CurrentLocationVM
+    @EnvironmentObject var currentLocationEO: CurrentLocationEO
     
     @State private var navNextView: Bool = false
     
@@ -42,12 +42,12 @@ public struct AdditionalLocationView: View {
                     /// 현재 gps item
                     AdditionalLocationSavedGPSItemView(
                         allLocality: .init(
-                            fullAddress: currentLocationVM.gpsFullAddress,
-                            locality: currentLocationVM.gpsLocality,
-                            subLocality: currentLocationVM.gpsSubLocality
+                            fullAddress: currentLocationEO.gpsFullAddress,
+                            locality: currentLocationEO.gpsLocality,
+                            subLocality: currentLocationEO.gpsSubLocality
                         ),
                         tempItem: vm.gpsTempItem,
-                        currentLocation: currentLocationVM.fullAddress,
+                        currentLocation: currentLocationEO.fullAddress,
                         finalLocationOnTapGesture: finalLocationOnTapGesture
                     )
                     .padding(.top, 20)
@@ -55,7 +55,7 @@ public struct AdditionalLocationView: View {
                     
                     /// 추가 등록 items
                     AdditionalLocationSavedItemsView(
-                        currentFullAddress: currentLocationVM.fullAddress,
+                        currentFullAddress: currentLocationEO.fullAddress,
                         allLocalities: vm.allLocalities,
                         tempItems: vm.tempItems,
                         itemOnTapGesture: finalLocationOnTapGesture,
@@ -91,7 +91,7 @@ public struct AdditionalLocationView: View {
         .preferredColorScheme(.dark)
         .background(Color.black)
         .task {
-            vm.additinalLocationViewTaskAction(gpsFullAddress: currentLocationVM.gpsFullAddress)
+            vm.additinalLocationViewTaskAction(gpsFullAddress: currentLocationEO.gpsFullAddress)
         }
         .navToNextView(
             isPresented: $navNextView,

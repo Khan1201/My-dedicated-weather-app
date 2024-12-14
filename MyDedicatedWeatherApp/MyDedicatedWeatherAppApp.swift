@@ -13,7 +13,7 @@ struct MyDedicatedWeatherAppApp: App {
     var body: some Scene {
         WindowGroup {
             MainTabView()
-                .environmentObject(CurrentLocationVM.shared)
+                .environmentObject(CurrentLocationEO())
                 .environmentObject(ContentVM.shared)
         }
     }

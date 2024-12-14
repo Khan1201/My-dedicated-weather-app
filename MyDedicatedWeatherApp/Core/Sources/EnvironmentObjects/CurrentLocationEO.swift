@@ -8,10 +8,39 @@
 import Foundation
 import Domain
 
-public final class CurrentLocationVM: ObservableObject {
+public protocol CurrentLocationEODelegate: AnyObject {
+    @MainActor
+    func setLocality(_ value: String)
     
-    public static let shared = CurrentLocationVM()
+    @MainActor
+    func setSubLocality(_ value: String)
     
+    @MainActor
+    func setFullAddress(_ value: String)
+    
+    @MainActor
+    func setFullAddressByGPS()
+    
+    @MainActor
+    func setXY(_ value: (String, String))
+    
+    @MainActor
+    func setLatitude(_ value: String)
+    
+    @MainActor
+    func setLongitude(_ value: String)
+    
+    @MainActor
+    func setGPSLocality(_ value: String)
+    
+    @MainActor
+    func setGPSSubLocality(_ value: String)
+    
+    @MainActor
+    func setCoordinateAndAllLocality(xy: Gps2XY.LatXLngY, latitude: Double, longitude: Double, allLocality: AllLocality)
+}
+
+public final class CurrentLocationEO: ObservableObject, CurrentLocationEODelegate {
     @Published public private(set) var latitude: String = ""
     @Published public private(set) var longitude: String = ""
     @Published public private(set) var xy: (String, String) = ("", "")
@@ -25,12 +54,12 @@ public final class CurrentLocationVM: ObservableObject {
         return gpsLocality + " " + gpsSubLocality
     }
     
-    private init() {}
+    public init() {}
 }
 
 // MARK: - Set funcs..
 
-extension CurrentLocationVM {
+extension CurrentLocationEO {
     
     @MainActor
     public func setLocality(_ value: String) {
@@ -45,6 +74,11 @@ extension CurrentLocationVM {
     @MainActor
     public func setFullAddress(_ value: String) {
         self.fullAddress = value
+    }
+    
+    @MainActor
+    public func setFullAddressByGPS() {
+        self.fullAddress = gpsFullAddress
     }
     
     @MainActor

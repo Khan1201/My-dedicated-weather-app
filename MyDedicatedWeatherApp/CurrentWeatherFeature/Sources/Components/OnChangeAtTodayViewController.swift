@@ -13,7 +13,7 @@ struct OnChangeAtTodayViewController: ViewModifier {
     @EnvironmentObject var viewModel: CurrentWeatherVM
     @EnvironmentObject var locationDataManagerVM: LocationDataManagerVM
     @EnvironmentObject var contentVM: ContentVM
-    @EnvironmentObject var currentLocationVM: CurrentLocationVM
+    @EnvironmentObject var currentLocationEO: CurrentLocationEO
     
     func body(content: Content) -> some View {
         content
@@ -31,11 +31,11 @@ struct OnChangeAtTodayViewController: ViewModifier {
             .onChange(of: viewModel.isStartRefresh) { newValue in
                 viewModel.isStartRefreshOnChangeAction(
                     newValue: newValue,
-                    longitude: currentLocationVM.longitude,
-                    latitude: currentLocationVM.latitude,
-                    xy: currentLocationVM.xy,
-                    locality: currentLocationVM.locality,
-                    subLocality: currentLocationVM.subLocality
+                    longitude: currentLocationEO.longitude,
+                    latitude: currentLocationEO.latitude,
+                    xy: currentLocationEO.xy,
+                    locality: currentLocationEO.locality,
+                    subLocality: currentLocationEO.subLocality
                 )
                 
                 if newValue {

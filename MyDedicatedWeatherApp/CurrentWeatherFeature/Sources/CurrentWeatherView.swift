@@ -17,7 +17,7 @@ public struct CurrentWeatherView: View {
     @StateObject var viewModel: CurrentWeatherVM = CurrentWeatherVM()
     @StateObject var locationDataManagerVM = LocationDataManagerVM()
     @EnvironmentObject var contentVM: ContentVM
-    @EnvironmentObject var currentLocationVM: CurrentLocationVM
+    @EnvironmentObject var currentLocationEO: CurrentLocationEO
     
     @State private var pagerHeight: CGFloat = 0
     @State private var page: Page = .first()
@@ -68,11 +68,11 @@ public struct CurrentWeatherView: View {
             .onChange(of: viewModel.retryInitialReq) { newValue in
                 if newValue {
                     viewModel.retryAndShowNoticeFloater(
-                        longitude: currentLocationVM.longitude,
-                        latitude: currentLocationVM.latitude,
-                        xy: currentLocationVM.xy,
-                        locality: currentLocationVM.locality,
-                        subLocality: currentLocationVM.subLocality
+                        longitude: currentLocationEO.longitude,
+                        latitude: currentLocationEO.latitude,
+                        xy: currentLocationEO.xy,
+                        locality: currentLocationEO.locality,
+                        subLocality: currentLocationEO.subLocality
                     )
                 }
             }
@@ -102,6 +102,11 @@ public struct CurrentWeatherView: View {
             }
             .environmentObject(viewModel)
             .environmentObject(locationDataManagerVM)
+            .onAppear {
+                locationDataManagerVM.currentLocationEODelegate = currentLocationEO
+                viewModel.currentLocationEODelegate = currentLocationEO
+                locationDataManagerVM.startUpdaitingLocation()
+            }
             
         case .notAllow:
             
@@ -146,8 +151,8 @@ extension CurrentWeatherView {
             
             HStack(alignment: .center, spacing: 0) {
                 CurrentLocationAndDateView(
-                    location: currentLocationVM.locality,
-                    subLocation: currentLocationVM.subLocality,
+                    location: currentLocationEO.locality,
+                    subLocation: currentLocationEO.subLocality,
                     showRefreshButton: viewModel.isAllLoaded,
                     openAdditionalLocationView: $viewModel.openAdditionalLocationView,
                     refreshButtonOnTapGesture: viewModel.refreshButtonOnTapGesture
