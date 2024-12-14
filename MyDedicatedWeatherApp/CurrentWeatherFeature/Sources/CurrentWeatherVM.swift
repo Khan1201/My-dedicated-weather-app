@@ -68,7 +68,7 @@ final class CurrentWeatherVM: ObservableObject {
     private let fineDustLookUpUtil: FineDustLookUpUtil = FineDustLookUpUtil()
     private var subscriptions: Set<AnyCancellable> = []
     
-    private let veryShortForecastService: VeryShortForecastRequestable
+    private let veryShortForecastService: VeryShortForecastService
     private let shortForecastService: ShortForecastService
     private let dustForecastService: DustForecastService
     private let kakaoAddressService: KakaoAddressService
@@ -76,7 +76,7 @@ final class CurrentWeatherVM: ObservableObject {
     init(
         contentVM: ContentVM = ContentVM.shared,
         currentLocationVM: CurrentLocationVM = CurrentLocationVM.shared,
-        veryShortForecastService: VeryShortForecastRequestable = VeryShortForecastService(),
+        veryShortForecastService: VeryShortForecastService = VeryShortForecastServiceImp(),
         shortForecastService: ShortForecastService = ShortForecastServiceImp(),
         dustForecastService: DustForecastService = DustForecastServiceImp(),
         kakaoAddressService: KakaoAddressService = KakaoAddressServiceImp()
@@ -136,14 +136,13 @@ extension CurrentWeatherVM {
      - 48 ~ 53: VEC (풍향)
      - 54 ~ 59: WSD(풍속)
      */
-    func requestVeryShortForecastItems(xy: Gps2XY.LatXLngY) async {
+    func getCurrentItems(xy: Gps2XY.LatXLngY) async {
         let startTime = CFAbsoluteTimeGetCurrent()
         
-        let result = await veryShortForecastService.requestVeryShortForecastItems(serviceKey: publicApiKey, xy: xy)
+        let result = await veryShortForecastService.getCurrentItems(serviceKey: publicApiKey, xy: xy)
         
         switch result {
-        case .success(let success):
-            guard let items = success.item else { return }
+        case .success(let items):
             await self.setCurrentWeatherImgAndAnimationImg(items: items)
             await self.setCurrentTemperature(items: items)
             await self.setCurrentWeatherInformation(items: items)
@@ -545,7 +544,7 @@ extension CurrentWeatherVM {
         currentTask = Task(priority: .high) {
                         
             Task(priority: .high) {
-                await requestVeryShortForecastItems(xy: xy)
+                await getCurrentItems(xy: xy)
                 await getTodayItems(xy: xy)
                 await getTodayMinMaxItems(xy: xy)
             }
@@ -598,7 +597,7 @@ extension CurrentWeatherVM {
                     currentTask = Task(priority: .high) {
                         
                         Task(priority: .high) {
-                            await self.requestVeryShortForecastItems(xy: xy)
+                            await self.getCurrentItems(xy: xy)
                             await self.getTodayItems(xy: xy)
                             await self.getTodayMinMaxItems(xy: xy)
                         }
@@ -753,7 +752,7 @@ extension CurrentWeatherVM {
         currentTask = Task(priority: .high) {
             
             Task(priority: .high) {
-                await requestVeryShortForecastItems(xy: convertedXY)
+                await getCurrentItems(xy: convertedXY)
                 await getTodayItems(xy: convertedXY)
                 await getTodayMinMaxItems(xy: convertedXY)
             }

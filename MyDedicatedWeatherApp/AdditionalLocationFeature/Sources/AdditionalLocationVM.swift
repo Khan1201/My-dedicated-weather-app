@@ -20,14 +20,14 @@ final class AdditionalLocationVM: ObservableObject {
     private let veryShortTermForecastUtil: VeryShortTermForecastUtil = VeryShortTermForecastUtil()
     private let shortTermForecastUtil: ShortTermForecastUtil = ShortTermForecastUtil()
     
-    private let veryShortForecastService: VeryShortForecastRequestable
+    private let veryShortForecastService: VeryShortForecastService
     private let shortForecastService: ShortForecastService
     
     private let publicApiKey: String = Bundle.main.object(forInfoDictionaryKey: "public_api_key") as? String ?? ""
     var currentTask: Task<(), Never>?
     
     init(
-        veryShortForecastService: VeryShortForecastRequestable = VeryShortForecastService(),
+        veryShortForecastService: VeryShortForecastService = VeryShortForecastServiceImp(),
         shortForecastService: ShortForecastService = ShortForecastServiceImp()
     ) {
         self.veryShortForecastService = veryShortForecastService
@@ -104,17 +104,15 @@ extension AdditionalLocationVM {
      - 48 ~ 53: VEC (풍향)
      - 54 ~ 59: WSD(풍속)
      */
-    func requestCurrentWeatherImageAndTemp(xy: Gps2XY.LatXLngY, sunriseAndsunsetHHmm: (String, String)) async -> (String, String) {
-        let result = await veryShortForecastService.requestVeryShortForecastItems(serviceKey: publicApiKey, xy: xy)
+    func getCurrentItems(xy: Gps2XY.LatXLngY, sunriseAndsunsetHHmm: (String, String)) async -> (String, String) {
+        let result = await veryShortForecastService.getCurrentItems(serviceKey: publicApiKey, xy: xy)
         
         switch result {
-        case .success(let success):
+        case .success(let items):
             CommonUtil.shared.printSuccess(
                 funcTitle: "requestCurrentWeatherImageAndTemp",
                 value: result
             )
-            
-            guard let items = success.item else { return ("", "") }
             guard items.count >= 25 else { return ("", "")}
             
             let firstPTYItem = items[6]
@@ -279,7 +277,7 @@ extension AdditionalLocationVM {
                     let sunRiseAndSunSetHHmm = sunriseSunsetHHmm(longLati: (String(longitude), String(latitude)))
                     
                     currentTask = Task(priority: .userInitiated) {
-                        let currentWeatherImageAndTemp = await self.requestCurrentWeatherImageAndTemp(
+                        let currentWeatherImageAndTemp = await self.getCurrentItems(
                             xy: xy,
                             sunriseAndsunsetHHmm: sunRiseAndSunSetHHmm
                         )

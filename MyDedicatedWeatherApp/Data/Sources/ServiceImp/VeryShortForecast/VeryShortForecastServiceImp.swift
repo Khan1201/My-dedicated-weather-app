@@ -1,5 +1,5 @@
 //
-//  VeryShortForecastService.swift
+//  VeryShortForecastServiceImp.swift
 //  MyDedicatedWeatherApp
 //
 //  Created by 윤형석 on 3/13/24.
@@ -9,18 +9,14 @@ import Foundation
 import Core
 import Domain
 
-public protocol VeryShortForecastRequestable {
-    func requestVeryShortForecastItems(serviceKey: String, xy: Gps2XY.LatXLngY) async -> Result<PublicDataRes<VeryShortOrShortTermForecast<VeryShortTermForecastCategory>>, APIError>
-}
-
-public struct VeryShortForecastService: VeryShortForecastRequestable {
+public struct VeryShortForecastServiceImp: VeryShortForecastService {
     private let util: VeryShortForecastRequestParam
     
     public init(util: VeryShortForecastRequestParam = VeryShortTermForecastUtil()) {
         self.util = util
     }
 
-    public func requestVeryShortForecastItems(serviceKey: String, xy: Gps2XY.LatXLngY) async -> Result<PublicDataRes<VeryShortOrShortTermForecast<VeryShortTermForecastCategory>>, APIError>
+    public func getCurrentItems(serviceKey: String, xy: Gps2XY.LatXLngY) async -> Result<[VeryShortOrShortTermForecast<VeryShortTermForecastCategory>], APIError>
     {
         let parameters: VeryShortOrShortTermForecastReq = VeryShortOrShortTermForecastReq(
             serviceKey: serviceKey,
@@ -38,7 +34,6 @@ public struct VeryShortForecastService: VeryShortForecastRequestable {
             headers: nil,
             resultType: PublicDataRes<VeryShortOrShortTermForecast<VeryShortTermForecastCategory>>.self
         )
-        
-        return result
+        return result.map { $0.item ?? [] }
     }
 }

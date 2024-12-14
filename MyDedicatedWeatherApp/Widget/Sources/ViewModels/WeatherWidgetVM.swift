@@ -12,7 +12,7 @@ import Core
 
 struct WeatherWidgetVM {
     
-    private let veryShortForecastService: VeryShortForecastRequestable
+    private let veryShortForecastService: VeryShortForecastService
     private let shortForecastService: ShortForecastService
     private let midTermForecastService: MidtermForecastService
     private let dustForecastService: DustForecastService
@@ -25,7 +25,7 @@ struct WeatherWidgetVM {
     private let commonUtil: CommonUtil = .shared
     
     init(
-        veryShortForecastService: VeryShortForecastRequestable = VeryShortForecastService(),
+        veryShortForecastService: VeryShortForecastService = VeryShortForecastServiceImp(),
         shortForecastService: ShortForecastService = ShortForecastServiceImp(),
         midTermForecastService: MidtermForecastService = MidTermForecastServiceImp(),
         dustForecastService: DustForecastService = DustForecastServiceImp()
@@ -55,7 +55,7 @@ struct WeatherWidgetVM {
     func performSmallOrMediumWidgetEntrySetting() async -> SimpleEntry {
         var result: SimpleEntry = Dummy.simpleEntry()
         
-        let veryShortForecastItems = await requestVeryShortItems()
+        let veryShortForecastItems = await getCurrentItems()
         
         let shortForecastItems = Task {
             let result = await getTodayItems()
@@ -98,7 +98,7 @@ struct WeatherWidgetVM {
     func performLargeWidgetEntrySetting() async -> SimpleEntry {
         var result: SimpleEntry = Dummy.simpleEntry()
 
-        let veryShortForecastItems = await requestVeryShortItems()
+        let veryShortForecastItems = await getCurrentItems()
         
         let shortForecastItems = Task {
             let result = await getTodayItems()
@@ -156,23 +156,23 @@ struct WeatherWidgetVM {
 extension WeatherWidgetVM {
     
     /// Return 초단기예보 items
-    func requestVeryShortItems() async -> [VeryShortOrShortTermForecast<VeryShortTermForecastCategory>] {
+    func getCurrentItems() async -> [VeryShortOrShortTermForecast<VeryShortTermForecastCategory>] {
         let x = UserDefaults.shared.string(forKey: UserDefaultsKeys.x) ?? ""
         let y = UserDefaults.shared.string(forKey: UserDefaultsKeys.y) ?? ""
         
-        let result = await veryShortForecastService.requestVeryShortForecastItems(
+        let result = await veryShortForecastService.getCurrentItems(
             serviceKey: serviceKey,
             xy: .init(lat: 0, lng: 0, x: x.toInt, y: y.toInt)
         )
         
         switch result {
             
-        case .success(let success):
+        case .success(let items):
             commonUtil.printSuccess(
                 funcTitle: "requestVeryShortItems()",
-                value: "\(success.item?.count ?? 0)개의 초단기 예보 데이터 get"
+                value: "\(items)개의 초단기 예보 데이터 get"
             )
-            return success.item ?? []
+            return items
             
         case .failure(_):
             commonUtil.printError(
