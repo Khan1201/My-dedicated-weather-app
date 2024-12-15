@@ -582,7 +582,7 @@ extension CurrentWeatherVM {
     
     func additionalAddressFinalLocationOnTapGesture(allLocality: AllLocality, isNewAdd: Bool) {
             
-            LocationDataManagerVM.getLatitudeAndLongitude(address: allLocality.fullAddress) { [weak self] result in
+            LocationDataManagerEO.getLatitudeAndLongitude(address: allLocality.fullAddress) { [weak self] result in
                 guard let self = self else { return }
                 
                 switch result {

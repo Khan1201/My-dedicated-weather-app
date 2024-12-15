@@ -15,7 +15,8 @@ public struct CurrentWeatherView: View {
     @Binding var disableTabBarTouch: Bool
     
     @StateObject var viewModel: CurrentWeatherVM = DI.currentWeatherVM()
-    @StateObject var locationDataManagerVM = LocationDataManagerVM()
+    
+    @EnvironmentObject var locationDataManagerEO: LocationDataManagerEO
     @EnvironmentObject var contentEO: ContentEO
     @EnvironmentObject var currentLocationEO: CurrentLocationEO
     
@@ -31,7 +32,7 @@ public struct CurrentWeatherView: View {
         
         let isFirstPage: Bool = pageIndex == 0
         
-        switch locationDataManagerVM.locationPermissonType {
+        switch locationDataManagerEO.locationPermissonType {
             
         case .allow:
             
@@ -101,12 +102,11 @@ public struct CurrentWeatherView: View {
                 )
             }
             .environmentObject(viewModel)
-            .environmentObject(locationDataManagerVM)
             .onAppear {
-                locationDataManagerVM.currentLocationEODelegate = currentLocationEO
+                locationDataManagerEO.currentLocationEODelegate = currentLocationEO
                 viewModel.currentLocationEODelegate = currentLocationEO
                 viewModel.contentEODelegate = contentEO
-                locationDataManagerVM.startUpdaitingLocation()
+                locationDataManagerEO.startUpdaitingLocation()
             }
             
         case .notAllow:
@@ -126,7 +126,9 @@ public struct CurrentWeatherView: View {
                     .background(Color.gray.opacity(0.3))
                     .cornerRadius(12)
                     .onTapGesture {
-                        locationDataManagerVM.openAppSetting()
+                        guard let settingURL = URL(string: UIApplication.openSettingsURLString) else { return }
+                        guard UIApplication.shared.canOpenURL(settingURL) else { return }
+                        UIApplication.shared.open(settingURL)
                     }
             }
         }

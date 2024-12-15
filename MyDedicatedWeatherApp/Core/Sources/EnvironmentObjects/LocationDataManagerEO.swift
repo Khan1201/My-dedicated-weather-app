@@ -1,5 +1,5 @@
 //
-//  LocationDataManagerVM.swift
+//  LocationDataManagerEO.swift
 //  MyDedicatedWeatherApp
 //
 //  Created by 윤형석 on 2023/05/07.
@@ -7,11 +7,9 @@
 
 import Foundation
 import CoreLocation
-import UIKit
 import Domain
 
-public final class LocationDataManagerVM: NSObject, ObservableObject {
-    
+public final class LocationDataManagerEO: NSObject, ObservableObject {
     @Published public var currentLocality: String = "" // 서울특별시, 대구광역시
     @Published public var locationPermissonType: PermissionType = .notAllow
     @Published public var isLocationUpdated: Bool = false
@@ -36,10 +34,6 @@ public final class LocationDataManagerVM: NSObject, ObservableObject {
         locationManager.startUpdatingLocation()
     }
     
-    public func initializeStates() {
-        isLocationUpdated = false
-    }
-    
     public func convertLocationToXYForVeryShortForecast() -> Gps2XY.LatXLngY {
         let xy: Gps2XY.LatXLngY = commonForecastUtil.convertGPS2XY(
             mode: .toXY,
@@ -47,14 +41,6 @@ public final class LocationDataManagerVM: NSObject, ObservableObject {
             lng_Y:locationManager.location?.coordinate.longitude ?? 0
         )
         return xy
-    }
-    
-    public func openAppSetting() {
-        guard let settingURL = URL(string: UIApplication.openSettingsURLString) else { return }
-        
-        if UIApplication.shared.canOpenURL(settingURL) {
-            UIApplication.shared.open(settingURL)
-        }
     }
 
     public static func getLatitudeAndLongitude(address: String, completion: @escaping (Result<(Double, Double), Error>) -> Void) {
@@ -69,7 +55,7 @@ public final class LocationDataManagerVM: NSObject, ObservableObject {
     }
 }
 
-extension LocationDataManagerVM: CLLocationManagerDelegate {
+extension LocationDataManagerEO: CLLocationManagerDelegate {
     public func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         switch manager.authorizationStatus {
             

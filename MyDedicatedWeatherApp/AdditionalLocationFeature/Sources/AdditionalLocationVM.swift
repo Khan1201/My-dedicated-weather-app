@@ -265,7 +265,7 @@ extension AdditionalLocationVM {
         addresses.append(gpsFullAddress)
         
         for (index, address) in addresses.enumerated() {
-            LocationDataManagerVM.getLatitudeAndLongitude(address: address) { [weak self] result in
+            LocationDataManagerEO.getLatitudeAndLongitude(address: address) { [weak self] result in
                 guard let self = self else { return }
                 
                 switch result {
