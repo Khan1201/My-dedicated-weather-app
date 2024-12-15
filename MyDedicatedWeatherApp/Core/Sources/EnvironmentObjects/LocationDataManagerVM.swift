@@ -27,11 +27,6 @@ public final class LocationDataManagerVM: NSObject, ObservableObject {
         )
     }
     
-    public enum PermissionType {
-        case allow
-        case notAllow
-    }
-    
     public override init() {
         super.init()
         locationManager.delegate = self
