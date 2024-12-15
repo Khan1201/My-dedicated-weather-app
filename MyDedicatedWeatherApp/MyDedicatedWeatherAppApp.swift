@@ -15,7 +15,6 @@ struct MyDedicatedWeatherAppApp: App {
             MainTabView()
                 .environmentObject(CurrentLocationEO())
                 .environmentObject(ContentEO())
-                .environmentObject(LocationDataManagerEO())
         }
     }
 }

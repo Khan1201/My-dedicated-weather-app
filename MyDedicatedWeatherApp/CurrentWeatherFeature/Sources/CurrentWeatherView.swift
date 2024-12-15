@@ -15,8 +15,6 @@ public struct CurrentWeatherView: View {
     @Binding var disableTabBarTouch: Bool
     
     @StateObject var viewModel: CurrentWeatherVM = DI.currentWeatherVM()
-    
-    @EnvironmentObject var locationDataManagerEO: LocationDataManagerEO
     @EnvironmentObject var contentEO: ContentEO
     @EnvironmentObject var currentLocationEO: CurrentLocationEO
     
@@ -29,13 +27,10 @@ public struct CurrentWeatherView: View {
     }
     
     public var body: some View {
-        
         let isFirstPage: Bool = pageIndex == 0
         
-        switch locationDataManagerEO.locationPermissonType {
-            
+        switch currentLocationEO.locationPermissonType {
         case .allow:
-            
             VStack(alignment: .leading, spacing: 0) {
                 
                 VStack(alignment: .leading, spacing: 15) {
@@ -103,10 +98,9 @@ public struct CurrentWeatherView: View {
             }
             .environmentObject(viewModel)
             .onAppear {
-                locationDataManagerEO.currentLocationEODelegate = currentLocationEO
                 viewModel.currentLocationEODelegate = currentLocationEO
                 viewModel.contentEODelegate = contentEO
-                locationDataManagerEO.startUpdaitingLocation()
+                currentLocationEO.startUpdaitingLocation()
             }
             
         case .notAllow:

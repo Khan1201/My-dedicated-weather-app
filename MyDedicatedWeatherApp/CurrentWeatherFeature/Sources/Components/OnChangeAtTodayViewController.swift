@@ -11,17 +11,16 @@ import Core
 struct OnChangeAtTodayViewController: ViewModifier {
     @Binding var disableTabBarTouch: Bool
     @EnvironmentObject var viewModel: CurrentWeatherVM
-    @EnvironmentObject var locationDataManagerEO: LocationDataManagerEO
     @EnvironmentObject var contentEO: ContentEO
     @EnvironmentObject var currentLocationEO: CurrentLocationEO
     
     func body(content: Content) -> some View {
         content
-            .onChange(of: locationDataManagerEO.isLocationUpdated) { _ in
+            .onChange(of: currentLocationEO.isLocationUpdated) { _ in
                 viewModel.todayViewControllerLocationManagerUpdatedAction(
-                    xy: locationDataManagerEO.convertLocationToXYForVeryShortForecast(),
-                    longLati: locationDataManagerEO.longitudeAndLatitude,
-                    locality: locationDataManagerEO.currentLocality
+                    xy: currentLocationEO.convertLocationToXY(),
+                    longLati: currentLocationEO.longitudeAndLatitude,
+                    locality: currentLocationEO.locality
                 )
             }
             .onChange(of: viewModel.isAllLoaded) { newValue in

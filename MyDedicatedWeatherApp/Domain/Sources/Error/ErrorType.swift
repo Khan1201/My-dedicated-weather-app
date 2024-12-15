@@ -14,4 +14,5 @@ public enum APIError: Error {
 
 public enum LocationError: Error {
     case notFound
+    case unknown
 }
