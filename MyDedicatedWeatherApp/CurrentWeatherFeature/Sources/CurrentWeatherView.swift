@@ -61,17 +61,6 @@ public struct CurrentWeatherView: View {
             }
             .padding(.top, 25)
             .frame(height: UIScreen.screenHeight, alignment: .center)
-            .onChange(of: viewModel.retryInitialReq) { newValue in
-                if newValue {
-                    viewModel.retryAndShowNoticeFloater(
-                        longitude: currentLocationEO.longitude,
-                        latitude: currentLocationEO.latitude,
-                        xy: currentLocationEO.xy,
-                        locality: currentLocationEO.locality,
-                        subLocality: currentLocationEO.subLocality
-                    )
-                }
-            }
             .todayViewControllerBackground(
                 isDayMode: contentEO.isDayMode,
                 isSunriseSunsetLoadCompleted: viewModel.isSunriseSunsetLoaded,

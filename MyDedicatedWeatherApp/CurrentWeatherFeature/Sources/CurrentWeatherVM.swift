@@ -40,7 +40,6 @@ final class CurrentWeatherVM: ObservableObject {
     @Published private(set) var isTodayWeatherInformationLoaded: Bool = false
     
     @Published private(set) var isAllLoaded: Bool = false
-    @Published var retryInitialReq: Bool = false
     @Published var showNoticeFloater: Bool = false
     
     private let publicApiKey: String = Bundle.main.object(forInfoDictionaryKey: "public_api_key") as? String ?? ""
@@ -696,8 +695,6 @@ extension CurrentWeatherVM {
     }
     
     func initializeTaskAndTimer() {
-        retryInitialReq = false
-        
         initializeTask()
         initializeTimer()
     }

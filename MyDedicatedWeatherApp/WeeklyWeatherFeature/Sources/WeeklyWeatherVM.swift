@@ -20,9 +20,7 @@ final class WeeklyWeatherVM: ObservableObject {
     @Published var isMidtermForecastSkyStateLoaded: Bool = false
     @Published var isMidtermForecastTempLoaded: Bool = false
     @Published var isWeeklyWeatherInformationsLoaded: Bool = false
-    @Published var retryInitialReq: Bool = false
     @Published var showNoticeFloater: Bool = false
-    
     var noticeMessage: String = ""
 
     var tommorowAndTwoDaysLaterInformations: [Weather.WeeklyInformation] = []
@@ -468,8 +466,6 @@ extension WeeklyWeatherVM {
     }
     
     func initializeTaskAndTimer() {
-        retryInitialReq = false
-        
         initializeTask()
         initializeTimer()
     }

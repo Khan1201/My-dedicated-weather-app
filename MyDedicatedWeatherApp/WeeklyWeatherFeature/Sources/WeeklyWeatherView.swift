@@ -86,14 +86,6 @@ public struct WeeklyWeatherView: View {
             ),
             duration: 3
         )
-        .onChange(of: viewModel.retryInitialReq) { newValue in
-            if newValue {
-                viewModel.retryAndShowNoticeFloater(
-                    xy: currentLocationEO.xy,
-                    fullAddress: currentLocationEO.fullAddress
-                )
-            }
-        }
         .onChange(of: contentEO.isRefreshed) { newValue in
             viewModel.isRefreshedOnChangeAction(newValue)
         }
