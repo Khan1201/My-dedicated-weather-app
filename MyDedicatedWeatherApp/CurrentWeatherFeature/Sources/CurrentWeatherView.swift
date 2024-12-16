@@ -67,7 +67,17 @@ public struct CurrentWeatherView: View {
                 isAllLoadCompleted: viewModel.isAllLoaded,
                 skyType: viewModel.currentWeatherInformation.skyType
             )
-            .onChangeAtTodayViewController(disableTabBarTouch: $disableTabBarTouch)
+            .onChange(of: currentLocationEO.isLocationUpdated) { _ in
+                viewModel.todayViewControllerLocationManagerUpdatedAction(
+                    xy: currentLocationEO.convertLocationToXY(),
+                    longLati: currentLocationEO.longitudeAndLatitude,
+                    locality: currentLocationEO.locality
+                )
+            }
+            .onChange(of: viewModel.isAllLoaded) { newValue in
+                disableTabBarTouch = false
+                contentEO.isLocationChanged = true
+            }
             .bottomNoticeFloater(
                 isPresented: $viewModel.showNoticeFloater,
                 view: BottomNoticeFloaterView(
@@ -85,7 +95,6 @@ public struct CurrentWeatherView: View {
                     )
                 )
             }
-            .environmentObject(viewModel)
             .onAppear {
                 viewModel.currentLocationEODelegate = currentLocationEO
                 viewModel.contentEODelegate = contentEO
