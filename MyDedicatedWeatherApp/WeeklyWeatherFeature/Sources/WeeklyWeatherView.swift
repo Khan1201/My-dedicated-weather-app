@@ -29,12 +29,7 @@ public struct WeeklyWeatherView: View {
                 showRefreshButton: viewModel.isWeeklyWeatherInformationsLoaded,
                 openAdditionalLocationView: .constant(false),
                 showLocationAddButton: false,
-                refreshButtonOnTapGesture: {
-                    viewModel.refreshButtonOnTapGesture(
-                        xy: currentLocationEO.xy,
-                        fullAddress: currentLocationEO.fullAddress
-                    )
-                }
+                refreshButtonOnTapGesture: viewModel.refreshButtonOnTapGesture(locationInf:)
             )
             .padding(.leading, 24)
             .padding(.top, 35)
@@ -112,9 +107,9 @@ public struct WeeklyWeatherView: View {
             viewModel.loadedVariablesOnChangeAction(newValue)
         }
         .task(priority: .userInitiated) {
+            viewModel.currentLocationEODelegate = currentLocationEO
             viewModel.weeklyWeatherViewTaskAction(
-                xy: currentLocationEO.xy,
-                fullAddress: currentLocationEO.fullAddress
+                locationInf: currentLocationEO.locationInf
             )
         }
     }

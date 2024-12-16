@@ -36,6 +36,8 @@ final class WeeklyWeatherVM: ObservableObject {
     private let shortForecastService: ShortForecastService
     private let midtermForecastService: MidtermForecastService
     
+    public var currentLocationEODelegate: CurrentLocationEODelegate?
+    
     private let publicApiKey: String = Bundle.main.object(forInfoDictionaryKey: "public_api_key") as? String ?? ""
     
     var timer: Timer?
@@ -156,7 +158,7 @@ extension WeeklyWeatherVM {
         }
     }
     
-    func performWeekRequests(xy: (String, String), fullAddress: String) {
+    func performWeekRequests(locationInf: LocationInformation) {
         
         if !isWeeklyWeatherInformationsLoaded && !isApiRequestProceeding {
             DispatchQueue.main.async {
@@ -164,9 +166,9 @@ extension WeeklyWeatherVM {
             }
             
             Task(priority: .high) {
-                await getTodayItems(xy: xy)
-                await getWeeklyTempItems(fullAddress: fullAddress)
-                await getWeeklySkyStateItems(fullAddress: fullAddress)
+                await getTodayItems(xy: locationInf.xy)
+                await getWeeklyTempItems(fullAddress: locationInf.fullAddress)
+                await getWeeklySkyStateItems(fullAddress: locationInf.fullAddress)
             }
         }
     }
@@ -394,18 +396,17 @@ extension WeeklyWeatherVM {
 
 extension WeeklyWeatherVM {
     
-    func refreshButtonOnTapGesture(xy: (String, String), fullAddress: String) {
+    func refreshButtonOnTapGesture(locationInf: LocationInformation) {
         initializeTaskAndTimer()
         initializeStates()
         
         timerStart()
         currentTask = Task(priority: .high) {
-            performWeekRequests(xy: xy, fullAddress: fullAddress)
+            performWeekRequests(locationInf: locationInf)
         }
     }
     
-    func retryAndShowNoticeFloater(xy: (String, String), fullAddress: String) {
-        retryInitialReq = false
+    func retryAndShowNoticeFloater(locationInf: LocationInformation) {
         noticeMessage = """
                 재시도 합니다.
                 기상청 서버 네트워크에 따라 속도가 느려질 수 있습니다 :)
@@ -414,7 +415,7 @@ extension WeeklyWeatherVM {
         showNoticeFloater = false
         showNoticeFloater = true
         
-        refreshButtonOnTapGesture(xy: xy, fullAddress: fullAddress)
+        refreshButtonOnTapGesture(locationInf: locationInf)
     }
 }
 
@@ -504,7 +505,8 @@ extension WeeklyWeatherVM {
             
         } else if timerNum == 8 {
             initializeTimer()
-            retryInitialReq = true
+            guard let currentLocationEODelegate = currentLocationEODelegate else { return }
+            retryAndShowNoticeFloater(locationInf: currentLocationEODelegate.locationInf)
         }
     }
 }
@@ -538,14 +540,14 @@ extension WeeklyWeatherVM {
 
 extension WeeklyWeatherVM {
     
-    func weeklyWeatherViewTaskAction(xy: (String, String), fullAddress: String) {
+    func weeklyWeatherViewTaskAction(locationInf: LocationInformation) {
         
         if !isWeeklyWeatherInformationsLoaded {
             initializeTask()
             
             timerStart()
             currentTask = Task(priority: .high) {
-                performWeekRequests(xy: xy, fullAddress: fullAddress)
+                performWeekRequests(locationInf: locationInf)
             }
         }
     }

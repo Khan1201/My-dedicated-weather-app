@@ -15,9 +15,11 @@ public struct CurrentLocationAndDateView: View {
     public let showRefreshButton: Bool
     @Binding public var openAdditionalLocationView: Bool
     public var showLocationAddButton: Bool
-    public let refreshButtonOnTapGesture: () -> Void
+    public let refreshButtonOnTapGesture: (LocationInformation) -> Void
     
-    public init(location: String, subLocation: String, showRefreshButton: Bool, openAdditionalLocationView: Binding<Bool>, showLocationAddButton: Bool = true, refreshButtonOnTapGesture: @escaping () -> Void) {
+    @EnvironmentObject var currentLocationEO: CurrentLocationEO
+    
+    public init(location: String, subLocation: String, showRefreshButton: Bool, openAdditionalLocationView: Binding<Bool>, showLocationAddButton: Bool = true, refreshButtonOnTapGesture: @escaping (LocationInformation) -> Void) {
         self.location = location
         self.subLocation = subLocation
         self.showRefreshButton = showRefreshButton
@@ -73,7 +75,7 @@ public struct CurrentLocationAndDateView: View {
                     .frame(width: isNotNocheDevice ? 22 : 25, height: isNotNocheDevice ? 22 : 25)
                     .offset(x: 13)
                     .onTapGesture {
-                        refreshButtonOnTapGesture()
+                        refreshButtonOnTapGesture(currentLocationEO.locationInf)
                     }
                     .opacity(showRefreshButton ? 1 : 0)
             }
@@ -88,7 +90,7 @@ struct CurrentLocationAndDateView_Previews: PreviewProvider {
             subLocation: "",
             showRefreshButton: true,
             openAdditionalLocationView: .constant(true),
-            refreshButtonOnTapGesture: {}
+            refreshButtonOnTapGesture: {_ in }
         )
     }
 }

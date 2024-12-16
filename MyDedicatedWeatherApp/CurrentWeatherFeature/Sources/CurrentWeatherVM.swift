@@ -571,13 +571,9 @@ extension CurrentWeatherVM {
 
 extension CurrentWeatherVM {
     
-    func refreshButtonOnTapGesture() {
-        isStartRefresh = true
-        retryInitialReq = false
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            self.isStartRefresh = false
-        }
+    func refreshButtonOnTapGesture(locationInf: LocationInformation) {
+        initLoadCompletedVariables()
+        performRefresh(locationInf: locationInf)
     }
     
     func additionalAddressFinalLocationOnTapGesture(allLocality: AllLocality, isNewAdd: Bool) {
@@ -642,9 +638,7 @@ extension CurrentWeatherVM {
             }
         }
     
-    func retryAndShowNoticeFloater(longitude: String, latitude: String, xy: (String, String), locality: String, subLocality: String) {
-        retryInitialReq = false
-
+    func retryAndShowNoticeFloater(locationInf: LocationInformation) {
         noticeFloaterMessage = """
         재시도 합니다.
         기상청 서버 네트워크에 따라 속도가 느려질 수 있습니다 :)
@@ -652,7 +646,7 @@ extension CurrentWeatherVM {
         showNoticeFloater = false
         showNoticeFloater = true
 
-        performRefresh(longitude: longitude, latitude: latitude, xy: xy, locality: locality, subLocality: subLocality)
+        performRefresh(locationInf: locationInf)
     }
 }
 
@@ -728,7 +722,8 @@ extension CurrentWeatherVM {
             
         } else if timerNum == 8 {
             initializeTimer()
-            retryInitialReq = true
+            guard let currentLocationEODelegate = currentLocationEODelegate else { return }
+            retryAndShowNoticeFloater(locationInf: currentLocationEODelegate.locationInf)
         }
     }
     
@@ -747,12 +742,12 @@ extension CurrentWeatherVM {
         }
     }
     
-    func performRefresh(longitude: String, latitude: String, xy: (String, String), locality: String, subLocality: String) {
-        let convertedXY: Gps2XY.LatXLngY = .init(lat: 0, lng: 0, x: xy.0.toInt, y: xy.1.toInt)
+    func performRefresh(locationInf: LocationInformation) {
+        let convertedXY: Gps2XY.LatXLngY = .init(lat: 0, lng: 0, x: locationInf.xy.0.toInt, y: locationInf.xy.1.toInt)
         
         timerStart()
         initializeTask()
-        calculateAndSetSunriseSunset(longLati: (String(longitude), String(latitude)))
+        calculateAndSetSunriseSunset(longLati: (locationInf.longitude, locationInf.latitude))
 
         currentTask = Task(priority: .high) {
             
@@ -763,10 +758,10 @@ extension CurrentWeatherVM {
             }
             
             Task(priority: .low) {
-                await getKaKaoAddressBy(longitude: longitude, latitude: latitude, isCurrentLocationRequested: false)
+                await getKaKaoAddressBy(longitude: locationInf.longitude, latitude: locationInf.latitude, isCurrentLocationRequested: false)
                 await getXYOfDustStation(
-                    subLocality: subLocality,
-                    locality: locality
+                    subLocality: locationInf.subLocality,
+                    locality: locationInf.locality
                 )
                 await getDustStationInfo(tmXAndtmY: DustStationRequestParam.tmXAndtmY, isCurrentLocationRequested: false)
                 await getRealTimeDustItems()

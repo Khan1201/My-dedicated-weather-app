@@ -12,15 +12,13 @@ import Domain
 public protocol CurrentLocationEODelegate: AnyObject {
     @MainActor
     func setSubLocality(_ value: String)
-
     @MainActor
     func setFullAddressByGPS()
-
     @MainActor
     func setGPSSubLocality(_ value: String)
-    
     @MainActor
     func setCoordinateAndAllLocality(xy: Gps2XY.LatXLngY, latitude: Double, longitude: Double, allLocality: AllLocality)
+    var locationInf: LocationInformation { get }
 }
 
 // MARK: -
@@ -46,6 +44,9 @@ public final class CurrentLocationEO: NSObject, ObservableObject, CurrentLocatio
             String(locationManager.location?.coordinate.longitude ?? 0),
             String(locationManager.location?.coordinate.latitude ?? 0)
         )
+    }
+    public var locationInf: LocationInformation {
+        .init(longitude: longitude, latitude: latitude, xy: xy, locality: locality, subLocality: subLocality, fullAddress: fullAddress)
     }
     
     private let commonForecastUtil: CommonForecastUtil = CommonForecastUtil()
