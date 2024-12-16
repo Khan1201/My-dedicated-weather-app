@@ -20,7 +20,6 @@ final class CurrentWeatherVM: ObservableObject {
     @Published private(set) var currentUltraFineDustTuple: Weather.DescriptionAndColor = .init(description: "", color: .defaultAreaColor)
     @Published private(set) var todayMinMaxTemperature: (String, String) = ("__", "__")
     @Published private(set) var todayWeatherInformations: [Weather.TodayInformation] = Dummy.shared.todayWeatherInformations()
-    @Published var isStartRefresh: Bool = false
     @Published var openAdditionalLocationView: Bool = false
     @Published var additionalLocationProgress: AdditionalLocationProgress = .none
     @Published var subLocalityByKakaoAddress: String = ""
@@ -646,26 +645,6 @@ extension CurrentWeatherVM {
         showNoticeFloater = true
 
         performRefresh(locationInf: locationInf)
-    }
-}
-
-// MARK: - On change funcs..
-
-extension CurrentWeatherVM {
-    
-    func isStartRefreshOnChangeAction(newValue: Bool, longitude: String, latitude: String, xy: (String, String), locality: String, subLocality: String) {
-        
-        if newValue {
-            initLoadCompletedVariables()
-            
-            performRefresh(
-                longitude: longitude,
-                latitude: latitude,
-                xy: xy,
-                locality: locality,
-                subLocality: subLocality
-            )
-        }
     }
 }
 
