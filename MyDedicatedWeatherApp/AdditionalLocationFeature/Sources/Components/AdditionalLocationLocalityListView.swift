@@ -12,7 +12,7 @@ import Core
 struct AdditionalLocationLocalityListView: View {
     @Binding var isPresented: Bool
     @Binding var progress: AdditionalLocationProgress
-    let finalLocationOnTapGesture: (AllLocality, Bool) -> Void
+    let finalLocationOnTapGesture: (LocationInformation, Bool) -> Void
     
     @State private var navNextView: Bool = false
     @State private var selectedLocality: String = ""

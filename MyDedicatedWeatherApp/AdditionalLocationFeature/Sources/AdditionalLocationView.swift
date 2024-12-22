@@ -12,19 +12,18 @@ import Core
 public struct AdditionalLocationView: View {
     @Binding var isPresented: Bool
     @Binding var progress: AdditionalLocationProgress
-    let finalLocationOnTapGesture: (AllLocality, Bool) -> Void // 주소 struct, isNewAdd
+    let fetchNewLocation: (LocationInformation, Bool) -> Void
     
     @StateObject var vm: AdditionalLocationVM = AdditionalLocationVM()
     @EnvironmentObject var currentLocationEO: CurrentLocationEO
     
     @State private var navNextView: Bool = false
     
-    public init(isPresented: Binding<Bool>, progress: Binding<AdditionalLocationProgress>, finalLocationOnTapGesture: @escaping (AllLocality, Bool) -> Void) {
+    public init(isPresented: Binding<Bool>, progress: Binding<AdditionalLocationProgress>, fetchNewLocation: @escaping (LocationInformation, Bool) -> Void) {
         self._isPresented = isPresented
         self._progress = progress
-        self.finalLocationOnTapGesture = finalLocationOnTapGesture
+        self.fetchNewLocation = fetchNewLocation
     }
-    
     
     public var body: some View {
         let isLoading: Bool = progress == .loading
@@ -41,14 +40,10 @@ public struct AdditionalLocationView: View {
                 ScrollView(.vertical, showsIndicators: false) {
                     /// 현재 gps item
                     AdditionalLocationSavedGPSItemView(
-                        allLocality: .init(
-                            fullAddress: currentLocationEO.gpsFullAddress,
-                            locality: currentLocationEO.gpsLocality,
-                            subLocality: currentLocationEO.gpsSubLocality
-                        ),
+                        locationInf: currentLocationEO.gpsLocationInf,
                         tempItem: vm.gpsTempItem,
                         currentLocation: currentLocationEO.fullAddress,
-                        finalLocationOnTapGesture: finalLocationOnTapGesture
+                        fetchNewLocation: fetchNewLocation
                     )
                     .padding(.top, 20)
                     .padding(.horizontal, 20)
@@ -56,10 +51,10 @@ public struct AdditionalLocationView: View {
                     /// 추가 등록 items
                     AdditionalLocationSavedItemsView(
                         currentFullAddress: currentLocationEO.fullAddress,
-                        allLocalities: vm.allLocalities,
+                        locationInfs: vm.locationInfs,
                         tempItems: vm.tempItems,
-                        itemOnTapGesture: finalLocationOnTapGesture,
-                        itemDeleteAction: vm.itemDeleteAction(allLocality:)
+                        fetchNewLocation: fetchNewLocation,
+                        itemDeleteAction: vm.deleteLocalLocationInf(locationInf:)
                     )
                     .padding(.top, 16)
                     .padding(.horizontal, 20)
@@ -98,16 +93,8 @@ public struct AdditionalLocationView: View {
             view: AdditionalLocationLocalityListView(
                 isPresented: $isPresented,
                 progress: $progress,
-                finalLocationOnTapGesture: finalLocationOnTapGesture
+                finalLocationOnTapGesture: fetchNewLocation
             )
         )
     }
-}
-
-#Preview {
-    AdditionalLocationView(
-        isPresented: .constant(true),
-        progress: .constant(.none),
-        finalLocationOnTapGesture: {_, _ in }
-    )
 }

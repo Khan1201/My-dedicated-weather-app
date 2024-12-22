@@ -271,7 +271,7 @@ extension CurrentWeatherVM {
      - parameter tmxAndtmY: 미세먼지 측정소 X, Y 좌표
      
      */
-    func getDustStationInfo(tmXAndtmY: (String, String), isCurrentLocationRequested: Bool) async {
+    func getDustStationInfo(tmXAndtmY: (String, String)) async {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
         
         let result = await dustForecastService.getStationInfo(serviceKey: publicApiKey, tmXAndtmY: tmXAndtmY)
@@ -535,33 +535,16 @@ extension CurrentWeatherVM {
         longLati: (String, String),
         locality: String
     ) {
-        
-        // 런치 스크린때문에 0.5초 후에 타이머 시작
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            self.timerStart()
-        }
-        
-        initializeTask()
-        calculateAndSetSunriseSunset(longLati: longLati)
-        
-        currentTask = Task(priority: .high) {
-                        
-            Task(priority: .high) {
-                await getCurrentItems(xy: xy)
-                await getTodayItems(xy: xy)
-                await getTodayMinMaxItems(xy: xy)
-            }
-            
-            Task(priority: .low) {
-                await getKaKaoAddressBy(longitude: longLati.0, latitude: longLati.1, isCurrentLocationRequested: true)
-                await getXYOfDustStation(
-                    subLocality: subLocalityByKakaoAddress,
-                    locality: locality
-                )
-                await getDustStationInfo(tmXAndtmY: DustStationRequestParam.tmXAndtmY, isCurrentLocationRequested: true)
-                await getRealTimeDustItems()
-            }
-        }
+        fetchCurrentWeatherAllData(
+            locationInf: .init(
+                longitude: longLati.0,
+                latitude: longLati.1,
+                xy: (String(xy.x), String(xy.y)),
+                locality: locality,
+                subLocality: subLocalityByKakaoAddress,
+                isGPSLocation: true
+            )
+        )
     }
 }
 
@@ -570,61 +553,40 @@ extension CurrentWeatherVM {
 extension CurrentWeatherVM {
     
     func refreshButtonOnTapGesture(locationInf: LocationInformation) {
+        var locationInf: LocationInformation = locationInf
+        locationInf.isGPSLocation = true
         initLoadCompletedVariables()
         performRefresh(locationInf: locationInf)
     }
     
-    func additionalAddressFinalLocationOnTapGesture(allLocality: AllLocality, isNewAdd: Bool) {
-            
-            LocationProvider.getLatitudeAndLongitude(address: allLocality.fullAddress) { [weak self] result in
+    func fetchAdditionalLocationWeather(locationInf: LocationInformation, isNewAdd: Bool) {
+            LocationProvider.getLatitudeAndLongitude(address: locationInf.fullAddress) { [weak self] result in
                 guard let self = self else { return }
                 
                 switch result {
                     
                 case .success(let success):
-                    let latitude: Double = success.0
-                    let longitude: Double = success.1
-                    let xy: Gps2XY.LatXLngY = self.commonForecastUtil.convertGPS2XY(mode: .toXY, lat_X: latitude, lng_Y: longitude)
-                    
-                    additionalLocationProgress = .loading
-                    initLoadCompletedVariables()
-                    
-                    timerStart()
-                    initializeTask()
-                    calculateAndSetSunriseSunset(longLati: (String(longitude), String(latitude)))
-                    
-                    currentTask = Task(priority: .high) {
-                        
-                        Task(priority: .high) {
-                            await self.getCurrentItems(xy: xy)
-                            await self.getTodayItems(xy: xy)
-                            await self.getTodayMinMaxItems(xy: xy)
-                        }
-                        
-                        Task(priority: .low) {
-                            await self.getKaKaoAddressBy(longitude: String(longitude), latitude: String(latitude), isCurrentLocationRequested: false)
-                            await self.getXYOfDustStation(
-                                subLocality: allLocality.subLocality,
-                                locality: allLocality.locality
-                            )
-                            await self.getDustStationInfo(tmXAndtmY: DustStationRequestParam.tmXAndtmY, isCurrentLocationRequested: false)
-                            await self.getRealTimeDustItems()
-                        }
-                        
-                        await self.currentLocationEODelegate?.setCoordinateAndAllLocality(
-                            xy: xy,
-                            latitude: latitude,
-                            longitude: longitude,
-                            allLocality: allLocality
+                    Task {
+                        let xy: Gps2XY.LatXLngY = self.commonForecastUtil.convertGPS2XY(mode: .toXY, lat_X: success.0, lng_Y: success.1)
+                        let locationInf: LocationInformation = .init(
+                            longitude: String(success.1),
+                            latitude: String(success.0),
+                            xy: (String(xy.x), String(xy.y)),
+                            locality: locationInf.locality,
+                            subLocality: locationInf.subLocality,
+                            fullAddress: locationInf.fullAddress
                         )
                         
+                        self.additionalLocationProgress = .loading
+                        self.fetchCurrentWeatherAllData(locationInf: locationInf)
+                        await self.currentLocationEODelegate?.setCoordinateAndAllLocality(locationInf: locationInf)
                         DispatchQueue.main.async {
                             self.additionalLocationProgress = .completed
                             self.openAdditionalLocationView = false
                         }
                         
                         if isNewAdd {
-                            UserDefaults.standard.appendAdditionalAllLocality(allLocality)
+                            UserDefaults.standard.appendAdditionalLocation(locationInf)
                         }
                     }
                     
@@ -719,14 +681,16 @@ extension CurrentWeatherVM {
     }
     
     func performRefresh(locationInf: LocationInformation) {
+        fetchCurrentWeatherAllData(locationInf: locationInf)
+    }
+    
+    func fetchCurrentWeatherAllData(locationInf: LocationInformation) {
         let convertedXY: Gps2XY.LatXLngY = .init(lat: 0, lng: 0, x: locationInf.xy.0.toInt, y: locationInf.xy.1.toInt)
-        
-        timerStart()
-        initializeTask()
-        calculateAndSetSunriseSunset(longLati: (locationInf.longitude, locationInf.latitude))
 
+        initializeTask()
+        timerStart()
+        calculateAndSetSunriseSunset(longLati: (locationInf.longitude, locationInf.latitude))
         currentTask = Task(priority: .high) {
-            
             Task(priority: .high) {
                 await getCurrentItems(xy: convertedXY)
                 await getTodayItems(xy: convertedXY)
@@ -734,12 +698,12 @@ extension CurrentWeatherVM {
             }
             
             Task(priority: .low) {
-                await getKaKaoAddressBy(longitude: locationInf.longitude, latitude: locationInf.latitude, isCurrentLocationRequested: false)
+                await getKaKaoAddressBy(longitude: locationInf.longitude, latitude: locationInf.latitude, isCurrentLocationRequested: locationInf.isGPSLocation)
                 await getXYOfDustStation(
-                    subLocality: locationInf.subLocality,
+                    subLocality: locationInf.isGPSLocation ? subLocalityByKakaoAddress : locationInf.subLocality,
                     locality: locationInf.locality
                 )
-                await getDustStationInfo(tmXAndtmY: DustStationRequestParam.tmXAndtmY, isCurrentLocationRequested: false)
+                await getDustStationInfo(tmXAndtmY: DustStationRequestParam.tmXAndtmY)
                 await getRealTimeDustItems()
             }
         }

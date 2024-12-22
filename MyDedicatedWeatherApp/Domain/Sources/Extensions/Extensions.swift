@@ -127,18 +127,18 @@ extension UserDefaults {
         self.set(arrays, forKey: key)
     }
     
-    public func appendAdditionalAllLocality(_ allLocality: AllLocality) {
+    public func appendAdditionalLocation(_ locationInf: LocationInformation) {
         
         /// fullAddresses가 없을때 append
         guard let fullAddresses = UserDefaults.standard.array(forKey: UserDefaultsKeys.additionalFullAddresses) as? [String] else {
-            setUserDefaultsStringArray(value: allLocality.fullAddress, key: UserDefaultsKeys.additionalFullAddresses)
-            setUserDefaultsStringArray(value: allLocality.locality, key: UserDefaultsKeys.additionalLocalities)
-            setUserDefaultsStringArray(value: allLocality.subLocality, key: UserDefaultsKeys.additionalSubLocalities)
+            setUserDefaultsStringArray(value: locationInf.fullAddress, key: UserDefaultsKeys.additionalFullAddresses)
+            setUserDefaultsStringArray(value: locationInf.locality, key: UserDefaultsKeys.additionalLocalities)
+            setUserDefaultsStringArray(value: locationInf.subLocality, key: UserDefaultsKeys.additionalSubLocalities)
             return
         }
         
         /// 중복 존재시 return
-        guard !fullAddresses.contains(allLocality.fullAddress) else {
+        guard !fullAddresses.contains(locationInf.fullAddress) else {
             CommonUtil.shared.printError(
                 funcTitle: "appendAdditionalAllLocality()",
                 description: "이미 존재하는 fullAddress 입니다."
@@ -146,9 +146,9 @@ extension UserDefaults {
             return
         }
         
-        setUserDefaultsStringArray(value: allLocality.fullAddress, key: UserDefaultsKeys.additionalFullAddresses)
-        setUserDefaultsStringArray(value: allLocality.locality, key: UserDefaultsKeys.additionalLocalities)
-        setUserDefaultsStringArray(value: allLocality.subLocality, key: UserDefaultsKeys.additionalSubLocalities)
+        setUserDefaultsStringArray(value: locationInf.fullAddress, key: UserDefaultsKeys.additionalFullAddresses)
+        setUserDefaultsStringArray(value: locationInf.locality, key: UserDefaultsKeys.additionalLocalities)
+        setUserDefaultsStringArray(value: locationInf.subLocality, key: UserDefaultsKeys.additionalSubLocalities)
     }
     
     public func removeStringElementInArray(index: Int, key: String) {

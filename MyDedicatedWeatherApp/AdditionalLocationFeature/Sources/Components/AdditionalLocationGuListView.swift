@@ -13,7 +13,7 @@ struct AdditionalLocationGuListView: View {
     @Binding var isPresented: Bool
     @Binding var progress: AdditionalLocationProgress
     let selectedLocality: String
-    let finalLocationOnTapGesture: (AllLocality, Bool) -> Void
+    let finalLocationOnTapGesture: (LocationInformation, Bool) -> Void
 
     @State private var navNextView: Bool = false
     @State private var selectedLocalityAndGu: String = ""
@@ -34,9 +34,12 @@ struct AdditionalLocationGuListView: View {
                                 let fullAddress: String = selectedLocality + " \(gu)"
                                 finalLocationOnTapGesture(
                                     .init(
-                                        fullAddress: fullAddress,
+                                        longitude: "",
+                                        latitude: "",
+                                        xy: ("", ""),
                                         locality: selectedLocality,
-                                        subLocality: gu
+                                        subLocality: gu,
+                                        fullAddress: fullAddress
                                     ),
                                     true
                                 )

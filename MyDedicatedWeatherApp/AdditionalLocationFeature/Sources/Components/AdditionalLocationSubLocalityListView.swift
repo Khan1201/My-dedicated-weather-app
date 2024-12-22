@@ -14,7 +14,7 @@ struct AdditionalLocationSubLocalityListView: View {
     @Binding var progress: AdditionalLocationProgress
     let selectedLocality: String
     let selectedLocalityAndGu: String
-    let finalLocationOnTapGesture: (AllLocality, Bool) -> Void
+    let finalLocationOnTapGesture: (LocationInformation, Bool) -> Void
     
     @State private var showFailFloater: Bool = false
     
@@ -39,10 +39,13 @@ struct AdditionalLocationSubLocalityListView: View {
                                 let fullAddress: String = selectedLocalityAndGu + subLocality
                                 finalLocationOnTapGesture(
                                     .init(
-                                        fullAddress: fullAddress,
+                                        longitude: "",
+                                        latitude: "",
+                                        xy: ("", ""),
                                         locality: selectedLocality,
-                                        subLocality: subLocality
-                                    ), 
+                                        subLocality: subLocality,
+                                        fullAddress: fullAddress
+                                    ),
                                     true
                                 )
                             }

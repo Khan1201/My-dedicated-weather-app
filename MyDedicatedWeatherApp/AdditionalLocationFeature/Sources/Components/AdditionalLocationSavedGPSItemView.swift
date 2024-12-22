@@ -9,10 +9,10 @@ import SwiftUI
 import Domain
 
 struct AdditionalLocationSavedGPSItemView: View {
-    let allLocality: AllLocality
+    let locationInf: LocationInformation
     let tempItem: Weather.WeatherImageAndMinMax
     let currentLocation: String
-    let finalLocationOnTapGesture: (AllLocality, Bool) -> Void
+    let fetchNewLocation: (LocationInformation, Bool) -> Void
 
     @State private var tempSize: CGSize = CGSize()
 
@@ -20,7 +20,7 @@ struct AdditionalLocationSavedGPSItemView: View {
         
         HStack(alignment: .center, spacing: 0) {
             HStack(alignment: .center, spacing: 0) {
-                Text(allLocality.fullAddress)
+                Text(locationInf.fullAddress)
                     .fontSpoqaHanSansNeo(size: 15, weight: .medium)
                     .foregroundStyle(Color.white)
                 
@@ -63,7 +63,7 @@ struct AdditionalLocationSavedGPSItemView: View {
         .background(Color.white.opacity(0.1))
         .clipShape(RoundedRectangle(cornerRadius: 8))
         .overlay(alignment: .topLeading) {
-            if allLocality.fullAddress == currentLocation {
+            if locationInf.fullAddress == currentLocation {
                 Image("current_location")
                     .resizable()
                     .frame(width: 35, height: 35)
@@ -84,19 +84,10 @@ struct AdditionalLocationSavedGPSItemView: View {
             .opacity(0)
         }
         .onTapGesture {
-            finalLocationOnTapGesture(
-                allLocality,
+            fetchNewLocation(
+                locationInf,
                 false
             )
         }
     }
-}
-
-#Preview {
-    AdditionalLocationSavedGPSItemView(
-        allLocality: .init(fullAddress: "", locality: "", subLocality: ""),
-        tempItem: .init(weatherImage: "", currentTemp: "", minMaxTemp: ("", "")),
-        currentLocation: "",
-        finalLocationOnTapGesture: {_, _ in }
-    )
 }

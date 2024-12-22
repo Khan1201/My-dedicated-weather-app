@@ -14,7 +14,7 @@ final class AdditionalLocationVM: ObservableObject {
     
     @Published var gpsTempItem: Weather.WeatherImageAndMinMax = .init(weatherImage: "", currentTemp: "", minMaxTemp: ("", ""))
     @Published var tempItems: [Weather.WeatherImageAndMinMax] = Dummy.weatherImageAndMinMax()
-    @Published var allLocalities: [AllLocality] = []
+    @Published var locationInfs: [LocationInformation] = []
         
     private let commonForecastUtil: CommonForecastUtil = CommonForecastUtil()
     private let veryShortTermForecastUtil: VeryShortTermForecastUtil = VeryShortTermForecastUtil()
@@ -207,8 +207,7 @@ extension AdditionalLocationVM {
 // MARK: - 0n tap gestures..
 
 extension AdditionalLocationVM {
-    
-    func itemDeleteAction(allLocality: AllLocality) {
+    func deleteLocalLocationInf(locationInf: LocationInformation) {
         
         guard let fullAddresses = UserDefaults.standard.array(forKey: UserDefaultsKeys.additionalFullAddresses) as? [String] else {
             return
@@ -230,7 +229,7 @@ extension AdditionalLocationVM {
             return
         }
         
-        guard let index = fullAddresses.firstIndex(of: allLocality.fullAddress) else {
+        guard let index = fullAddresses.firstIndex(of: locationInf.fullAddress) else {
             CommonUtil.shared.printError(
                 funcTitle: "itemDeleteAction", 
                 description: "Index를 찾을 수 없습니다."
@@ -261,7 +260,7 @@ extension AdditionalLocationVM {
     
     func performRequestSavedLocationWeather(gpsFullAddress: String) {
         
-        var addresses = allLocalities.map { $0.fullAddress }
+        var addresses = locationInfs.map { $0.fullAddress }
         addresses.append(gpsFullAddress)
         
         for (index, address) in addresses.enumerated() {
@@ -313,7 +312,7 @@ extension AdditionalLocationVM {
     }
     
     func initAllLocalities() {
-        allLocalities = []
+        locationInfs = []
         
         let fullAddresses: [String] = UserDefaults.standard.array(forKey: UserDefaultsKeys.additionalFullAddresses) as? [String] ?? []
         let localities: [String] = UserDefaults.standard.array(forKey: UserDefaultsKeys.additionalLocalities) as? [String] ?? []
@@ -322,11 +321,14 @@ extension AdditionalLocationVM {
         guard fullAddresses.count == localities.count && fullAddresses.count == subLocalities.count else { return }
         
         for i in fullAddresses.indices {
-            allLocalities.append(
+            locationInfs.append(
                 .init(
-                    fullAddress: fullAddresses[i],
+                    longitude: "",
+                    latitude: "",
+                    xy: ("", ""),
                     locality: localities[i],
-                    subLocality: subLocalities[i]
+                    subLocality: subLocalities[i],
+                    fullAddress: fullAddresses[i]
                 )
             )
         }

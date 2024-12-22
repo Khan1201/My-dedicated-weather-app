@@ -10,23 +10,23 @@ import Domain
 
 struct AdditionalLocationSavedItemsView: View {
     let currentFullAddress: String
-    let allLocalities: [AllLocality]
+    let locationInfs: [LocationInformation]
     let tempItems: [Weather.WeatherImageAndMinMax]
-    let itemOnTapGesture: (AllLocality, Bool) -> Void
-    let itemDeleteAction: (AllLocality) -> Void
+    let fetchNewLocation: (LocationInformation, Bool) -> Void
+    let itemDeleteAction: (LocationInformation) -> Void
     
     var body: some View {
         
         VStack(alignment: .leading, spacing: 16) {
-            ForEach(allLocalities.indices, id: \.self) { i in
+            ForEach(locationInfs.indices, id: \.self) { i in
                 AdditionalLocationSavedItemView(
-                    allLocality: allLocalities[i],
+                    locationInf: locationInfs[i],
                     tempItem: tempItems[i],
-                    onTapGesture: itemOnTapGesture,
+                    onTapGesture: fetchNewLocation,
                     deleteAction: itemDeleteAction
                 )
                 .overlay(alignment: .topLeading) {
-                    if currentFullAddress == allLocalities[i].fullAddress {
+                    if currentFullAddress == locationInfs[i].fullAddress {
                         Image("current_location")
                             .resizable()
                             .frame(width: 35, height: 35)
@@ -41,9 +41,9 @@ struct AdditionalLocationSavedItemsView: View {
 #Preview {
     AdditionalLocationSavedItemsView(
         currentFullAddress: "서울특별시",
-        allLocalities: [],
+        locationInfs: [],
         tempItems: [],
-        itemOnTapGesture: { _, _ in },
+        fetchNewLocation: { _, _ in },
         itemDeleteAction: { _ in }
     )
 }

@@ -17,7 +17,7 @@ public protocol CurrentLocationEODelegate: AnyObject {
     @MainActor
     func setGPSSubLocality(_ value: String)
     @MainActor
-    func setCoordinateAndAllLocality(xy: Gps2XY.LatXLngY, latitude: Double, longitude: Double, allLocality: AllLocality)
+    func setCoordinateAndAllLocality(locationInf: LocationInformation)
     var locationInf: LocationInformation { get }
 }
 
@@ -47,6 +47,10 @@ public final class CurrentLocationEO: NSObject, ObservableObject, CurrentLocatio
     }
     public var locationInf: LocationInformation {
         .init(longitude: longitude, latitude: latitude, xy: xy, locality: locality, subLocality: subLocality, fullAddress: fullAddress)
+    }
+    
+    public var gpsLocationInf: LocationInformation {
+        .init(longitude: longitude, latitude: latitude, xy: xy, locality: gpsLocality, subLocality: gpsSubLocality, fullAddress: gpsFullAddress)
     }
     
     private let commonForecastUtil: CommonForecastUtil = CommonForecastUtil()
@@ -122,13 +126,13 @@ public final class CurrentLocationEO: NSObject, ObservableObject, CurrentLocatio
     }
     
     @MainActor
-    public func setCoordinateAndAllLocality(xy: Gps2XY.LatXLngY, latitude: Double, longitude: Double, allLocality: AllLocality) {
-        setXY((String(xy.x), String(xy.y)))
-        setLatitude(String(latitude))
-        setLongitude(String(longitude))
-        setFullAddress(allLocality.fullAddress)
-        setLocality(allLocality.locality)
-        setSubLocality(allLocality.subLocality)
+    public func setCoordinateAndAllLocality(locationInf: LocationInformation) {
+        setXY(locationInf.xy)
+        setLatitude(locationInf.latitude)
+        setLongitude(locationInf.longitude)
+        setFullAddress(locationInf.fullAddress)
+        setLocality(locationInf.locality)
+        setSubLocality(locationInf.subLocality)
     }
     
     public func convertLocationToXY() -> Gps2XY.LatXLngY {
