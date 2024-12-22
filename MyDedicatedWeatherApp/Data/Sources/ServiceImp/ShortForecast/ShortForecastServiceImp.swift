@@ -53,6 +53,6 @@ public struct ShortForecastServiceImp: ShortForecastService {
             headers: nil,
             resultType: PublicDataRes<VeryShortOrShortTermForecast<ShortTermForecastCategory>>.self
         )
-        return result.map { $0.items ?? [] }
+        return result.map { $0.item ?? [] }
     }
 }
