@@ -14,13 +14,15 @@ public struct LocationInformation {
     public let locality: String
     public let subLocality: String
     public let fullAddress: String
+    public var isGPSLocation: Bool
     
-    public init(longitude: String, latitude: String, xy: (String, String), locality: String, subLocality: String, fullAddress: String) {
+    public init(longitude: String = "", latitude: String = "", xy: (String, String) = ("", ""), locality: String = "", subLocality: String = "", fullAddress: String = "", isGPSLocation: Bool = false) {
         self.longitude = longitude
         self.latitude = latitude
         self.xy = xy
         self.locality = locality
         self.subLocality = subLocality
         self.fullAddress = fullAddress
+        self.isGPSLocation = isGPSLocation
     }
 }
