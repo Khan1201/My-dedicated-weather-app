@@ -529,13 +529,6 @@ extension CurrentWeatherVM {
 // MARK: - On tap gestures..
 
 extension CurrentWeatherVM {
-    func refreshButtonOnTapGesture(locationInf: LocationInformation) {
-        var locationInf: LocationInformation = locationInf
-        locationInf.isGPSLocation = true
-        initLoadCompletedVariables()
-        performRefresh(locationInf: locationInf)
-    }
-    
     func fetchAdditionalLocationWeather(locationInf: LocationInformation, isNewAdd: Bool) {
             LocationProvider.getLatitudeAndLongitude(address: locationInf.fullAddress) { [weak self] result in
                 guard let self = self else { return }
@@ -657,6 +650,7 @@ extension CurrentWeatherVM {
     }
     
     func performRefresh(locationInf: LocationInformation) {
+        initLoadCompletedVariables()
         fetchCurrentWeatherAllData(locationInf: locationInf)
     }
     

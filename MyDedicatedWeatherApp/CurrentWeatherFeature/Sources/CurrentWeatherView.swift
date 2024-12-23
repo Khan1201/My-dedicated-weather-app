@@ -148,7 +148,7 @@ extension CurrentWeatherView {
                     subLocation: currentLocationEO.subLocality,
                     showRefreshButton: viewModel.isAllLoaded,
                     openAdditionalLocationView: $viewModel.openAdditionalLocationView,
-                    refreshButtonOnTapGesture: viewModel.refreshButtonOnTapGesture
+                    refreshButtonOnTapGesture: viewModel.performRefresh(locationInf:)
                 )
                 .padding(.leading, 40)
                 .loadingProgressLottie(isLoadingCompleted: viewModel.isKakaoAddressLoaded)
