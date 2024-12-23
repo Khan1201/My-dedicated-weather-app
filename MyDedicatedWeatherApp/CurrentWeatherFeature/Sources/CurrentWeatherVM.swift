@@ -526,32 +526,9 @@ extension CurrentWeatherVM {
     }
 }
 
-// MARK: - View On Appear, Task Actions..
-
-extension CurrentWeatherVM {
-    
-    func todayViewControllerLocationManagerUpdatedAction(
-        xy: Gps2XY.LatXLngY,
-        longLati: (String, String),
-        locality: String
-    ) {
-        fetchCurrentWeatherAllData(
-            locationInf: .init(
-                longitude: longLati.0,
-                latitude: longLati.1,
-                xy: (String(xy.x), String(xy.y)),
-                locality: locality,
-                subLocality: subLocalityByKakaoAddress,
-                isGPSLocation: true
-            )
-        )
-    }
-}
-
 // MARK: - On tap gestures..
 
 extension CurrentWeatherVM {
-    
     func refreshButtonOnTapGesture(locationInf: LocationInformation) {
         var locationInf: LocationInformation = locationInf
         locationInf.isGPSLocation = true

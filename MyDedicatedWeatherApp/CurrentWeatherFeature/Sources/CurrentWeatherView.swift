@@ -68,10 +68,8 @@ public struct CurrentWeatherView: View {
                 skyType: viewModel.currentWeatherInformation.skyType
             )
             .onChange(of: currentLocationEO.isLocationUpdated) { _ in
-                viewModel.todayViewControllerLocationManagerUpdatedAction(
-                    xy: currentLocationEO.convertLocationToXY(),
-                    longLati: currentLocationEO.longitudeAndLatitude,
-                    locality: currentLocationEO.locality
+                viewModel.fetchCurrentWeatherAllData(
+                    locationInf: currentLocationEO.initialLocationInf
                 )
             }
             .onChange(of: viewModel.isAllLoaded) { newValue in

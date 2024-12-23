@@ -49,6 +49,10 @@ public final class CurrentLocationEO: NSObject, ObservableObject, CurrentLocatio
         .init(longitude: longitude, latitude: latitude, xy: xy, locality: locality, subLocality: subLocality, fullAddress: fullAddress)
     }
     
+    public var initialLocationInf: LocationInformation {
+        .init(longitude: longitude, latitude: latitude, xy: xy, locality: locality, subLocality: subLocality, fullAddress: fullAddress, isGPSLocation: true)
+    }
+    
     public var gpsLocationInf: LocationInformation {
         .init(longitude: longitude, latitude: latitude, xy: xy, locality: gpsLocality, subLocality: gpsSubLocality, fullAddress: gpsFullAddress)
     }
