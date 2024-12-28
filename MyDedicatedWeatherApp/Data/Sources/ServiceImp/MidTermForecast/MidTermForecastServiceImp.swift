@@ -10,18 +10,14 @@ import Core
 import Domain
 
 public struct MidTermForecastServiceImp: MidtermForecastService {
-    private let util: MidTermForecastUtil
-    
-    public init(util: MidTermForecastUtil = MidTermForecastUtil()) {
-        self.util = util
-    }
+    public init() { }
     
     public func getTempItems(serviceKey: String, fullAddress: String) async -> Result<[MidTermForecastTemperature], APIError> {
         let parameters: MidTermForecastReq = MidTermForecastReq(
             serviceKey: serviceKey,
-            regId: util.regOrStnIdPar(fullAddress: fullAddress, reqType: .temperature),
+            regId: ReqParameters.midForecastRegId(fullAddress: fullAddress, reqType: .temperature),
             stnId: nil,
-            tmFc: util.tmFcPar
+            tmFc: ReqParameters.midForecastTmFcPar
         )
         
         let result = await ApiRequester.request(
@@ -37,9 +33,9 @@ public struct MidTermForecastServiceImp: MidtermForecastService {
     public func getSkyStateItems(serviceKey: String, fullAddress: String) async -> Result<[MidTermForecastSkyState], APIError> {
         let parameters: MidTermForecastReq = MidTermForecastReq(
             serviceKey: serviceKey,
-            regId: util.regOrStnIdPar(fullAddress: fullAddress, reqType: .skystate),
+            regId: ReqParameters.midForecastRegId(fullAddress: fullAddress, reqType: .skystate),
             stnId: nil,
-            tmFc: util.tmFcPar
+            tmFc: ReqParameters.midForecastTmFcPar
         )
         
         let result = await ApiRequester.request(

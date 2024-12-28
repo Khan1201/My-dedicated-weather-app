@@ -10,18 +10,14 @@ import Core
 import Domain
 
 public struct ShortForecastServiceImp: ShortForecastService {
-    private let util: ShortTermForecastUtil
-    
-    public init(util: ShortTermForecastUtil = ShortTermForecastUtil()) {
-        self.util = util
-    }
+    public init() {}
     
     public func getTodayItems(serviceKey: String, xy: Gps2XY.LatXLngY, reqRow: String) async -> Result<[VeryShortOrShortTermForecast<ShortTermForecastCategory>], APIError> {
         let parameters = VeryShortOrShortTermForecastReq(
             serviceKey: serviceKey,
             numOfRows: reqRow,
-            baseDate: util.baseDatePar,
-            baseTime: util.baseTimePar,
+            baseDate: ReqParameters.shortForecastBaseDate,
+            baseTime: ReqParameters.shortForecastBaseTime,
             nx: String(xy.x),
             ny: String(xy.y)
         )
@@ -40,8 +36,8 @@ public struct ShortForecastServiceImp: ShortForecastService {
         let parameters = VeryShortOrShortTermForecastReq(
             serviceKey: serviceKey,
             numOfRows: "300",
-            baseDate: util.baseDateForTodayMinMaxReq,
-            baseTime: util.baseTimeForTodayMinMaxReq,
+            baseDate: ReqParameters.veryShortForecastBaseDate,
+            baseTime: ReqParameters.veryShortForecastBaseTime,
             nx: String(xy.x),
             ny: String(xy.y)
         )
