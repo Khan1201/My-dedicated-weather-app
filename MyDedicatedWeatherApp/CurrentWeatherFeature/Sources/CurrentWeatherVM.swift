@@ -612,10 +612,10 @@ extension CurrentWeatherVM {
     
     func timerStart() {
         initializeTimer()
-        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(askRetryIf7SecondsAfterNotLoaded(timer:)), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(askRetryIfFewSecondsAfterNotLoaded(timer:)), userInfo: nil, repeats: true)
     }
     
-    @objc func askRetryIf7SecondsAfterNotLoaded(timer: Timer) {
+    @objc func askRetryIfFewSecondsAfterNotLoaded(timer: Timer) {
         guard self.timer != nil else { return }
         self.timerNum += 1
         
