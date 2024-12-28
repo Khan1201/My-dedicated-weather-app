@@ -585,9 +585,9 @@ extension WeatherWidgetVM {
         }
         var skyStateResult: [String] = []
         
-        skyStateResult.append(midTermForecastUtil.remakeSkyStateValueToImageString(value: filteredSkyStateItem.wf3Am))
-        skyStateResult.append(midTermForecastUtil.remakeSkyStateValueToImageString(value: filteredSkyStateItem.wf4Am))
-        skyStateResult.append(midTermForecastUtil.remakeSkyStateValueToImageString(value: filteredSkyStateItem.wf5Am))
+        skyStateResult.append(midTermForecastUtil.remakeSkyStateValueToImageString(value: filteredSkyStateItem.wf3Am).image(isDayMode: false))
+        skyStateResult.append(midTermForecastUtil.remakeSkyStateValueToImageString(value: filteredSkyStateItem.wf4Am).image(isDayMode: false))
+        skyStateResult.append(midTermForecastUtil.remakeSkyStateValueToImageString(value: filteredSkyStateItem.wf5Am).image(isDayMode: false))
         
 
         var rainPercentResult: [String] = []
@@ -596,9 +596,9 @@ extension WeatherWidgetVM {
         rainPercentResult.append(filteredSkyStateItem.rnSt5Am.toString)
         
         var weatherImageResult: [String] = []
-        weatherImageResult.append(midTermForecastUtil.remakeSkyStateValueToImageString(value: filteredSkyStateItem.wf3Am))
-        weatherImageResult.append(midTermForecastUtil.remakeSkyStateValueToImageString(value: filteredSkyStateItem.wf4Am))
-        weatherImageResult.append(midTermForecastUtil.remakeSkyStateValueToImageString(value: filteredSkyStateItem.wf5Am))
+        weatherImageResult.append(midTermForecastUtil.remakeSkyStateValueToImageString(value: filteredSkyStateItem.wf3Am).image(isDayMode: false))
+        weatherImageResult.append(midTermForecastUtil.remakeSkyStateValueToImageString(value: filteredSkyStateItem.wf4Am).image(isDayMode: false))
+        weatherImageResult.append(midTermForecastUtil.remakeSkyStateValueToImageString(value: filteredSkyStateItem.wf5Am).image(isDayMode: false))
                 
         let currentDate: Date = Date()
         
@@ -697,9 +697,9 @@ extension WeatherWidgetVM {
         }
         var tempResult: [String] = []
                     
-        tempResult.append(midTermForecastUtil.remakeSkyStateValueToImageString(value: item.wf3Am))
-        tempResult.append(midTermForecastUtil.remakeSkyStateValueToImageString(value: item.wf4Am))
-        tempResult.append(midTermForecastUtil.remakeSkyStateValueToImageString(value: item.wf5Am))
+        tempResult.append(midTermForecastUtil.remakeSkyStateValueToImageString(value: item.wf3Am).image(isDayMode: false))
+        tempResult.append(midTermForecastUtil.remakeSkyStateValueToImageString(value: item.wf4Am).image(isDayMode: false))
+        tempResult.append(midTermForecastUtil.remakeSkyStateValueToImageString(value: item.wf5Am).image(isDayMode: false))
         
         return tempResult
     }

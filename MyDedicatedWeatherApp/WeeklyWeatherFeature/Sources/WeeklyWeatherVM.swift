@@ -332,7 +332,7 @@ extension WeeklyWeatherVM {
         
         func weatherImage(wf: String) -> String {
             let wfToImageString = midTermForecastUtil.remakeSkyStateValueToImageString(value: wf)
-            return wfToImageString
+            return wfToImageString.image(isDayMode: false)
         }
         
         guard weeklyWeatherInformations.count >= 10 else { return }
@@ -366,7 +366,7 @@ extension WeeklyWeatherVM {
     func setWeeklyChartInformationImageAndRainPercent(three2tenDay item: MidTermForecastSkyState) {
         
         func weatherImageAndRainfallPercent(wf: String, rnSt: Int) -> (String, String) {
-            let wfToImageString = midTermForecastUtil.remakeSkyStateValueToImageString(value: wf)
+            let wfToImageString = midTermForecastUtil.remakeSkyStateValueToImageString(value: wf).image(isDayMode: false)
             return (wfToImageString, rnSt.toString)
         }
         

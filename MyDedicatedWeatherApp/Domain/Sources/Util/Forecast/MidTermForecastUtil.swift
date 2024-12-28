@@ -521,25 +521,25 @@ public struct MidTermForecastUtil {
         return result
     }
     
-    public func remakeSkyStateValueToImageString(value: String) -> String {
+    public func remakeSkyStateValueToImageString(value: String) -> WeatherAPIValue {
         
         if value == "맑음" {
-            return "weather_sunny"
+            return SkyState.sunny
             
         } else if value == "구름많음" {
-            return "weather_cloud_many"
+            return SkyState.cloudy
             
         } else if value == "흐림" {
-            return "weather_blur"
+            return SkyState.blur
             
         } else if value == "구름많고 비" || value == "구름많고 소나기" || value == "흐리고 비" || value == "흐리고 소나기" {
-            return "weather_rain"
+            return SkyState.rainy
             
         } else if value == "구름많고 눈" || value == "구름많고 비/눈" || value == "흐리고 눈" || value == "흐리고 비/눈" {
-            return "weather_snow"
+            return SkyState.snow
             
         } else {
-            return "load_fail"
+            return SkyState.none
         }
     }
     
