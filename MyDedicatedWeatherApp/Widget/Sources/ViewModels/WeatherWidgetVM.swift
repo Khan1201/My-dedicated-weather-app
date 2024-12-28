@@ -541,15 +541,15 @@ extension WeatherWidgetVM {
             
         }
         
-        let findDust: String = findDustLookUpUtil.remakeFindDustValue(value: item.pm10Value).description
-        let ultraFindDust: String = findDustLookUpUtil.remakeUltraFindDustValue(value: item.pm25Value).description
-        result.smallFamilyData.currentWeatherItem.findDust = (findDust, ultraFindDust)
+        let fineDust: String = findDustLookUpUtil.convertFineDust(rawValue: item.pm10Value).toDescription
+        let ultraFineDust: String = findDustLookUpUtil.convertUltraFineDust(rawValue: item.pm25Value).toDescription
+        result.smallFamilyData.currentWeatherItem.findDust = (fineDust, ultraFineDust)
         
         commonUtil.printSuccess(
             funcTitle: "applyRealTimeFindDustAndUltraFindDustItems()",
             value: """
-        미세먼지: \(findDust),
-        초미세먼지: \(ultraFindDust),
+        미세먼지: \(fineDust),
+        초미세먼지: \(ultraFineDust),
         """
         )
     }

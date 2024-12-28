@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 protocol WeatherAPIValueConverter {
     static func convert(rawValue: String) -> WeatherAPIValue
@@ -14,6 +15,7 @@ protocol WeatherAPIValueConverter {
 public protocol WeatherAPIValue {
     var toDescription: String { get }
     var backgroundImage: String { get }
+    var color: Color { get }
     func backgroundLottie(isDayMode: Bool) -> String
     func image(isDayMode: Bool) -> String
     func lottie(isDayMode: Bool) -> String
@@ -22,6 +24,7 @@ public protocol WeatherAPIValue {
 
 extension WeatherAPIValue {
     public var backgroundImage: String { return "" }
+    public var color: Color { return .clear }
     public func backgroundLottie(isDayMode: Bool) -> String { return "" }
     public func image(isDayMode: Bool) -> String { return "" }
     public func lottie(isDayMode: Bool) -> String { return "" }

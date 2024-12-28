@@ -488,8 +488,10 @@ extension CurrentWeatherVM {
     /// - parameter item: 미세먼지 요청 response
     @MainActor
     func setCurrentFineDustAndUltraFineDustTuple(_ item: RealTimeFindDustForecast) {
-        currentFineDustTuple = fineDustLookUpUtil.remakeFindDustValue(value: item.pm10Value)
-        currentUltraFineDustTuple = fineDustLookUpUtil.remakeUltraFindDustValue(value: item.pm25Value)
+        let convertedFineDust: WeatherAPIValue = fineDustLookUpUtil.convertFineDust(rawValue: item.pm10Value)
+        let convertedUltraFineDust: WeatherAPIValue = fineDustLookUpUtil.convertUltraFineDust(rawValue: item.pm25Value)
+        currentFineDustTuple = .init(description: convertedFineDust.toDescription, color: convertedFineDust.color)
+        currentUltraFineDustTuple = .init(description: convertedUltraFineDust.toDescription, color: convertedUltraFineDust.color)
         isFineDustLoaded = true
     }
     
