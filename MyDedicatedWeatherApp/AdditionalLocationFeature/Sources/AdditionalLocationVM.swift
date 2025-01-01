@@ -18,7 +18,7 @@ final class AdditionalLocationVM: ObservableObject {
         
     private let commonForecastUtil: CommonForecastUtil = .shared
     private let veryShortForecastUtil: VeryShortForecastUtil = VeryShortForecastUtil()
-    private let shortForecastUtil: ShortForecastUtil = ShortForecastUtil()
+    private let shortForecastUtil: ShortForecastUtil = .shared
     private let commonUtil: CommonUtil = .shared
     
     private let veryShortForecastService: VeryShortForecastService

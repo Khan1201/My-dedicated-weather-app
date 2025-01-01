@@ -12,7 +12,7 @@ import Data
 struct DI {
     static func weeklyWeatherVM() -> WeeklyWeatherVM {
         .init(
-            shortForecastUtil: ShortForecastUtil(),
+            shortForecastUtil: .shared,
             commonForecastUtil: .shared,
             midForecastUtil: .shared
         )

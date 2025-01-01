@@ -8,9 +8,9 @@
 import Foundation
 
 public struct ShortForecastUtil {
-    public init() {
-        
-    }
+    private init() { }
+
+    public static let shared = ShortForecastUtil()
 
     public var todayWeatherIndexSkipValue: Int {
         let currentHH: Int = Date().toString(format: "HH").toInt
