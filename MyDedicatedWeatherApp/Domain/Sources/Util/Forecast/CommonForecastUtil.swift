@@ -136,7 +136,7 @@ public struct CommonForecastUtil {
     }
     
     public func convertSkyState(rawValue: String) -> WeatherAPIValue {
-        return SkyStateConverter.convert(rawValue: rawValue)
+        return NoRainSkyStateConverter.convert(rawValue: rawValue)
     }
     
     /**
