@@ -8,8 +8,9 @@
 import Foundation
 
 public struct FineDustLookUpUtil {
-    
-    public init() {}
+    private init() { }
+
+    public static let shared = FineDustLookUpUtil()
     
     /**
      미세먼지 api response value 값 -> UI 보여질 값으로 remake
