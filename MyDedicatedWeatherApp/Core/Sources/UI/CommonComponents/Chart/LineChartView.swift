@@ -255,7 +255,7 @@ public struct LineChartView: View {
                     ForEach(weeklyChartInformation.imageAndRainPercents.indices, id: \.self) { i in
                         let isFiveTemperatureDifference: Bool = weeklyChartInformation.maxTemps[i] - weeklyChartInformation.minTemps[i] >= 5
                         let isMinMaxTempRangeIn: Bool = weeklyChartInformation.maxTemps[i] <= rangeMax && weeklyChartInformation.minTemps[i] >= rangeMin
-                        let weatherImageBottomPadding: CGFloat = isFiveTemperatureDifference && isMinMaxTempRangeIn ? minTempVertexBottomPaddings[i] + ((maxTempVertexBottomPaddings[i] - minTempVertexBottomPaddings[i]) / 2) : MidForecastUtil.isWeatherImageUnderMinTemperatureLocated(
+                        let weatherImageBottomPadding: CGFloat = isFiveTemperatureDifference && isMinMaxTempRangeIn ? minTempVertexBottomPaddings[i] + ((maxTempVertexBottomPaddings[i] - minTempVertexBottomPaddings[i]) / 2) : isWeatherImageUnderMinTemperatureLocated(
                             currentMin: weeklyChartInformation.minTemps[i],
                             yAxisMin: rangeMin,
                             currentMax: weeklyChartInformation.maxTemps[i],
@@ -280,6 +280,27 @@ public struct LineChartView: View {
                 }
             }
         }
+    }
+    
+    /// 주간 예보 - 차트 안 날씨 이미지 - 최저 온도 밑 ? or 최대 온도 위 ?
+    func isWeatherImageUnderMinTemperatureLocated(currentMin: CGFloat, yAxisMin: CGFloat, currentMax: CGFloat, yAxisMax: CGFloat) -> Bool {
+        var minCount: Int = 0
+        var maxCount: Int = 0
+        
+        let convertedCurrentMin: Int = Int(currentMin) <= Int(yAxisMin) ? Int(yAxisMin) : Int(currentMin)
+        let convertedCurrentMax: Int = Int(currentMax) >= Int(yAxisMax) ? Int(yAxisMax) : Int(currentMax)
+        
+        // y 최저 ~ 현재 최저
+        for _ in Int(yAxisMin)...convertedCurrentMin {
+            minCount += 1
+        }
+        
+        // 현재 최대 ~ y 최대
+        for _ in convertedCurrentMax...Int(yAxisMax) {
+            maxCount += 1
+        }
+        
+        return minCount > maxCount
     }
 }
 

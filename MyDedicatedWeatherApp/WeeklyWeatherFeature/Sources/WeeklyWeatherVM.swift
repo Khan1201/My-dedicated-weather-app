@@ -381,12 +381,61 @@ extension WeeklyWeatherVM {
     
     /// 차트 yList는 전체(+1 ~. +7) maxTemp가 필요하므로 전체 로드 된 후에 get
     func setWeeklyChartInformationYList() {
-        
         guard isShortTermForecastLoaded && isMidtermForecastSkyStateLoaded && isMidtermForecastTempLoaded else { return }
         // completed 체크
         
         let maxTemps = weeklyChartInformation.maxTemps.max()
-        weeklyChartInformation.yList = midForecastUtil.temperatureChartYList(maxTemp: Int(maxTemps ?? 0))
+        weeklyChartInformation.yList = temperatureChartYList(maxTemp: Int(maxTemps ?? 0))
+        
+        func temperatureChartYList(maxTemp: Int) -> [Int] {
+            switch maxTemp {
+            case 31...35:
+                return fiveUnitRange(maxOfRange: 35)
+            case 26...30:
+                return fiveUnitRange(maxOfRange: 30)
+            case 21...25:
+                return fiveUnitRange(maxOfRange: 25)
+            case 16...20:
+                return fiveUnitRange(maxOfRange: 20)
+            case 11...15:
+                return fiveUnitRange(maxOfRange: 15)
+            case 6...10:
+                return fiveUnitRange(maxOfRange: 10)
+            case 1...5:
+                return fiveUnitRange(maxOfRange: 5)
+            case -4...0:
+                return fiveUnitRange(maxOfRange: 0)
+            case -9 ... -5:
+                return fiveUnitRange(maxOfRange: -5)
+            case -14 ... -10:
+                return fiveUnitRange(maxOfRange: -10)
+            case -19 ... -15:
+                return fiveUnitRange(maxOfRange: -15)
+            default:
+                CommonUtil.shared.printError(
+                    funcTitle: "setTemperatureChartInformation()의 switch문",
+                    description: "yList 범위를 지정할 수 없습니다."
+                )
+                return []
+            }
+            
+            func fiveUnitRange(maxOfRange: Int) -> [Int] {
+                var max: Int = maxOfRange
+                var yList: [Int] = []
+                
+                for i in 0..<5 {
+                    if i == 0 {
+                        yList.append(max)
+                        
+                    } else {
+                        max -= 5
+                        yList.append(max)
+                    }
+                }
+                
+                return yList
+            }
+        }
     }
 }
 
