@@ -62,7 +62,7 @@ final class CurrentWeatherVM: ObservableObject {
     private let commonUtil: CommonUtil
     private let commonForecastUtil: CommonForecastUtil
     private let veryShortForecastUtil: VeryShortForecastUtil
-    private let shortTermForecastUtil: ShortTermForecastUtil
+    private let shortForecastUtil: ShortForecastUtil
     private let midForecastUtil: MidForecastUtil
     private let fineDustLookUpUtil: FineDustLookUpUtil
     
@@ -75,7 +75,7 @@ final class CurrentWeatherVM: ObservableObject {
         commonUtil: CommonUtil,
         commonForecastUtil: CommonForecastUtil,
         veryShortForecastUtil: VeryShortForecastUtil,
-        shortTermForecastUtil: ShortTermForecastUtil,
+        shortForecastUtil: ShortForecastUtil,
         midForecastUtil: MidForecastUtil,
         fineDustLookUpUtil: FineDustLookUpUtil,
         veryShortForecastService: VeryShortForecastService,
@@ -86,7 +86,7 @@ final class CurrentWeatherVM: ObservableObject {
         self.commonUtil = commonUtil
         self.commonForecastUtil = commonForecastUtil
         self.veryShortForecastUtil = veryShortForecastUtil
-        self.shortTermForecastUtil = shortTermForecastUtil
+        self.shortForecastUtil = shortForecastUtil
         self.midForecastUtil = midForecastUtil
         self.fineDustLookUpUtil = fineDustLookUpUtil
         self.veryShortForecastService = veryShortForecastService
@@ -376,10 +376,10 @@ extension CurrentWeatherVM {
             windSpeed: (veryShortForecastUtil.convertWindSpeed(rawValue: currentWindSpeed.fcstValue).toDescription, "\(currentWindSpeed.fcstValue)ms"),
             wetPercent: ("\(currentWetPercent.fcstValue)%", ""),
             oneHourPrecipitation: (
-                shortTermForecastUtil.convertPrecipitationAmount(
+                shortForecastUtil.convertPrecipitationAmount(
                     rawValue: currentOneHourPrecipitation.fcstValue
                 ),
-                shortTermForecastUtil.precipitationValueToShort(rawValue: currentOneHourPrecipitation.fcstValue)
+                shortForecastUtil.precipitationValueToShort(rawValue: currentOneHourPrecipitation.fcstValue)
             ),
             weatherImage: skyType.image(isDayMode: sunTime.isDayMode),
             skyType: skyType
@@ -397,14 +397,14 @@ extension CurrentWeatherVM {
     func setTodayWeatherInformations(items: [VeryShortOrShortTermForecast<ShortTermForecastCategory>]) {
         todayWeatherInformations = []
         
-        let skipValue = shortTermForecastUtil.todayWeatherIndexSkipValue
+        let skipValue = shortForecastUtil.todayWeatherIndexSkipValue
         
         var tempIndex = 0 + skipValue
         var skyIndex = 5 + skipValue
         var ptyIndex = 6 + skipValue
         var popIndex = 7 + skipValue
         var step = 12
-        let loopCount = shortTermForecastUtil.todayWeatherLoopCount
+        let loopCount = shortForecastUtil.todayWeatherLoopCount
         let sunTime: SunTime = .init(
             currentHHmm: items[tempIndex].fcstTime,
             sunriseHHmm: self.sunriseAndSunsetHHmm.0,

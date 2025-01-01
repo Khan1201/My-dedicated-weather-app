@@ -27,7 +27,7 @@ final class WeeklyWeatherVM: ObservableObject {
     var minMaxTemperaturesByThreeToTenDay: [(String, String)] = []
     var weatherImageAndRainfallPercentsByThreeToTenDay: [(String, String)] = []
     
-    private let shortTermForecastUtil: ShortTermForecastUtil
+    private let shortForecastUtil: ShortForecastUtil
     private let commonForecastUtil: CommonForecastUtil
     private let midForecastUtil: MidForecastUtil
     
@@ -48,13 +48,13 @@ final class WeeklyWeatherVM: ObservableObject {
     }
     
     init(
-        shortTermForecastUtil: ShortTermForecastUtil,
+        shortForecastUtil: ShortForecastUtil,
         commonForecastUtil: CommonForecastUtil,
         midForecastUtil: MidForecastUtil,
         shortForecastService: ShortForecastService = ShortForecastServiceImp(),
         midtermForecastService: MidtermForecastService = MidTermForecastServiceImp()
     ) {
-        self.shortTermForecastUtil = shortTermForecastUtil
+        self.shortForecastUtil = shortForecastUtil
         self.commonForecastUtil = commonForecastUtil
         self.midForecastUtil = midForecastUtil
         self.shortForecastService = shortForecastService
