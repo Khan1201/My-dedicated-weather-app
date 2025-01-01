@@ -370,13 +370,13 @@ extension CurrentWeatherVM {
         
         currentWeatherInformation = Weather.CurrentInformation(
             temperature: currentTemperature.fcstValue,
-            windSpeed: (commonForecastUtil.convertWindSpeed(rawValue: currentWindSpeed.fcstValue).toDescription, "\(currentWindSpeed.fcstValue)ms"),
+            windSpeed: (veryShortForecastUtil.convertWindSpeed(rawValue: currentWindSpeed.fcstValue).toDescription, "\(currentWindSpeed.fcstValue)ms"),
             wetPercent: ("\(currentWetPercent.fcstValue)%", ""),
             oneHourPrecipitation: (
-                commonForecastUtil.convertPrecipitationAmount(
+                shortTermForecastUtil.convertPrecipitationAmount(
                     rawValue: currentOneHourPrecipitation.fcstValue
                 ),
-                commonForecastUtil.precipitationValueToShort(rawValue: currentOneHourPrecipitation.fcstValue)
+                shortTermForecastUtil.precipitationValueToShort(rawValue: currentOneHourPrecipitation.fcstValue)
             ),
             weatherImage: skyType.image(isDayMode: sunTime.isDayMode),
             skyType: skyType

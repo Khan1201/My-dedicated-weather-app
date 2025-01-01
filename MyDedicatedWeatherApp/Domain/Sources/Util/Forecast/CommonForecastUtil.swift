@@ -99,19 +99,6 @@ public struct CommonForecastUtil {
         }
         return rs
     }
-    
-    /**
-     초단기예보 or 단기예보의 1시간 강수량 값 -> (String, String)
-     
-     - parameter value: 예보 조회 response 1시간 강수량 값
-     */
-    public func convertPrecipitationAmount(rawValue: String) -> String {
-        return PrecipitationAmountConverter.convert(rawValue: rawValue).toDescription
-    }
-    
-    public func precipitationValueToShort(rawValue: String) -> String {
-        return PrecipitationAmountConverter.toShortValue(rawValue)
-    }
 
     /**
      초단기예보 강수량 값, 하늘상태 값 -> (날씨 String,  날씨 이미지 String)
@@ -137,14 +124,5 @@ public struct CommonForecastUtil {
     
     public func convertSkyState(rawValue: String) -> WeatherAPIValue {
         return NoRainSkyStateConverter.convert(rawValue: rawValue)
-    }
-    
-    /**
-     초단기예보 or 단기예보의 바람속도 값 ->( String, String)
-     
-     - parameter value: 예보 조회 response 바람속도 값
-     */
-    public func convertWindSpeed(rawValue: String) -> WeatherAPIValue {
-        return WindSpeedConverter.convert(rawValue: rawValue)
     }
 }

@@ -71,4 +71,17 @@ public struct ShortTermForecastUtil {
         
         return result
     }
+    
+    /**
+     1시간 강수량 값 변환
+     
+     - parameter rawValue: 예보 조회 response 1시간 강수량 값
+     */
+    public func convertPrecipitationAmount(rawValue: String) -> String {
+        return PrecipitationAmountConverter.convert(rawValue: rawValue).toDescription
+    }
+    
+    public func precipitationValueToShort(rawValue: String) -> String {
+        return PrecipitationAmountConverter.toShortValue(rawValue)
+    }
 }
