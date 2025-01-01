@@ -22,7 +22,7 @@ struct WeatherWidgetVM {
     private let findDustLookUpUtil: FineDustLookUpUtil = .init()
     private let veryShortForecastUtil: VeryShortForecastUtil = .init()
     private let shortForecastUtil: ShortTermForecastUtil = .init()
-    private let midTermForecastUtil: MidTermForecastUtil = .init()
+    private let midForecastUtil: MidForecastUtil = .init()
     private let commonUtil: CommonUtil = .shared
     
     init(
@@ -586,9 +586,9 @@ extension WeatherWidgetVM {
         }
         var skyStateResult: [String] = []
         
-        skyStateResult.append(midTermForecastUtil.convertSkyState(rawValue: filteredSkyStateItem.wf3Am).image(isDayMode: false))
-        skyStateResult.append(midTermForecastUtil.convertSkyState(rawValue: filteredSkyStateItem.wf4Am).image(isDayMode: false))
-        skyStateResult.append(midTermForecastUtil.convertSkyState(rawValue: filteredSkyStateItem.wf5Am).image(isDayMode: false))
+        skyStateResult.append(midForecastUtil.convertSkyState(rawValue: filteredSkyStateItem.wf3Am).image(isDayMode: false))
+        skyStateResult.append(midForecastUtil.convertSkyState(rawValue: filteredSkyStateItem.wf4Am).image(isDayMode: false))
+        skyStateResult.append(midForecastUtil.convertSkyState(rawValue: filteredSkyStateItem.wf5Am).image(isDayMode: false))
         
 
         var rainPercentResult: [String] = []
@@ -597,9 +597,9 @@ extension WeatherWidgetVM {
         rainPercentResult.append(filteredSkyStateItem.rnSt5Am.toString)
         
         var weatherImageResult: [String] = []
-        weatherImageResult.append(midTermForecastUtil.convertSkyState(rawValue: filteredSkyStateItem.wf3Am).image(isDayMode: false))
-        weatherImageResult.append(midTermForecastUtil.convertSkyState(rawValue: filteredSkyStateItem.wf4Am).image(isDayMode: false))
-        weatherImageResult.append(midTermForecastUtil.convertSkyState(rawValue: filteredSkyStateItem.wf5Am).image(isDayMode: false))
+        weatherImageResult.append(midForecastUtil.convertSkyState(rawValue: filteredSkyStateItem.wf3Am).image(isDayMode: false))
+        weatherImageResult.append(midForecastUtil.convertSkyState(rawValue: filteredSkyStateItem.wf4Am).image(isDayMode: false))
+        weatherImageResult.append(midForecastUtil.convertSkyState(rawValue: filteredSkyStateItem.wf5Am).image(isDayMode: false))
                 
         let currentDate: Date = Date()
         
@@ -698,9 +698,9 @@ extension WeatherWidgetVM {
         }
         var tempResult: [String] = []
                     
-        tempResult.append(midTermForecastUtil.convertSkyState(rawValue: item.wf3Am).image(isDayMode: false))
-        tempResult.append(midTermForecastUtil.convertSkyState(rawValue: item.wf4Am).image(isDayMode: false))
-        tempResult.append(midTermForecastUtil.convertSkyState(rawValue: item.wf5Am).image(isDayMode: false))
+        tempResult.append(midForecastUtil.convertSkyState(rawValue: item.wf3Am).image(isDayMode: false))
+        tempResult.append(midForecastUtil.convertSkyState(rawValue: item.wf4Am).image(isDayMode: false))
+        tempResult.append(midForecastUtil.convertSkyState(rawValue: item.wf5Am).image(isDayMode: false))
         
         return tempResult
     }

@@ -255,7 +255,7 @@ public struct LineChartView: View {
                     ForEach(weeklyChartInformation.imageAndRainPercents.indices, id: \.self) { i in
                         let isFiveTemperatureDifference: Bool = weeklyChartInformation.maxTemps[i] - weeklyChartInformation.minTemps[i] >= 5
                         let isMinMaxTempRangeIn: Bool = weeklyChartInformation.maxTemps[i] <= rangeMax && weeklyChartInformation.minTemps[i] >= rangeMin
-                        let weatherImageBottomPadding: CGFloat = isFiveTemperatureDifference && isMinMaxTempRangeIn ? minTempVertexBottomPaddings[i] + ((maxTempVertexBottomPaddings[i] - minTempVertexBottomPaddings[i]) / 2) : MidTermForecastUtil.isWeatherImageUnderMinTemperatureLocated(
+                        let weatherImageBottomPadding: CGFloat = isFiveTemperatureDifference && isMinMaxTempRangeIn ? minTempVertexBottomPaddings[i] + ((maxTempVertexBottomPaddings[i] - minTempVertexBottomPaddings[i]) / 2) : MidForecastUtil.isWeatherImageUnderMinTemperatureLocated(
                             currentMin: weeklyChartInformation.minTemps[i],
                             yAxisMin: rangeMin,
                             currentMax: weeklyChartInformation.maxTemps[i],

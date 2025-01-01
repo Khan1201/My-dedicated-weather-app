@@ -63,7 +63,7 @@ final class CurrentWeatherVM: ObservableObject {
     private let commonForecastUtil: CommonForecastUtil
     private let veryShortForecastUtil: VeryShortForecastUtil
     private let shortTermForecastUtil: ShortTermForecastUtil
-    private let midTermForecastUtil: MidTermForecastUtil
+    private let midForecastUtil: MidForecastUtil
     private let fineDustLookUpUtil: FineDustLookUpUtil
     
     private let veryShortForecastService: VeryShortForecastService
@@ -76,7 +76,7 @@ final class CurrentWeatherVM: ObservableObject {
         commonForecastUtil: CommonForecastUtil,
         veryShortForecastUtil: VeryShortForecastUtil,
         shortTermForecastUtil: ShortTermForecastUtil,
-        midTermForecastUtil: MidTermForecastUtil,
+        midForecastUtil: MidForecastUtil,
         fineDustLookUpUtil: FineDustLookUpUtil,
         veryShortForecastService: VeryShortForecastService,
         shortForecastService: ShortForecastService,
@@ -87,7 +87,7 @@ final class CurrentWeatherVM: ObservableObject {
         self.commonForecastUtil = commonForecastUtil
         self.veryShortForecastUtil = veryShortForecastUtil
         self.shortTermForecastUtil = shortTermForecastUtil
-        self.midTermForecastUtil = midTermForecastUtil
+        self.midForecastUtil = midForecastUtil
         self.fineDustLookUpUtil = fineDustLookUpUtil
         self.veryShortForecastService = veryShortForecastService
         self.shortForecastService = shortForecastService

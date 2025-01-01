@@ -29,7 +29,7 @@ final class WeeklyWeatherVM: ObservableObject {
     
     private let shortTermForecastUtil: ShortTermForecastUtil
     private let commonForecastUtil: CommonForecastUtil
-    private let midTermForecastUtil: MidTermForecastUtil
+    private let midForecastUtil: MidForecastUtil
     
     private let shortForecastService: ShortForecastService
     private let midtermForecastService: MidtermForecastService
@@ -50,13 +50,13 @@ final class WeeklyWeatherVM: ObservableObject {
     init(
         shortTermForecastUtil: ShortTermForecastUtil,
         commonForecastUtil: CommonForecastUtil,
-        midTermForecastUtil: MidTermForecastUtil,
+        midForecastUtil: MidForecastUtil,
         shortForecastService: ShortForecastService = ShortForecastServiceImp(),
         midtermForecastService: MidtermForecastService = MidTermForecastServiceImp()
     ) {
         self.shortTermForecastUtil = shortTermForecastUtil
         self.commonForecastUtil = commonForecastUtil
-        self.midTermForecastUtil = midTermForecastUtil
+        self.midForecastUtil = midForecastUtil
         self.shortForecastService = shortForecastService
         self.midtermForecastService = midtermForecastService
         initWeeklyWeatherInformation()
@@ -331,7 +331,7 @@ extension WeeklyWeatherVM {
     func setWeeklyWeatherInformationsImageAndRainPercent(three2tenDay item: MidTermForecastSkyState) {
         
         func weatherImage(wf: String) -> String {
-            let wfToImageString = midTermForecastUtil.convertSkyState(rawValue: wf)
+            let wfToImageString = midForecastUtil.convertSkyState(rawValue: wf)
             return wfToImageString.image(isDayMode: false)
         }
         
@@ -366,7 +366,7 @@ extension WeeklyWeatherVM {
     func setWeeklyChartInformationImageAndRainPercent(three2tenDay item: MidTermForecastSkyState) {
         
         func weatherImageAndRainfallPercent(wf: String, rnSt: Int) -> (String, String) {
-            let wfToImageString = midTermForecastUtil.convertSkyState(rawValue: wf).image(isDayMode: false)
+            let wfToImageString = midForecastUtil.convertSkyState(rawValue: wf).image(isDayMode: false)
             return (wfToImageString, rnSt.toString)
         }
         
@@ -386,7 +386,7 @@ extension WeeklyWeatherVM {
         // completed 체크
         
         let maxTemps = weeklyChartInformation.maxTemps.max()
-        weeklyChartInformation.yList = midTermForecastUtil.temperatureChartYList(maxTemp: Int(maxTemps ?? 0))
+        weeklyChartInformation.yList = midForecastUtil.temperatureChartYList(maxTemp: Int(maxTemps ?? 0))
     }
 }
 
