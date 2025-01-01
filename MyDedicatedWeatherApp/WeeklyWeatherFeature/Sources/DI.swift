@@ -14,7 +14,7 @@ struct DI {
         .init(
             shortForecastUtil: ShortForecastUtil(),
             commonForecastUtil: .shared,
-            midForecastUtil: MidForecastUtil()
+            midForecastUtil: .shared
         )
     }
 }

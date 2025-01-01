@@ -22,7 +22,7 @@ struct WeatherWidgetVM {
     private let findDustLookUpUtil: FineDustLookUpUtil = .shared
     private let veryShortForecastUtil: VeryShortForecastUtil = .init()
     private let shortForecastUtil: ShortForecastUtil = .init()
-    private let midForecastUtil: MidForecastUtil = .init()
+    private let midForecastUtil: MidForecastUtil = .shared
     private let commonUtil: CommonUtil = .shared
     
     init(

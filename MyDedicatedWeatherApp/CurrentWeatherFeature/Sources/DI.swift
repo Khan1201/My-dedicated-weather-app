@@ -16,7 +16,7 @@ struct DI {
             commonForecastUtil: .shared,
             veryShortForecastUtil: VeryShortForecastUtil(),
             shortForecastUtil: ShortForecastUtil(),
-            midForecastUtil: MidForecastUtil(),
+            midForecastUtil: .shared,
             fineDustLookUpUtil: .shared,
             veryShortForecastService: VeryShortForecastServiceImp(),
             shortForecastService: ShortForecastServiceImp(),

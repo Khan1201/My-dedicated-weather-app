@@ -8,9 +8,9 @@
 import Foundation
 
 public struct MidForecastUtil {
-    public init() {
-        
-    }
+    private init() { }
+
+    public static let shared = MidForecastUtil()
     
     public func convertSkyState(rawValue: String) -> WeatherAPIValue {
         SkyStateConverter.convert(rawValue: rawValue)
