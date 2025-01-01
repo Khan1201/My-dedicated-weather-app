@@ -23,9 +23,7 @@ public final class ContentEO: ObservableObject {
     
     @Published public private(set) var skyType: WeatherAPIValue?
     @Published public private(set) var isDayMode: Bool = false
-    
-    var commonForecastUtil = CommonForecastUtil()
-  
+      
     public init() {}
 }
 

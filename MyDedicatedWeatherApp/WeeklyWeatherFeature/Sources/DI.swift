@@ -13,7 +13,7 @@ struct DI {
     static func weeklyWeatherVM() -> WeeklyWeatherVM {
         .init(
             shortForecastUtil: ShortForecastUtil(),
-            commonForecastUtil: CommonForecastUtil(),
+            commonForecastUtil: .shared,
             midForecastUtil: MidForecastUtil()
         )
     }

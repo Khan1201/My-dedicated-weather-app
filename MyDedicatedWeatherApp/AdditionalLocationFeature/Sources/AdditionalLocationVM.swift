@@ -16,7 +16,7 @@ final class AdditionalLocationVM: ObservableObject {
     @Published var tempItems: [Weather.WeatherImageAndMinMax] = Dummy.weatherImageAndMinMax()
     @Published var locationInfs: [LocationInformation] = []
         
-    private let commonForecastUtil: CommonForecastUtil = CommonForecastUtil()
+    private let commonForecastUtil: CommonForecastUtil = .shared
     private let veryShortForecastUtil: VeryShortForecastUtil = VeryShortForecastUtil()
     private let shortForecastUtil: ShortForecastUtil = ShortForecastUtil()
     private let commonUtil: CommonUtil = .shared

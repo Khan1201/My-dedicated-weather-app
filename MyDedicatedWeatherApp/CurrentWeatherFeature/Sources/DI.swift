@@ -13,7 +13,7 @@ struct DI {
     static func currentWeatherVM() -> CurrentWeatherVM {
         return .init(
             commonUtil: .shared,
-            commonForecastUtil: CommonForecastUtil(),
+            commonForecastUtil: .shared,
             veryShortForecastUtil: VeryShortForecastUtil(),
             shortForecastUtil: ShortForecastUtil(),
             midForecastUtil: MidForecastUtil(),

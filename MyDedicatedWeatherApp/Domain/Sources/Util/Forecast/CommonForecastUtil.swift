@@ -7,10 +7,10 @@
 
 import Foundation
 
-public struct CommonForecastUtil {
-    
-    public init() {}
+public final class CommonForecastUtil {
+    private init() { }
 
+    public static let shared = CommonForecastUtil()
     /**
      초단기예보 or 단기예보에서 사용
      강수량 값, 하늘상태 값 -> (날씨 String,  날씨 이미지 String)
