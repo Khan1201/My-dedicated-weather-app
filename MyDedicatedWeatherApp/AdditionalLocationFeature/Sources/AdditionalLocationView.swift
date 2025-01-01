@@ -14,7 +14,7 @@ public struct AdditionalLocationView: View {
     @Binding var progress: AdditionalLocationProgress
     let fetchNewLocation: (LocationInformation, Bool) -> Void
     
-    @StateObject var vm: AdditionalLocationVM = AdditionalLocationVM()
+    @StateObject var vm: AdditionalLocationVM = DI.additionalLocationVM()
     @EnvironmentObject var currentLocationEO: CurrentLocationEO
     
     @State private var navNextView: Bool = false

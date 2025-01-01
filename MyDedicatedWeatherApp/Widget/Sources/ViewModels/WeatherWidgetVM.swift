@@ -11,6 +11,12 @@ import Domain
 import Core
 
 struct WeatherWidgetVM {
+    private let commonUtil: CommonUtil
+    private let commonForecastUtil: CommonForecastUtil
+    private let findDustLookUpUtil: FineDustLookUpUtil
+    private let veryShortForecastUtil: VeryShortForecastUtil
+    private let shortForecastUtil: ShortForecastUtil
+    private let midForecastUtil: MidForecastUtil
     
     private let veryShortForecastService: VeryShortForecastService
     private let shortForecastService: ShortForecastService
@@ -18,19 +24,25 @@ struct WeatherWidgetVM {
     private let dustForecastService: DustForecastService
     
     private let serviceKey: String = Bundle.main.object(forInfoDictionaryKey: "public_api_key") as? String ?? ""
-    private let commonForecastUtil: CommonForecastUtil = .shared
-    private let findDustLookUpUtil: FineDustLookUpUtil = .shared
-    private let veryShortForecastUtil: VeryShortForecastUtil = .shared
-    private let shortForecastUtil: ShortForecastUtil = .shared
-    private let midForecastUtil: MidForecastUtil = .shared
-    private let commonUtil: CommonUtil = .shared
     
     init(
-        veryShortForecastService: VeryShortForecastService = VeryShortForecastServiceImp(),
-        shortForecastService: ShortForecastService = ShortForecastServiceImp(),
-        midTermForecastService: MidtermForecastService = MidTermForecastServiceImp(),
-        dustForecastService: DustForecastService = DustForecastServiceImp()
+        commonUtil: CommonUtil,
+        commonForecastUtil: CommonForecastUtil,
+        findDustLookUpUtil: FineDustLookUpUtil,
+        veryShortForecastUtil: VeryShortForecastUtil,
+        shortForecastUtil: ShortForecastUtil,
+        midForecastUtil: MidForecastUtil,
+        veryShortForecastService: VeryShortForecastService,
+        shortForecastService: ShortForecastService,
+        midTermForecastService: MidtermForecastService,
+        dustForecastService: DustForecastService
     ) {
+        self.commonUtil = commonUtil
+        self.commonForecastUtil = commonForecastUtil
+        self.findDustLookUpUtil = findDustLookUpUtil
+        self.veryShortForecastUtil = veryShortForecastUtil
+        self.shortForecastUtil = shortForecastUtil
+        self.midForecastUtil = midForecastUtil
         self.veryShortForecastService = veryShortForecastService
         self.shortForecastService = shortForecastService
         self.midTermForecastService = midTermForecastService

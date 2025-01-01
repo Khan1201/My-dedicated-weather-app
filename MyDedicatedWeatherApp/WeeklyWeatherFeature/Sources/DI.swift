@@ -1,6 +1,6 @@
 //
-//  File.swift
-//  
+//  DI.swift
+//
 //
 //  Created by 윤형석 on 12/14/24.
 //
@@ -14,7 +14,9 @@ struct DI {
         .init(
             shortForecastUtil: .shared,
             commonForecastUtil: .shared,
-            midForecastUtil: .shared
+            midForecastUtil: .shared,
+            shortForecastService: ShortForecastServiceImp(),
+            midtermForecastService: MidTermForecastServiceImp()
         )
     }
 }

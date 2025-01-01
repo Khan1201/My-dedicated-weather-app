@@ -15,11 +15,11 @@ final class AdditionalLocationVM: ObservableObject {
     @Published var gpsTempItem: Weather.WeatherImageAndMinMax = .init(weatherImage: "", currentTemp: "", minMaxTemp: ("", ""))
     @Published var tempItems: [Weather.WeatherImageAndMinMax] = Dummy.weatherImageAndMinMax()
     @Published var locationInfs: [LocationInformation] = []
-        
-    private let commonForecastUtil: CommonForecastUtil = .shared
-    private let veryShortForecastUtil: VeryShortForecastUtil = .shared
-    private let shortForecastUtil: ShortForecastUtil = .shared
-    private let commonUtil: CommonUtil = .shared
+    
+    private let commonUtil: CommonUtil
+    private let commonForecastUtil: CommonForecastUtil
+    private let veryShortForecastUtil: VeryShortForecastUtil
+    private let shortForecastUtil: ShortForecastUtil
     
     private let veryShortForecastService: VeryShortForecastService
     private let shortForecastService: ShortForecastService
@@ -28,9 +28,17 @@ final class AdditionalLocationVM: ObservableObject {
     var currentTask: Task<(), Never>?
     
     init(
-        veryShortForecastService: VeryShortForecastService = VeryShortForecastServiceImp(),
-        shortForecastService: ShortForecastService = ShortForecastServiceImp()
+        commonUtil: CommonUtil,
+        commonForecastUtil: CommonForecastUtil,
+        veryShortForecastUtil: VeryShortForecastUtil,
+        shortForecastUtil: ShortForecastUtil,
+        veryShortForecastService: VeryShortForecastService,
+        shortForecastService: ShortForecastService
     ) {
+        self.commonUtil = commonUtil
+        self.commonForecastUtil = commonForecastUtil
+        self.veryShortForecastUtil = veryShortForecastUtil
+        self.shortForecastUtil = shortForecastUtil
         self.veryShortForecastService = veryShortForecastService
         self.shortForecastService = shortForecastService
         self.initAllLocalities()

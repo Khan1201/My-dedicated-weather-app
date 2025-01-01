@@ -9,7 +9,7 @@ import WidgetKit
 
 struct Provider: TimelineProvider {
     
-    let widgetVM: WeatherWidgetVM = WeatherWidgetVM()
+    let widgetVM: WeatherWidgetVM = DI.weatherWidgetVM()
     
     func placeholder(in context: Context) -> SimpleEntry {
         Dummy.simpleEntry()

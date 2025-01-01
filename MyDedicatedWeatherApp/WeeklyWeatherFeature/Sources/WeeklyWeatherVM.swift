@@ -51,8 +51,8 @@ final class WeeklyWeatherVM: ObservableObject {
         shortForecastUtil: ShortForecastUtil,
         commonForecastUtil: CommonForecastUtil,
         midForecastUtil: MidForecastUtil,
-        shortForecastService: ShortForecastService = ShortForecastServiceImp(),
-        midtermForecastService: MidtermForecastService = MidTermForecastServiceImp()
+        shortForecastService: ShortForecastService,
+        midtermForecastService: MidtermForecastService
     ) {
         self.shortForecastUtil = shortForecastUtil
         self.commonForecastUtil = commonForecastUtil
