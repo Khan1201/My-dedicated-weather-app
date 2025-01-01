@@ -13,7 +13,7 @@ struct DI {
     static func currentWeatherVM() -> CurrentWeatherVM {
         return .init(
             commonForecastUtil: CommonForecastUtil(),
-            veryShortTermForecastUtil: VeryShortTermForecastUtil(),
+            veryShortForecastUtil: VeryShortForecastUtil(),
             shortTermForecastUtil: ShortTermForecastUtil(),
             midTermForecastUtil: MidTermForecastUtil(),
             fineDustLookUpUtil: FineDustLookUpUtil(),

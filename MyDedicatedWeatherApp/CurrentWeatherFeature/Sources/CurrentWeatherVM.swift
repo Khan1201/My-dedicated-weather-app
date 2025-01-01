@@ -60,7 +60,7 @@ final class CurrentWeatherVM: ObservableObject {
     weak var contentEODelegate: ContentEODelegate?
     
     private let commonForecastUtil: CommonForecastUtil
-    private let veryShortTermForecastUtil: VeryShortTermForecastUtil
+    private let veryShortForecastUtil: VeryShortForecastUtil
     private let shortTermForecastUtil: ShortTermForecastUtil
     private let midTermForecastUtil: MidTermForecastUtil
     private let fineDustLookUpUtil: FineDustLookUpUtil
@@ -72,7 +72,7 @@ final class CurrentWeatherVM: ObservableObject {
     
     init(
         commonForecastUtil: CommonForecastUtil,
-        veryShortTermForecastUtil: VeryShortTermForecastUtil,
+        veryShortForecastUtil: VeryShortForecastUtil,
         shortTermForecastUtil: ShortTermForecastUtil,
         midTermForecastUtil: MidTermForecastUtil,
         fineDustLookUpUtil: FineDustLookUpUtil,
@@ -82,7 +82,7 @@ final class CurrentWeatherVM: ObservableObject {
         kakaoAddressService: KakaoAddressService
     ) {
         self.commonForecastUtil = commonForecastUtil
-        self.veryShortTermForecastUtil = veryShortTermForecastUtil
+        self.veryShortForecastUtil = veryShortForecastUtil
         self.shortTermForecastUtil = shortTermForecastUtil
         self.midTermForecastUtil = midTermForecastUtil
         self.fineDustLookUpUtil = fineDustLookUpUtil
