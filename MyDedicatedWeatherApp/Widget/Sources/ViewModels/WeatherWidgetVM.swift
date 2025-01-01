@@ -20,7 +20,7 @@ struct WeatherWidgetVM {
     private let serviceKey: String = Bundle.main.object(forInfoDictionaryKey: "public_api_key") as? String ?? ""
     private let commonForecastUtil: CommonForecastUtil = .shared
     private let findDustLookUpUtil: FineDustLookUpUtil = .shared
-    private let veryShortForecastUtil: VeryShortForecastUtil = .init()
+    private let veryShortForecastUtil: VeryShortForecastUtil = .shared
     private let shortForecastUtil: ShortForecastUtil = .shared
     private let midForecastUtil: MidForecastUtil = .shared
     private let commonUtil: CommonUtil = .shared

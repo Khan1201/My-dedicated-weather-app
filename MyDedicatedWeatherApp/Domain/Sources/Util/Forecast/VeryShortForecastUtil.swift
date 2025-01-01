@@ -8,7 +8,9 @@
 import Foundation
 
 public struct VeryShortForecastUtil {
-    public init() {}
+    private init() { }
+
+    public static let shared = VeryShortForecastUtil()
     /**
      바람속도 값 변환
      

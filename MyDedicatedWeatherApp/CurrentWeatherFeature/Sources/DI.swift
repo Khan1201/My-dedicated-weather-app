@@ -14,7 +14,7 @@ struct DI {
         return .init(
             commonUtil: .shared,
             commonForecastUtil: .shared,
-            veryShortForecastUtil: VeryShortForecastUtil(),
+            veryShortForecastUtil: .shared,
             shortForecastUtil: .shared,
             midForecastUtil: .shared,
             fineDustLookUpUtil: .shared,
