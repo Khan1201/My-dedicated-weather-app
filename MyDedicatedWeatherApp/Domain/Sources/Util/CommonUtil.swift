@@ -9,7 +9,9 @@ import Foundation
 import SwiftUI
 
 public final class CommonUtil {
-    public static let shared = CommonUtil()
+    private init() { }
+
+    public static let shared = CommonUtil()    
     
     public var isNotNocheDevice: Bool = UIScreen.main.bounds.width < 812 // iphone X height
     
