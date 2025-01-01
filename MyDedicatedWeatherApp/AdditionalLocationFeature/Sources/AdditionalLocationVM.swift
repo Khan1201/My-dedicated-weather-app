@@ -19,6 +19,7 @@ final class AdditionalLocationVM: ObservableObject {
     private let commonForecastUtil: CommonForecastUtil = CommonForecastUtil()
     private let veryShortForecastUtil: VeryShortForecastUtil = VeryShortForecastUtil()
     private let shortTermForecastUtil: ShortTermForecastUtil = ShortTermForecastUtil()
+    private let commonUtil: CommonUtil = .shared
     
     private let veryShortForecastService: VeryShortForecastService
     private let shortForecastService: ShortForecastService
@@ -272,7 +273,7 @@ extension AdditionalLocationVM {
                 case .success(let success):
                     let latitude: Double = success.0
                     let longitude: Double = success.1
-                    let xy: Gps2XY.LatXLngY = self.commonForecastUtil.convertGPS2XY(mode: .toXY, lat_X: latitude, lng_Y: longitude)
+                    let xy: Gps2XY.LatXLngY = self.commonUtil.convertGPS2XY(mode: .toXY, lat_X: latitude, lng_Y: longitude)
                     let sunRiseAndSunSetHHmm = sunriseSunsetHHmm(longLati: (String(longitude), String(latitude)))
                     
                     currentTask = Task(priority: .userInitiated) {

@@ -12,6 +12,7 @@ import Data
 struct DI {
     static func currentWeatherVM() -> CurrentWeatherVM {
         return .init(
+            commonUtil: .shared,
             commonForecastUtil: CommonForecastUtil(),
             veryShortForecastUtil: VeryShortForecastUtil(),
             shortTermForecastUtil: ShortTermForecastUtil(),

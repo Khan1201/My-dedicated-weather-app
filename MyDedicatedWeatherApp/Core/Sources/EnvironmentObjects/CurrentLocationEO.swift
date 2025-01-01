@@ -57,7 +57,7 @@ public final class CurrentLocationEO: NSObject, ObservableObject, CurrentLocatio
         .init(longitude: longitude, latitude: latitude, xy: xy, locality: gpsLocality, subLocality: gpsSubLocality, fullAddress: gpsFullAddress)
     }
     
-    private let commonForecastUtil: CommonForecastUtil = CommonForecastUtil()
+    private let commonUtil: CommonUtil = .shared
     private var locationManager = CLLocationManager()
     
     public override init() {
@@ -140,7 +140,7 @@ public final class CurrentLocationEO: NSObject, ObservableObject, CurrentLocatio
     }
     
     public func convertLocationToXY() -> Gps2XY.LatXLngY {
-        let xy: Gps2XY.LatXLngY = commonForecastUtil.convertGPS2XY(
+        let xy: Gps2XY.LatXLngY = commonUtil.convertGPS2XY(
             mode: .toXY,
             lat_X: locationManager.location?.coordinate.latitude ?? 0,
             lng_Y:locationManager.location?.coordinate.longitude ?? 0

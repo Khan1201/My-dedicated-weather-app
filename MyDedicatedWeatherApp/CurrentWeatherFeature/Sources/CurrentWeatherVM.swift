@@ -59,6 +59,7 @@ final class CurrentWeatherVM: ObservableObject {
     weak var currentLocationEODelegate: CurrentLocationEODelegate?
     weak var contentEODelegate: ContentEODelegate?
     
+    private let commonUtil: CommonUtil
     private let commonForecastUtil: CommonForecastUtil
     private let veryShortForecastUtil: VeryShortForecastUtil
     private let shortTermForecastUtil: ShortTermForecastUtil
@@ -71,6 +72,7 @@ final class CurrentWeatherVM: ObservableObject {
     private let kakaoAddressService: KakaoAddressService
     
     init(
+        commonUtil: CommonUtil,
         commonForecastUtil: CommonForecastUtil,
         veryShortForecastUtil: VeryShortForecastUtil,
         shortTermForecastUtil: ShortTermForecastUtil,
@@ -81,6 +83,7 @@ final class CurrentWeatherVM: ObservableObject {
         dustForecastService: DustForecastService,
         kakaoAddressService: KakaoAddressService
     ) {
+        self.commonUtil = commonUtil
         self.commonForecastUtil = commonForecastUtil
         self.veryShortForecastUtil = veryShortForecastUtil
         self.shortTermForecastUtil = shortTermForecastUtil
@@ -539,7 +542,7 @@ extension CurrentWeatherVM {
                     
                 case .success(let success):
                     Task {
-                        let xy: Gps2XY.LatXLngY = self.commonForecastUtil.convertGPS2XY(mode: .toXY, lat_X: success.0, lng_Y: success.1)
+                        let xy: Gps2XY.LatXLngY = self.commonUtil.convertGPS2XY(mode: .toXY, lat_X: success.0, lng_Y: success.1)
                         let locationInf: LocationInformation = .init(
                             longitude: String(success.1),
                             latitude: String(success.0),
