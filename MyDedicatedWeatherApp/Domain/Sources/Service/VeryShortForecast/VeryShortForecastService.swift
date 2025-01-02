@@ -8,5 +8,5 @@
 import Foundation
 
 public protocol VeryShortForecastService {
-    func getCurrentItems(serviceKey: String, xy: Gps2XY.LatXLngY) async -> Result<[VeryShortOrShortTermForecast<VeryShortTermForecastCategory>], APIError>
+    func getCurrentItems(xy: Gps2XY.LatXLngY) async -> Result<[VeryShortOrShortTermForecast<VeryShortTermForecastCategory>], APIError>
 }

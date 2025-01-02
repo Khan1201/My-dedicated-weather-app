@@ -12,9 +12,9 @@ import Domain
 public struct ShortForecastServiceImp: ShortForecastService {
     public init() {}
     
-    public func getTodayItems(serviceKey: String, xy: Gps2XY.LatXLngY, reqRow: String) async -> Result<[VeryShortOrShortTermForecast<ShortTermForecastCategory>], APIError> {
+    public func getTodayItems(xy: Gps2XY.LatXLngY, reqRow: String) async -> Result<[VeryShortOrShortTermForecast<ShortTermForecastCategory>], APIError> {
         let parameters = VeryShortOrShortTermForecastReq(
-            serviceKey: serviceKey,
+            serviceKey: APIKey.publicApiKey,
             numOfRows: reqRow,
             baseDate: ReqParameters.shortForecastBaseDate,
             baseTime: ReqParameters.shortForecastBaseTime,
@@ -32,9 +32,9 @@ public struct ShortForecastServiceImp: ShortForecastService {
         return result.map { $0.item ?? [] }
     }
     
-    public func getTodayMinMaxItems(serviceKey: String, xy: Gps2XY.LatXLngY) async -> Result<[VeryShortOrShortTermForecast<ShortTermForecastCategory>], APIError> {
+    public func getTodayMinMaxItems(xy: Gps2XY.LatXLngY) async -> Result<[VeryShortOrShortTermForecast<ShortTermForecastCategory>], APIError> {
         let parameters = VeryShortOrShortTermForecastReq(
-            serviceKey: serviceKey,
+            serviceKey: APIKey.publicApiKey,
             numOfRows: "300",
             baseDate: ReqParameters.veryShortForecastBaseDate,
             baseTime: ReqParameters.veryShortForecastBaseTime,

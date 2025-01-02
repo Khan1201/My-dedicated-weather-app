@@ -12,10 +12,10 @@ import Domain
 public struct KakaoAddressServiceImp: KakaoAddressService {
     public init() {}
     
-    public func getKaKaoAddressBy(apiKey: String, longitude: String, latitude: String) async
+    public func getKaKaoAddressBy(longitude: String, latitude: String) async
     -> Result<KakaoAddress.DocumentsBase, APIError> {
         let parameters = KakaoAddressReq(x: longitude, y: latitude)
-        let header = HttpHeader.make(dic: ReqParameters.kakaoHeaderDic(apiKey: apiKey))
+        let header = HttpHeader.make(dic: ReqParameters.kakaoHeaderDic(apiKey: APIKey.kakaoApiKey))
 
         let result = await ApiRequester.request(
             url: Route.GET_KAKAO_ADDRESS.val,

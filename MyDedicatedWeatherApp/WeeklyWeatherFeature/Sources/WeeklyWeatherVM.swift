@@ -35,9 +35,7 @@ final class WeeklyWeatherVM: ObservableObject {
     private let midtermForecastService: MidtermForecastService
     
     public var currentLocationEODelegate: CurrentLocationEODelegate?
-    
-    private let publicApiKey: String = Bundle.main.object(forInfoDictionaryKey: "public_api_key") as? String ?? ""
-    
+        
     var timer: Timer?
     var timerNum: Int = 0
     var currentTask: Task<(), Never>?
@@ -76,7 +74,6 @@ extension WeeklyWeatherVM {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
         
         let result = await shortForecastService.getTodayItems(
-            serviceKey: publicApiKey,
             xy: .init(lat: 0, lng: 0, x: xy.0.toInt, y: xy.1.toInt),
             reqRow: "737"
         )
@@ -104,7 +101,6 @@ extension WeeklyWeatherVM {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
         
         let result = await midtermForecastService.getTempItems(
-            serviceKey: publicApiKey,
             fullAddress: fullAddress
         )
         
@@ -133,7 +129,6 @@ extension WeeklyWeatherVM {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
         
         let result = await midtermForecastService.getSkyStateItems(
-            serviceKey: publicApiKey,
             fullAddress: fullAddress
         )
         

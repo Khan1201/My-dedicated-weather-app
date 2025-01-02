@@ -12,9 +12,9 @@ import Domain
 public struct MidTermForecastServiceImp: MidtermForecastService {
     public init() { }
     
-    public func getTempItems(serviceKey: String, fullAddress: String) async -> Result<[MidTermForecastTemperature], APIError> {
+    public func getTempItems(fullAddress: String) async -> Result<[MidTermForecastTemperature], APIError> {
         let parameters: MidTermForecastReq = MidTermForecastReq(
-            serviceKey: serviceKey,
+            serviceKey: APIKey.publicApiKey,
             regId: ReqParameters.midForecastRegId(fullAddress: fullAddress, reqType: .temperature),
             stnId: nil,
             tmFc: ReqParameters.midForecastTmFcPar
@@ -30,9 +30,9 @@ public struct MidTermForecastServiceImp: MidtermForecastService {
         return result.map { $0.item ?? [] }
     }
     
-    public func getSkyStateItems(serviceKey: String, fullAddress: String) async -> Result<[MidTermForecastSkyState], APIError> {
+    public func getSkyStateItems(fullAddress: String) async -> Result<[MidTermForecastSkyState], APIError> {
         let parameters: MidTermForecastReq = MidTermForecastReq(
-            serviceKey: serviceKey,
+            serviceKey: APIKey.publicApiKey,
             regId: ReqParameters.midForecastRegId(fullAddress: fullAddress, reqType: .skystate),
             stnId: nil,
             tmFc: ReqParameters.midForecastTmFcPar

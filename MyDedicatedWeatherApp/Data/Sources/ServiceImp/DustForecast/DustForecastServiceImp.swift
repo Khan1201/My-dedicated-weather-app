@@ -12,9 +12,9 @@ import Domain
 public struct DustForecastServiceImp: DustForecastService {
     public init() {}
     
-    public func getXYOfStation(serviceKey: String, subLocality: String) async -> Result<[DustForecastStationXY], APIError> {
+    public func getXYOfStation(subLocality: String) async -> Result<[DustForecastStationXY], APIError> {
         let parameters: DustForecastStationXYReq = DustForecastStationXYReq(
-            serviceKey: serviceKey,
+            serviceKey: APIKey.publicApiKey,
             umdName: subLocality
         )
         
@@ -28,9 +28,9 @@ public struct DustForecastServiceImp: DustForecastService {
         return result.map { $0.items ?? [] }
     }
     
-    public func getStationInfo(serviceKey: String, tmXAndtmY: (String, String)) async -> Result<[DustForecastStation], APIError> {
+    public func getStationInfo(tmXAndtmY: (String, String)) async -> Result<[DustForecastStation], APIError> {
         let parameters: DustForecastStationReq = DustForecastStationReq(
-            serviceKey: serviceKey,
+            serviceKey: APIKey.publicApiKey,
             tmX: tmXAndtmY.0,
             tmY: tmXAndtmY.1
         )
@@ -45,9 +45,9 @@ public struct DustForecastServiceImp: DustForecastService {
         return result.map { $0.items ?? [] }
     }
     
-    public func getRealTimeDustItems(serviceKey: String, stationName: String) async -> Result<[RealTimeFindDustForecast], APIError> {
+    public func getRealTimeDustItems(stationName: String) async -> Result<[RealTimeFindDustForecast], APIError> {
         let parameters: RealTimeFindDustForecastReq = RealTimeFindDustForecastReq(
-            serviceKey: serviceKey,
+            serviceKey: APIKey.publicApiKey,
             stationName: stationName
         )
         

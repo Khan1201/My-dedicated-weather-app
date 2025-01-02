@@ -24,7 +24,6 @@ final class AdditionalLocationVM: ObservableObject {
     private let veryShortForecastService: VeryShortForecastService
     private let shortForecastService: ShortForecastService
     
-    private let publicApiKey: String = Bundle.main.object(forInfoDictionaryKey: "public_api_key") as? String ?? ""
     var currentTask: Task<(), Never>?
     
     init(
@@ -74,7 +73,7 @@ extension AdditionalLocationVM {
      - 54 ~ 59: WSD(풍속)
      */
     func getCurrentItems(xy: Gps2XY.LatXLngY, sunriseAndsunsetHHmm: (String, String)) async -> (String, String) {
-        let result = await veryShortForecastService.getCurrentItems(serviceKey: publicApiKey, xy: xy)
+        let result = await veryShortForecastService.getCurrentItems(xy: xy)
         
         switch result {
         case .success(let items):
@@ -122,7 +121,7 @@ extension AdditionalLocationVM {
             return (min.toString, max.toString)
         }
         
-        let result = await shortForecastService.getTodayMinMaxItems(serviceKey: publicApiKey,xy: xy)
+        let result = await shortForecastService.getTodayMinMaxItems(xy: xy)
 
         switch result {
         case .success(let items):

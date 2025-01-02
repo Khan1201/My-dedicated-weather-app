@@ -8,5 +8,5 @@
 import Foundation
 
 public protocol KakaoAddressService {
-    func getKaKaoAddressBy(apiKey: String, longitude: String, latitude: String) async -> Result<KakaoAddress.DocumentsBase, APIError>
+    func getKaKaoAddressBy(longitude: String, latitude: String) async -> Result<KakaoAddress.DocumentsBase, APIError>
 }

@@ -8,7 +8,7 @@
 import Foundation
 
 public protocol DustForecastService {
-    func getXYOfStation(serviceKey: String, subLocality: String) async -> Result<[DustForecastStationXY], APIError>
-    func getStationInfo(serviceKey: String, tmXAndtmY: (String, String)) async -> Result<[DustForecastStation], APIError>
-    func getRealTimeDustItems(serviceKey: String, stationName: String) async -> Result<[RealTimeFindDustForecast], APIError>
+    func getXYOfStation(subLocality: String) async -> Result<[DustForecastStationXY], APIError>
+    func getStationInfo(tmXAndtmY: (String, String)) async -> Result<[DustForecastStation], APIError>
+    func getRealTimeDustItems(stationName: String) async -> Result<[RealTimeFindDustForecast], APIError>
 }

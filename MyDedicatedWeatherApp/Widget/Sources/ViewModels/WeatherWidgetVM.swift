@@ -22,9 +22,7 @@ struct WeatherWidgetVM {
     private let shortForecastService: ShortForecastService
     private let midTermForecastService: MidtermForecastService
     private let dustForecastService: DustForecastService
-    
-    private let serviceKey: String = Bundle.main.object(forInfoDictionaryKey: "public_api_key") as? String ?? ""
-    
+        
     init(
         commonUtil: CommonUtil,
         commonForecastUtil: CommonForecastUtil,
@@ -174,7 +172,6 @@ extension WeatherWidgetVM {
         let y = UserDefaults.shared.string(forKey: UserDefaultsKeys.y) ?? ""
         
         let result = await veryShortForecastService.getCurrentItems(
-            serviceKey: serviceKey,
             xy: .init(lat: 0, lng: 0, x: x.toInt, y: y.toInt)
         )
         
@@ -202,7 +199,6 @@ extension WeatherWidgetVM {
         let y = UserDefaults.shared.string(forKey: UserDefaultsKeys.y) ?? ""
         
         let result = await shortForecastService.getTodayItems(
-            serviceKey: serviceKey,
             xy: .init(lat: 0, lng: 0, x: x.toInt, y: y.toInt),
             reqRow: "737"
         )
@@ -232,7 +228,6 @@ extension WeatherWidgetVM {
         let y = UserDefaults.shared.string(forKey: UserDefaultsKeys.y) ?? ""
         
         let result = await shortForecastService.getTodayMinMaxItems(
-            serviceKey: serviceKey,
             xy: .init(lat: 0, lng: 0, x: x.toInt, y: y.toInt)
         )
         
@@ -259,7 +254,6 @@ extension WeatherWidgetVM {
         let stationName: String = UserDefaults.shared.string(forKey: UserDefaultsKeys.dustStationName) ?? ""
 
         let result = await dustForecastService.getRealTimeDustItems(
-            serviceKey: serviceKey,
             stationName: stationName
         )
         
@@ -286,7 +280,6 @@ extension WeatherWidgetVM {
         let fullAddress: String = UserDefaults.shared.string(forKey: UserDefaultsKeys.fullAddress) ?? ""
         
         let result = await midTermForecastService.getTempItems(
-            serviceKey: serviceKey,
             fullAddress: fullAddress
         )
         
@@ -313,7 +306,6 @@ extension WeatherWidgetVM {
         let fullAddress: String = UserDefaults.shared.string(forKey: UserDefaultsKeys.fullAddress) ?? ""
         
         let result = await midTermForecastService.getSkyStateItems(
-            serviceKey: serviceKey,
             fullAddress: fullAddress
         )
         

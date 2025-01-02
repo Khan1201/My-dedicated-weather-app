@@ -12,10 +12,10 @@ import Domain
 public struct VeryShortForecastServiceImp: VeryShortForecastService {
     public init() { }
 
-    public func getCurrentItems(serviceKey: String, xy: Gps2XY.LatXLngY) async -> Result<[VeryShortOrShortTermForecast<VeryShortTermForecastCategory>], APIError>
+    public func getCurrentItems(xy: Gps2XY.LatXLngY) async -> Result<[VeryShortOrShortTermForecast<VeryShortTermForecastCategory>], APIError>
     {
         let parameters: VeryShortOrShortTermForecastReq = VeryShortOrShortTermForecastReq(
-            serviceKey: serviceKey,
+            serviceKey: APIKey.publicApiKey,
             numOfRows: "300",
             baseDate: ReqParameters.veryShortForecastBaseDate,
             baseTime: ReqParameters.veryShortForecastBaseTime,

@@ -8,6 +8,6 @@
 import Foundation
 
 public protocol ShortForecastService {
-    func getTodayItems(serviceKey: String, xy: Gps2XY.LatXLngY, reqRow: String) async -> Result<[VeryShortOrShortTermForecast<ShortTermForecastCategory>], APIError>
-    func getTodayMinMaxItems(serviceKey: String, xy: Gps2XY.LatXLngY) async -> Result<[VeryShortOrShortTermForecast<ShortTermForecastCategory>], APIError>
+    func getTodayItems(xy: Gps2XY.LatXLngY, reqRow: String) async -> Result<[VeryShortOrShortTermForecast<ShortTermForecastCategory>], APIError>
+    func getTodayMinMaxItems(xy: Gps2XY.LatXLngY) async -> Result<[VeryShortOrShortTermForecast<ShortTermForecastCategory>], APIError>
 }
