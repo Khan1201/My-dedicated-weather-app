@@ -53,46 +53,6 @@ final class AdditionalLocationVM: ObservableObject {
 // MARK: - Request funcs..
 
 extension AdditionalLocationVM {
-    
-    /**
-     Request 일출 및 일몰 시간 item
-     !!! Must first called when location manager updated !!!
-     
-     - parameter long: longitude(경도),
-     - parameter lat: latitude(위도)
-     */
-//    func requestSunRiseAndSunSetHHmm(long: String, lat: String) async -> (String, String) {
-//
-//        do {
-//            let parser = try await SunAndMoonRiseByXMLService(
-//                queryItem: .init(
-//                    serviceKey: Env.shared.openDataApiResponseKey,
-//                    locdate: Date().toString(format: "yyyyMMdd"),
-//                    longitude: long,
-//                    latitude: lat
-//                )
-//            )
-//            CommonUtil.shared.printSuccess(
-//                funcTitle: "requestSunRiseAndSunSetHHmm",
-//                value: parser.result
-//            )
-//            
-//            return (parser.result.sunrise, parser.result.sunset)
-//            
-//        } catch APIError.transportError {
-//            DispatchQueue.main.async {
-////                self.errorMessage = "API 통신 에러"
-//            }
-//            return ("", "")
-//
-//        } catch {
-//            DispatchQueue.main.async {
-////                self.errorMessage = "알 수 없는 오류"
-//            }
-//            return ("", "")
-//        }
-//    }
-    
     /**
      Request 초 단기예보 Items
      - parameter xy: 공공데이터 값으로 변환된 X, Y

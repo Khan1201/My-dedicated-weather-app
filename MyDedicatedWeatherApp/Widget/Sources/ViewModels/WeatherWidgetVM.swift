@@ -254,41 +254,6 @@ extension WeatherWidgetVM {
         }
     }
     
-    /// Return (일출시간, 일몰시간)
-//    func requestSunriseSunset() async -> (String, String) {
-//        let latitude = UserDefaults.shared.string(forKey: UserDefaultsKeys.latitude) ?? ""
-//        let longitude = UserDefaults.shared.string(forKey: UserDefaultsKeys.longitude) ?? ""
-//        
-//        do {
-//            let parser = try await SunriseAndSunsetGetService(
-//                queryItem: .init(
-//                    serviceKey: Env.shared.openDataApiResponseKey,
-//                    locdate: Date().toString(format: "yyyyMMdd"),
-//                    longitude: longitude,
-//                    latitude: latitude
-//                )
-//            )
-//            
-//            commonUtil.printSuccess(
-//                funcTitle: "requestSunriseSunset()",
-//                value: """
-//                일출시간: \(parser.result.sunrise)
-//                일몰시간: \(parser.result.sunset)
-//                """
-//            )
-//            
-//            return (parser.result.sunrise, parser.result.sunset)
-//            
-//        } catch {
-//            commonUtil.printError(
-//                funcTitle: "requestSunriseSunset()",
-//                description: "일출 일물 시간 request 실패"
-//            )
-//            
-//            return ("", "")
-//        }
-//    }
-    
     /// Return 미세먼지 및 초미세먼지 items
     func getRealTimeDustItems() async -> [RealTimeFindDustForecast] {
         let stationName: String = UserDefaults.shared.string(forKey: UserDefaultsKeys.dustStationName) ?? ""
