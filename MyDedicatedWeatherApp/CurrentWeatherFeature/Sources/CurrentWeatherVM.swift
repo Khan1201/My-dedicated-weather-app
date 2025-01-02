@@ -119,7 +119,7 @@ extension CurrentWeatherVM {
     }
 }
 
-// MARK: - Request HTTP..
+// MARK: - Fetch..
 
 extension CurrentWeatherVM {
     /**
@@ -194,7 +194,7 @@ extension CurrentWeatherVM {
      */
     func fetchTodayItems(xy: Gps2XY.LatXLngY) async {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
-
+        
         let result = await shortForecastService.getTodayItems(serviceKey: publicApiKey, xy: xy, reqRow: "300")
         
         switch result {
@@ -213,7 +213,7 @@ extension CurrentWeatherVM {
     /// 02:00 or 23:00 으로 호출해야 하므로, 따로 다시 요청한다.
     func fetchTodayMinMaxItems(xy: Gps2XY.LatXLngY) async {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
-
+        
         let result = await shortForecastService.getTodayMinMaxItems(serviceKey: publicApiKey, xy: xy)
         
         switch result {
@@ -232,7 +232,7 @@ extension CurrentWeatherVM {
      */
     func fetchRealTimeDustItems() async {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
-
+        
         let result = await dustForecastService.getRealTimeDustItems(serviceKey: publicApiKey, stationName: DustStationRequestParam.stationName)
         
         switch result {
@@ -261,7 +261,7 @@ extension CurrentWeatherVM {
         switch result {
         case .success(let items):
             setDustStationRequestParamXY(items: items, locality: locality)
-                
+            
             let reqEndTime = CFAbsoluteTimeGetCurrent() - reqStartTime
             print("미세먼지 측정소 xy좌표 get 호출 소요시간: \(reqEndTime)")
         case .failure(let error):
@@ -285,7 +285,7 @@ extension CurrentWeatherVM {
             
             guard let firstItem = items.first else { return }
             UserDefaults.setWidgetShared(firstItem.stationName, to: .dustStationName)
-
+            
             let reqEndTime = CFAbsoluteTimeGetCurrent() - reqStartTime
             print("미세먼지 측정소 get 호출 소요시간: \(reqEndTime)")
         case .failure(let error):
@@ -303,7 +303,7 @@ extension CurrentWeatherVM {
      */
     func fetchKaKaoAddressBy(longitude: String, latitude: String, isCurrentLocationRequested: Bool) async {
         let startTime = CFAbsoluteTimeGetCurrent()
-
+        
         let result = await kakaoAddressService.getKaKaoAddressBy(
             apiKey: kakaoApiKey,
             longitude: longitude,
@@ -324,11 +324,75 @@ extension CurrentWeatherVM {
                 UserDefaults.setWidgetShared(self.subLocalityByKakaoAddress, to: .subLocality)
                 UserDefaults.setWidgetShared(item.documents[0].address.fullAddress, to: .fullAddress)
             }
-
+            
             let durationTime = CFAbsoluteTimeGetCurrent() - startTime
             print("카카오 주소 req 소요시간: \(durationTime)")
         case .failure(let error):
             CustomLogger.error("\(error)")
+        }
+    }
+    
+    func fetchAdditionalLocationWeather(locationInf: LocationInformation, isNewAdd: Bool) {
+        LocationProvider.getLatitudeAndLongitude(address: locationInf.fullAddress) { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+                
+            case .success(let success):
+                Task {
+                    let xy: Gps2XY.LatXLngY = self.commonUtil.convertGPS2XY(mode: .toXY, lat_X: success.0, lng_Y: success.1)
+                    let locationInf: LocationInformation = .init(
+                        longitude: String(success.1),
+                        latitude: String(success.0),
+                        xy: (String(xy.x), String(xy.y)),
+                        locality: locationInf.locality,
+                        subLocality: locationInf.subLocality,
+                        fullAddress: locationInf.fullAddress
+                    )
+                    
+                    self.additionalLocationProgress = .loading
+                    self.fetchCurrentWeatherAllData(locationInf: locationInf)
+                    await self.currentLocationEODelegate?.setCoordinateAndAllLocality(locationInf: locationInf)
+                    DispatchQueue.main.async {
+                        self.additionalLocationProgress = .completed
+                        self.openAdditionalLocationView = false
+                    }
+                    
+                    if isNewAdd {
+                        UserDefaults.standard.appendAdditionalLocation(locationInf)
+                    }
+                }
+                
+            case .failure(_):
+                DispatchQueue.main.async {
+                    self.additionalLocationProgress = .notFound
+                }
+            }
+        }
+    }
+    
+    func fetchCurrentWeatherAllData(locationInf: LocationInformation) {
+        let convertedXY: Gps2XY.LatXLngY = .init(lat: 0, lng: 0, x: locationInf.xy.0.toInt, y: locationInf.xy.1.toInt)
+        
+        initializeTask()
+        timerStart()
+        calculateAndSetSunriseSunset(longLati: (locationInf.longitude, locationInf.latitude))
+        currentTask = Task(priority: .high) {
+            Task(priority: .high) {
+                await fetchCurrentItems(xy: convertedXY)
+                await fetchTodayItems(xy: convertedXY)
+                await fetchTodayMinMaxItems(xy: convertedXY)
+            }
+            
+            Task(priority: .low) {
+                await fetchKaKaoAddressBy(longitude: locationInf.longitude, latitude: locationInf.latitude, isCurrentLocationRequested: locationInf.isGPSLocation)
+                await fetchXYOfDustStation(
+                    subLocality: locationInf.isGPSLocation ? subLocalityByKakaoAddress : locationInf.subLocality,
+                    locality: locationInf.locality
+                )
+                await fetchDustStationInfo(tmXAndtmY: DustStationRequestParam.tmXAndtmY)
+                await fetchRealTimeDustItems()
+            }
         }
     }
 }
@@ -336,7 +400,6 @@ extension CurrentWeatherVM {
 // MARK: - Set Variables..
 
 extension CurrentWeatherVM {
-    
     /**
      Set 초 단기예보 Items -> `currentTemperature`(현재 기온) varialbe
      
@@ -420,7 +483,7 @@ extension CurrentWeatherVM {
             items[tempIndex + 12].category == .TMN
             
             step = isExistTmxOrTmn ? 13 : 12
-
+            
             let skyType = commonForecastUtil.convertPrecipitationSkyStateOrSkyState(
                 ptyValue: items[ptyIndex].fcstValue,
                 skyValue: items[skyIndex].fcstValue
@@ -531,64 +594,9 @@ extension CurrentWeatherVM {
     }
 }
 
-// MARK: - On tap gestures..
-
-extension CurrentWeatherVM {
-    func fetchAdditionalLocationWeather(locationInf: LocationInformation, isNewAdd: Bool) {
-            LocationProvider.getLatitudeAndLongitude(address: locationInf.fullAddress) { [weak self] result in
-                guard let self = self else { return }
-                
-                switch result {
-                    
-                case .success(let success):
-                    Task {
-                        let xy: Gps2XY.LatXLngY = self.commonUtil.convertGPS2XY(mode: .toXY, lat_X: success.0, lng_Y: success.1)
-                        let locationInf: LocationInformation = .init(
-                            longitude: String(success.1),
-                            latitude: String(success.0),
-                            xy: (String(xy.x), String(xy.y)),
-                            locality: locationInf.locality,
-                            subLocality: locationInf.subLocality,
-                            fullAddress: locationInf.fullAddress
-                        )
-                        
-                        self.additionalLocationProgress = .loading
-                        self.fetchCurrentWeatherAllData(locationInf: locationInf)
-                        await self.currentLocationEODelegate?.setCoordinateAndAllLocality(locationInf: locationInf)
-                        DispatchQueue.main.async {
-                            self.additionalLocationProgress = .completed
-                            self.openAdditionalLocationView = false
-                        }
-                        
-                        if isNewAdd {
-                            UserDefaults.standard.appendAdditionalLocation(locationInf)
-                        }
-                    }
-                    
-                case .failure(_):
-                    DispatchQueue.main.async {
-                        self.additionalLocationProgress = .notFound
-                    }
-                }
-            }
-        }
-    
-    func retryAndShowNoticeFloater(locationInf: LocationInformation) {
-        noticeFloaterMessage = """
-        재시도 합니다.
-        기상청 서버 네트워크에 따라 속도가 느려질 수 있습니다 :)
-        """
-        showNoticeFloater = false
-        showNoticeFloater = true
-
-        performRefresh(locationInf: locationInf)
-    }
-}
-
 // MARK: - ETC funcs..
 
 extension CurrentWeatherVM {
-    
     func initLoadCompletedVariables() {
         isCurrentWeatherInformationLoaded = false
         isCurrentWeatherAnimationSetCompleted = false
@@ -659,29 +667,15 @@ extension CurrentWeatherVM {
         fetchCurrentWeatherAllData(locationInf: locationInf)
     }
     
-    func fetchCurrentWeatherAllData(locationInf: LocationInformation) {
-        let convertedXY: Gps2XY.LatXLngY = .init(lat: 0, lng: 0, x: locationInf.xy.0.toInt, y: locationInf.xy.1.toInt)
-
-        initializeTask()
-        timerStart()
-        calculateAndSetSunriseSunset(longLati: (locationInf.longitude, locationInf.latitude))
-        currentTask = Task(priority: .high) {
-            Task(priority: .high) {
-                await fetchCurrentItems(xy: convertedXY)
-                await fetchTodayItems(xy: convertedXY)
-                await fetchTodayMinMaxItems(xy: convertedXY)
-            }
-            
-            Task(priority: .low) {
-                await fetchKaKaoAddressBy(longitude: locationInf.longitude, latitude: locationInf.latitude, isCurrentLocationRequested: locationInf.isGPSLocation)
-                await fetchXYOfDustStation(
-                    subLocality: locationInf.isGPSLocation ? subLocalityByKakaoAddress : locationInf.subLocality,
-                    locality: locationInf.locality
-                )
-                await fetchDustStationInfo(tmXAndtmY: DustStationRequestParam.tmXAndtmY)
-                await fetchRealTimeDustItems()
-            }
-        }
+    func retryAndShowNoticeFloater(locationInf: LocationInformation) {
+        noticeFloaterMessage = """
+        재시도 합니다.
+        기상청 서버 네트워크에 따라 속도가 느려질 수 있습니다 :)
+        """
+        showNoticeFloater = false
+        showNoticeFloater = true
+        
+        performRefresh(locationInf: locationInf)
     }
 }
 
