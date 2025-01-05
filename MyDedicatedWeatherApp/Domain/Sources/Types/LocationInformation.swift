@@ -7,19 +7,21 @@
 
 import Foundation
 
-public struct LocationInformation {
+public struct LocationInformation: Codable {
     public let longitude: String
     public let latitude: String
-    public let xy: (String, String)
+    public let x: String
+    public let y: String
     public let locality: String
     public let subLocality: String
     public let fullAddress: String
     public var isGPSLocation: Bool
     
-    public init(longitude: String = "", latitude: String = "", xy: (String, String) = ("", ""), locality: String = "", subLocality: String = "", fullAddress: String = "", isGPSLocation: Bool = false) {
+    public init(longitude: String = "", latitude: String = "", x: String = "", y: String = "", locality: String = "", subLocality: String = "", fullAddress: String = "", isGPSLocation: Bool = false) {
         self.longitude = longitude
         self.latitude = latitude
-        self.xy = xy
+        self.x = x
+        self.y = y
         self.locality = locality
         self.subLocality = subLocality
         self.fullAddress = fullAddress

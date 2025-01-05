@@ -291,9 +291,6 @@ extension AdditionalLocationVM {
         for i in fullAddresses.indices {
             locationInfs.append(
                 .init(
-                    longitude: "",
-                    latitude: "",
-                    xy: ("", ""),
                     locality: localities[i],
                     subLocality: subLocalities[i],
                     fullAddress: fullAddresses[i]

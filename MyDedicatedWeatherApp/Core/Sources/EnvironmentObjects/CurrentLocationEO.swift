@@ -46,15 +46,15 @@ public final class CurrentLocationEO: NSObject, ObservableObject, CurrentLocatio
         )
     }
     public var locationInf: LocationInformation {
-        .init(longitude: longitude, latitude: latitude, xy: xy, locality: locality, subLocality: subLocality, fullAddress: fullAddress)
+        .init(longitude: longitude, latitude: latitude, x: xy.0, y: xy.1, locality: locality, subLocality: subLocality, fullAddress: fullAddress)
     }
     
     public var initialLocationInf: LocationInformation {
-        .init(longitude: longitude, latitude: latitude, xy: xy, locality: locality, subLocality: subLocality, fullAddress: fullAddress, isGPSLocation: true)
+        .init(longitude: longitude, latitude: latitude, x: xy.0, y: xy.1, locality: locality, subLocality: subLocality, fullAddress: fullAddress, isGPSLocation: true)
     }
     
     public var gpsLocationInf: LocationInformation {
-        .init(longitude: longitude, latitude: latitude, xy: xy, locality: gpsLocality, subLocality: gpsSubLocality, fullAddress: gpsFullAddress)
+        .init(longitude: longitude, latitude: latitude, x: xy.0, y: xy.1, locality: gpsLocality, subLocality: gpsSubLocality, fullAddress: gpsFullAddress)
     }
     
     private let commonUtil: CommonUtil = .shared
@@ -86,8 +86,8 @@ public final class CurrentLocationEO: NSObject, ObservableObject, CurrentLocatio
     }
     
     @MainActor
-    public func setXY(_ value: (String, String)) {
-        self.xy = value
+    public func setXY(x: String, y: String) {
+        self.xy = (x, y)
     }
     
     @MainActor
@@ -131,7 +131,7 @@ public final class CurrentLocationEO: NSObject, ObservableObject, CurrentLocatio
     
     @MainActor
     public func setCoordinateAndAllLocality(locationInf: LocationInformation) {
-        setXY(locationInf.xy)
+        setXY(x:locationInf.x, y:locationInf.y)
         setLatitude(locationInf.latitude)
         setLongitude(locationInf.longitude)
         setFullAddress(locationInf.fullAddress)

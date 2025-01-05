@@ -159,7 +159,7 @@ extension WeeklyWeatherVM {
             }
             
             Task(priority: .high) {
-                await getTodayItems(xy: locationInf.xy)
+                await getTodayItems(xy: (locationInf.x, locationInf.y))
                 await getWeeklyTempItems(fullAddress: locationInf.fullAddress)
                 await getWeeklySkyStateItems(fullAddress: locationInf.fullAddress)
             }

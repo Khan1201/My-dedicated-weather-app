@@ -34,9 +34,6 @@ struct AdditionalLocationGuListView: View {
                                 let fullAddress: String = selectedLocality + " \(gu)"
                                 finalLocationOnTapGesture(
                                     .init(
-                                        longitude: "",
-                                        latitude: "",
-                                        xy: ("", ""),
                                         locality: selectedLocality,
                                         subLocality: gu,
                                         fullAddress: fullAddress

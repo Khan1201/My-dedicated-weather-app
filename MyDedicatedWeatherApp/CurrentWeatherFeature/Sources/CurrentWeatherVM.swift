@@ -340,7 +340,8 @@ extension CurrentWeatherVM {
                     let locationInf: LocationInformation = .init(
                         longitude: String(success.1),
                         latitude: String(success.0),
-                        xy: (String(xy.x), String(xy.y)),
+                        x: String(xy.x),
+                        y: String(xy.y),
                         locality: locationInf.locality,
                         subLocality: locationInf.subLocality,
                         fullAddress: locationInf.fullAddress
@@ -368,7 +369,7 @@ extension CurrentWeatherVM {
     }
     
     func fetchCurrentWeatherAllData(locationInf: LocationInformation) {
-        let convertedXY: Gps2XY.LatXLngY = .init(lat: 0, lng: 0, x: locationInf.xy.0.toInt, y: locationInf.xy.1.toInt)
+        let convertedXY: Gps2XY.LatXLngY = .init(lat: 0, lng: 0, x: locationInf.x.toInt, y: locationInf.y.toInt)
         
         initializeTask()
         timerStart()
