@@ -21,7 +21,8 @@ struct DI {
             veryShortForecastService: VeryShortForecastServiceImp(),
             shortForecastService: ShortForecastServiceImp(),
             dustForecastService: DustForecastServiceImp(),
-            kakaoAddressService: KakaoAddressServiceImp()
+            kakaoAddressService: KakaoAddressServiceImp(),
+            userDefaultsService: UserDefaultsServiceImp()
         )
     }
 }

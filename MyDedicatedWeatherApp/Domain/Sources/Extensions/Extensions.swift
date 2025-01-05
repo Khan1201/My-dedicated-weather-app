@@ -103,63 +103,18 @@ extension String {
 }
 
 extension Int {
-    
     public var toString: String {
         return String(self)
     }
 }
 
 extension Double {
-    
     public var toInt: Int {
         return Int(self)
     }
 }
 
 extension UserDefaults {
-    
-    public func setUserDefaultsStringArray(value: String, key: String) {
-        guard var arrays = self.array(forKey: key) as? [String] else {
-            self.set([value], forKey: key)
-            return
-        }
-        arrays.append(value)
-        self.set(arrays, forKey: key)
-    }
-    
-    public func appendAdditionalLocation(_ locationInf: LocationInformation) {
-        
-        /// fullAddresses가 없을때 append
-        guard let fullAddresses = UserDefaults.standard.array(forKey: UserDefaultsKeys.additionalFullAddresses) as? [String] else {
-            setUserDefaultsStringArray(value: locationInf.fullAddress, key: UserDefaultsKeys.additionalFullAddresses)
-            setUserDefaultsStringArray(value: locationInf.locality, key: UserDefaultsKeys.additionalLocalities)
-            setUserDefaultsStringArray(value: locationInf.subLocality, key: UserDefaultsKeys.additionalSubLocalities)
-            return
-        }
-        
-        /// 중복 존재시 return
-        guard !fullAddresses.contains(locationInf.fullAddress) else {
-            CommonUtil.shared.printError(
-                funcTitle: "appendAdditionalAllLocality()",
-                description: "이미 존재하는 fullAddress 입니다."
-            )
-            return
-        }
-        
-        setUserDefaultsStringArray(value: locationInf.fullAddress, key: UserDefaultsKeys.additionalFullAddresses)
-        setUserDefaultsStringArray(value: locationInf.locality, key: UserDefaultsKeys.additionalLocalities)
-        setUserDefaultsStringArray(value: locationInf.subLocality, key: UserDefaultsKeys.additionalSubLocalities)
-    }
-    
-    public func removeStringElementInArray(index: Int, key: String) {
-        guard var arrays = self.array(forKey: key) as? [String] else {
-            return
-        }
-        guard arrays.count - 1 >= index else { return }
-        arrays.remove(at: index)
-        self.set(arrays, forKey: key)
-    }
-    
     public static func setWidgetShared(_ value: String, to: WidgetShared) {
         
         switch to {

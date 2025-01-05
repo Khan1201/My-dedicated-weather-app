@@ -16,7 +16,8 @@ struct DI {
             veryShortForecastUtil: .shared,
             shortForecastUtil: .shared,
             veryShortForecastService: VeryShortForecastServiceImp(),
-            shortForecastService: ShortForecastServiceImp()
+            shortForecastService: ShortForecastServiceImp(),
+            userDefaultsService: UserDefaultsServiceImp()
         )
     }
 }

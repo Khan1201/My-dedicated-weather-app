@@ -22,6 +22,7 @@ final class AdditionalLocationVM: ObservableObject {
     
     private let veryShortForecastService: VeryShortForecastService
     private let shortForecastService: ShortForecastService
+    private let userDefaultsService: UserDefaultsService
     
     var currentTask: Task<(), Never>?
     
@@ -31,7 +32,8 @@ final class AdditionalLocationVM: ObservableObject {
         veryShortForecastUtil: VeryShortForecastUtil,
         shortForecastUtil: ShortForecastUtil,
         veryShortForecastService: VeryShortForecastService,
-        shortForecastService: ShortForecastService
+        shortForecastService: ShortForecastService,
+        userDefaultsService: UserDefaultsService
     ) {
         self.commonUtil = commonUtil
         self.commonForecastUtil = commonForecastUtil
@@ -39,6 +41,7 @@ final class AdditionalLocationVM: ObservableObject {
         self.shortForecastUtil = shortForecastUtil
         self.veryShortForecastService = veryShortForecastService
         self.shortForecastService = shortForecastService
+        self.userDefaultsService = userDefaultsService
         self.initAllLocalities()
     }
     
@@ -175,39 +178,7 @@ extension AdditionalLocationVM {
 
 extension AdditionalLocationVM {
     func deleteLocalLocationInf(locationInf: LocationInformation) {
-        
-        guard let fullAddresses = UserDefaults.standard.array(forKey: UserDefaultsKeys.additionalFullAddresses) as? [String] else {
-            return
-        }
-        
-        guard let localities = UserDefaults.standard.array(forKey: UserDefaultsKeys.additionalLocalities) as? [String] else {
-            return
-        }
-        
-        guard let subLocalities = UserDefaults.standard.array(forKey: UserDefaultsKeys.additionalSubLocalities) as? [String] else {
-            return
-        }
-        
-        guard fullAddresses.count == localities.count && fullAddresses.count == subLocalities.count else {
-            CommonUtil.shared.printError(
-                funcTitle: "itemDeleteAction",
-                description: "fullAddress.count != localities.count != subLocalities.count"
-            )
-            return
-        }
-        
-        guard let index = fullAddresses.firstIndex(of: locationInf.fullAddress) else {
-            CommonUtil.shared.printError(
-                funcTitle: "itemDeleteAction", 
-                description: "Index를 찾을 수 없습니다."
-            )
-            return
-        }
-        
-        UserDefaults.standard.removeStringElementInArray(index: index, key: UserDefaultsKeys.additionalFullAddresses)
-        UserDefaults.standard.removeStringElementInArray(index: index, key: UserDefaultsKeys.additionalLocalities)
-        UserDefaults.standard.removeStringElementInArray(index: index, key: UserDefaultsKeys.additionalSubLocalities)
-        
+        userDefaultsService.removeLocationInformations(locationInf)
         reloadItems()
     }
 }
@@ -280,22 +251,7 @@ extension AdditionalLocationVM {
     
     func initAllLocalities() {
         locationInfs = []
-        
-        let fullAddresses: [String] = UserDefaults.standard.array(forKey: UserDefaultsKeys.additionalFullAddresses) as? [String] ?? []
-        let localities: [String] = UserDefaults.standard.array(forKey: UserDefaultsKeys.additionalLocalities) as? [String] ?? []
-        let subLocalities: [String] = UserDefaults.standard.array(forKey: UserDefaultsKeys.additionalSubLocalities) as? [String] ?? []
-        
-        guard fullAddresses.count == localities.count && fullAddresses.count == subLocalities.count else { return }
-        
-        for i in fullAddresses.indices {
-            locationInfs.append(
-                .init(
-                    locality: localities[i],
-                    subLocality: subLocalities[i],
-                    fullAddress: fullAddresses[i]
-                )
-            )
-        }
+        locationInfs = userDefaultsService.getLocationInformations()
     }
     
     func reloadItems() {

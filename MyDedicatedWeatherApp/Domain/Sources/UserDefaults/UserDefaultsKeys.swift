@@ -15,10 +15,7 @@ extension UserDefaults {
 }
 
 public struct UserDefaultsKeys {
-    
-    public static let additionalFullAddresses: String = "additionalFullAddresses"
-    public static let additionalLocalities: String = "additionalLocalities"
-    public static let additionalSubLocalities: String = "additionalSubLocalities"
+    public static let locationInformation: String = "locationInformation"
     public static let locality: String = "locality"
     public static let subLocality: String = "subLocality"
     public static let fullAddress: String = "fullAddress"

@@ -66,6 +66,7 @@ final class CurrentWeatherVM: ObservableObject {
     private let shortForecastService: ShortForecastService
     private let dustForecastService: DustForecastService
     private let kakaoAddressService: KakaoAddressService
+    private let userDefaultsService: UserDefaultsService
     
     init(
         commonUtil: CommonUtil,
@@ -77,7 +78,8 @@ final class CurrentWeatherVM: ObservableObject {
         veryShortForecastService: VeryShortForecastService,
         shortForecastService: ShortForecastService,
         dustForecastService: DustForecastService,
-        kakaoAddressService: KakaoAddressService
+        kakaoAddressService: KakaoAddressService,
+        userDefaultsService: UserDefaultsService
     ) {
         self.commonUtil = commonUtil
         self.commonForecastUtil = commonForecastUtil
@@ -89,7 +91,7 @@ final class CurrentWeatherVM: ObservableObject {
         self.shortForecastService = shortForecastService
         self.dustForecastService = dustForecastService
         self.kakaoAddressService = kakaoAddressService
-        
+        self.userDefaultsService = userDefaultsService
         sinkIsAllLoaded()
     }
 }
@@ -355,7 +357,7 @@ extension CurrentWeatherVM {
                     }
                     
                     if isNewAdd {
-                        UserDefaults.standard.appendAdditionalLocation(locationInf)
+                        self.userDefaultsService.setLocationInformation(locationInf)
                     }
                 }
                 
