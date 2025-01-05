@@ -36,8 +36,8 @@ public struct ShortForecastServiceImp: ShortForecastService {
         let parameters = VeryShortOrShortTermForecastReq(
             serviceKey: APIKey.publicApiKey,
             numOfRows: "300",
-            baseDate: ReqParameters.veryShortForecastBaseDate,
-            baseTime: ReqParameters.veryShortForecastBaseTime,
+            baseDate: ReqParameters.shortForecastForTodayMinMaxBaseDate,
+            baseTime: ReqParameters.shortForecastForTodayMinMaxBaseTime,
             nx: String(xy.x),
             ny: String(xy.y)
         )
