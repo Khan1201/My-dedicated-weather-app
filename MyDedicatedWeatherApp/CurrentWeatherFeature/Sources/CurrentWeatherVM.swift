@@ -8,7 +8,6 @@
 import Foundation
 import Combine
 import Domain
-import Data
 import Core
 
 final class CurrentWeatherVM: ObservableObject {
