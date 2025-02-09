@@ -160,9 +160,9 @@ public final class CurrentLocationEO: NSObject, ObservableObject, CurrentLocatio
                         await self.setLongitudeAndLatitude(longitude: String(longitude), latitude: String(latitude))
                         await self.setLocalityWithWidget(success)
                         await self.setGPSLocality(success)
+                        self.isLocationUpdated = true
                     }
                     
-                    self.isLocationUpdated = true
                 case .failure(_):
                     self.locationManager.startUpdatingLocation()
                 }
