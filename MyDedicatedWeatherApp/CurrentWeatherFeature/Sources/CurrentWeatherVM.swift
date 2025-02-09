@@ -462,11 +462,6 @@ extension CurrentWeatherVM {
         var popIndex = 7 + skipValue
         var step = 12
         let loopCount = shortForecastUtil.todayWeatherLoopCount
-        let sunTime: SunTime = .init(
-            currentHHmm: items[tempIndex].fcstTime,
-            sunriseHHmm: self.sunriseAndSunsetHHmm.0,
-            sunsetHHmm: self.sunriseAndSunsetHHmm.1
-        )
         
         // 각 index 해당하는 값(시간에 해당하는 값) append
         for _ in 0..<loopCount {
@@ -477,6 +472,12 @@ extension CurrentWeatherVM {
             items[tempIndex + 12].category == .TMN
             
             step = isExistTmxOrTmn ? 13 : 12
+            
+            let sunTime: SunTime = .init(
+                currentHHmm: items[tempIndex].fcstTime,
+                sunriseHHmm: self.sunriseAndSunsetHHmm.0,
+                sunsetHHmm: self.sunriseAndSunsetHHmm.1
+            )
             
             let skyType = commonForecastUtil.convertPrecipitationSkyStateOrSkyState(
                 ptyValue: items[ptyIndex].fcstValue,
