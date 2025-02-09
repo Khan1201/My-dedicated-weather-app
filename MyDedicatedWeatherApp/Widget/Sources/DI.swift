@@ -20,7 +20,8 @@ struct DI {
             veryShortForecastService: VeryShortForecastServiceImp(),
             shortForecastService: ShortForecastServiceImp(),
             midTermForecastService: MidTermForecastServiceImp(),
-            dustForecastService: DustForecastServiceImp()
+            dustForecastService: DustForecastServiceImp(), 
+            userDefaultsService: UserDefaultsServiceImp()
         )
     }
 }

@@ -282,7 +282,7 @@ extension CurrentWeatherVM {
             setDustStationRequestParamStationName(items)
             
             guard let firstItem = items.first else { return }
-            UserDefaults.setWidgetShared(firstItem.stationName, to: .dustStationName)
+            userDefaultsService.setCurrentDustStationName(firstItem.stationName)
             
             let reqEndTime = CFAbsoluteTimeGetCurrent() - reqStartTime
             print("미세먼지 측정소 get 호출 소요시간: \(reqEndTime)")
@@ -318,8 +318,8 @@ extension CurrentWeatherVM {
             if isCurrentLocationRequested {
                 await self.currentLocationEODelegate?.setGPSSubLocality(item.documents[0].address.subLocality)
                 await self.currentLocationEODelegate?.setFullAddressByGPS()
-                UserDefaults.setWidgetShared(self.subLocalityByKakaoAddress, to: .subLocality)
-                UserDefaults.setWidgetShared(item.documents[0].address.fullAddress, to: .fullAddress)
+                userDefaultsService.setCurrentSubLocality(self.subLocalityByKakaoAddress)
+                userDefaultsService.setCurrentFullAddress(item.documents[0].address.fullAddress)
             }
             
             let durationTime = CFAbsoluteTimeGetCurrent() - startTime

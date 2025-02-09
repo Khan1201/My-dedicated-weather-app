@@ -55,4 +55,47 @@ public struct UserDefaultsServiceImp: UserDefaultsService {
         savedLocationInfs.removeAll(where: { $0.fullAddress == target.fullAddress })
         setLocationInformations(savedLocationInfs)
     }
+    
+    public func getCurrentLocation() -> Domain.LocationInformation {
+        .init(
+            longitude: UserDefaults.shared.string(forKey: UserDefaultsKeys.longitude) ?? "",
+            latitude: UserDefaults.shared.string(forKey: UserDefaultsKeys.latitude) ?? "",
+            x: UserDefaults.shared.string(forKey: UserDefaultsKeys.x) ?? "",
+            y: UserDefaults.shared.string(forKey: UserDefaultsKeys.y) ?? "",
+            locality: UserDefaults.shared.string(forKey: UserDefaultsKeys.locality) ?? "",
+            subLocality: UserDefaults.shared.string(forKey: UserDefaultsKeys.subLocality) ?? "",
+            fullAddress: UserDefaults.shared.string(forKey: UserDefaultsKeys.fullAddress) ?? "",
+            isGPSLocation: true
+        )
+    }
+    
+    public func getCurrentDustStationName() -> String {
+        return UserDefaults.shared.string(forKey: UserDefaultsKeys.dustStationName) ?? ""
+    }
+    
+    public func setCurrentLocationXY(x: String, y: String) {
+        UserDefaults.shared.set(x, forKey: UserDefaultsKeys.x)
+        UserDefaults.shared.set(y, forKey: UserDefaultsKeys.y)
+    }
+    
+    public func setCurrentLocationLongitudeAndLatitude(longitude: String, latitude: String) {
+        UserDefaults.shared.set(longitude, forKey: UserDefaultsKeys.longitude)
+        UserDefaults.shared.set(latitude, forKey: UserDefaultsKeys.latitude)
+    }
+    
+    public func setCurrentLocality(_ locality: String) {
+        UserDefaults.shared.set(locality, forKey: UserDefaultsKeys.locality)
+    }
+    
+    public func setCurrentSubLocality(_ subLocality: String) {
+        UserDefaults.shared.set(subLocality, forKey: UserDefaultsKeys.subLocality)
+    }
+    
+    public func setCurrentFullAddress(_ fullAddress: String) {
+        UserDefaults.shared.set(fullAddress, forKey: UserDefaultsKeys.fullAddress)
+    }
+    
+    public func setCurrentDustStationName(_ name: String) {
+        UserDefaults.shared.set(name, forKey: UserDefaultsKeys.dustStationName)
+    }
 }

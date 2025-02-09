@@ -22,6 +22,7 @@ struct WeatherWidgetVM {
     private let shortForecastService: ShortForecastService
     private let midTermForecastService: MidtermForecastService
     private let dustForecastService: DustForecastService
+    private let userDefaultsService: UserDefaultsService
         
     init(
         commonUtil: CommonUtil,
@@ -33,7 +34,8 @@ struct WeatherWidgetVM {
         veryShortForecastService: VeryShortForecastService,
         shortForecastService: ShortForecastService,
         midTermForecastService: MidtermForecastService,
-        dustForecastService: DustForecastService
+        dustForecastService: DustForecastService,
+        userDefaultsService: UserDefaultsService
     ) {
         self.commonUtil = commonUtil
         self.commonForecastUtil = commonForecastUtil
@@ -45,23 +47,24 @@ struct WeatherWidgetVM {
         self.shortForecastService = shortForecastService
         self.midTermForecastService = midTermForecastService
         self.dustForecastService = dustForecastService
+        self.userDefaultsService = userDefaultsService
+        
+        currentLocation = userDefaultsService.getCurrentLocation()
     }
-    
         
     var sunriseAndSunsetHHmm: (String, String) {
-        
         let currentDate: Date = Date()
-        let latitude = UserDefaults.shared.string(forKey: UserDefaultsKeys.latitude) ?? ""
-        let longitude = UserDefaults.shared.string(forKey: UserDefaultsKeys.longitude) ?? ""
                 
-        guard let sunriseDate = currentDate.sunrise(.init(latitude: Double(latitude) ?? 0, longitude: Double(longitude) ?? 0)) else { return ("", "") }
-        guard let sunsetDate = currentDate.sunset(.init(latitude: Double(latitude) ?? 0, longitude: Double(longitude) ?? 0)) else { return ("", "") }
+        guard let sunriseDate = currentDate.sunrise(.init(latitude: Double(currentLocation.latitude) ?? 0, longitude: Double(currentLocation.longitude) ?? 0)) else { return ("", "") }
+        guard let sunsetDate = currentDate.sunset(.init(latitude: Double(currentLocation.latitude) ?? 0, longitude: Double(currentLocation.longitude) ?? 0)) else { return ("", "") }
         
         let sunriseHHmm = sunriseDate.toString(format: "HHmm", timeZone: TimeZone(identifier: "UTC"))
         let sunsetHHmm = sunsetDate.toString(format: "HHmm", timeZone: TimeZone(identifier: "UTC"))
         
         return (sunriseHHmm, sunsetHHmm)
     }
+    
+    var currentLocation: LocationInformation
     
     func performSmallOrMediumWidgetEntrySetting() async -> SimpleEntry {
         var result: SimpleEntry = Dummy.simpleEntry()
@@ -168,11 +171,8 @@ extension WeatherWidgetVM {
     
     /// Return 초단기예보 items
     func getCurrentItems() async -> [VeryShortOrShortTermForecast<VeryShortTermForecastCategory>] {
-        let x = UserDefaults.shared.string(forKey: UserDefaultsKeys.x) ?? ""
-        let y = UserDefaults.shared.string(forKey: UserDefaultsKeys.y) ?? ""
-        
         let result = await veryShortForecastService.getCurrentItems(
-            xy: .init(lat: 0, lng: 0, x: x.toInt, y: y.toInt)
+            xy: .init(lat: 0, lng: 0, x: currentLocation.x.toInt, y: currentLocation.y.toInt)
         )
         
         switch result {
@@ -195,11 +195,8 @@ extension WeatherWidgetVM {
     
     /// Return 단기예보 items
     func getTodayItems() async -> [VeryShortOrShortTermForecast<ShortTermForecastCategory>] {
-        let x = UserDefaults.shared.string(forKey: UserDefaultsKeys.x) ?? ""
-        let y = UserDefaults.shared.string(forKey: UserDefaultsKeys.y) ?? ""
-        
         let result = await shortForecastService.getTodayItems(
-            xy: .init(lat: 0, lng: 0, x: x.toInt, y: y.toInt),
+            xy: .init(lat: 0, lng: 0, x: currentLocation.x.toInt, y: currentLocation.y.toInt),
             reqRow: "737"
         )
                 
@@ -224,11 +221,10 @@ extension WeatherWidgetVM {
     /// '단기예보' 에서의 최소, 최대 온도 값 요청 위해 및
     /// 02:00 or 23:00 으로 호출해야 하므로, 따로 다시 요청한다.
     func getTodayMinMaxItems() async -> [VeryShortOrShortTermForecast<ShortTermForecastCategory>] {
-        let x = UserDefaults.shared.string(forKey: UserDefaultsKeys.x) ?? ""
-        let y = UserDefaults.shared.string(forKey: UserDefaultsKeys.y) ?? ""
+        let currentLocation: LocationInformation = userDefaultsService.getCurrentLocation()
         
         let result = await shortForecastService.getTodayMinMaxItems(
-            xy: .init(lat: 0, lng: 0, x: x.toInt, y: y.toInt)
+            xy: .init(lat: 0, lng: 0, x: currentLocation.x.toInt, y: currentLocation.y.toInt)
         )
         
         switch result {
@@ -251,10 +247,8 @@ extension WeatherWidgetVM {
     
     /// Return 미세먼지 및 초미세먼지 items
     func getRealTimeDustItems() async -> [RealTimeFindDustForecast] {
-        let stationName: String = UserDefaults.shared.string(forKey: UserDefaultsKeys.dustStationName) ?? ""
-
         let result = await dustForecastService.getRealTimeDustItems(
-            stationName: stationName
+            stationName: userDefaultsService.getCurrentDustStationName()
         )
         
         switch result {
@@ -277,10 +271,8 @@ extension WeatherWidgetVM {
     
     /// Return 중기예보(3~ 10일)의 temperature items
     func getMidTermForecastTempItems() async -> [MidTermForecastTemperature] {
-        let fullAddress: String = UserDefaults.shared.string(forKey: UserDefaultsKeys.fullAddress) ?? ""
-        
         let result = await midTermForecastService.getTempItems(
-            fullAddress: fullAddress
+            fullAddress: currentLocation.fullAddress
         )
         
         switch result {
@@ -303,10 +295,8 @@ extension WeatherWidgetVM {
     
     /// Return 중기예보(3~ 10일)의 하늘상태 items
     func getMidTermForecastSkyStateItems() async -> [MidTermForecastSkyState] {
-        let fullAddress: String = UserDefaults.shared.string(forKey: UserDefaultsKeys.fullAddress) ?? ""
-        
         let result = await midTermForecastService.getSkyStateItems(
-            fullAddress: fullAddress
+            fullAddress: currentLocation.fullAddress
         )
         
         switch result {

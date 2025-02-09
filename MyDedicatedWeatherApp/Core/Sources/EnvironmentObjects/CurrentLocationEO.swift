@@ -58,9 +58,12 @@ public final class CurrentLocationEO: NSObject, ObservableObject, CurrentLocatio
     }
     
     private let commonUtil: CommonUtil = .shared
+    private let userDefaultsService: UserDefaultsService
+    
     private var locationManager = CLLocationManager()
     
-    public override init() {
+    public init(userDefaultsService: UserDefaultsService) {
+        self.userDefaultsService = userDefaultsService
         super.init()
         locationManager.delegate = self
     }
@@ -68,6 +71,12 @@ public final class CurrentLocationEO: NSObject, ObservableObject, CurrentLocatio
     @MainActor
     public func setLocality(_ value: String) {
         self.locality = value
+    }
+    
+    @MainActor
+    public func setLocalityWithWidget(_ value: String) {
+        setLocality(value)
+        userDefaultsService.setCurrentLocality(value)
     }
     
     @MainActor
@@ -92,31 +101,20 @@ public final class CurrentLocationEO: NSObject, ObservableObject, CurrentLocatio
     
     @MainActor
     public func setXYWithWidget(xy: Gps2XY.LatXLngY) {
-        self.xy = (xy.x.toString, xy.y.toString)
-        UserDefaults.setWidgetShared(xy.x.toString, to: .x)
-        UserDefaults.setWidgetShared(xy.y.toString, to: .y)
+        setXY(x: xy.x.toString, y: xy.y.toString)
+        userDefaultsService.setCurrentLocationXY(x: xy.x.toString, y: xy.y.toString)
     }
     
     @MainActor
-    public func setLatitude(_ value: String) {
-        self.latitude = value
-        UserDefaults.setWidgetShared(value, to: .latitude)
+    public func setLongitudeAndLatitude(longitude: String, latitude: String) {
+        self.longitude = longitude
+        self.latitude = latitude
     }
     
     @MainActor
-    public func setLatitudeWithWidget(_ value: String) {
-        self.latitude = value
-    }
-    
-    @MainActor
-    public func setLongitude(_ value: String) {
-        self.longitude = value
-    }
-    
-    @MainActor
-    public func setLongitudeWithWidget(_ value: String) {
-        self.longitude = value
-        UserDefaults.setWidgetShared(value, to: .longitude)
+    public func setLongitudeAndLatitudeWithWidget(longitude: String, latitude: String) {
+        setLongitudeAndLatitude(longitude: longitude, latitude: latitude)
+        userDefaultsService.setCurrentLocationLongitudeAndLatitude(longitude: longitude, latitude: latitude)
     }
     
     @MainActor
@@ -132,8 +130,7 @@ public final class CurrentLocationEO: NSObject, ObservableObject, CurrentLocatio
     @MainActor
     public func setCoordinateAndAllLocality(locationInf: LocationInformation) {
         setXY(x:locationInf.x, y:locationInf.y)
-        setLatitude(locationInf.latitude)
-        setLongitude(locationInf.longitude)
+        setLongitudeAndLatitude(longitude: locationInf.longitude, latitude: locationInf.latitude)
         setFullAddress(locationInf.fullAddress)
         setLocality(locationInf.locality)
         setSubLocality(locationInf.subLocality)
@@ -159,15 +156,12 @@ public final class CurrentLocationEO: NSObject, ObservableObject, CurrentLocatio
                 guard let self = self else { return }
                 switch result {
                 case .success(let success):
-                    locality = success
-                    
                     Task {
-                        await self.setLatitude(String(latitude))
-                        await self.setLongitude(String(longitude))
-                        await self.setLocality(self.locality)
-                        await self.setGPSLocality(self.locality)
+                        await self.setLongitudeAndLatitude(longitude: String(longitude), latitude: String(latitude))
+                        await self.setLocalityWithWidget(success)
+                        await self.setGPSLocality(success)
                     }
-                    UserDefaults.setWidgetShared(locality, to: .locality)
+                    
                     self.isLocationUpdated = true
                 case .failure(_):
                     self.locationManager.startUpdatingLocation()
@@ -197,8 +191,10 @@ extension CurrentLocationEO: CLLocationManagerDelegate {
         self.locationManager.stopUpdatingLocation()
         
         setXYWithWidget(xy: convertLocationToXY())
-        setLongitudeWithWidget(String(locationManager.location?.coordinate.longitude ?? 0))
-        setLatitudeWithWidget(String(locationManager.location?.coordinate.latitude ?? 0))
+        setLongitudeAndLatitudeWithWidget(
+            longitude: String(locationManager.location?.coordinate.longitude ?? 0),
+            latitude: String(locationManager.location?.coordinate.latitude ?? 0)
+        )
         fetchLocality(
             latitude: locationManager.location?.coordinate.latitude ?? 0,
             longitude: locationManager.location?.coordinate.longitude ?? 0

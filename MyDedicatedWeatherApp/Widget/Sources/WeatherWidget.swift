@@ -14,8 +14,9 @@ public struct WeatherWidget: Widget {
     public init() {}
 
     public var body: some WidgetConfiguration {
-        StaticConfiguration(kind: kind, provider: Provider()) { entry in
-            WeatherWidgetEntryView(entry: entry)
+        let widgetVM: WeatherWidgetVM = DI.weatherWidgetVM()
+        return StaticConfiguration(kind: kind, provider: Provider(widgetVM: widgetVM)) { entry in
+            WeatherWidgetEntryView(entry: entry, locality: widgetVM.currentLocation.locality)
         }
         .contentMarginsDisabled()
         .configurationDisplayName("날씨모아 Widget")
@@ -25,7 +26,7 @@ public struct WeatherWidget: Widget {
 
 struct WeatherWidget_Previews: PreviewProvider {
     static var previews: some View {
-        WeatherWidgetEntryView(entry: Dummy.simpleEntry())
+        WeatherWidgetEntryView(entry: Dummy.simpleEntry(), locality: "")
             .previewContext(WidgetPreviewContext(family: .systemSmall))
     }
 }

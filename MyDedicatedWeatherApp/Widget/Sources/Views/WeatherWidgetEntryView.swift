@@ -11,21 +11,20 @@ import Domain
 
 struct WeatherWidgetEntryView : View {
     let entry: Provider.Entry
+    let locality: String
     @Environment(\.widgetFamily) var family
     
     var body: some View {
-        let location: String = UserDefaults.shared.string(forKey: UserDefaultsKeys.locality) ?? ""
-        
         if #available(iOS 17.0, *) {
             VStack(alignment: .leading, spacing: 0) {
                 if family == .systemSmall {
-                    WeatherWidgetSmallView(entry: entry, location: location)
+                    WeatherWidgetSmallView(entry: entry, location: locality)
                     
                 } else if family == .systemMedium {
-                    WeatherWidgetMediumView(entry: entry, location: location)
+                    WeatherWidgetMediumView(entry: entry, location: locality)
                     
                 } else if family == .systemLarge {
-                    WeatherWidgetLargeView(entry: entry, location: location)
+                    WeatherWidgetLargeView(entry: entry, location: locality)
                     
                 } else {
                     EmptyView()
@@ -47,13 +46,13 @@ struct WeatherWidgetEntryView : View {
                 
                 VStack(alignment: .leading, spacing: 0) {
                     if family == .systemSmall {
-                        WeatherWidgetSmallView(entry: entry, location: location)
+                        WeatherWidgetSmallView(entry: entry, location: locality)
                         
                     } else if family == .systemMedium {
-                        WeatherWidgetMediumView(entry: entry, location: location)
+                        WeatherWidgetMediumView(entry: entry, location: locality)
                         
                     } else if family == .systemLarge {
-                        WeatherWidgetLargeView(entry: entry, location: location)
+                        WeatherWidgetLargeView(entry: entry, location: locality)
                         
                     } else {
                         EmptyView()

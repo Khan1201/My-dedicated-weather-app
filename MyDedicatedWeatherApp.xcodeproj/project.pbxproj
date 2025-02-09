@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BC09F7E52D58916300F0EC6A /* DI.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC09F7E42D58916300F0EC6A /* DI.swift */; };
 		BC251F2B2A76A2F8004CE9CF /* LoadingLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BC251F2A2A76A2F8004CE9CF /* LoadingLottie.json */; };
 		BC307E202A7935D60008800A /* LocationLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BC307E1F2A7935D60008800A /* LocationLottie.json */; };
 		BC5D13752C9588AA0076F6C8 /* Env.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = BC5D13742C9588AA0076F6C8 /* Env.xcconfig */; };
@@ -109,6 +110,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		BC09F7E42D58916300F0EC6A /* DI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DI.swift; sourceTree = "<group>"; };
 		BC15D43C2AA60AC8006DC537 /* MyDedicatedWeatherApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MyDedicatedWeatherApp.entitlements; sourceTree = "<group>"; };
 		BC15D43D2AA60B00006DC537 /* WeatherWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WeatherWidgetExtension.entitlements; sourceTree = "<group>"; };
 		BC251F2A2A76A2F8004CE9CF /* LoadingLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LoadingLottie.json; sourceTree = "<group>"; };
@@ -267,6 +269,7 @@
 			children = (
 				BCA30F7B29FE203A0078D0B1 /* MainTabView.swift */,
 				BC5EF9042AE6AF7300636A95 /* LaunchScreen.swift */,
+				BC09F7E42D58916300F0EC6A /* DI.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -670,6 +673,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BC09F7E52D58916300F0EC6A /* DI.swift in Sources */,
 				BCA30F7C29FE203A0078D0B1 /* MainTabView.swift in Sources */,
 				BCA30F7A29FE203A0078D0B1 /* MyDedicatedWeatherAppApp.swift in Sources */,
 				BC5EF9052AE6AF7300636A95 /* LaunchScreen.swift in Sources */,
