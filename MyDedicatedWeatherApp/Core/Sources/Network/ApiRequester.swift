@@ -37,7 +37,6 @@ public struct ApiRequester: ApiRequestable {
         
         let result = await dataTask.result
         let convertedResult = result.mapError { error in
-            Logger().debug("\(String(describing: error))")
             return APIError.afError(error: error)
         }
         return convertedResult
