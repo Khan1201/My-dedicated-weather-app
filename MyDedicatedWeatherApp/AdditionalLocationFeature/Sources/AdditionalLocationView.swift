@@ -11,7 +11,6 @@ import Core
 
 public struct AdditionalLocationView: View {
     @Binding var isPresented: Bool
-    @Binding var progress: AdditionalLocationProgress
     let fetchNewLocation: (LocationInformation, Bool) -> Void
     
     @StateObject var vm: AdditionalLocationVM = DI.additionalLocationVM()
@@ -19,15 +18,12 @@ public struct AdditionalLocationView: View {
     
     @State private var navNextView: Bool = false
     
-    public init(isPresented: Binding<Bool>, progress: Binding<AdditionalLocationProgress>, fetchNewLocation: @escaping (LocationInformation, Bool) -> Void) {
+    public init(isPresented: Binding<Bool>, fetchNewLocation: @escaping (LocationInformation, Bool) -> Void) {
         self._isPresented = isPresented
-        self._progress = progress
         self.fetchNewLocation = fetchNewLocation
     }
     
     public var body: some View {
-        let isLoading: Bool = progress == .loading
-        
         ZStack {
             VStack(alignment: .leading, spacing: 0) {
                 CustomNavigationBar(
@@ -76,12 +72,6 @@ public struct AdditionalLocationView: View {
                     Spacer()
                 }
             }
-            .opacity(isLoading ? 0.4 : 1)
-            .allowsHitTesting(!isLoading)
-            
-            if isLoading {
-                ProgressView()
-            }
         }
         .preferredColorScheme(.dark)
         .background(Color.black)
@@ -92,7 +82,6 @@ public struct AdditionalLocationView: View {
             isPresented: $navNextView,
             view: AdditionalLocationLocalityListView(
                 isPresented: $isPresented,
-                progress: $progress,
                 finalLocationOnTapGesture: fetchNewLocation
             )
         )

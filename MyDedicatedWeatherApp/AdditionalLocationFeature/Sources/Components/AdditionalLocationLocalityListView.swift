@@ -11,7 +11,6 @@ import Core
 
 struct AdditionalLocationLocalityListView: View {
     @Binding var isPresented: Bool
-    @Binding var progress: AdditionalLocationProgress
     let finalLocationOnTapGesture: (LocationInformation, Bool) -> Void
     
     @State private var navNextView: Bool = false
@@ -40,7 +39,6 @@ struct AdditionalLocationLocalityListView: View {
             isPresented: $navNextView,
             view: AdditionalLocationGuListView(
                 isPresented: $isPresented, 
-                progress: $progress,
                 selectedLocality: selectedLocality,
                 finalLocationOnTapGesture: finalLocationOnTapGesture
             )
@@ -51,7 +49,6 @@ struct AdditionalLocationLocalityListView: View {
 #Preview {
     AdditionalLocationLocalityListView(
         isPresented: .constant(true), 
-        progress: .constant(.none),
         finalLocationOnTapGesture: {_, _ in }
     )
 }

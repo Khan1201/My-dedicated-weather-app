@@ -20,7 +20,6 @@ final class CurrentWeatherVM: ObservableObject {
     @Published private(set) var todayMinMaxTemperature: (String, String) = ("__", "__")
     @Published private(set) var todayWeatherInformations: [Weather.TodayInformation] = Dummy.shared.todayWeatherInformations()
     @Published var openAdditionalLocationView: Bool = false
-    @Published var additionalLocationProgress: AdditionalLocationProgress = .none
     @Published var subLocalityByKakaoAddress: String = ""
     @Published var isLaunchScreenEnded: Bool = false
     
@@ -348,13 +347,12 @@ extension CurrentWeatherVM {
                         fullAddress: locationInf.fullAddress
                     )
                     
-                    self.additionalLocationProgress = .loading
-                    self.fetchCurrentWeatherAllData(locationInf: locationInf)
-                    await self.currentLocationEODelegate?.setCoordinateAndAllLocality(locationInf: locationInf)
                     DispatchQueue.main.async {
-                        self.additionalLocationProgress = .completed
+                        self.initLoadCompletedVariables()
                         self.openAdditionalLocationView = false
                     }
+                    self.fetchCurrentWeatherAllData(locationInf: locationInf)
+                    await self.currentLocationEODelegate?.setCoordinateAndAllLocality(locationInf: locationInf)
                     
                     if isNewAdd {
                         self.userDefaultsService.setLocationInformation(locationInf)
@@ -362,9 +360,7 @@ extension CurrentWeatherVM {
                 }
                 
             case .failure(_):
-                DispatchQueue.main.async {
-                    self.additionalLocationProgress = .notFound
-                }
+                return
             }
         }
     }

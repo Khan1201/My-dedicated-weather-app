@@ -87,7 +87,6 @@ public struct CurrentWeatherView: View {
                 RootNavigationView(
                     view: AdditionalLocationView(
                         isPresented: $viewModel.openAdditionalLocationView,
-                        progress: $viewModel.additionalLocationProgress,
                         fetchNewLocation:
                             viewModel.fetchAdditionalLocationWeather(locationInf:isNewAdd:)
                     )
