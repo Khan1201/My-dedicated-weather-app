@@ -1,5 +1,5 @@
 //
-//  WeekViewControllerBackground.swift
+//  WeeklyWeatherView.swift
 //  MyDedicatedWeatherApp
 //
 //  Created by 윤형석 on 2023/08/15.
@@ -8,7 +8,7 @@
 import SwiftUI
 import Domain
 
-public struct WeekViewControllerBackground: ViewModifier {
+public struct WeeklyWeatherViewBackground: ViewModifier {
     let isDayMode: Bool
     let skyType: WeatherAPIValue?
     
@@ -55,7 +55,7 @@ public struct WeekViewControllerBackground: ViewModifier {
 }
 
 extension View {
-    public func weekViewControllerBackground(isDayMode: Bool, skyType: WeatherAPIValue?) -> some View {
-        modifier(WeekViewControllerBackground(isDayMode: isDayMode, skyType: skyType))
+    public func weeklyWeatherViewBackground(isDayMode: Bool, skyType: WeatherAPIValue?) -> some View {
+        modifier(WeeklyWeatherViewBackground(isDayMode: isDayMode, skyType: skyType))
     }
 }

@@ -36,7 +36,6 @@ public struct WeeklyWeatherView: View {
             
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(alignment: .leading, spacing: 0) {
-                    
                     VStack(alignment: .leading, spacing: 15) {
                         ForEach(viewModel.weeklyWeatherInformations.indices, id: \.self) { index in
                             WeekWeatherItemView(
@@ -75,7 +74,7 @@ public struct WeeklyWeatherView: View {
             .padding(.top, 24)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-        .weekViewControllerBackground(
+        .weeklyWeatherViewBackground(
             isDayMode: contentEO.isDayMode,
             skyType: contentEO.skyType
         )
