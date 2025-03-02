@@ -15,7 +15,7 @@ struct CurrentWeatherInformationItemView: View {
     let imageString: String
     let imageColor: Color
     let title: String
-    let value: (String, String) // (약한 비, 5mm)
+    let value: (String, String)? // (약한 비, 5mm)
     let isDayMode: Bool
     var backgroundColor: Color?
     
@@ -60,12 +60,12 @@ struct CurrentWeatherInformationItemView: View {
             Spacer()
             
             HStack(alignment: .center, spacing: 0) {
-                Text(value.0)
+                Text(value?.0 ?? "")
                     .fontSpoqaHanSansNeo(size: isNotNocheDevice ? 13 : 14, weight: .medium)
                     .foregroundColor(.white)
                 
-                if value.1 != "" {
-                    Text("(\(value.1))")
+                if value?.1 != "" {
+                    Text("(\(value?.1 ?? ""))")
                         .fontSpoqaHanSansNeo(size: isNotNocheDevice ? 11 : 12, weight: .regular)
                         .foregroundColor(.white)
                 }

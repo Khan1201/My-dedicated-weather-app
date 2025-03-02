@@ -65,7 +65,7 @@ public struct CurrentWeatherView: View {
                 isDayMode: contentEO.isDayMode,
                 isSunriseSunsetLoadCompleted: viewModel.isSunriseSunsetLoaded,
                 isAllLoadCompleted: viewModel.isAllLoaded,
-                skyType: viewModel.currentWeatherInformation.skyType
+                skyType: viewModel.currentWeatherInformation?.skyType
             )
             .onChange(of: currentLocationEO.isLocationUpdated) { _ in
                 viewModel.fetchCurrentWeatherAllData(
@@ -173,7 +173,7 @@ extension CurrentWeatherView {
                 .loadingProgressLottie(isLoadingCompleted: viewModel.isCurrentWeatherAnimationSetCompleted)
                 
                 CurrentTempAndMinMaxTempView(
-                    temp: viewModel.currentWeatherInformation.temperature,
+                    temp: viewModel.currentWeatherInformation?.temperature,
                     minMaxTemp: viewModel.todayMinMaxTemperature,
                     isDayMode: contentEO.isDayMode
                 )

@@ -70,7 +70,7 @@ extension CurrentWeatherInfItemPagerView {
                 imageString: "precipitation",
                 imageColor: Color.blue,
                 title: "강수량",
-                value: viewModel.currentWeatherInformation.oneHourPrecipitation,
+                value: viewModel.currentWeatherInformation?.oneHourPrecipitation,
                 isDayMode: contentEO.isDayMode
             )
             
@@ -79,7 +79,7 @@ extension CurrentWeatherInfItemPagerView {
                 imageString: "wind",
                 imageColor: Color.red.opacity(0.7),
                 title: "바람",
-                value: viewModel.currentWeatherInformation.windSpeed,
+                value: viewModel.currentWeatherInformation?.windSpeed,
                 isDayMode: contentEO.isDayMode
             )
             
@@ -88,7 +88,7 @@ extension CurrentWeatherInfItemPagerView {
                 imageString: "wet",
                 imageColor: Color.blue.opacity(0.7),
                 title: "습도",
-                value: viewModel.currentWeatherInformation.wetPercent,
+                value: viewModel.currentWeatherInformation?.wetPercent,
                 isDayMode: contentEO.isDayMode
             )
         }

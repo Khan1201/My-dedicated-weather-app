@@ -9,8 +9,7 @@ import SwiftUI
 import Domain
 
 struct CurrentTempAndMinMaxTempView: View {
-    
-    let temp: String
+    let temp: String?
     let minMaxTemp: (String, String)
     let isDayMode: Bool
     
@@ -20,7 +19,7 @@ struct CurrentTempAndMinMaxTempView: View {
         VStack(alignment: .center, spacing: 0) {
             
             HStack(alignment: .top, spacing: 2) {
-                Text(temp)
+                Text(temp ?? "")
                     .fontSpoqaHanSansNeo(size: isNotNocheDevice ? 50 : 55, weight: .bold)
                     .foregroundColor(.white)
                     .padding(.top, 5)
