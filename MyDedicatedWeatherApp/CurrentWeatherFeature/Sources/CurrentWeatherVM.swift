@@ -11,7 +11,6 @@ import Domain
 import Core
 
 final class CurrentWeatherVM: ObservableObject {
-    @Published private(set) var currentTemperature: String = "00"
     @Published private(set) var currentWeatherAnimationImg: String = ""
     @Published private(set) var currentWeatherImage: String = ""
     @Published private(set) var currentWeatherInformation: Weather.CurrentInformation?
@@ -147,7 +146,6 @@ extension CurrentWeatherVM {
         switch result {
         case .success(let items):
             await self.setCurrentWeatherImgAndAnimationImg(items: items)
-            await self.setCurrentTemperature(items: items)
             await self.setCurrentWeatherInformation(items: items)
             
             let durationTime = CFAbsoluteTimeGetCurrent() - startTime
@@ -395,16 +393,6 @@ extension CurrentWeatherVM {
 
 extension CurrentWeatherVM {
     /**
-     Set 초 단기예보 Items -> `currentTemperature`(현재 기온) varialbe
-     
-     - parameter items: [초단기예보 Model]
-     */
-    @MainActor
-    func setCurrentTemperature(items: [VeryShortOrShortTermForecast<VeryShortTermForecastCategory>]) {
-        currentTemperature = items[24].fcstValue
-    }
-    
-    /**
      초 단기예보 Items -> `currentWeatherInformations`(온도 String, 바람속도 String, 습도 String, 1시간 강수량 String, 날씨 이미지 String)에 해당하는 값들 Extract
      
      - parameter items: [초단기예보 Model]
@@ -508,7 +496,7 @@ extension CurrentWeatherVM {
         
         let filteredItems = items.filter( {$0.category == .TMP && $0.fcstDate == todayDate} )
         var filteredTemps = filteredItems.map({ $0.fcstValue.toInt })
-        filteredTemps.append(currentTemperature.toInt)
+        filteredTemps.append(currentWeatherInformation?.temperature.toInt ?? 0)
         
         let min = filteredTemps.min() ?? 0
         let max = filteredTemps.max() ?? 0
