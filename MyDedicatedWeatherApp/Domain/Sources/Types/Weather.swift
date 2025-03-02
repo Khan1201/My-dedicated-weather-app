@@ -14,18 +14,6 @@ public struct Weather {
     
     public init() { }
     
-    public struct DescriptionAndSkyTypeAndImageString {
-        public init(description: String, skyType: SkyState, imageString: String) {
-            self.description = description
-            self.skyType = skyType
-            self.imageString = imageString
-        }
-        
-        public let description: String
-        public let skyType: SkyState
-        public let imageString: String
-    }
-    
     public struct TodayInformation: Identifiable {
         public init(time: String, weatherImage: String, precipitation: String, temperature: String) {
             self.time = time
