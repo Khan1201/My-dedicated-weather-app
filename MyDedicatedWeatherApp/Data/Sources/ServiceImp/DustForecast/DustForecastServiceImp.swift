@@ -12,6 +12,12 @@ import Domain
 public struct DustForecastServiceImp: DustForecastService {
     public init() {}
     
+    /**
+     Request 미세먼지 측정소가 위치한 X, Y 좌표
+     
+     - parameter subLocality: ex) 성수동 1가
+     - parameter locality: ex) 서울특별시
+     */
     public func getXYOfStation(subLocality: String) async -> Result<[DustForecastStationXY], APIError> {
         let parameters: DustForecastStationXYReq = DustForecastStationXYReq(
             serviceKey: APIKey.publicApiKey,
@@ -28,6 +34,10 @@ public struct DustForecastServiceImp: DustForecastService {
         return result.map { $0.items ?? [] }
     }
     
+    /**
+     Request 미세먼지 측정소 이름
+     - parameter tmxAndtmY: 미세먼지 측정소 X, Y 좌표
+     */
     public func getStationInfo(tmXAndtmY: (String, String)) async -> Result<[DustForecastStation], APIError> {
         let parameters: DustForecastStationReq = DustForecastStationReq(
             serviceKey: APIKey.publicApiKey,

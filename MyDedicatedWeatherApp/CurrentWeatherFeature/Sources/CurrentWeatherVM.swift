@@ -107,27 +107,7 @@ extension CurrentWeatherVM {
 // MARK: - Fetch..
 
 extension CurrentWeatherVM {
-    /**
-     Request 초 단기예보 Items
-     - parameter xy: 공공데이터 값으로 변환된 X, Y
-     
-     Response:
-     - 총 60개 데이터
-     - 각 카테고리 별 데이터 6개
-     
-     Index:
-     - 0 ~ 5: LGT (낙뢰)
-     - 6 ~ 11: PTY (강수 형태)
-     - 12 ~ 17: RN1 (1시간 강수량)
-     - 18 ~ 23: SKY (하늘 상태)
-     - 24 ~ 29: T1H (현재 기온)
-     - 30 ~ 35: REH (습도)
-     - 36 ~ 41: UUU (동서 바람성분)
-     - 42 ~ 47: VVV (남북 바람성분)
-     - 48 ~ 53: VEC (풍향)
-     - 54 ~ 59: WSD(풍속)
-     */
-    func fetchCurrentItems(xy: Gps2XY.LatXLngY) async {
+    func fetchCurrentWeatherInformations(xy: Gps2XY.LatXLngY) async {
         let startTime = CFAbsoluteTimeGetCurrent()
         
         let result = await veryShortForecastService.getCurrentItems(xy: xy)
@@ -143,39 +123,7 @@ extension CurrentWeatherVM {
         }
     }
     
-    /**
-     Request 단기예보 Items
-     - parameter xy: 공공데이터 값으로 변환된 X, Y
-     
-     Response:
-     - 1시간 별 데이터 12개 (13:00 -> 12개, 14:00 -> 12개)
-     - 요청 basetime 별 response 값이 다름
-     
-     시간 별 Index:
-     - 0: TMP (온도)
-     - 1: UUU (풍속 동서성분)
-     - 2: VVV (풍속 남북성분)
-     - 3: VEC (풍향)
-     - 4: WSD (풍속)
-     - 5: SKY (하늘 상태)
-     - 6: PTY (강수 형태)
-     - 7: POP (강수 확률)
-     - 8: WAV (파고)
-     - 9: PCP (1시간 강수량)
-     - 10: REH (습도)
-     - 11: SNO (1시간 신적설)
-     
-     요청 basetime 별 데이터 크기:
-     - 0200: '+1시간' ~ '+70시간'
-     - 0500: '+1시간' ~ '+67시간'
-     - 0800: '+1시간' ~ '+64시간'
-     - 1100: '+1시간' ~ '+61시간'
-     - 1400: '+1시간' ~ '+58시간' (0200 ~ 1400 : 오늘 ~ 모레까지)
-     - 1700: '+1시간' ~ '+79시간'
-     - 2000: '+1시간' ~ '+76시간'
-     - 2300: '+1시간' ~ '+73시간' (17:00 ~ 2300: 오늘 ~ 모레+1일 까지)
-     */
-    func fetchTodayItems(xy: Gps2XY.LatXLngY) async {
+    func fetchTodayWeatherInformations(xy: Gps2XY.LatXLngY) async {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
         
         let result = await shortForecastService.getTodayItems(xy: xy, reqRow: "300")
@@ -190,11 +138,8 @@ extension CurrentWeatherVM {
             CustomLogger.error("\(error)")
         }
     }
-    
-    /// - parameter xy: 공공데이터 값으로 변환된 X, Y
-    /// '단기예보' 에서의 최소, 최대 온도 값 요청 위해 및
-    /// 02:00 or 23:00 으로 호출해야 하므로, 따로 다시 요청한다.
-    func fetchTodayMinMaxItems(xy: Gps2XY.LatXLngY) async {
+
+    func fetchTodayMinMaxTemperature(xy: Gps2XY.LatXLngY) async {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
         
         let result = await shortForecastService.getTodayMinMaxItems(xy: xy)
@@ -210,10 +155,7 @@ extension CurrentWeatherVM {
         }
     }
     
-    /**
-     Request 실시간 미세먼지, 초미세먼지 Items request
-     */
-    func fetchRealTimeDustItems() async {
+    func fetchCurrentDust() async {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
         
         let result = await dustForecastService.getRealTimeDustItems(stationName: dustStationName)
@@ -221,7 +163,7 @@ extension CurrentWeatherVM {
         switch result {
         case .success(let items):
             guard let item = items.first else { return }
-            await setCurrentFineDustAndUltraFineDustTuple(item)
+            await setCurrentDust(item)
             
             let reqEndTime = CFAbsoluteTimeGetCurrent() - reqStartTime
             print("미세먼지 item 호출 소요시간: \(reqEndTime)")
@@ -229,14 +171,8 @@ extension CurrentWeatherVM {
             CustomLogger.error("\(error)")
         }
     }
-    
-    /**
-     Request 미세먼지 측정소가 위치한 X, Y 좌표
-     
-     - parameter subLocality: ex) 성수동 1가
-     - parameter locality: ex) 서울특별시
-     */
-    func fetchXYOfDustStation(subLocality: String, locality: String) async {
+
+    func fetchDustStationXY(subLocality: String, locality: String) async {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
         
         let result = await dustForecastService.getXYOfStation(subLocality: subLocality)
@@ -251,12 +187,7 @@ extension CurrentWeatherVM {
         }
     }
     
-    /**
-     Request 미세먼지 측정소 이름
-     - parameter tmxAndtmY: 미세먼지 측정소 X, Y 좌표
-     
-     */
-    func fetchDustStationInfo(tmXAndtmY: (String, String)) async {
+    func fetchDustStationName(tmXAndtmY: (String, String)) async {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
         
         let result = await dustForecastService.getStationInfo(tmXAndtmY: tmXAndtmY)
@@ -274,15 +205,7 @@ extension CurrentWeatherVM {
         }
     }
     
-    /**
-     Request sublocality(성수동 1가) by kakao address
-     - parameter longitude: 경도
-     - parameter latitude: 위도
-     
-     Apple이 제공하는.reverseGeocodeLocation 에서 특정 기기에서 sublocality가 nil로 할당되므로
-     kakao address request 에서 가져오도록 결정함.
-     */
-    func fetchKaKaoAddressBy(longitude: String, latitude: String, isCurrentLocationRequested: Bool) async {
+    func fetchSubLocalityByKakaoAddress(longitude: String, latitude: String, isCurrentLocationRequested: Bool) async {
         let startTime = CFAbsoluteTimeGetCurrent()
         
         let result = await kakaoAddressService.getKaKaoAddressBy(
@@ -357,19 +280,19 @@ extension CurrentWeatherVM {
         calculateAndSetSunriseSunset(longLati: (locationInf.longitude, locationInf.latitude))
         currentTask = Task(priority: .high) {
             Task(priority: .high) {
-                await fetchCurrentItems(xy: convertedXY)
-                await fetchTodayItems(xy: convertedXY)
-                await fetchTodayMinMaxItems(xy: convertedXY)
+                await fetchCurrentWeatherInformations(xy: convertedXY)
+                await fetchTodayWeatherInformations(xy: convertedXY)
+                await fetchTodayMinMaxTemperature(xy: convertedXY)
             }
             
             Task(priority: .low) {
-                await fetchKaKaoAddressBy(longitude: locationInf.longitude, latitude: locationInf.latitude, isCurrentLocationRequested: locationInf.isGPSLocation)
-                await fetchXYOfDustStation(
+                await fetchSubLocalityByKakaoAddress(longitude: locationInf.longitude, latitude: locationInf.latitude, isCurrentLocationRequested: locationInf.isGPSLocation)
+                await fetchDustStationXY(
                     subLocality: locationInf.isGPSLocation ? subLocalityByKakaoAddress : locationInf.subLocality,
                     locality: locationInf.locality
                 )
-                await fetchDustStationInfo(tmXAndtmY: dustStationXY)
-                await fetchRealTimeDustItems()
+                await fetchDustStationName(tmXAndtmY: dustStationXY)
+                await fetchCurrentDust()
             }
         }
     }
@@ -495,7 +418,7 @@ extension CurrentWeatherVM {
     /// Set 미세먼지, 초미세먼지
     /// - parameter item: 미세먼지 요청 response
     @MainActor
-    func setCurrentFineDustAndUltraFineDustTuple(_ item: RealTimeFindDustForecast) {
+    func setCurrentDust(_ item: RealTimeFindDustForecast) {
         let convertedFineDust: WeatherAPIValue = fineDustLookUpUtil.convertFineDust(rawValue: item.pm10Value)
         let convertedUltraFineDust: WeatherAPIValue = fineDustLookUpUtil.convertUltraFineDust(rawValue: item.pm25Value)
         currentDust = .init(
