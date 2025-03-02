@@ -166,11 +166,11 @@ extension CurrentWeatherView {
             
             HStack(alignment: .center, spacing: 20) {
                 LottieView(
-                    jsonName: viewModel.currentWeatherAnimationImg,
+                    jsonName: viewModel.currentWeatherInformation?.weatherAnimation ?? "",
                     loopMode: .loop
                 )
                 .frame(width: animationWidth, height: animationHeight)
-                .loadingProgressLottie(isLoadingCompleted: viewModel.isCurrentWeatherAnimationSetCompleted)
+                .loadingProgressLottie(isLoadingCompleted: viewModel.isCurrentWeatherInformationLoaded)
                 
                 CurrentTempAndMinMaxTempView(
                     temp: viewModel.currentWeatherInformation?.temperature,

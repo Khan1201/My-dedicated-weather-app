@@ -11,8 +11,6 @@ import Domain
 import Core
 
 final class CurrentWeatherVM: ObservableObject {
-    @Published private(set) var currentWeatherAnimationImg: String = ""
-    @Published private(set) var currentWeatherImage: String = ""
     @Published private(set) var currentWeatherInformation: Weather.CurrentInformation?
     @Published private(set) var currentFineDustTuple: Weather.DescriptionAndColor = .init(description: "", color: .defaultAreaColor)
     @Published private(set) var currentUltraFineDustTuple: Weather.DescriptionAndColor = .init(description: "", color: .defaultAreaColor)
@@ -28,7 +26,6 @@ final class CurrentWeatherVM: ObservableObject {
     
     /// Load Completed Variables..(7 values)
     @Published private(set) var isCurrentWeatherInformationLoaded: Bool = false
-    @Published private(set) var isCurrentWeatherAnimationSetCompleted: Bool = false
     @Published private(set) var isFineDustLoaded: Bool = false
     @Published private(set) var isKakaoAddressLoaded: Bool = false
     @Published private(set) var isMinMaxTempLoaded: Bool = false
@@ -98,13 +95,13 @@ final class CurrentWeatherVM: ObservableObject {
 
 extension CurrentWeatherVM {
     private func sinkIsAllLoaded() {
-        let zipFirst = Publishers.Zip4($isCurrentWeatherInformationLoaded, $isCurrentWeatherAnimationSetCompleted, $isFineDustLoaded, $isKakaoAddressLoaded)
+        let zipFirst = Publishers.Zip3($isCurrentWeatherInformationLoaded, $isFineDustLoaded, $isKakaoAddressLoaded)
         let zipSecond = Publishers.Zip3($isMinMaxTempLoaded, $isSunriseSunsetLoaded, $isTodayWeatherInformationLoaded)
         
         Publishers.Zip(zipFirst, zipSecond)
             .sink { [weak self] results in
                 guard let self = self else { return }
-                let isZipFirstAllLoaded: Bool = results.0.0 && results.0.1 && results.0.2 && results.0.3
+                let isZipFirstAllLoaded: Bool = results.0.0 && results.0.1 && results.0.2
                 let isZipSecondAllLoaded: Bool = results.1.0 && results.1.1 && results.1.2
                 guard isZipFirstAllLoaded && isZipSecondAllLoaded else { return }
                 isAllLoaded = true
@@ -145,7 +142,6 @@ extension CurrentWeatherVM {
         
         switch result {
         case .success(let items):
-            await self.setCurrentWeatherImgAndAnimationImg(items: items)
             await self.setCurrentWeatherInformation(items: items)
             
             let durationTime = CFAbsoluteTimeGetCurrent() - startTime
@@ -426,7 +422,8 @@ extension CurrentWeatherVM {
                 ),
                 shortForecastUtil.precipitationValueToShort(rawValue: currentOneHourPrecipitation.fcstValue)
             ),
-            weatherImage: skyType.image(isDayMode: sunTime.isDayMode),
+            weatherImage: skyType.image(isDayMode: sunTime.isDayMode), 
+            weatherAnimation: skyType.lottie(isDayMode: sunTime.isDayMode),
             skyType: skyType
         )
         contentEODelegate?.setSkyType(skyType)
@@ -505,34 +502,6 @@ extension CurrentWeatherVM {
         isMinMaxTempLoaded = true
     }
     
-    /**
-     Set 초 단기예보 Items ->`currentWeatherAnimationImg`(현재 날씨 animation lottie)
-     
-     - parameter items: [초단기예보 Model]
-     */
-    @MainActor
-    func setCurrentWeatherImgAndAnimationImg(items: [VeryShortOrShortTermForecast<VeryShortTermForecastCategory>]) {
-        let firstPTYItem = items[6] // 강수 형태 first
-        let firstSKYItem = items[18] // 하늘 상태 first
-        let sunTime: SunTime = .init(
-            currentHHmm: firstPTYItem.fcstTime,
-            sunriseHHmm: sunriseAndSunsetHHmm.0,
-            sunsetHHmm: sunriseAndSunsetHHmm.1
-        )
-        
-        currentWeatherAnimationImg = commonForecastUtil.convertPrecipitationSkyStateOrSkyState(
-            ptyValue: firstPTYItem.fcstValue,
-            skyValue: firstSKYItem.fcstValue
-        ).lottie(isDayMode: sunTime.isDayMode)
-        
-        currentWeatherImage = commonForecastUtil.convertPrecipitationSkyStateOrSkyState(
-            ptyValue: firstPTYItem.fcstValue,
-            skyValue: firstSKYItem.fcstValue
-        ).image(isDayMode: sunTime.isDayMode)
-        
-        isCurrentWeatherAnimationSetCompleted = true
-    }
-    
     /// Set 미세먼지, 초미세먼지
     /// - parameter item: 미세먼지 요청 response
     @MainActor
@@ -582,7 +551,6 @@ extension CurrentWeatherVM {
 extension CurrentWeatherVM {
     func initLoadCompletedVariables() {
         isCurrentWeatherInformationLoaded = false
-        isCurrentWeatherAnimationSetCompleted = false
         isFineDustLoaded = false
         isKakaoAddressLoaded = false
         isMinMaxTempLoaded = false

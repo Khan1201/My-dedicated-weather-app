@@ -52,12 +52,14 @@ public struct Weather {
     }
 
     public struct CurrentInformation {
-        public init(temperature: String, windSpeed: (String, String), wetPercent: (String, String), oneHourPrecipitation: (String, String), weatherImage: String, skyType: WeatherAPIValue) {
+        public init(temperature: String, windSpeed: (String, String), wetPercent: (String, String), oneHourPrecipitation: (String, String), weatherImage: String,
+                    weatherAnimation: String, skyType: WeatherAPIValue) {
             self.temperature = temperature
             self.windSpeed = windSpeed
             self.wetPercent = wetPercent
             self.oneHourPrecipitation = oneHourPrecipitation
             self.weatherImage = weatherImage
+            self.weatherAnimation = weatherAnimation
             self.skyType = skyType
         }
         
@@ -66,6 +68,7 @@ public struct Weather {
         public let wetPercent: (String, String)
         public let oneHourPrecipitation: (String, String)
         public let weatherImage: String
+        public let weatherAnimation: String
         public let skyType: WeatherAPIValue
     }
     
