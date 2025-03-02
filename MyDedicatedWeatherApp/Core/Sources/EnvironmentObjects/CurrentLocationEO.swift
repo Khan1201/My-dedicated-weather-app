@@ -177,7 +177,9 @@ extension CurrentLocationEO: CLLocationManagerDelegate {
         switch manager.authorizationStatus {
             
         case .authorizedAlways, .authorizedWhenInUse:
-            locationPermissonType = .allow
+            DispatchQueue.main.async {
+                self.locationPermissonType = .allow
+            }
             
         case .restricted, .denied, .notDetermined:
             manager.requestWhenInUseAuthorization()
