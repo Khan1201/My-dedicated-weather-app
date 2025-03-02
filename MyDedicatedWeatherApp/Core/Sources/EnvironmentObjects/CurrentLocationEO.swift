@@ -18,6 +18,8 @@ public protocol CurrentLocationEODelegate: AnyObject {
     func setGPSSubLocality(_ value: String)
     @MainActor
     func setCoordinateAndAllLocality(locationInf: LocationInformation)
+    @MainActor
+    func setSkyType(_ value: WeatherAPIValue)
     var locationInf: LocationInformation { get }
 }
 
@@ -35,6 +37,7 @@ public final class CurrentLocationEO: NSObject, ObservableObject, CurrentLocatio
     @Published public private(set) var fullAddress: String = ""
     @Published public private(set) var gpsLocality: String = ""
     @Published public private(set) var gpsSubLocality: String = ""
+    @Published public private(set) var skyType: WeatherAPIValue?
     
     public var gpsFullAddress: String {
         return gpsLocality + " " + gpsSubLocality
@@ -150,6 +153,11 @@ extension CurrentLocationEO {
         setFullAddress(locationInf.fullAddress)
         setLocality(locationInf.locality)
         setSubLocality(locationInf.subLocality)
+    }
+    
+    @MainActor
+    public func setSkyType(_ value: WeatherAPIValue) {
+        skyType = value
     }
 }
 

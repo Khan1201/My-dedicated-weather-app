@@ -334,7 +334,7 @@ extension CurrentWeatherVM {
             weatherAnimation: skyType.lottie(isDayMode: sunTime.isDayMode),
             skyType: skyType
         )
-        contentEODelegate?.setSkyType(skyType)
+        currentLocationEODelegate?.setSkyType(skyType)
         isCurrentWeatherInformationLoaded = true
     }
 

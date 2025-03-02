@@ -9,7 +9,6 @@ import Foundation
 import Domain
 
 public protocol ContentEODelegate: AnyObject {
-    func setSkyType(_ value: WeatherAPIValue)
     func setIsDayMode(sunriseHHmm: String, sunsetHHmm: String)
 }
 
@@ -21,7 +20,6 @@ public final class ContentEO: ObservableObject {
     @Published public var isRefreshed: Bool = false
     @Published public var isLocationChanged: Bool = false
     
-    @Published public private(set) var skyType: WeatherAPIValue?
     @Published public private(set) var isDayMode: Bool = false
       
     public init() {}
@@ -73,7 +71,5 @@ extension ContentEO: ContentEODelegate {
         isDayMode = sunTime.isDayMode
     }
     
-    public func setSkyType(_ value: WeatherAPIValue) {
-        skyType = value
-    }
+    
 }

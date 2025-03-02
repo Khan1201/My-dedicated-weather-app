@@ -76,7 +76,7 @@ public struct WeeklyWeatherView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
         .weeklyWeatherViewBackground(
             isDayMode: contentEO.isDayMode,
-            skyType: contentEO.skyType
+            skyType: currentLocationEO.skyType
         )
         .bottomNoticeFloater(
             isPresented: $viewModel.showNoticeFloater,
