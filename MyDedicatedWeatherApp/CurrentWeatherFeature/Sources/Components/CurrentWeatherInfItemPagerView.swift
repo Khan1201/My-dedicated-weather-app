@@ -104,9 +104,9 @@ extension CurrentWeatherInfItemPagerView {
                 imageString: "fine_dust",
                 imageColor: Color.black.opacity(0.7),
                 title: "미세먼지",
-                value: (viewModel.currentFineDustTuple.description, ""),
+                value: (viewModel.currentDust?.fineDust.description ?? "", ""),
                 isDayMode: contentEO.isDayMode,
-                backgroundColor: viewModel.currentFineDustTuple.color
+                backgroundColor: viewModel.currentDust?.fineDust.backgroundColor
             )
             
             CurrentWeatherInformationItemView(
@@ -114,9 +114,9 @@ extension CurrentWeatherInfItemPagerView {
                 imageString: "fine_dust",
                 imageColor: Color.red.opacity(0.7),
                 title: "초미세먼지",
-                value: (viewModel.currentUltraFineDustTuple.description, ""),
+                value: (viewModel.currentDust?.ultraFineDust.description ?? "", ""),
                 isDayMode: contentEO.isDayMode,
-                backgroundColor: viewModel.currentUltraFineDustTuple.color
+                backgroundColor: viewModel.currentDust?.ultraFineDust.backgroundColor
             )
         }
         .padding(.horizontal, 26)

@@ -26,16 +26,6 @@ public struct Weather {
         public let imageString: String
     }
     
-    public struct DescriptionAndColor: Equatable {
-        public init(description: String, color: Color) {
-            self.description = description
-            self.color = color
-        }
-        
-        public let description: String
-        public  let color: Color
-    }
-    
     public struct TodayInformation: Identifiable {
         public init(time: String, weatherImage: String, precipitation: String, temperature: String) {
             self.time = time
@@ -50,10 +40,19 @@ public struct Weather {
         public let precipitation: String
         public let temperature: String
     }
+    
+    public struct CurrentDust {
+        public init(fineDust: DustPresentable, ultraFineDust: DustPresentable) {
+            self.fineDust = fineDust
+            self.ultraFineDust = ultraFineDust
+        }
+        
+        public let fineDust: DustPresentable
+        public let ultraFineDust: DustPresentable
+    }
 
     public struct CurrentInformation {
-        public init(temperature: String, windSpeed: (String, String), wetPercent: (String, String), oneHourPrecipitation: (String, String), weatherImage: String,
-                    weatherAnimation: String, skyType: WeatherAPIValue) {
+        public init(temperature: String, windSpeed: (String, String), wetPercent: (String, String), oneHourPrecipitation: (String, String), weatherImage: String, weatherAnimation: String, skyType: WeatherAPIValue) {
             self.temperature = temperature
             self.windSpeed = windSpeed
             self.wetPercent = wetPercent

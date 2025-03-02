@@ -12,8 +12,7 @@ import Core
 
 final class CurrentWeatherVM: ObservableObject {
     @Published private(set) var currentWeatherInformation: Weather.CurrentInformation?
-    @Published private(set) var currentFineDustTuple: Weather.DescriptionAndColor = .init(description: "", color: .defaultAreaColor)
-    @Published private(set) var currentUltraFineDustTuple: Weather.DescriptionAndColor = .init(description: "", color: .defaultAreaColor)
+    @Published private(set) var currentDust: Weather.CurrentDust?
     @Published private(set) var todayMinMaxTemperature: (String, String) = ("__", "__")
     @Published private(set) var todayWeatherInformations: [Weather.TodayInformation] = []
     @Published var openAdditionalLocationView: Bool = false
@@ -508,8 +507,10 @@ extension CurrentWeatherVM {
     func setCurrentFineDustAndUltraFineDustTuple(_ item: RealTimeFindDustForecast) {
         let convertedFineDust: WeatherAPIValue = fineDustLookUpUtil.convertFineDust(rawValue: item.pm10Value)
         let convertedUltraFineDust: WeatherAPIValue = fineDustLookUpUtil.convertUltraFineDust(rawValue: item.pm25Value)
-        currentFineDustTuple = .init(description: convertedFineDust.toDescription, color: convertedFineDust.color)
-        currentUltraFineDustTuple = .init(description: convertedUltraFineDust.toDescription, color: convertedUltraFineDust.color)
+        currentDust = .init(
+            fineDust: FineDust(description: convertedFineDust.toDescription, backgroundColor: convertedFineDust.color),
+            ultraFineDust: UltraFineDust(description: convertedUltraFineDust.toDescription, backgroundColor: convertedUltraFineDust.color)
+        )
         isFineDustLoaded = true
     }
     
