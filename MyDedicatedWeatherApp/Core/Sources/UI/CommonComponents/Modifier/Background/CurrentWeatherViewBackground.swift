@@ -1,5 +1,5 @@
 //
-//  TodayViewControllerBackground.swift
+//  CurrentWeatherViewBackground.swift
 //  MyDedicatedWeatherApp
 //
 //  Created by 윤형석 on 2023/07/27.
@@ -8,7 +8,7 @@
 import SwiftUI
 import Domain
 
-public struct TodayViewControllerBackground: ViewModifier {
+public struct CurrentWeatherViewBackground: ViewModifier {
     let isDayMode: Bool
     let isSunriseSunsetLoadCompleted: Bool
     let isAllLoadCompleted: Bool
@@ -71,13 +71,13 @@ public struct TodayViewControllerBackground: ViewModifier {
 }
 
 extension View {
-    public func todayViewControllerBackground(
+    public func currentWeatherViewBackground(
         isDayMode: Bool,
         isSunriseSunsetLoadCompleted: Bool,
         isAllLoadCompleted: Bool,
         skyType: WeatherAPIValue?
     ) -> some View {
-        modifier(TodayViewControllerBackground(
+        modifier(CurrentWeatherViewBackground(
             isDayMode: isDayMode, 
             isSunriseSunsetLoadCompleted: isSunriseSunsetLoadCompleted,
             isAllLoadCompleted: isAllLoadCompleted,

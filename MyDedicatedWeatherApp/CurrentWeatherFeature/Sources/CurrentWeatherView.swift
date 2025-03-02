@@ -32,7 +32,6 @@ public struct CurrentWeatherView: View {
         switch currentLocationEO.locationPermissonType {
         case .allow:
             VStack(alignment: .leading, spacing: 0) {
-                
                 VStack(alignment: .leading, spacing: 15) {
                     currentWeatherTopView
                     
@@ -61,7 +60,7 @@ public struct CurrentWeatherView: View {
             }
             .padding(.top, 25)
             .frame(height: UIScreen.screenHeight, alignment: .center)
-            .todayViewControllerBackground(
+            .currentWeatherViewBackground(
                 isDayMode: contentEO.isDayMode,
                 isSunriseSunsetLoadCompleted: viewModel.isSunriseSunsetLoaded,
                 isAllLoadCompleted: viewModel.isAllLoaded,
@@ -99,9 +98,7 @@ public struct CurrentWeatherView: View {
             }
             
         case .notAllow:
-            
             VStack(alignment: .center, spacing: 20) {
-                
                 LottieView(jsonName: "LocationLottie", loopMode: .loop)
                     .frame(width: 100, height: 100, alignment: .center)
                 
@@ -133,14 +130,11 @@ struct CurrentWeatherView_Previews: PreviewProvider {
 // MARK: - Supporting Views..
 
 extension CurrentWeatherView {
-    
     var currentWeatherTopView: some View {
-        
         let animationWidth: CGFloat = UIScreen.screenWidth / 2.5
         let animationHeight: CGFloat = UIScreen.screenHeight / 5.41
         
         return VStack(alignment: .leading, spacing: 8) {
-            
             HStack(alignment: .center, spacing: 0) {
                 CurrentLocationAndDateView(
                     location: currentLocationEO.locality,
@@ -151,7 +145,7 @@ extension CurrentWeatherView {
                 )
                 .padding(.leading, 40)
                 .loadingProgressLottie(isLoadingCompleted: viewModel.isKakaoAddressLoaded)
-                                
+                
                 Spacer()
                 
                 if viewModel.isSunriseSunsetLoaded {
