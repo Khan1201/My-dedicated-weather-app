@@ -18,9 +18,7 @@ final class CurrentWeatherVM: ObservableObject {
     @Published var openAdditionalLocationView: Bool = false
     @Published var subLocalityByKakaoAddress: String = ""
     @Published var isLaunchScreenEnded: Bool = false
-    
-    static private(set) var xy: Gps2XY.LatXLngY = .init(lat: 0, lng: 0, x: 0, y: 0)
-    
+        
     @Published private(set) var sunriseAndSunsetHHmm: (String, String) = ("0000", "0000")
     
     /// Load Completed Variables..(7 values)
