@@ -301,11 +301,6 @@ extension CurrentWeatherVM {
 // MARK: - Set Variables..
 
 extension CurrentWeatherVM {
-    /**
-     초 단기예보 Items -> `currentWeatherInformations`(온도 String, 바람속도 String, 습도 String, 1시간 강수량 String, 날씨 이미지 String)에 해당하는 값들 Extract
-     
-     - parameter items: [초단기예보 Model]
-     */
     @MainActor
     func setCurrentWeatherInformation(items: [VeryShortOrShortTermForecast<VeryShortTermForecastCategory>]) {
         let currentTemperature = items[24]
@@ -342,12 +337,7 @@ extension CurrentWeatherVM {
         contentEODelegate?.setSkyType(skyType)
         isCurrentWeatherInformationLoaded = true
     }
-    
-    /**
-     Set 단기예보 Items ->` todayWeatherInformations`variable
-     
-     - parameter items: [초단기예보 Model]
-     */
+
     @MainActor
     func setTodayWeatherInformations(items: [VeryShortOrShortTermForecast<ShortTermForecastCategory>]) {
         todayWeatherInformations = []
@@ -397,9 +387,7 @@ extension CurrentWeatherVM {
         }
         isTodayWeatherInformationLoaded = true
     }
-    
-    /// Set `todayMinMaxTemperature` variable
-    /// - parameter items: 단기예보 response items
+
     @MainActor
     func setTodayMinMaxTemperature(_ items: [VeryShortOrShortTermForecast<ShortTermForecastCategory>]) {
         let todayDate = Date().toString(format: "yyyyMMdd")
@@ -415,8 +403,6 @@ extension CurrentWeatherVM {
         isMinMaxTempLoaded = true
     }
     
-    /// Set 미세먼지, 초미세먼지
-    /// - parameter item: 미세먼지 요청 response
     @MainActor
     func setCurrentDust(_ item: RealTimeFindDustForecast) {
         let convertedFineDust: WeatherAPIValue = fineDustLookUpUtil.convertFineDust(rawValue: item.pm10Value)
@@ -428,8 +414,6 @@ extension CurrentWeatherVM {
         isFineDustLoaded = true
     }
     
-    /// Set 세부주소
-    /// - parameter items: 카카오 주소 요청 response
     @MainActor
     func setSubLocalityByKakaoAddress(_ items: [KakaoAddress.AddressBase]) {
         guard items.count > 0 else { return }
@@ -437,8 +421,6 @@ extension CurrentWeatherVM {
         isKakaoAddressLoaded = true
     }
     
-    /// Set 일출, 일몰 시간
-    /// - parameter item: 일출 일몰 요청 response
     func setSunriseAndSunsetHHmm(sunrise: String, sunset: String) {
         sunriseAndSunsetHHmm = (sunrise, sunset)
         isSunriseSunsetLoaded = true
