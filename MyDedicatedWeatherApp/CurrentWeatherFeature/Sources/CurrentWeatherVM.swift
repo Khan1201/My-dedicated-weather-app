@@ -15,9 +15,7 @@ final class CurrentWeatherVM: ObservableObject {
     @Published private(set) var currentDust: Weather.CurrentDust?
     @Published private(set) var todayMinMaxTemperature: (String, String) = ("__", "__")
     @Published private(set) var todayWeatherInformations: [Weather.TodayInformation] = []
-    @Published var openAdditionalLocationView: Bool = false
     @Published var subLocalityByKakaoAddress: String = ""
-        
     @Published private(set) var sunriseAndSunsetHHmm: (String, String) = ("0000", "0000")
     
     /// Load Completed Variables..(7 values)
@@ -27,10 +25,11 @@ final class CurrentWeatherVM: ObservableObject {
     @Published private(set) var isMinMaxTempLoaded: Bool = false
     @Published private(set) var isSunriseSunsetLoaded: Bool = false
     @Published private(set) var isTodayWeatherInformationLoaded: Bool = false
-    
     @Published private(set) var isAllLoaded: Bool = false
-    @Published var showNoticeFloater: Bool = false
     
+    @Published var isNoticeFloaterViewPresented: Bool = false
+    @Published var isAdditionalLocationViewPresented: Bool = false
+
     var noticeFloaterMessage: String = ""
     var timer: Timer?
     var timerNum: Int = 0
@@ -339,7 +338,7 @@ extension CurrentWeatherVM {
                     
                     DispatchQueue.main.async {
                         self.initLoadCompletedVariables()
-                        self.openAdditionalLocationView = false
+                        self.isAdditionalLocationViewPresented = false
                     }
                     self.fetchCurrentWeatherAllData(locationInf: locationInf)
                     await self.currentLocationEODelegate?.setCoordinateAndAllLocality(locationInf: locationInf)
@@ -586,8 +585,8 @@ extension CurrentWeatherVM {
             조금만 기다려주세요.
             기상청 서버 네트워크에 따라 속도가 느려질 수 있습니다 :)
             """
-            showNoticeFloater = false
-            showNoticeFloater = true
+            isNoticeFloaterViewPresented = false
+            isNoticeFloaterViewPresented = true
             
         } else if timerNum == 8 {
             initializeTimer()
@@ -621,8 +620,8 @@ extension CurrentWeatherVM {
         재시도 합니다.
         기상청 서버 네트워크에 따라 속도가 느려질 수 있습니다 :)
         """
-        showNoticeFloater = false
-        showNoticeFloater = true
+        isNoticeFloaterViewPresented = false
+        isNoticeFloaterViewPresented = true
         
         performRefresh(locationInf: locationInf)
     }

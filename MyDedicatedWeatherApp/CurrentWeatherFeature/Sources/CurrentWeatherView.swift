@@ -77,16 +77,16 @@ public struct CurrentWeatherView: View {
                 contentEO.isLocationChanged = true
             }
             .bottomNoticeFloater(
-                isPresented: $viewModel.showNoticeFloater,
+                isPresented: $viewModel.isNoticeFloaterViewPresented,
                 view: BottomNoticeFloaterView(
                     title: viewModel.noticeFloaterMessage
                 ),
                 duration: 3
             )
-            .fullScreenCover(isPresented: $viewModel.openAdditionalLocationView) {
+            .fullScreenCover(isPresented: $viewModel.isAdditionalLocationViewPresented) {
                 RootNavigationView(
                     view: AdditionalLocationView(
-                        isPresented: $viewModel.openAdditionalLocationView,
+                        isPresented: $viewModel.isAdditionalLocationViewPresented,
                         fetchNewLocation:
                             viewModel.fetchAdditionalLocationWeather(locationInf:isNewAdd:)
                     )
@@ -146,7 +146,7 @@ extension CurrentWeatherView {
                     location: currentLocationEO.locality,
                     subLocation: currentLocationEO.subLocality,
                     showRefreshButton: viewModel.isAllLoaded,
-                    openAdditionalLocationView: $viewModel.openAdditionalLocationView,
+                    openAdditionalLocationView: $viewModel.isAdditionalLocationViewPresented,
                     refreshButtonOnTapGesture: viewModel.performRefresh(locationInf:)
                 )
                 .padding(.leading, 40)
