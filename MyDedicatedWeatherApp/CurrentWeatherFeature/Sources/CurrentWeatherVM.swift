@@ -84,7 +84,7 @@ final class CurrentWeatherVM: ObservableObject {
 
 // MARK: - View Communication Funcs
 extension CurrentWeatherVM {
-    public func fetchCurrentWeatherAllData(locationInf: LocationInformation) {
+    public func loadCurrentWeatherAllData(locationInf: LocationInformation) {
         let convertedXY: Gps2XY.LatXLngY = .init(lat: 0, lng: 0, x: locationInf.x.toInt, y: locationInf.y.toInt)
         
         initializeTask()
@@ -109,7 +109,7 @@ extension CurrentWeatherVM {
         }
     }
     
-    public func fetchAdditionalLocationWeather(locationInf: LocationInformation, isNewAdd: Bool) {
+    public func loadAdditionalLocationWeather(locationInf: LocationInformation, isNewAdd: Bool) {
         LocationProvider.getLatitudeAndLongitude(address: locationInf.fullAddress) { [weak self] result in
             guard let self = self else { return }
             
@@ -132,7 +132,7 @@ extension CurrentWeatherVM {
                         self.initLoadCompletedVariables()
                         self.isAdditionalLocationViewPresented = false
                     }
-                    self.fetchCurrentWeatherAllData(locationInf: locationInf)
+                    self.loadCurrentWeatherAllData(locationInf: locationInf)
                     await self.currentLocationEODelegate?.setCoordinateAndAllLocality(locationInf: locationInf)
                     
                     if isNewAdd {
@@ -148,7 +148,7 @@ extension CurrentWeatherVM {
     
     public func performRefresh(locationInf: LocationInformation) {
         initLoadCompletedVariables()
-        fetchCurrentWeatherAllData(locationInf: locationInf)
+        loadCurrentWeatherAllData(locationInf: locationInf)
     }
 }
 

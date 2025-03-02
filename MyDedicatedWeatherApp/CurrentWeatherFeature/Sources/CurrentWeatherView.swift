@@ -67,7 +67,7 @@ public struct CurrentWeatherView: View {
                 skyType: viewModel.currentWeatherInformation?.skyType
             )
             .onChange(of: currentLocationEO.isLocationUpdated) { _ in
-                viewModel.fetchCurrentWeatherAllData(
+                viewModel.loadCurrentWeatherAllData(
                     locationInf: currentLocationEO.initialLocationInf
                 )
             }
@@ -87,7 +87,7 @@ public struct CurrentWeatherView: View {
                     view: AdditionalLocationView(
                         isPresented: $viewModel.isAdditionalLocationViewPresented,
                         fetchNewLocation:
-                            viewModel.fetchAdditionalLocationWeather(locationInf:isNewAdd:)
+                            viewModel.loadAdditionalLocationWeather(locationInf:isNewAdd:)
                     )
                 )
             }
