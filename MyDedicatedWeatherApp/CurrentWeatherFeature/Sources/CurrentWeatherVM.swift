@@ -17,7 +17,6 @@ final class CurrentWeatherVM: ObservableObject {
     @Published private(set) var todayWeatherInformations: [Weather.TodayInformation] = []
     @Published var openAdditionalLocationView: Bool = false
     @Published var subLocalityByKakaoAddress: String = ""
-    @Published var isLaunchScreenEnded: Bool = false
         
     @Published private(set) var sunriseAndSunsetHHmm: (String, String) = ("0000", "0000")
     
