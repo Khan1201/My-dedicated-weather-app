@@ -87,7 +87,6 @@ public struct SettingView: View {
                 isPresented: $vm.navOpenSourceView,
                 titles: vm.openSourceTitles,
                 subTitles: vm.openSourceSubTitles,
-                descriptions: Dummy.shared.openSourceDescriptions(),
                 tapAvailableIndexes: vm.openSourceTapAvailableIndexes
             )
         )

@@ -108,9 +108,3 @@ struct WeekWeatherItemView: View {
         }
     }
 }
-
-struct WeekWeatherItemView_Previews: PreviewProvider {
-    static var previews: some View {
-        WeekWeatherItemView(item: Dummy.shared.weeklyWeatherInformation(), day: "월요일")
-    }
-}

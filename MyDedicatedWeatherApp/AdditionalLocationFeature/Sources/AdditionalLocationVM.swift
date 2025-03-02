@@ -12,7 +12,7 @@ import Core
 final class AdditionalLocationVM: ObservableObject {
     
     @Published var gpsTempItem: Weather.WeatherImageAndMinMax = .init(weatherImage: "", currentTemp: "", minMaxTemp: ("", ""))
-    @Published var tempItems: [Weather.WeatherImageAndMinMax] = Dummy.weatherImageAndMinMax()
+    @Published var tempItems: [Weather.WeatherImageAndMinMax] = []
     @Published var locationInfs: [LocationInformation] = []
     
     private let commonUtil: CommonUtil

@@ -32,10 +32,3 @@ struct OpenSourceDetailView: View {
         .background(Color.black)
     }
 }
-
-#Preview {
-    OpenSourceDetailView(
-        title: "Alamofire",
-        description: Dummy.shared.openSourceDescriptions()[0]
-    )
-}
