@@ -11,12 +11,14 @@ import Domain
 import Core
 
 final class CurrentWeatherVM: ObservableObject {
+    @Published private(set) var sunriseAndSunsetHHmm: (String, String) = ("", "")
     @Published private(set) var currentWeatherInformation: Weather.CurrentInformation?
     @Published private(set) var currentDust: Weather.CurrentDust?
     @Published private(set) var todayMinMaxTemperature: (String, String) = ("", "")
     @Published private(set) var todayWeatherInformations: [Weather.TodayInformation] = []
-    @Published var subLocalityByKakaoAddress: String = ""
-    @Published private(set) var sunriseAndSunsetHHmm: (String, String) = ("", "")
+    @Published private(set) var subLocalityByKakaoAddress: String = ""
+    @Published private(set) var dustStationXY: (String, String) = ("", "")
+    @Published private(set) var dustStationName: String = ""
     
     /// Load Completed Variables..(7 values)
     @Published private(set) var isCurrentWeatherInformationLoaded: Bool = false
@@ -36,11 +38,6 @@ final class CurrentWeatherVM: ObservableObject {
     var currentTask: Task<(), Never>?
     
     private var bag: Set<AnyCancellable> = .init()
-    
-    private enum DustStationRequestParam {
-        static var tmXAndtmY: (String, String) = ("","")
-        static var stationName: String = ""
-    }
     
     weak var currentLocationEODelegate: CurrentLocationEODelegate?
     weak var contentEODelegate: ContentEODelegate?
@@ -219,7 +216,7 @@ extension CurrentWeatherVM {
     func fetchRealTimeDustItems() async {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
         
-        let result = await dustForecastService.getRealTimeDustItems(stationName: DustStationRequestParam.stationName)
+        let result = await dustForecastService.getRealTimeDustItems(stationName: dustStationName)
         
         switch result {
         case .success(let items):
@@ -246,8 +243,7 @@ extension CurrentWeatherVM {
         
         switch result {
         case .success(let items):
-            setDustStationRequestParamXY(items: items, locality: locality)
-            
+            setDustStationXY(items: items, locality: locality)
             let reqEndTime = CFAbsoluteTimeGetCurrent() - reqStartTime
             print("미세먼지 측정소 xy좌표 get 호출 소요시간: \(reqEndTime)")
         case .failure(let error):
@@ -267,8 +263,7 @@ extension CurrentWeatherVM {
         
         switch result {
         case .success(let items):
-            setDustStationRequestParamStationName(items)
-            
+            setDustStationName(items)
             guard let firstItem = items.first else { return }
             userDefaultsService.setCurrentDustStationName(firstItem.stationName)
             
@@ -373,7 +368,7 @@ extension CurrentWeatherVM {
                     subLocality: locationInf.isGPSLocation ? subLocalityByKakaoAddress : locationInf.subLocality,
                     locality: locationInf.locality
                 )
-                await fetchDustStationInfo(tmXAndtmY: DustStationRequestParam.tmXAndtmY)
+                await fetchDustStationInfo(tmXAndtmY: dustStationXY)
                 await fetchRealTimeDustItems()
             }
         }
@@ -526,20 +521,15 @@ extension CurrentWeatherVM {
         isSunriseSunsetLoaded = true
     }
     
-    /// Set XY좌표(미세먼지 측정소 이름 get 요청에 필요)
-    /// - parameter items: 측정소 xy 좌표 요청 response
-    /// - parameter locality: 측정소 xy좌표 요청 response에서 필터하기 위한것
-    func setDustStationRequestParamXY(items: [DustForecastStationXY]?, locality: String) {
+    func setDustStationXY(items: [DustForecastStationXY]?, locality: String) {
         guard let items = items else { return }
         guard let item = items.first( where: { $0.sidoName.contains(locality) } ) else { return }
-        DustStationRequestParam.tmXAndtmY = (item.tmX, item.tmY)
+        dustStationXY = (item.tmX, item.tmY)
     }
-    
-    /// Set 미세먼지 측정소 이름  (미세먼지 아이템 get 요청에 필요)
-    /// - parameter items: 측정소 측정소 이름 요청 response
-    func setDustStationRequestParamStationName(_ items: [DustForecastStation]?) {
+
+    func setDustStationName(_ items: [DustForecastStation]?) {
         guard let items = items, let item = items.first else { return }
-        DustStationRequestParam.stationName = item.stationName
+        dustStationName = item.stationName
     }
 }
 
