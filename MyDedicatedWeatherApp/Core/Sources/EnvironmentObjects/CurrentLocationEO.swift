@@ -20,6 +20,8 @@ public protocol CurrentLocationEODelegate: AnyObject {
     func setCoordinateAndAllLocality(locationInf: LocationInformation)
     @MainActor
     func setSkyType(_ value: WeatherAPIValue)
+    func setIsDayMode(sunriseHHmm: String, sunsetHHmm: String)
+
     var locationInf: LocationInformation { get }
 }
 
@@ -38,6 +40,7 @@ public final class CurrentLocationEO: NSObject, ObservableObject, CurrentLocatio
     @Published public private(set) var gpsLocality: String = ""
     @Published public private(set) var gpsSubLocality: String = ""
     @Published public private(set) var skyType: WeatherAPIValue?
+    @Published public private(set) var isDayMode: Bool = false
     
     public var gpsFullAddress: String {
         return gpsLocality + " " + gpsSubLocality
@@ -158,6 +161,16 @@ extension CurrentLocationEO {
     @MainActor
     public func setSkyType(_ value: WeatherAPIValue) {
         skyType = value
+    }
+    
+    public func setIsDayMode(sunriseHHmm: String, sunsetHHmm: String) {
+        let currentHHmm = Date().toString(format: "HHmm")
+        let sunTime: SunTime = .init(
+            currentHHmm: currentHHmm,
+            sunriseHHmm: sunriseHHmm,
+            sunsetHHmm: sunsetHHmm
+        )
+        isDayMode = sunTime.isDayMode
     }
 }
 

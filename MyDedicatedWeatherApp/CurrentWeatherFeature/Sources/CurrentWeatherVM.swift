@@ -40,7 +40,6 @@ final class CurrentWeatherVM: ObservableObject {
     private var bag: Set<AnyCancellable> = .init()
     
     weak var currentLocationEODelegate: CurrentLocationEODelegate?
-    weak var contentEODelegate: ContentEODelegate?
     
     private let commonUtil: CommonUtil
     private let commonForecastUtil: CommonForecastUtil
@@ -499,7 +498,7 @@ extension CurrentWeatherVM {
             let sunriseHHmm = sunrise.toString(format: "HHmm", timeZone: TimeZone(identifier: "UTC"))
             let sunsetHHmm = sunset.toString(format: "HHmm", timeZone: TimeZone(identifier: "UTC"))
             
-            contentEODelegate?.setIsDayMode(sunriseHHmm: sunriseHHmm, sunsetHHmm: sunsetHHmm)
+            currentLocationEODelegate?.setIsDayMode(sunriseHHmm: sunriseHHmm, sunsetHHmm: sunsetHHmm)
             setSunriseAndSunsetHHmm(sunrise: sunriseHHmm, sunset: sunsetHHmm)
             print("일출: \(sunriseHHmm), 일몰: \(sunsetHHmm)")
         }

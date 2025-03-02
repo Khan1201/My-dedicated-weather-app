@@ -8,10 +8,6 @@
 import Foundation
 import Domain
 
-public protocol ContentEODelegate: AnyObject {
-    func setIsDayMode(sunriseHHmm: String, sunsetHHmm: String)
-}
-
 public final class ContentEO: ObservableObject {
     @Published public var currentTab: TabBarType = .current
     @Published public var isLoading: Bool = true
@@ -19,12 +15,9 @@ public final class ContentEO: ObservableObject {
     @Published public var showNoticePopup: Bool = false
     @Published public var isRefreshed: Bool = false
     @Published public var isLocationChanged: Bool = false
-    
-    @Published public private(set) var isDayMode: Bool = false
-      
+          
     public init() {}
 }
-
 
 // MARK: - On tap gestures..
 
@@ -51,8 +44,7 @@ extension ContentEO {
 
 // MARK: - Set funcs..
 
-extension ContentEO: ContentEODelegate {
-    
+extension ContentEO {
     public func setIsRefreshedActionWhenRefreshStart() {
         isRefreshed = true
         
@@ -60,16 +52,4 @@ extension ContentEO: ContentEODelegate {
             self.isRefreshed = false
         }
     }
-    
-    public func setIsDayMode(sunriseHHmm: String, sunsetHHmm: String) {
-        let currentHHmm = Date().toString(format: "HHmm")
-        let sunTime: SunTime = .init(
-            currentHHmm: currentHHmm,
-            sunriseHHmm: sunriseHHmm,
-            sunsetHHmm: sunsetHHmm
-        )
-        isDayMode = sunTime.isDayMode
-    }
-    
-    
 }
