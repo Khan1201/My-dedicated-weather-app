@@ -48,26 +48,42 @@ public final class CurrentLocationEO: NSObject, ObservableObject, CurrentLocatio
     public var locationInf: LocationInformation {
         .init(longitude: longitude, latitude: latitude, x: xy.0, y: xy.1, locality: locality, subLocality: subLocality, fullAddress: fullAddress)
     }
-    
     public var initialLocationInf: LocationInformation {
         .init(longitude: longitude, latitude: latitude, x: xy.0, y: xy.1, locality: locality, subLocality: subLocality, fullAddress: fullAddress, isGPSLocation: true)
     }
-    
     public var gpsLocationInf: LocationInformation {
         .init(longitude: longitude, latitude: latitude, x: xy.0, y: xy.1, locality: gpsLocality, subLocality: gpsSubLocality, fullAddress: gpsFullAddress)
     }
     
+    private var locationManager = CLLocationManager()
     private let commonUtil: CommonUtil = .shared
     private let userDefaultsService: UserDefaultsService
-    
-    private var locationManager = CLLocationManager()
     
     public init(userDefaultsService: UserDefaultsService) {
         self.userDefaultsService = userDefaultsService
         super.init()
         locationManager.delegate = self
     }
+}
+
+// MARK: - Funcs
+extension CurrentLocationEO {
+    public func convertLocationToXY() -> Gps2XY.LatXLngY {
+        let xy: Gps2XY.LatXLngY = commonUtil.convertGPS2XY(
+            mode: .toXY,
+            lat_X: locationManager.location?.coordinate.latitude ?? 0,
+            lng_Y:locationManager.location?.coordinate.longitude ?? 0
+        )
+        return xy
+    }
     
+    public func startUpdaitingLocation() {
+        locationManager.startUpdatingLocation()
+    }
+}
+
+// MARK: - Set Funcs
+extension CurrentLocationEO {
     @MainActor
     public func setLocality(_ value: String) {
         self.locality = value
@@ -135,20 +151,10 @@ public final class CurrentLocationEO: NSObject, ObservableObject, CurrentLocatio
         setLocality(locationInf.locality)
         setSubLocality(locationInf.subLocality)
     }
-    
-    public func convertLocationToXY() -> Gps2XY.LatXLngY {
-        let xy: Gps2XY.LatXLngY = commonUtil.convertGPS2XY(
-            mode: .toXY,
-            lat_X: locationManager.location?.coordinate.latitude ?? 0,
-            lng_Y:locationManager.location?.coordinate.longitude ?? 0
-        )
-        return xy
-    }
-    
-    public  func startUpdaitingLocation() {
-        locationManager.startUpdatingLocation()
-    }
-    
+}
+
+// MARK: - Fetch Funcs
+extension CurrentLocationEO {
     private func fetchLocality(latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
        LocationProvider.getLocality(
             latitude: latitude,
@@ -171,7 +177,6 @@ public final class CurrentLocationEO: NSObject, ObservableObject, CurrentLocatio
 }
 
 // MARK: - Location Manager Delegate
-
 extension CurrentLocationEO: CLLocationManagerDelegate {
     public func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         switch manager.authorizationStatus {
