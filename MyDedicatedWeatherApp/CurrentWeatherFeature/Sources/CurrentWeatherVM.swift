@@ -13,10 +13,10 @@ import Core
 final class CurrentWeatherVM: ObservableObject {
     @Published private(set) var currentWeatherInformation: Weather.CurrentInformation?
     @Published private(set) var currentDust: Weather.CurrentDust?
-    @Published private(set) var todayMinMaxTemperature: (String, String) = ("__", "__")
+    @Published private(set) var todayMinMaxTemperature: (String, String) = ("", "")
     @Published private(set) var todayWeatherInformations: [Weather.TodayInformation] = []
     @Published var subLocalityByKakaoAddress: String = ""
-    @Published private(set) var sunriseAndSunsetHHmm: (String, String) = ("0000", "0000")
+    @Published private(set) var sunriseAndSunsetHHmm: (String, String) = ("", "")
     
     /// Load Completed Variables..(7 values)
     @Published private(set) var isCurrentWeatherInformationLoaded: Bool = false
