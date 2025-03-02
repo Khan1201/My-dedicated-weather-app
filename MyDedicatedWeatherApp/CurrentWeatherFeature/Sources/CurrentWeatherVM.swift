@@ -11,31 +11,31 @@ import Domain
 import Core
 
 final class CurrentWeatherVM: ObservableObject {
-    @Published private(set) var sunriseAndSunsetHHmm: (String, String) = ("", "")
-    @Published private(set) var currentWeatherInformation: Weather.CurrentInformation?
-    @Published private(set) var currentDust: Weather.CurrentDust?
-    @Published private(set) var todayMinMaxTemperature: (String, String) = ("", "")
-    @Published private(set) var todayWeatherInformations: [Weather.TodayInformation] = []
-    @Published private(set) var subLocalityByKakaoAddress: String = ""
-    @Published private(set) var dustStationXY: (String, String) = ("", "")
-    @Published private(set) var dustStationName: String = ""
+    @Published private(set) public var sunriseAndSunsetHHmm: (String, String) = ("", "")
+    @Published private(set) public var currentWeatherInformation: Weather.CurrentInformation?
+    @Published private(set) public var currentDust: Weather.CurrentDust?
+    @Published private(set) public var todayMinMaxTemperature: (String, String) = ("", "")
+    @Published private(set) public var todayWeatherInformations: [Weather.TodayInformation] = []
+    @Published private(set) public var subLocalityByKakaoAddress: String = ""
+    @Published private(set) public var dustStationXY: (String, String) = ("", "")
+    @Published private(set) public var dustStationName: String = ""
     
     /// Load Completed Variables..(7 values)
-    @Published private(set) var isCurrentWeatherInformationLoaded: Bool = false
-    @Published private(set) var isFineDustLoaded: Bool = false
-    @Published private(set) var isKakaoAddressLoaded: Bool = false
-    @Published private(set) var isMinMaxTempLoaded: Bool = false
-    @Published private(set) var isSunriseSunsetLoaded: Bool = false
-    @Published private(set) var isTodayWeatherInformationLoaded: Bool = false
-    @Published private(set) var isAllLoaded: Bool = false
+    @Published private(set) public var isCurrentWeatherInformationLoaded: Bool = false
+    @Published private(set) public var isFineDustLoaded: Bool = false
+    @Published private(set) public var isKakaoAddressLoaded: Bool = false
+    @Published private(set) public var isMinMaxTempLoaded: Bool = false
+    @Published private(set) public var isSunriseSunsetLoaded: Bool = false
+    @Published private(set) public var isTodayWeatherInformationLoaded: Bool = false
+    @Published private(set) public var isAllLoaded: Bool = false
     
-    @Published var isNoticeFloaterViewPresented: Bool = false
-    @Published var isAdditionalLocationViewPresented: Bool = false
+    @Published public var isNoticeFloaterViewPresented: Bool = false
+    @Published public var isAdditionalLocationViewPresented: Bool = false
 
-    var noticeFloaterMessage: String = ""
-    var timer: Timer?
-    var timerNum: Int = 0
-    var currentTask: Task<(), Never>?
+    public var noticeFloaterMessage: String = ""
+    private var timer: Timer?
+    private var timerNum: Int = 0
+    private var currentTask: Task<(), Never>?
     
     private var bag: Set<AnyCancellable> = .init()
     
@@ -82,159 +82,34 @@ final class CurrentWeatherVM: ObservableObject {
     }
 }
 
-// MARK: - Sink Funcs..
-
+// MARK: - View Communication Funcs
 extension CurrentWeatherVM {
-    private func sinkIsAllLoaded() {
-        let zipFirst = Publishers.Zip3($isCurrentWeatherInformationLoaded, $isFineDustLoaded, $isKakaoAddressLoaded)
-        let zipSecond = Publishers.Zip3($isMinMaxTempLoaded, $isSunriseSunsetLoaded, $isTodayWeatherInformationLoaded)
+    public func fetchCurrentWeatherAllData(locationInf: LocationInformation) {
+        let convertedXY: Gps2XY.LatXLngY = .init(lat: 0, lng: 0, x: locationInf.x.toInt, y: locationInf.y.toInt)
         
-        Publishers.Zip(zipFirst, zipSecond)
-            .sink { [weak self] results in
-                guard let self = self else { return }
-                let isZipFirstAllLoaded: Bool = results.0.0 && results.0.1 && results.0.2
-                let isZipSecondAllLoaded: Bool = results.1.0 && results.1.1 && results.1.2
-                guard isZipFirstAllLoaded && isZipSecondAllLoaded else { return }
-                isAllLoaded = true
-                CustomHapticGenerator.impact(style: .soft)
-                initializeTaskAndTimer()
-            }
-            .store(in: &bag)
-    }
-}
-
-// MARK: - Fetch..
-
-extension CurrentWeatherVM {
-    func fetchCurrentWeatherInformations(xy: Gps2XY.LatXLngY) async {
-        let startTime = CFAbsoluteTimeGetCurrent()
-        
-        let result = await veryShortForecastService.getCurrentItems(xy: xy)
-        
-        switch result {
-        case .success(let items):
-            await self.setCurrentWeatherInformation(items: items)
-            
-            let durationTime = CFAbsoluteTimeGetCurrent() - startTime
-            print("초단기 req 소요시간: \(durationTime)")
-        case .failure(let error):
-            CustomLogger.error("\(error)")
-        }
-    }
-    
-    func fetchTodayWeatherInformations(xy: Gps2XY.LatXLngY) async {
-        let reqStartTime = CFAbsoluteTimeGetCurrent()
-        
-        let result = await shortForecastService.getTodayItems(xy: xy, reqRow: "300")
-        
-        switch result {
-        case .success(let items):
-            await setTodayWeatherInformations(items: items)
-            
-            let reqEndTime = CFAbsoluteTimeGetCurrent() - reqStartTime
-            print("단기 req 호출 소요시간: \(reqEndTime)")
-        case .failure(let error):
-            CustomLogger.error("\(error)")
-        }
-    }
-
-    func fetchTodayMinMaxTemperature(xy: Gps2XY.LatXLngY) async {
-        let reqStartTime = CFAbsoluteTimeGetCurrent()
-        
-        let result = await shortForecastService.getTodayMinMaxItems(xy: xy)
-        
-        switch result {
-        case .success(let items):
-            await setTodayMinMaxTemperature(items)
-            
-            let reqEndTime = CFAbsoluteTimeGetCurrent() - reqStartTime
-            print("단기 req(최소, 최대 온도 값) 호출 소요시간: \(reqEndTime)")
-        case .failure(let error):
-            CustomLogger.error("\(error)")
-        }
-    }
-    
-    func fetchCurrentDust() async {
-        let reqStartTime = CFAbsoluteTimeGetCurrent()
-        
-        let result = await dustForecastService.getRealTimeDustItems(stationName: dustStationName)
-        
-        switch result {
-        case .success(let items):
-            guard let item = items.first else { return }
-            await setCurrentDust(item)
-            
-            let reqEndTime = CFAbsoluteTimeGetCurrent() - reqStartTime
-            print("미세먼지 item 호출 소요시간: \(reqEndTime)")
-        case .failure(let error):
-            CustomLogger.error("\(error)")
-        }
-    }
-
-    func fetchDustStationXY(subLocality: String, locality: String) async {
-        let reqStartTime = CFAbsoluteTimeGetCurrent()
-        
-        let result = await dustForecastService.getXYOfStation(subLocality: subLocality)
-        
-        switch result {
-        case .success(let items):
-            setDustStationXY(items: items, locality: locality)
-            let reqEndTime = CFAbsoluteTimeGetCurrent() - reqStartTime
-            print("미세먼지 측정소 xy좌표 get 호출 소요시간: \(reqEndTime)")
-        case .failure(let error):
-            CustomLogger.error("\(error)")
-        }
-    }
-    
-    func fetchDustStationName(tmXAndtmY: (String, String)) async {
-        let reqStartTime = CFAbsoluteTimeGetCurrent()
-        
-        let result = await dustForecastService.getStationInfo(tmXAndtmY: tmXAndtmY)
-        
-        switch result {
-        case .success(let items):
-            setDustStationName(items)
-            guard let firstItem = items.first else { return }
-            userDefaultsService.setCurrentDustStationName(firstItem.stationName)
-            
-            let reqEndTime = CFAbsoluteTimeGetCurrent() - reqStartTime
-            print("미세먼지 측정소 get 호출 소요시간: \(reqEndTime)")
-        case .failure(let error):
-            CustomLogger.error("\(error)")
-        }
-    }
-    
-    func fetchSubLocalityByKakaoAddress(longitude: String, latitude: String, isCurrentLocationRequested: Bool) async {
-        let startTime = CFAbsoluteTimeGetCurrent()
-        
-        let result = await kakaoAddressService.getKaKaoAddressBy(
-            longitude: longitude,
-            latitude: latitude
-        )
-        
-        switch result {
-        case .success(let item):
-            await setSubLocalityByKakaoAddress(item.documents)
-            
-            guard item.documents.count > 0 else { return }
-            await currentLocationEODelegate?.setSubLocality(item.documents[0].address.subLocality)
-            
-            /// For Widget
-            if isCurrentLocationRequested {
-                await self.currentLocationEODelegate?.setGPSSubLocality(item.documents[0].address.subLocality)
-                await self.currentLocationEODelegate?.setFullAddressByGPS()
-                userDefaultsService.setCurrentSubLocality(self.subLocalityByKakaoAddress)
-                userDefaultsService.setCurrentFullAddress(item.documents[0].address.fullAddress)
+        initializeTask()
+        timerStart()
+        calculateAndSetSunriseSunset(longLati: (locationInf.longitude, locationInf.latitude))
+        currentTask = Task(priority: .high) {
+            Task(priority: .high) {
+                await fetchCurrentWeatherInformations(xy: convertedXY)
+                await fetchTodayWeatherInformations(xy: convertedXY)
+                await fetchTodayMinMaxTemperature(xy: convertedXY)
             }
             
-            let durationTime = CFAbsoluteTimeGetCurrent() - startTime
-            print("카카오 주소 req 소요시간: \(durationTime)")
-        case .failure(let error):
-            CustomLogger.error("\(error)")
+            Task(priority: .low) {
+                await fetchSubLocalityByKakaoAddress(longitude: locationInf.longitude, latitude: locationInf.latitude, isCurrentLocationRequested: locationInf.isGPSLocation)
+                await fetchDustStationXY(
+                    subLocality: locationInf.isGPSLocation ? subLocalityByKakaoAddress : locationInf.subLocality,
+                    locality: locationInf.locality
+                )
+                await fetchDustStationName(tmXAndtmY: dustStationXY)
+                await fetchCurrentDust()
+            }
         }
     }
     
-    func fetchAdditionalLocationWeather(locationInf: LocationInformation, isNewAdd: Bool) {
+    public func fetchAdditionalLocationWeather(locationInf: LocationInformation, isNewAdd: Bool) {
         LocationProvider.getLatitudeAndLongitude(address: locationInf.fullAddress) { [weak self] result in
             guard let self = self else { return }
             
@@ -271,37 +146,167 @@ extension CurrentWeatherVM {
         }
     }
     
-    func fetchCurrentWeatherAllData(locationInf: LocationInformation) {
-        let convertedXY: Gps2XY.LatXLngY = .init(lat: 0, lng: 0, x: locationInf.x.toInt, y: locationInf.y.toInt)
+    public func performRefresh(locationInf: LocationInformation) {
+        initLoadCompletedVariables()
+        fetchCurrentWeatherAllData(locationInf: locationInf)
+    }
+}
+
+// MARK: - Fetch..
+extension CurrentWeatherVM {
+    private func fetchCurrentWeatherInformations(xy: Gps2XY.LatXLngY) async {
+        let startTime = CFAbsoluteTimeGetCurrent()
         
-        initializeTask()
-        timerStart()
-        calculateAndSetSunriseSunset(longLati: (locationInf.longitude, locationInf.latitude))
-        currentTask = Task(priority: .high) {
-            Task(priority: .high) {
-                await fetchCurrentWeatherInformations(xy: convertedXY)
-                await fetchTodayWeatherInformations(xy: convertedXY)
-                await fetchTodayMinMaxTemperature(xy: convertedXY)
+        let result = await veryShortForecastService.getCurrentItems(xy: xy)
+        
+        switch result {
+        case .success(let items):
+            await self.setCurrentWeatherInformation(items: items)
+            
+            let durationTime = CFAbsoluteTimeGetCurrent() - startTime
+            print("초단기 req 소요시간: \(durationTime)")
+        case .failure(let error):
+            CustomLogger.error("\(error)")
+        }
+    }
+    
+    private func fetchTodayWeatherInformations(xy: Gps2XY.LatXLngY) async {
+        let reqStartTime = CFAbsoluteTimeGetCurrent()
+        
+        let result = await shortForecastService.getTodayItems(xy: xy, reqRow: "300")
+        
+        switch result {
+        case .success(let items):
+            await setTodayWeatherInformations(items: items)
+            
+            let reqEndTime = CFAbsoluteTimeGetCurrent() - reqStartTime
+            print("단기 req 호출 소요시간: \(reqEndTime)")
+        case .failure(let error):
+            CustomLogger.error("\(error)")
+        }
+    }
+
+    private func fetchTodayMinMaxTemperature(xy: Gps2XY.LatXLngY) async {
+        let reqStartTime = CFAbsoluteTimeGetCurrent()
+        
+        let result = await shortForecastService.getTodayMinMaxItems(xy: xy)
+        
+        switch result {
+        case .success(let items):
+            await setTodayMinMaxTemperature(items)
+            
+            let reqEndTime = CFAbsoluteTimeGetCurrent() - reqStartTime
+            print("단기 req(최소, 최대 온도 값) 호출 소요시간: \(reqEndTime)")
+        case .failure(let error):
+            CustomLogger.error("\(error)")
+        }
+    }
+    
+    private func fetchCurrentDust() async {
+        let reqStartTime = CFAbsoluteTimeGetCurrent()
+        
+        let result = await dustForecastService.getRealTimeDustItems(stationName: dustStationName)
+        
+        switch result {
+        case .success(let items):
+            guard let item = items.first else { return }
+            await setCurrentDust(item)
+            
+            let reqEndTime = CFAbsoluteTimeGetCurrent() - reqStartTime
+            print("미세먼지 item 호출 소요시간: \(reqEndTime)")
+        case .failure(let error):
+            CustomLogger.error("\(error)")
+        }
+    }
+
+    private func fetchDustStationXY(subLocality: String, locality: String) async {
+        let reqStartTime = CFAbsoluteTimeGetCurrent()
+        
+        let result = await dustForecastService.getXYOfStation(subLocality: subLocality)
+        
+        switch result {
+        case .success(let items):
+            setDustStationXY(items: items, locality: locality)
+            let reqEndTime = CFAbsoluteTimeGetCurrent() - reqStartTime
+            print("미세먼지 측정소 xy좌표 get 호출 소요시간: \(reqEndTime)")
+        case .failure(let error):
+            CustomLogger.error("\(error)")
+        }
+    }
+    
+    private func fetchDustStationName(tmXAndtmY: (String, String)) async {
+        let reqStartTime = CFAbsoluteTimeGetCurrent()
+        
+        let result = await dustForecastService.getStationInfo(tmXAndtmY: tmXAndtmY)
+        
+        switch result {
+        case .success(let items):
+            setDustStationName(items)
+            guard let firstItem = items.first else { return }
+            userDefaultsService.setCurrentDustStationName(firstItem.stationName)
+            
+            let reqEndTime = CFAbsoluteTimeGetCurrent() - reqStartTime
+            print("미세먼지 측정소 get 호출 소요시간: \(reqEndTime)")
+        case .failure(let error):
+            CustomLogger.error("\(error)")
+        }
+    }
+    
+    private func fetchSubLocalityByKakaoAddress(longitude: String, latitude: String, isCurrentLocationRequested: Bool) async {
+        let startTime = CFAbsoluteTimeGetCurrent()
+        
+        let result = await kakaoAddressService.getKaKaoAddressBy(
+            longitude: longitude,
+            latitude: latitude
+        )
+        
+        switch result {
+        case .success(let item):
+            await setSubLocalityByKakaoAddress(item.documents)
+            
+            guard item.documents.count > 0 else { return }
+            await currentLocationEODelegate?.setSubLocality(item.documents[0].address.subLocality)
+            
+            /// For Widget
+            if isCurrentLocationRequested {
+                await self.currentLocationEODelegate?.setGPSSubLocality(item.documents[0].address.subLocality)
+                await self.currentLocationEODelegate?.setFullAddressByGPS()
+                userDefaultsService.setCurrentSubLocality(self.subLocalityByKakaoAddress)
+                userDefaultsService.setCurrentFullAddress(item.documents[0].address.fullAddress)
             }
             
-            Task(priority: .low) {
-                await fetchSubLocalityByKakaoAddress(longitude: locationInf.longitude, latitude: locationInf.latitude, isCurrentLocationRequested: locationInf.isGPSLocation)
-                await fetchDustStationXY(
-                    subLocality: locationInf.isGPSLocation ? subLocalityByKakaoAddress : locationInf.subLocality,
-                    locality: locationInf.locality
-                )
-                await fetchDustStationName(tmXAndtmY: dustStationXY)
-                await fetchCurrentDust()
-            }
+            let durationTime = CFAbsoluteTimeGetCurrent() - startTime
+            print("카카오 주소 req 소요시간: \(durationTime)")
+        case .failure(let error):
+            CustomLogger.error("\(error)")
         }
     }
 }
 
-// MARK: - Set Variables..
+// MARK: - Sink Funcs..
+extension CurrentWeatherVM {
+    private func sinkIsAllLoaded() {
+        let zipFirst = Publishers.Zip3($isCurrentWeatherInformationLoaded, $isFineDustLoaded, $isKakaoAddressLoaded)
+        let zipSecond = Publishers.Zip3($isMinMaxTempLoaded, $isSunriseSunsetLoaded, $isTodayWeatherInformationLoaded)
+        
+        Publishers.Zip(zipFirst, zipSecond)
+            .sink { [weak self] results in
+                guard let self = self else { return }
+                let isZipFirstAllLoaded: Bool = results.0.0 && results.0.1 && results.0.2
+                let isZipSecondAllLoaded: Bool = results.1.0 && results.1.1 && results.1.2
+                guard isZipFirstAllLoaded && isZipSecondAllLoaded else { return }
+                isAllLoaded = true
+                CustomHapticGenerator.impact(style: .soft)
+                initializeTaskAndTimer()
+            }
+            .store(in: &bag)
+    }
+}
 
+// MARK: - Set Variables..
 extension CurrentWeatherVM {
     @MainActor
-    func setCurrentWeatherInformation(items: [VeryShortOrShortTermForecast<VeryShortTermForecastCategory>]) {
+    private func setCurrentWeatherInformation(items: [VeryShortOrShortTermForecast<VeryShortTermForecastCategory>]) {
         let currentTemperature = items[24]
         let currentWindSpeed = items[54]
         let currentWetPercent = items[30]
@@ -338,7 +343,7 @@ extension CurrentWeatherVM {
     }
 
     @MainActor
-    func setTodayWeatherInformations(items: [VeryShortOrShortTermForecast<ShortTermForecastCategory>]) {
+    private func setTodayWeatherInformations(items: [VeryShortOrShortTermForecast<ShortTermForecastCategory>]) {
         todayWeatherInformations = []
         
         let skipValue = shortForecastUtil.todayWeatherIndexSkipValue
@@ -388,7 +393,7 @@ extension CurrentWeatherVM {
     }
 
     @MainActor
-    func setTodayMinMaxTemperature(_ items: [VeryShortOrShortTermForecast<ShortTermForecastCategory>]) {
+    private func setTodayMinMaxTemperature(_ items: [VeryShortOrShortTermForecast<ShortTermForecastCategory>]) {
         let todayDate = Date().toString(format: "yyyyMMdd")
         
         let filteredItems = items.filter( {$0.category == .TMP && $0.fcstDate == todayDate} )
@@ -403,7 +408,7 @@ extension CurrentWeatherVM {
     }
     
     @MainActor
-    func setCurrentDust(_ item: RealTimeFindDustForecast) {
+    private func setCurrentDust(_ item: RealTimeFindDustForecast) {
         let convertedFineDust: WeatherAPIValue = fineDustLookUpUtil.convertFineDust(rawValue: item.pm10Value)
         let convertedUltraFineDust: WeatherAPIValue = fineDustLookUpUtil.convertUltraFineDust(rawValue: item.pm25Value)
         currentDust = .init(
@@ -414,33 +419,32 @@ extension CurrentWeatherVM {
     }
     
     @MainActor
-    func setSubLocalityByKakaoAddress(_ items: [KakaoAddress.AddressBase]) {
+    private func setSubLocalityByKakaoAddress(_ items: [KakaoAddress.AddressBase]) {
         guard items.count > 0 else { return }
         subLocalityByKakaoAddress = items[0].address.subLocality
         isKakaoAddressLoaded = true
     }
     
-    func setSunriseAndSunsetHHmm(sunrise: String, sunset: String) {
+    private func setSunriseAndSunsetHHmm(sunrise: String, sunset: String) {
         sunriseAndSunsetHHmm = (sunrise, sunset)
         isSunriseSunsetLoaded = true
     }
     
-    func setDustStationXY(items: [DustForecastStationXY]?, locality: String) {
+    private func setDustStationXY(items: [DustForecastStationXY]?, locality: String) {
         guard let items = items else { return }
         guard let item = items.first( where: { $0.sidoName.contains(locality) } ) else { return }
         dustStationXY = (item.tmX, item.tmY)
     }
 
-    func setDustStationName(_ items: [DustForecastStation]?) {
+    private func setDustStationName(_ items: [DustForecastStation]?) {
         guard let items = items, let item = items.first else { return }
         dustStationName = item.stationName
     }
 }
 
 // MARK: - ETC funcs..
-
 extension CurrentWeatherVM {
-    func initLoadCompletedVariables() {
+    private func initLoadCompletedVariables() {
         isCurrentWeatherInformationLoaded = false
         isFineDustLoaded = false
         isKakaoAddressLoaded = false
@@ -449,23 +453,23 @@ extension CurrentWeatherVM {
         isTodayWeatherInformationLoaded = false
     }
     
-    func initializeTask() {
+    private func initializeTask() {
         currentTask?.cancel()
         currentTask = nil
     }
     
-    func initializeTimer() {
+    private func initializeTimer() {
         timer?.invalidate()
         timer = nil
         timerNum = 0
     }
     
-    func initializeTaskAndTimer() {
+    private func initializeTaskAndTimer() {
         initializeTask()
         initializeTimer()
     }
     
-    func timerStart() {
+    private func timerStart() {
         initializeTimer()
         timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(askRetryIfFewSecondsAfterNotLoaded(timer:)), userInfo: nil, repeats: true)
     }
@@ -489,7 +493,7 @@ extension CurrentWeatherVM {
         }
     }
     
-    func calculateAndSetSunriseSunset(longLati: (String, String)) {
+    private func calculateAndSetSunriseSunset(longLati: (String, String)) {
         let currentDate: Date = Date()
         let sunrise = currentDate.sunrise(.init(latitude: longLati.1.toDouble, longitude: longLati.0.toDouble))
         let sunset = currentDate.sunset(.init(latitude: longLati.1.toDouble, longitude: longLati.0.toDouble))
@@ -504,12 +508,7 @@ extension CurrentWeatherVM {
         }
     }
     
-    func performRefresh(locationInf: LocationInformation) {
-        initLoadCompletedVariables()
-        fetchCurrentWeatherAllData(locationInf: locationInf)
-    }
-    
-    func retryAndShowNoticeFloater(locationInf: LocationInformation) {
+    private func retryAndShowNoticeFloater(locationInf: LocationInformation) {
         noticeFloaterMessage = """
         재시도 합니다.
         기상청 서버 네트워크에 따라 속도가 느려질 수 있습니다 :)
@@ -520,4 +519,3 @@ extension CurrentWeatherVM {
         performRefresh(locationInf: locationInf)
     }
 }
-
