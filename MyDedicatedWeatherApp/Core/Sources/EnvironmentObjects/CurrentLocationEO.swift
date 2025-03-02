@@ -24,8 +24,8 @@ public protocol CurrentLocationEODelegate: AnyObject {
 // MARK: -
 
 public final class CurrentLocationEO: NSObject, ObservableObject, CurrentLocationEODelegate {
-    @Published public var locationPermissonType: PermissionType = .notAllow
-    @Published public var isLocationUpdated: Bool = false
+    @Published public private(set) var locationPermissonType: PermissionType = .notAllow
+    @Published public private(set) var isLocationUpdated: Bool = false
     
     @Published public private(set) var latitude: String = ""
     @Published public private(set) var longitude: String = ""
@@ -33,9 +33,9 @@ public final class CurrentLocationEO: NSObject, ObservableObject, CurrentLocatio
     @Published public private(set) var locality: String = "" /// 서울특별시
     @Published public private(set) var subLocality: String = "" /// 성수동 1가
     @Published public private(set) var fullAddress: String = ""
-    
     @Published public private(set) var gpsLocality: String = ""
     @Published public private(set) var gpsSubLocality: String = ""
+    
     public var gpsFullAddress: String {
         return gpsLocality + " " + gpsSubLocality
     }
