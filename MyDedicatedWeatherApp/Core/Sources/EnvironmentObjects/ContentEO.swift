@@ -14,7 +14,6 @@ public final class ContentEO: ObservableObject {
     @Published public var isTabBarTouchDisabled: Bool = true
     @Published public var isTabBarTouchNoticeFloaterPresented: Bool = false
     @Published public var isRefreshed: Bool = false
-    @Published public var isLocationChanged: Bool = false
           
     public init() {}
 }

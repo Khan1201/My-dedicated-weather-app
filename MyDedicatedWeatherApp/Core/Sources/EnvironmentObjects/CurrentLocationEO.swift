@@ -188,6 +188,10 @@ extension CurrentLocationEO {
                         await self.setLocalityWithWidget(success)
                         await self.setGPSLocality(success)
                         self.isLocationUpdated = true
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                            self.isLocationUpdated = false
+                        }
                     }
                     
                 case .failure(_):

@@ -66,14 +66,15 @@ public struct CurrentWeatherView: View {
                 isAllLoadCompleted: viewModel.isAllLoaded,
                 skyType: viewModel.currentWeatherInformation?.skyType
             )
-            .onChange(of: currentLocationEO.isLocationUpdated) { _ in
-                viewModel.loadCurrentWeatherAllData(
-                    locationInf: currentLocationEO.initialLocationInf
-                )
+            .onChange(of: currentLocationEO.isLocationUpdated) { newValue in
+                if newValue {
+                    viewModel.loadCurrentWeatherAllData(
+                        locationInf: currentLocationEO.initialLocationInf
+                    )
+                }
             }
             .onChange(of: viewModel.isAllLoaded) { newValue in
                 disableTabBarTouch = false
-                contentEO.isLocationChanged = true
             }
             .bottomNoticeFloater(
                 isPresented: $viewModel.isNoticeFloaterViewPresented,
