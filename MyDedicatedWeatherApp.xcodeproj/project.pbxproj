@@ -35,7 +35,7 @@
 		BCA30F8129FE203B0078D0B1 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BCA30F8029FE203B0078D0B1 /* Preview Assets.xcassets */; };
 		BCAADFD92CF7721D000CD396 /* BackgroundRainyLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BCAADFD42CF7721D000CD396 /* BackgroundRainyLottie.json */; };
 		BCAADFDA2CF7721D000CD396 /* BackgroundCloudyLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BCAADFD52CF7721D000CD396 /* BackgroundCloudyLottie.json */; };
-		BCAADFDB2CF7721D000CD396 /* BackgroundSunnyNightLottie1.json in Resources */ = {isa = PBXBuildFile; fileRef = BCAADFD62CF7721D000CD396 /* BackgroundSunnyNightLottie1.json */; };
+		BCAADFDB2CF7721D000CD396 /* BackgroundSunnyNightLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BCAADFD62CF7721D000CD396 /* BackgroundSunnyNightLottie.json */; };
 		BCAADFDC2CF7721D000CD396 /* BackgroundSnowLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BCAADFD72CF7721D000CD396 /* BackgroundSnowLottie.json */; };
 		BCAADFDD2CF7721D000CD396 /* BackgroundSunnyDayLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BCAADFD82CF7721D000CD396 /* BackgroundSunnyDayLottie.json */; };
 		BCB532132A75114100DC2B33 /* CloudManyNightLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = BCB532062A75114100DC2B33 /* CloudManyNightLottie.json */; };
@@ -140,7 +140,7 @@
 		BCA30FA829FE7D780078D0B1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BCAADFD42CF7721D000CD396 /* BackgroundRainyLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BackgroundRainyLottie.json; sourceTree = "<group>"; };
 		BCAADFD52CF7721D000CD396 /* BackgroundCloudyLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BackgroundCloudyLottie.json; sourceTree = "<group>"; };
-		BCAADFD62CF7721D000CD396 /* BackgroundSunnyNightLottie1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BackgroundSunnyNightLottie1.json; sourceTree = "<group>"; };
+		BCAADFD62CF7721D000CD396 /* BackgroundSunnyNightLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BackgroundSunnyNightLottie.json; sourceTree = "<group>"; };
 		BCAADFD72CF7721D000CD396 /* BackgroundSnowLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BackgroundSnowLottie.json; sourceTree = "<group>"; };
 		BCAADFD82CF7721D000CD396 /* BackgroundSunnyDayLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BackgroundSunnyDayLottie.json; sourceTree = "<group>"; };
 		BCB532062A75114100DC2B33 /* CloudManyNightLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CloudManyNightLottie.json; sourceTree = "<group>"; };
@@ -357,7 +357,7 @@
 				BCAADFD42CF7721D000CD396 /* BackgroundRainyLottie.json */,
 				BCAADFD72CF7721D000CD396 /* BackgroundSnowLottie.json */,
 				BCAADFD82CF7721D000CD396 /* BackgroundSunnyDayLottie.json */,
-				BCAADFD62CF7721D000CD396 /* BackgroundSunnyNightLottie1.json */,
+				BCAADFD62CF7721D000CD396 /* BackgroundSunnyNightLottie.json */,
 			);
 			path = BackgroundLottie;
 			sourceTree = "<group>";
@@ -622,7 +622,7 @@
 				BCE489BF2A4EA33400A18B2B /* SpoqaHanSansNeo-Medium.woff in Resources */,
 				BCE489A02A4EA32400A18B2B /* SpoqaHanSansNeo-Regular.otf in Resources */,
 				BCB5321B2A75114100DC2B33 /* SnowLottie.json in Resources */,
-				BCAADFDB2CF7721D000CD396 /* BackgroundSunnyNightLottie1.json in Resources */,
+				BCAADFDB2CF7721D000CD396 /* BackgroundSunnyNightLottie.json in Resources */,
 				BCE489BD2A4EA33400A18B2B /* SpoqaHanSansNeo-Regular.woff2 in Resources */,
 				BCB5321A2A75114100DC2B33 /* CloudManyLottie.json in Resources */,
 				BC251F2B2A76A2F8004CE9CF /* LoadingLottie.json in Resources */,
