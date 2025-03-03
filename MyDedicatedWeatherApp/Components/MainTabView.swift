@@ -21,15 +21,15 @@ struct MainTabView: View {
         VStack(alignment: .leading, spacing: 0) {
             
             ZStack(alignment: .center) {
-                if vm.isLoading {
+                if vm.isLaunchScreenPresented {
                     LaunchScreen()
                         .onAppear {
-                            vm.loadingOnAppearAction()
+                            vm.hideLaunchScreenAfterFewSeconds()
                         }
                 }
                 
                 TabView(selection: $vm.currentTab) {
-                    CurrentWeatherView(disableTabBarTouch: $vm.disableTabBarTouch)
+                    CurrentWeatherView(disableTabBarTouch: $vm.isTabBarTouchDisabled)
                         .tag(TabBarType.current)
                     
                     WeeklyWeatherView()
@@ -44,13 +44,13 @@ struct MainTabView: View {
                 .overlay(alignment: .bottom) {
                     CustomBottomTabBarView(
                         currentTab: $vm.currentTab,
-                        disableTabBarTouch: $vm.disableTabBarTouch,
+                        disableTabBarTouch: $vm.isTabBarTouchDisabled,
                         itemOnTapGesture: vm.tabBarItemOnTapGesture(_:)
                     )
                 }
-                .opacity(vm.isLoading ? 0 : 1)
+                .opacity(vm.isLaunchScreenPresented ? 0 : 1)
                 .bottomNoticeFloater(
-                    isPresented: $vm.showNoticePopup,
+                    isPresented: $vm.isTabBarTouchNoticeFloaterPresented,
                     view: BottomNoticeFloaterView(
                         title: "현재 날씨 로딩후에 접근 가능합니다."
                     )

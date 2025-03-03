@@ -10,9 +10,9 @@ import Domain
 
 public final class ContentEO: ObservableObject {
     @Published public var currentTab: TabBarType = .current
-    @Published public var isLoading: Bool = true
-    @Published public var disableTabBarTouch: Bool = true
-    @Published public var showNoticePopup: Bool = false
+    @Published public var isLaunchScreenPresented: Bool = true
+    @Published public var isTabBarTouchDisabled: Bool = true
+    @Published public var isTabBarTouchNoticeFloaterPresented: Bool = false
     @Published public var isRefreshed: Bool = false
     @Published public var isLocationChanged: Bool = false
           
@@ -23,8 +23,8 @@ public final class ContentEO: ObservableObject {
 
 extension ContentEO {
     public func tabBarItemOnTapGesture(_ type: TabBarType) {
-        if disableTabBarTouch {
-            showNoticePopup = true
+        if isTabBarTouchDisabled {
+            isTabBarTouchNoticeFloaterPresented = true
             
         } else {
             currentTab = type
@@ -35,9 +35,9 @@ extension ContentEO {
 // MARK: - Life cycle funcs..
 
 extension ContentEO {
-    public func loadingOnAppearAction() {
+    public func hideLaunchScreenAfterFewSeconds() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
-            self.isLoading = false
+            self.isLaunchScreenPresented = false
         }
     }
 }
