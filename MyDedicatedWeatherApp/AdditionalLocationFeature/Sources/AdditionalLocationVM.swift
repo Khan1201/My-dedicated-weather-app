@@ -152,16 +152,13 @@ extension AdditionalLocationVM {
             
             return
         }
-        tempItems.insert(
+        tempItems.append(
             .init(
                 weatherImage: currentWeatherImageAndTemp.0,
                 currentTemp: currentWeatherImageAndTemp.1,
                 minMaxTemp: minMaxTemp
-            ),
-            at: index
+            )
         )
-        tempItems.remove(at: index + 1)
-        
     }
     
     @MainActor

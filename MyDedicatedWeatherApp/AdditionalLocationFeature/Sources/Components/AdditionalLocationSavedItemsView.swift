@@ -16,12 +16,13 @@ struct AdditionalLocationSavedItemsView: View {
     let itemDeleteAction: (LocationInformation) -> Void
     
     var body: some View {
+        let isTempItemsLoaded: Bool = locationInfs.count == tempItems.count
         
         VStack(alignment: .leading, spacing: 16) {
             ForEach(locationInfs.indices, id: \.self) { i in
                 AdditionalLocationSavedItemView(
                     locationInf: locationInfs[i],
-                    tempItem: tempItems[i],
+                    tempItem: isTempItemsLoaded ? tempItems[i] : nil,
                     onTapGesture: fetchNewLocation,
                     deleteAction: itemDeleteAction
                 )

@@ -10,7 +10,7 @@ import Domain
 
 struct AdditionalLocationSavedItemView: View {
     let locationInf: LocationInformation
-    let tempItem: Weather.WeatherImageAndMinMax
+    let tempItem: Weather.WeatherImageAndMinMax?
     let onTapGesture: (LocationInformation, Bool) -> Void
     let deleteAction: (LocationInformation) -> Void
     
@@ -18,6 +18,7 @@ struct AdditionalLocationSavedItemView: View {
     @State private var tempSize: CGSize = CGSize()
     
     var body: some View {
+        let isWeatherLoaded: Bool = tempItem != nil
         
         HStack(alignment: .center, spacing: 0) {
             Text(locationInf.fullAddress)
@@ -27,16 +28,16 @@ struct AdditionalLocationSavedItemView: View {
             Spacer()
             
             HStack(alignment: .center, spacing: 0) {
-                Image(tempItem.weatherImage)
+                Image(tempItem?.weatherImage ?? "")
                     .resizable()
                     .frame(width: 34, height: 34)
                 
                 VStack(alignment: .center, spacing: 2) {
-                    Text(" \(tempItem.currentTemp)°")
+                    Text(" \(tempItem?.currentTemp ?? "")°")
                         .fontSpoqaHanSansNeo(size: 18, weight: .medium)
                         .foregroundStyle(Color.white)
                     
-                    Text("\(tempItem.minMaxTemp.0)°/\(tempItem.minMaxTemp.1)°")
+                    Text("\(tempItem?.minMaxTemp.0 ?? "")°/\(tempItem?.minMaxTemp.1 ?? "")°")
                         .fontSpoqaHanSansNeo(size: 12, weight: .regular)
                         .foregroundStyle(Color.white.opacity(0.7))
                 }
@@ -46,9 +47,7 @@ struct AdditionalLocationSavedItemView: View {
             .padding(.leading, 5)
             .padding(.trailing, 8)
             .loadingProgressLottie(
-                isLoadingCompleted: tempItem.currentTemp != "" &&
-                tempItem.minMaxTemp != ("", "") &&
-                tempItem.weatherImage != "",
+                isLoadingCompleted: isWeatherLoaded,
                 width: 65,
                 height: 65
             )
