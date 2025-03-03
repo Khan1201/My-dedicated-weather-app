@@ -85,9 +85,9 @@ public struct WeeklyWeatherView: View {
             ),
             duration: 3
         )
-        .onChange(of: contentEO.isRefreshed) { newValue in
-            viewModel.isRefreshedOnChangeAction(newValue)
-        }
+//        .onChange(of: contentEO.isRefreshed) { newValue in
+//            viewModel.isRefreshedOnChangeAction(newValue)
+//        }
         .onChange(of: currentLocationEO.isLocationUpdated) { newValue in
             if newValue {
                 viewModel.isWeeklyWeatherInformationsLoaded = false
