@@ -27,7 +27,8 @@ let package = Package(
                 .product(name: "Domain", package: "Domain"),
                 .product(name: "Data", package: "Data")
             ],
-            path: "Sources"
+            path: "Sources",
+            resources: [.process("Resources")]
         ),
         .testTarget(
             name: "WidgetTests",

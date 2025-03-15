@@ -62,3 +62,13 @@ struct WeatherWidgetEntryView : View {
         }
     }
 }
+
+extension Color {
+    public static var dayBackground: Color {
+        return Color("WidgetDayBackground", bundle: .module)
+    }
+    
+    public static var nightBackground: Color {
+        return Color("WidgetNightBackground", bundle: .module)
+    }
+}
