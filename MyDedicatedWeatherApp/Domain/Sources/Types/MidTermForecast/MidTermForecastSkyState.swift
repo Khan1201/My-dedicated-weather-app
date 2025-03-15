@@ -8,7 +8,6 @@
 import Foundation
 
 public struct MidTermForecastSkyState: Decodable {
-    public let rnSt3Am: Int // 강수 확률
     public let rnSt4Am: Int
     public let rnSt5Am: Int
     public let rnSt6Am: Int
@@ -16,8 +15,7 @@ public struct MidTermForecastSkyState: Decodable {
     public let rnSt8: Int
     public let rnSt9: Int
     public let rnSt10: Int
-    public let wf3Am: String // 하늘 상태 정보
-    public let wf4Am: String
+    public let wf4Am: String // 하늘 상태 정보
     public let wf5Am: String
     public let wf6Am: String
     public let wf7Am: String
@@ -26,15 +24,13 @@ public struct MidTermForecastSkyState: Decodable {
     public let wf10: String
     
     enum CodingKeys: String, CodingKey {
-        case rnSt3Am,
-             rnSt4Am,
+        case rnSt4Am,
              rnSt5Am,
              rnSt6Am,
              rnSt7Am,
              rnSt8,
              rnSt9,
              rnSt10,
-             wf3Am,
              wf4Am,
              wf5Am,
              wf6Am,
@@ -46,7 +42,6 @@ public struct MidTermForecastSkyState: Decodable {
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.rnSt3Am = try container.decode(Int.self, forKey: .rnSt3Am)
         self.rnSt4Am = try container.decode(Int.self, forKey: .rnSt4Am)
         self.rnSt5Am = try container.decode(Int.self, forKey: .rnSt5Am)
         self.rnSt6Am = try container.decode(Int.self, forKey: .rnSt6Am)
@@ -54,7 +49,6 @@ public struct MidTermForecastSkyState: Decodable {
         self.rnSt8 = try container.decode(Int.self, forKey: .rnSt8)
         self.rnSt9 = try container.decode(Int.self, forKey: .rnSt9)
         self.rnSt10 = try container.decode(Int.self, forKey: .rnSt10)
-        self.wf3Am = try container.decode(String.self, forKey: .wf3Am)
         self.wf4Am = try container.decode(String.self, forKey: .wf4Am)
         self.wf5Am = try container.decode(String.self, forKey: .wf5Am)
         self.wf6Am = try container.decode(String.self, forKey: .wf6Am)

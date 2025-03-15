@@ -197,7 +197,7 @@ extension WeatherWidgetVM {
     func getTodayItems() async -> [VeryShortOrShortTermForecast<ShortTermForecastCategory>] {
         let result = await shortForecastService.getTodayItems(
             xy: .init(lat: 0, lng: 0, x: currentLocation.x.toInt, y: currentLocation.y.toInt),
-            reqRow: "737"
+            reqRow: "1000"
         )
                 
         switch result {
@@ -269,7 +269,7 @@ extension WeatherWidgetVM {
         }
     }
     
-    /// Return 중기예보(3~ 10일)의 temperature items
+    /// Return 중기예보(4 ~ 10일)의 temperature items
     func getMidTermForecastTempItems() async -> [MidTermForecastTemperature] {
         let result = await midTermForecastService.getTempItems(
             fullAddress: currentLocation.fullAddress
@@ -293,7 +293,7 @@ extension WeatherWidgetVM {
         }
     }
     
-    /// Return 중기예보(3~ 10일)의 하늘상태 items
+    /// Return 중기예보(4 ~ 10일)의 하늘상태 items
     func getMidTermForecastSkyStateItems() async -> [MidTermForecastSkyState] {
         let result = await midTermForecastService.getSkyStateItems(
             fullAddress: currentLocation.fullAddress
@@ -466,7 +466,7 @@ extension WeatherWidgetVM {
             result.smallFamilyData.currentWeatherItem.minMaxTemperature = minMaxTemperature
             result.mediumFamilyData.todayWeatherItems = tempResult
             
-            result.largeFamilyData.weeklyWeatherItems = weeklyWeatherItemsByOneToTwoDays(items)
+            result.largeFamilyData.weeklyWeatherItems = weeklyWeatherItemsByOneToThreeDays(items)
             
             commonUtil.printSuccess(
                 funcTitle: "applyShortForecastData",
@@ -519,8 +519,6 @@ extension WeatherWidgetVM {
         _ skyStateItems: [MidTermForecastSkyState],
         to result: inout SimpleEntry
     ) {
-
-        //
         guard let filteredTemperatureItem = temperatureItems.first else {
             commonUtil.printError(
                 funcTitle: "applyMidtermForecastTemperatureSkyStateItems()",
@@ -530,12 +528,9 @@ extension WeatherWidgetVM {
         }
         
         var temperatureResult: [(String, String)] = []
-        temperatureResult.append((filteredTemperatureItem.taMin3.toString, filteredTemperatureItem.taMax3.toString))
         temperatureResult.append((filteredTemperatureItem.taMin4.toString, filteredTemperatureItem.taMax4.toString))
         temperatureResult.append((filteredTemperatureItem.taMin5.toString, filteredTemperatureItem.taMax5.toString))
-        
-        
-        //
+                
         guard let filteredSkyStateItem = skyStateItems.first else {
             commonUtil.printError(
                 funcTitle: "applyMidtermForecastTemperatureSkyStateItems()",
@@ -544,29 +539,24 @@ extension WeatherWidgetVM {
             return
         }
         var skyStateResult: [String] = []
-        
-        skyStateResult.append(midForecastUtil.convertSkyState(rawValue: filteredSkyStateItem.wf3Am).image(isDayMode: false))
         skyStateResult.append(midForecastUtil.convertSkyState(rawValue: filteredSkyStateItem.wf4Am).image(isDayMode: false))
         skyStateResult.append(midForecastUtil.convertSkyState(rawValue: filteredSkyStateItem.wf5Am).image(isDayMode: false))
         
 
         var rainPercentResult: [String] = []
-        rainPercentResult.append(filteredSkyStateItem.rnSt3Am.toString)
         rainPercentResult.append(filteredSkyStateItem.rnSt4Am.toString)
         rainPercentResult.append(filteredSkyStateItem.rnSt5Am.toString)
         
         var weatherImageResult: [String] = []
-        weatherImageResult.append(midForecastUtil.convertSkyState(rawValue: filteredSkyStateItem.wf3Am).image(isDayMode: false))
         weatherImageResult.append(midForecastUtil.convertSkyState(rawValue: filteredSkyStateItem.wf4Am).image(isDayMode: false))
         weatherImageResult.append(midForecastUtil.convertSkyState(rawValue: filteredSkyStateItem.wf5Am).image(isDayMode: false))
                 
         let currentDate: Date = Date()
         
-        guard temperatureResult.count >= 3 && skyStateResult.count >= 3 && rainPercentResult.count >= 3 else {
-            
+        guard temperatureResult.count >= 2 && skyStateResult.count >= 2 && rainPercentResult.count >= 2 else {
             commonUtil.printError(
                 funcTitle: "applyMidtermForecastTemperatureSkyStateItems()",
-                description: "+3 ~ 5일에 해당되는 temperature or weather image or rainpercent items가 충분하지 않습니다."
+                description: "+4 ~ 5일에 해당되는 temperature or weather image or rainpercent items가 충분하지 않습니다."
             )
             
             return
@@ -575,8 +565,8 @@ extension WeatherWidgetVM {
         for i in 0..<temperatureResult.count {
             result.largeFamilyData.weeklyWeatherItems.append(
                 .init(
-                    weekDay: currentDate.toString(byAdding: i + 3, format: "EE요일"),
-                    dateString: currentDate.toString(byAdding: i + 3, format: "MM/dd"),
+                    weekDay: currentDate.toString(byAdding: i + 4, format: "EE요일"),
+                    dateString: currentDate.toString(byAdding: i + 4, format: "MM/dd"),
                     image: weatherImageResult[i],
                     rainPercent: rainPercentResult[i],
                     minMaxTemperature: temperatureResult[i]
@@ -590,19 +580,19 @@ extension WeatherWidgetVM {
 
 extension WeatherWidgetVM {
     
-    /// Return +3 ~ 5일의 weekly weather items
-    func weeklyWeatherItemsByThreeToFiveDays(
+    /// Return +4 ~ 5일의 weekly weather items
+    func weeklyWeatherItemsByFourToFiveDays(
         _ temperatureItems: [MidTermForecastTemperature],
         _ skyStateItems: [MidTermForecastSkyState]) -> [LargeFamilyData.WeeklyWeatherItem] {
             
             var result: [LargeFamilyData.WeeklyWeatherItem] = []
             let currentDate: Date = Date()
             
-            guard midtermForcastMinMaxTemperatureItems(temperatureItems).count >= 3 && midtermForecastWeatherImageItems(skyStateItems).count >= 3 && midtermForecastRainPercentItems(skyStateItems).count >= 3 else {
+            guard midtermForcastMinMaxTemperatureItems(temperatureItems).count >= 2 && midtermForecastWeatherImageItems(skyStateItems).count >= 2 && midtermForecastRainPercentItems(skyStateItems).count >= 2 else {
                 
                 commonUtil.printError(
-                    funcTitle: "weeklyWeatherItemsByThreeToFiveDays()",
-                    description: "+3 ~ 5일에 해당되는 temperature or weather image or rainpercent items가 충분하지 않습니다."
+                    funcTitle: "weeklyWeatherItemsByFourToFiveDays()",
+                    description: "+4 ~ 5일에 해당되는 temperature or weather image or rainpercent items가 충분하지 않습니다."
                 )
                 
                 return []
@@ -611,8 +601,8 @@ extension WeatherWidgetVM {
             for i in 0..<midtermForcastMinMaxTemperatureItems(temperatureItems).count {
                 result.append(
                     .init(
-                        weekDay: currentDate.toString(byAdding: i + 3, format: "EE요일"),
-                        dateString: currentDate.toString(byAdding: i + 3, format: "MM/dd"),
+                        weekDay: currentDate.toString(byAdding: i + 4, format: "EE요일"),
+                        dateString: currentDate.toString(byAdding: i + 4, format: "MM/dd"),
                         image: midtermForecastWeatherImageItems(skyStateItems)[i],
                         rainPercent: midtermForecastRainPercentItems(skyStateItems)[i],
                         minMaxTemperature: midtermForcastMinMaxTemperatureItems(temperatureItems)[i]
@@ -624,7 +614,7 @@ extension WeatherWidgetVM {
             
         }
     
-    /// Return +3 ~ 5일의 min max temperatures
+    /// Return +4 ~ 5일의 min max temperatures
     func midtermForcastMinMaxTemperatureItems(
         _ items: [MidTermForecastTemperature]
     ) -> [(String, String)] {
@@ -637,14 +627,13 @@ extension WeatherWidgetVM {
         }
         
         var tempResult: [(String, String)] = []
-        tempResult.append((item.taMin3.toString, item.taMax3.toString))
         tempResult.append((item.taMin4.toString, item.taMax4.toString))
         tempResult.append((item.taMin5.toString, item.taMax5.toString))
         
         return tempResult
     }
     
-    /// Return +3 ~ 5일의 weather image items
+    /// Return +4 ~ 5일의 weather image items
     func midtermForecastWeatherImageItems(
         _ items: [MidTermForecastSkyState]
     ) -> [String] {
@@ -655,16 +644,15 @@ extension WeatherWidgetVM {
             )
             return []
         }
+        
         var tempResult: [String] = []
-                    
-        tempResult.append(midForecastUtil.convertSkyState(rawValue: item.wf3Am).image(isDayMode: false))
         tempResult.append(midForecastUtil.convertSkyState(rawValue: item.wf4Am).image(isDayMode: false))
         tempResult.append(midForecastUtil.convertSkyState(rawValue: item.wf5Am).image(isDayMode: false))
         
         return tempResult
     }
     
-    /// Return +3 ~ 5일의 rain percent items
+    /// Return +4 ~ 5일의 rain percent items
     func midtermForecastRainPercentItems(
         _ items: [MidTermForecastSkyState]
     ) -> [String] {
@@ -676,15 +664,14 @@ extension WeatherWidgetVM {
             return []
         }
         var tempResult: [String] = []
-        tempResult.append(item.rnSt3Am.toString)
         tempResult.append(item.rnSt4Am.toString)
         tempResult.append(item.rnSt5Am.toString)
         
         return tempResult
     }
     
-    /// Return +1 ~ 2일의 weekly weather items
-    func weeklyWeatherItemsByOneToTwoDays(
+    /// Return +1 ~ 3일의 weekly weather items
+    func weeklyWeatherItemsByOneToThreeDays(
         _ items: [VeryShortOrShortTermForecast<ShortTermForecastCategory>]) -> [LargeFamilyData.WeeklyWeatherItem] {
             
             let minMaxTemperatureItems: [(String, String)] = shortTermForecastMinMaxTemperatureItems(items)
@@ -693,11 +680,11 @@ extension WeatherWidgetVM {
             var result: [LargeFamilyData.WeeklyWeatherItem] = []
             let currentDate: Date = Date()
             
-            guard minMaxTemperatureItems.count >= 2 && weatherImageItems.count >= 2 && rainPercentItems.count >= 2 else {
+            guard minMaxTemperatureItems.count >= 3 && weatherImageItems.count >= 3 && rainPercentItems.count >= 3 else {
                 
                 commonUtil.printError(
-                    funcTitle: "weeklyWeatherItemsByOneToTwoDays()",
-                    description: "+1 ~ 2일에 해당되는 temperature or weather image or rainpercent items가 충분하지 않습니다.",
+                    funcTitle: "weeklyWeatherItemsByOneToThreeDays()",
+                    description: "+1 ~ 3일에 해당되는 temperature or weather image or rainpercent items가 충분하지 않습니다.",
                     value: """
                     temperatureItems: \(minMaxTemperatureItems)
                     weatherImageItems: \(weatherImageItems)
@@ -723,7 +710,7 @@ extension WeatherWidgetVM {
             return result
         }
     
-    /// Return +1 ~ 2일의 min max temperatures
+    /// Return +1 ~ 3일의 min max temperatures
     func shortTermForecastMinMaxTemperatureItems(
         _ items: [VeryShortOrShortTermForecast<ShortTermForecastCategory>]
     ) -> [(String, String)]
@@ -749,6 +736,7 @@ extension WeatherWidgetVM {
         
         let tommorrowDate: String = Date().toString(byAdding: 1, format: "yyyyMMdd")
         let twoDaysLaterDate: String = Date().toString(byAdding: 2, format: "yyyyMMdd")
+        let threeDaysLaterDate: String = Date().toString(byAdding: 3, format: "yyyyMMdd")
         var result: [(String, String)] = []
         
         let tommorowTempFilteredItems = items.filter { item in
@@ -759,21 +747,28 @@ extension WeatherWidgetVM {
             item.category == .TMP && item.fcstDate == twoDaysLaterDate
         }
         
+        let threeDaysLaterTempFilteredItems = items.filter { item in
+            item.category == .TMP && item.fcstDate == threeDaysLaterDate
+        }
+        
         let tommorowMinMaxTemp: (String, String) = minMaxItem(by: tommorowTempFilteredItems)
         let twoDaysLaterMinMaxTemp: (String, String) = minMaxItem(by: twoDaysLaterTempFilteredItems)
+        let threeDaysLaterMinMaxTemp: (String, String) = minMaxItem(by: threeDaysLaterTempFilteredItems)
         
         result.append(tommorowMinMaxTemp)
         result.append(twoDaysLaterMinMaxTemp)
+        result.append(threeDaysLaterMinMaxTemp)
         
         return result
     }
     
-    /// Return +1 ~ 2일의 weather image items
+    /// Return +1 ~ 3일의 weather image items
     func shortTermForecastWeatherImageItems(
         _ items: [VeryShortOrShortTermForecast<ShortTermForecastCategory>]
     ) -> [String] {
         let tommorrowDate: String = Date().toString(byAdding: 1, format: "yyyyMMdd")
         let twoDaysLaterDate: String = Date().toString(byAdding: 2, format: "yyyyMMdd")
+        let threeDaysLaterDate: String = Date().toString(byAdding: 3, format: "yyyyMMdd")
         let sunTime: SunTime = .init(
             currentHHmm: "1200",
             sunriseHHmm: "0600",
@@ -783,7 +778,7 @@ extension WeatherWidgetVM {
         var result: [String] = []
         
         let skyStateFilteredItems = items.filter { item in
-            item.category == .SKY && (item.fcstDate == tommorrowDate || item.fcstDate == twoDaysLaterDate) && item.fcstTime == "1200"
+            item.category == .SKY && (item.fcstDate == tommorrowDate || item.fcstDate == twoDaysLaterDate || item.fcstDate == threeDaysLaterDate) && item.fcstTime == "1200"
         }
         
         for i in 0..<skyStateFilteredItems.count {
@@ -795,16 +790,17 @@ extension WeatherWidgetVM {
         return result
     }
     
-    /// Return +1 ~ 2일의 rain percent items
+    /// Return +1 ~ 3일의 rain percent items
     func shortTermForecastRainPearcentItems(
         _ items: [VeryShortOrShortTermForecast<ShortTermForecastCategory>]
     ) -> [String] {
         let tommorrowDate: String = Date().toString(byAdding: 1, format: "yyyyMMdd")
         let twoDaysLaterDate: String = Date().toString(byAdding: 2, format: "yyyyMMdd")
+        let threeDaysLaterDate: String = Date().toString(byAdding: 3, format: "yyyyMMdd")
         var result: [String] = []
         
         let percentFilteredItems = items.filter { item in
-            item.category == .POP && (item.fcstDate == tommorrowDate || item.fcstDate == twoDaysLaterDate) && item.fcstTime == "1200"
+            item.category == .POP && (item.fcstDate == tommorrowDate || item.fcstDate == twoDaysLaterDate || item.fcstDate == threeDaysLaterDate) && item.fcstTime == "1200"
         }
         
         for i in 0..<percentFilteredItems.count {

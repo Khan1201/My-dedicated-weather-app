@@ -9,10 +9,8 @@ import Foundation
 
 public struct MidTermForecastTemperature {
     
-    public init(regId: String, taMin3: Int, taMax3: Int, taMin4: Int, taMax4: Int, taMin5: Int, taMax5: Int, taMin6: Int, taMax6: Int, taMin7: Int, taMax7: Int, taMin8: Int, taMax8: Int, taMin9: Int, taMax9: Int, taMin10: Int, taMax10: Int) {
+    public init(regId: String, taMin4: Int, taMax4: Int, taMin5: Int, taMax5: Int, taMin6: Int, taMax6: Int, taMin7: Int, taMax7: Int, taMin8: Int, taMax8: Int, taMin9: Int, taMax9: Int, taMin10: Int, taMax10: Int) {
         self.regId = regId
-        self.taMin3 = taMin3
-        self.taMax3 = taMax3
         self.taMin4 = taMin4
         self.taMax4 = taMax4
         self.taMin5 = taMin5
@@ -30,8 +28,6 @@ public struct MidTermForecastTemperature {
     }
     
     public let regId: String
-    public let taMin3: Int
-    public let taMax3: Int
     public let taMin4: Int
     public let taMax4: Int
     public let taMin5: Int
@@ -49,8 +45,6 @@ public struct MidTermForecastTemperature {
     
     enum CodingKeys: CodingKey {
         case regId
-        case taMin3
-        case taMax3
         case taMin4
         case taMax4
         case taMin5
@@ -73,8 +67,6 @@ extension MidTermForecastTemperature: Decodable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.regId = try container.decode(String.self, forKey: .regId)
-        self.taMin3 = try container.decode(Int.self, forKey: .taMin3)
-        self.taMax3 = try container.decode(Int.self, forKey: .taMax3)
         self.taMin4 = try container.decode(Int.self, forKey: .taMin4)
         self.taMax4 = try container.decode(Int.self, forKey: .taMax4)
         self.taMin5 = try container.decode(Int.self, forKey: .taMin5)
