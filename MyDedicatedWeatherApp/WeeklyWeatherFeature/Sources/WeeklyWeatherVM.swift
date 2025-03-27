@@ -63,11 +63,7 @@ final class WeeklyWeatherVM: ObservableObject {
 // MARK: - Request funcs..
 
 extension WeeklyWeatherVM {
-    /**
-     Request 단기예보 Items
-     
-     - parameter xy: 공공데이터 값으로 변환된 X, Y
-     */
+    /// 단기예보  온도, 하늘 상태, 강수 확률 Items
     func getTodayToThreeDaysLaterItems(xy: (String, String)) async {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
         
@@ -90,9 +86,7 @@ extension WeeklyWeatherVM {
         }
     }
     
-    /**
-     Request 중기예보 (3~ 10일) 최저, 최고 기온  Items
-     */
+    /// 중기예보 온도 Items
     func getFourToTenDaysLaterTempItems(fullAddress: String) async {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
         
@@ -118,9 +112,7 @@ extension WeeklyWeatherVM {
         }
     }
     
-    /**
-     Request 중기예보 (3~ 10일) 하늘 상태, 강수 확률 items
-     */
+    /// 중기예보 하늘 상태 및 강수 확률 Items
     func getFourToTenDaysLaterSkyStateItems(fullAddress: String) async {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
         
@@ -161,34 +153,9 @@ extension WeeklyWeatherVM {
 }
 
 // MARK: - Set funcs..
-
 extension WeeklyWeatherVM {
-    
-    /**
-     Set `weeklyWeatherInformations`, `weeklyChartInformation` (오늘 ~ 내일까지의 최저, 최고 온도 및 하늘정보 image, 강수확률 데이터)
-     - parameter items: requestShortForecastItems() 결과 데이터
-     */
+    /// 최저 및 최고 온도, 하늘정보 image, 강수확률 데이터 Set
     func setWeeklyWeatherInformationsAndWeeklyChartInformation(one2threeDay items: [VeryShortOrShortTermForecast<ShortTermForecastCategory>]) {
-        
-        func minMaxItem(by filteredItems: [VeryShortOrShortTermForecast<ShortTermForecastCategory>]) -> (String, String) {
-            var minMaxResult: (Int, Int) = (0, 0)
-            
-            for (index, item) in filteredItems.enumerated() {
-                if index == 0 {
-                    minMaxResult = (item.fcstValue.toInt, item.fcstValue.toInt)
-                    
-                } else {
-                    if item.fcstValue.toInt > minMaxResult.1 {
-                        minMaxResult.1 = item.fcstValue.toInt
-                    } else if item.fcstValue.toInt < minMaxResult.0 {
-                        minMaxResult.0 = item.fcstValue.toInt
-                    }
-                }
-            }
-            
-            return (minMaxResult.0.toString, minMaxResult.1.toString)
-        }
-        
         let tommorrowDate: String = Date().toString(byAdding: 1, format: "yyyyMMdd")
         let twoDaysLaterDate: String = Date().toString(byAdding: 2, format: "yyyyMMdd")
         let threeDaysLaterDate: String = Date().toString(byAdding: 3, format: "yyyyMMdd")
@@ -259,14 +226,29 @@ extension WeeklyWeatherVM {
             weeklyChartInformation.maxTemps[i] = CGFloat(minMaxTemperatures[i].1.toInt)
             weeklyChartInformation.imageAndRainPercents[i] = (skyStateImageStrings[i], precipitationPercentes[i])
         }
+        
+        func minMaxItem(by filteredItems: [VeryShortOrShortTermForecast<ShortTermForecastCategory>]) -> (String, String) {
+            var minMaxResult: (Int, Int) = (0, 0)
+            
+            for (index, item) in filteredItems.enumerated() {
+                if index == 0 {
+                    minMaxResult = (item.fcstValue.toInt, item.fcstValue.toInt)
+                    
+                } else {
+                    if item.fcstValue.toInt > minMaxResult.1 {
+                        minMaxResult.1 = item.fcstValue.toInt
+                    } else if item.fcstValue.toInt < minMaxResult.0 {
+                        minMaxResult.0 = item.fcstValue.toInt
+                    }
+                }
+            }
+            
+            return (minMaxResult.0.toString, minMaxResult.1.toString)
+        }
     }
     
-    /**
-     Set `WeeklyWeatherInformations`(3일 ~ 10일 까지의 최소, 최고 온도 데이터)
-     - parameter item: requestMidTermForecastTempItems() 결과 데이터
-     */
+    /// 아이템 리스트의 최저 및 최고 온도 Set
     func setWeeklyWeatherInformationsMinMaxTemp(four2tenDay item: MidTermForecastTemperature) {
-        
         guard weeklyWeatherInformations.count >= 10 else { return }
         weeklyWeatherInformations[3].minTemperature = item.taMin4.toString
         weeklyWeatherInformations[3].maxTemperature = item.taMax4.toString
@@ -290,9 +272,8 @@ extension WeeklyWeatherVM {
         weeklyWeatherInformations[9].maxTemperature = item.taMax10.toString
     }
     
-    /// +3 ~ +7 정보 set
+    /// 차트의 최저 및 최고 온도 Set
     func setWeeklyChartInformationMinMaxTemp(four2tenDay item: MidTermForecastTemperature) {
-        
         guard weeklyChartInformation.maxTemps.count >= 7 && weeklyChartInformation.minTemps.count >= 7 else { return }
         weeklyChartInformation.minTemps[3] = CGFloat(item.taMin4)
         weeklyChartInformation.maxTemps[3] = CGFloat(item.taMax4)
@@ -307,17 +288,8 @@ extension WeeklyWeatherVM {
         weeklyChartInformation.maxTemps[6] = CGFloat(item.taMax7)
     }
     
-    /**
-     Set `weeklyWeatherInformations`(3일 ~ 10일 까지의 하늘정보 image, 강수확률 데이터)
-     - parameter item: requestMidTermForecastSkyStateItems() 결과 데이터
-     */
+    /// 아이템 리스트의 하늘정보 image, 강수확률 데이터 Set
     func setWeeklyWeatherInformationsImageAndRainPercent(four2tenDay item: MidTermForecastSkyState) {
-        
-        func weatherImage(wf: String) -> String {
-            let wfToImageString = midForecastUtil.convertSkyState(rawValue: wf)
-            return wfToImageString.image(isDayMode: false)
-        }
-        
         guard weeklyWeatherInformations.count >= 10 else { return }
         weeklyWeatherInformations[3].weatherImage = weatherImage(wf: item.wf4Am)
         weeklyWeatherInformations[3].rainfallPercent = item.rnSt4Am.toString
@@ -339,21 +311,25 @@ extension WeeklyWeatherVM {
         
         weeklyWeatherInformations[9].weatherImage = weatherImage(wf: item.wf10)
         weeklyWeatherInformations[9].rainfallPercent = item.rnSt10.toString
+        
+        func weatherImage(wf: String) -> String {
+            let wfToImageString = midForecastUtil.convertSkyState(rawValue: wf)
+            return wfToImageString.image(isDayMode: false)
+        }
     }
     
-    /// +3 ~ +10 set
+    /// 차트의 하늘정보 image, 강수확률 데이터 Set
     func setWeeklyChartInformationImageAndRainPercent(four2tenDay item: MidTermForecastSkyState) {
-        
-        func weatherImageAndRainfallPercent(wf: String, rnSt: Int) -> (String, String) {
-            let wfToImageString = midForecastUtil.convertSkyState(rawValue: wf).image(isDayMode: false)
-            return (wfToImageString, rnSt.toString)
-        }
-        
         guard weeklyChartInformation.imageAndRainPercents.count >= 7 else { return }
         weeklyChartInformation.imageAndRainPercents[3] = weatherImageAndRainfallPercent(wf: item.wf4Am, rnSt: item.rnSt4Am)
         weeklyChartInformation.imageAndRainPercents[4] = weatherImageAndRainfallPercent(wf: item.wf5Am, rnSt: item.rnSt5Am)
         weeklyChartInformation.imageAndRainPercents[5] = weatherImageAndRainfallPercent(wf: item.wf6Am, rnSt: item.rnSt6Am)
         weeklyChartInformation.imageAndRainPercents[6] = weatherImageAndRainfallPercent(wf: item.wf7Am, rnSt: item.rnSt7Am)
+        
+        func weatherImageAndRainfallPercent(wf: String, rnSt: Int) -> (String, String) {
+            let wfToImageString = midForecastUtil.convertSkyState(rawValue: wf).image(isDayMode: false)
+            return (wfToImageString, rnSt.toString)
+        }
     }
     
     /// 차트 yList는 전체(+1 ~. +7) maxTemp가 필요하므로 전체 로드 된 후에 get
