@@ -10,20 +10,20 @@ import Domain
 import Core
 
 final class WeeklyWeatherVM: ObservableObject {
-    @Published var weeklyWeatherInformations: [Weather.WeeklyInformation] = []
-    @Published var weeklyChartInformation: Weather.WeeklyChartInformation = .init(minTemps: [], maxTemps: [], xList: [], yList: [], imageAndRainPercents: [])
+    @Published private(set) var weeklyWeatherInformations: [Weather.WeeklyInformation] = []
+    @Published private(set) var weeklyChartInformation: Weather.WeeklyChartInformation = .init(minTemps: [], maxTemps: [], xList: [], yList: [], imageAndRainPercents: [])
     
-    @Published var isApiRequestProceeding: Bool = false
-    @Published var isShortTermForecastLoaded: Bool = false
-    @Published var isMidtermForecastSkyStateLoaded: Bool = false
-    @Published var isMidtermForecastTempLoaded: Bool = false
+    @Published private(set) var isApiRequestProceeding: Bool = false
+    @Published private(set) var isShortTermForecastLoaded: Bool = false
+    @Published private(set) var isMidtermForecastSkyStateLoaded: Bool = false
+    @Published private(set) var isMidtermForecastTempLoaded: Bool = false
     @Published var isWeeklyWeatherInformationsLoaded: Bool = false
     @Published var showNoticeFloater: Bool = false
-    var noticeMessage: String = ""
+    @Published private(set) var noticeMessage: String = ""
 
-    var tommorowToThreeDaysLaterInformations: [Weather.WeeklyInformation] = []
-    var minMaxTemperaturesByThreeToTenDay: [(String, String)] = []
-    var weatherImageAndRainfallPercentsByThreeToTenDay: [(String, String)] = []
+    private var tommorowToThreeDaysLaterInformations: [Weather.WeeklyInformation] = []
+    private var minMaxTemperaturesByThreeToTenDay: [(String, String)] = []
+    private var weatherImageAndRainfallPercentsByThreeToTenDay: [(String, String)] = []
     
     private let shortForecastUtil: ShortForecastUtil
     private let commonForecastUtil: CommonForecastUtil
@@ -34,9 +34,9 @@ final class WeeklyWeatherVM: ObservableObject {
     
     public var currentLocationEODelegate: CurrentLocationEODelegate?
         
-    var timer: Timer?
-    var timerNum: Int = 0
-    var currentTask: Task<(), Never>?
+    private var timer: Timer?
+    private var timerNum: Int = 0
+    private var currentTask: Task<(), Never>?
     
     deinit {
         timer = nil
@@ -64,7 +64,7 @@ final class WeeklyWeatherVM: ObservableObject {
 
 extension WeeklyWeatherVM {
     /// 단기예보  온도, 하늘 상태, 강수 확률 Items
-    func getTodayToThreeDaysLaterItems(xy: (String, String)) async {
+    private func getTodayToThreeDaysLaterItems(xy: (String, String)) async {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
         
         let result = await shortForecastService.getTodayItems(
@@ -87,7 +87,7 @@ extension WeeklyWeatherVM {
     }
     
     /// 중기예보 온도 Items
-    func getFourToTenDaysLaterTempItems(fullAddress: String) async {
+    private func getFourToTenDaysLaterTempItems(fullAddress: String) async {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
         
         let result = await midtermForecastService.getTempItems(
@@ -113,7 +113,7 @@ extension WeeklyWeatherVM {
     }
     
     /// 중기예보 하늘 상태 및 강수 확률 Items
-    func getFourToTenDaysLaterSkyStateItems(fullAddress: String) async {
+    private func getFourToTenDaysLaterSkyStateItems(fullAddress: String) async {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
         
         let result = await midtermForecastService.getSkyStateItems(
@@ -155,7 +155,7 @@ extension WeeklyWeatherVM {
 // MARK: - Set funcs..
 extension WeeklyWeatherVM {
     /// 최저 및 최고 온도, 하늘정보 image, 강수확률 데이터 Set
-    func setWeeklyWeatherInformationsAndWeeklyChartInformation(one2threeDay items: [VeryShortOrShortTermForecast<ShortTermForecastCategory>]) {
+    private func setWeeklyWeatherInformationsAndWeeklyChartInformation(one2threeDay items: [VeryShortOrShortTermForecast<ShortTermForecastCategory>]) {
         let tommorrowDate: String = Date().toString(byAdding: 1, format: "yyyyMMdd")
         let twoDaysLaterDate: String = Date().toString(byAdding: 2, format: "yyyyMMdd")
         let threeDaysLaterDate: String = Date().toString(byAdding: 3, format: "yyyyMMdd")
@@ -248,7 +248,7 @@ extension WeeklyWeatherVM {
     }
     
     /// 아이템 리스트의 최저 및 최고 온도 Set
-    func setWeeklyWeatherInformationsMinMaxTemp(four2tenDay item: MidTermForecastTemperature) {
+    private func setWeeklyWeatherInformationsMinMaxTemp(four2tenDay item: MidTermForecastTemperature) {
         guard weeklyWeatherInformations.count >= 10 else { return }
         weeklyWeatherInformations[3].minTemperature = item.taMin4.toString
         weeklyWeatherInformations[3].maxTemperature = item.taMax4.toString
@@ -273,7 +273,7 @@ extension WeeklyWeatherVM {
     }
     
     /// 차트의 최저 및 최고 온도 Set
-    func setWeeklyChartInformationMinMaxTemp(four2tenDay item: MidTermForecastTemperature) {
+    private func setWeeklyChartInformationMinMaxTemp(four2tenDay item: MidTermForecastTemperature) {
         guard weeklyChartInformation.maxTemps.count >= 7 && weeklyChartInformation.minTemps.count >= 7 else { return }
         weeklyChartInformation.minTemps[3] = CGFloat(item.taMin4)
         weeklyChartInformation.maxTemps[3] = CGFloat(item.taMax4)
@@ -289,7 +289,7 @@ extension WeeklyWeatherVM {
     }
     
     /// 아이템 리스트의 하늘정보 image, 강수확률 데이터 Set
-    func setWeeklyWeatherInformationsImageAndRainPercent(four2tenDay item: MidTermForecastSkyState) {
+    private func setWeeklyWeatherInformationsImageAndRainPercent(four2tenDay item: MidTermForecastSkyState) {
         guard weeklyWeatherInformations.count >= 10 else { return }
         weeklyWeatherInformations[3].weatherImage = weatherImage(wf: item.wf4Am)
         weeklyWeatherInformations[3].rainfallPercent = item.rnSt4Am.toString
@@ -319,7 +319,7 @@ extension WeeklyWeatherVM {
     }
     
     /// 차트의 하늘정보 image, 강수확률 데이터 Set
-    func setWeeklyChartInformationImageAndRainPercent(four2tenDay item: MidTermForecastSkyState) {
+    private func setWeeklyChartInformationImageAndRainPercent(four2tenDay item: MidTermForecastSkyState) {
         guard weeklyChartInformation.imageAndRainPercents.count >= 7 else { return }
         weeklyChartInformation.imageAndRainPercents[3] = weatherImageAndRainfallPercent(wf: item.wf4Am, rnSt: item.rnSt4Am)
         weeklyChartInformation.imageAndRainPercents[4] = weatherImageAndRainfallPercent(wf: item.wf5Am, rnSt: item.rnSt5Am)
@@ -333,7 +333,7 @@ extension WeeklyWeatherVM {
     }
     
     /// 차트 yList는 전체(+1 ~. +7) maxTemp가 필요하므로 전체 로드 된 후에 get
-    func setWeeklyChartInformationYList() {
+    private func setWeeklyChartInformationYList() {
         guard isShortTermForecastLoaded && isMidtermForecastSkyStateLoaded && isMidtermForecastTempLoaded else { return }
         // completed 체크
         
@@ -390,9 +390,7 @@ extension WeeklyWeatherVM {
 }
 
 // MARK: - On tap gestures..
-
 extension WeeklyWeatherVM {
-    
     func refreshButtonOnTapGesture(locationInf: LocationInformation) {
         initializeTaskAndTimer()
         initializeStates()
@@ -419,8 +417,7 @@ extension WeeklyWeatherVM {
 // MARK: - ETC funcs..
 
 extension WeeklyWeatherVM {
-    
-    func initWeeklyWeatherInformation() {
+    private func initWeeklyWeatherInformation() {
         let currentDate: Date = Date()
         
         for i in 0..<10 {
@@ -435,7 +432,7 @@ extension WeeklyWeatherVM {
         }
     }
     
-    func initWeeklyChartInformation() {
+    private func initWeeklyChartInformation() {
         let currentDate: Date = Date()
         
         for i in 0..<7 {
@@ -452,40 +449,40 @@ extension WeeklyWeatherVM {
         }
     }
     
-    func initializeStates() {
+    private func initializeStates() {
         initializeApiLoadedStates()
         isWeeklyWeatherInformationsLoaded = false
     }
     
-    func initializeApiLoadedStates() {
+    private func initializeApiLoadedStates() {
         isShortTermForecastLoaded = false
         isMidtermForecastTempLoaded = false
         isMidtermForecastSkyStateLoaded = false
         isApiRequestProceeding = false
     }
     
-    func initializeTaskAndTimer() {
+    private func initializeTaskAndTimer() {
         initializeTask()
         initializeTimer()
     }
     
-    func initializeTask() {
+    private func initializeTask() {
         currentTask?.cancel()
         currentTask = nil
     }
     
-    func initializeTimer() {
+    private func initializeTimer() {
         timer?.invalidate()
         timer = nil
         timerNum = 0
     }
     
-    func timerStart() {
+    private func timerStart() {
         initializeTimer()
         timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(askRetryIf7SecondsAfterNotLoaded(timer:)), userInfo: nil, repeats: true)
     }
     
-    @objc func askRetryIf7SecondsAfterNotLoaded(timer: Timer) {
+    @objc private func askRetryIf7SecondsAfterNotLoaded(timer: Timer) {
         
         guard self.timer != nil else { return }
         self.timerNum += 1
