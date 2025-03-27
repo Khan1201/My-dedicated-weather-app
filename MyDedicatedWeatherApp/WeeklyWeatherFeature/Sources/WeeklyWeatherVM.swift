@@ -12,7 +12,6 @@ import Core
 final class WeeklyWeatherVM: ObservableObject {
     @Published var weeklyWeatherInformations: [Weather.WeeklyInformation] = []
     @Published var weeklyChartInformation: Weather.WeeklyChartInformation = .init(minTemps: [], maxTemps: [], xList: [], yList: [], imageAndRainPercents: [])
-    @Published var errorMessage: String = ""
     
     @Published var isApiRequestProceeding: Bool = false
     @Published var isShortTermForecastLoaded: Bool = false
@@ -87,9 +86,7 @@ extension WeeklyWeatherVM {
                 print("주간예보 - 단기 req 호출 소요시간: \(reqEndTime)")
             }
         case .failure(let error):
-            DispatchQueue.main.async {
-                self.errorMessage = "API 통신 에러"
-            }
+            CustomLogger.error("\(error)")
         }
     }
     
@@ -117,7 +114,7 @@ extension WeeklyWeatherVM {
                 
             }
         case .failure(let error):
-            print("\(error)")
+            CustomLogger.error("\(error)")
         }
     }
     
@@ -144,7 +141,7 @@ extension WeeklyWeatherVM {
                 }
             }
         case .failure(let error):
-            print("\(error)")
+            CustomLogger.error("\(error)")
         }
     }
     
