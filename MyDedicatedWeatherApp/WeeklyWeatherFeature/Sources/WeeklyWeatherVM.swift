@@ -108,7 +108,7 @@ extension WeeklyWeatherVM {
         refreshButtonOnTapGesture(locationInf: locationInf)
     }
     
-    func weeklyWeatherViewTaskAction(locationInf: LocationInformation) {
+    func viewOnAppearAction(locationInf: LocationInformation) {
         if !isWeeklyWeatherInformationsLoaded {
             initializeTask()
             

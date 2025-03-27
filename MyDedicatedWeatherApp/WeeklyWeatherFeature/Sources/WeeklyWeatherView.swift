@@ -92,7 +92,7 @@ public struct WeeklyWeatherView: View {
         }
         .task(priority: .userInitiated) {
             viewModel.currentLocationEODelegate = currentLocationEO
-            viewModel.weeklyWeatherViewTaskAction(
+            viewModel.viewOnAppearAction(
                 locationInf: currentLocationEO.locationInf
             )
         }
