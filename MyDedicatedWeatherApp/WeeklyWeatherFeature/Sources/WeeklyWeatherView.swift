@@ -26,7 +26,7 @@ public struct WeeklyWeatherView: View {
             CurrentLocationAndDateView(
                 location: currentLocationEO.locality,
                 subLocation: currentLocationEO.subLocality,
-                showRefreshButton: viewModel.isWeeklyWeatherInformationsLoaded,
+                showRefreshButton: viewModel.isAllLoaded,
                 openAdditionalLocationView: .constant(false),
                 showLocationAddButton: false,
                 refreshButtonOnTapGesture: viewModel.refreshButtonOnTapGesture(locationInf:)
@@ -46,7 +46,7 @@ public struct WeeklyWeatherView: View {
                     }
                     .padding(.horizontal, 24)
                     
-                    if viewModel.isWeeklyWeatherInformationsLoaded {
+                    if viewModel.isAllLoaded {
                         VStack(alignment: .leading, spacing: 0) {
                             LineChartView(weeklyChartInformation: viewModel.weeklyChartInformation)
                                 .frame(maxWidth: .infinity, alignment: .center)
@@ -69,7 +69,7 @@ public struct WeeklyWeatherView: View {
                         .padding(.bottom, 65)
                     }
                 }
-                .loadingProgressLottie(isLoadingCompleted: viewModel.isWeeklyWeatherInformationsLoaded, height: 400)
+                .loadingProgressLottie(isLoadingCompleted: viewModel.isAllLoaded, height: 400)
             }
             .padding(.top, 24)
         }

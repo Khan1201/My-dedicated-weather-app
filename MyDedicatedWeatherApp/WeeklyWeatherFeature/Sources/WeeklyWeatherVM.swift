@@ -18,7 +18,6 @@ final class WeeklyWeatherVM: ObservableObject {
     @Published private(set) var isShortTermForecastLoaded: Bool = false
     @Published private(set) var isMidtermForecastSkyStateLoaded: Bool = false
     @Published private(set) var isMidtermForecastTempLoaded: Bool = false
-    @Published var isWeeklyWeatherInformationsLoaded: Bool = false
     @Published private(set) var isAllLoaded: Bool = false
     
     @Published var showNoticeFloater: Bool = false
@@ -78,7 +77,7 @@ final class WeeklyWeatherVM: ObservableObject {
 // MARK: - View Communication Funcs
 extension WeeklyWeatherVM {
     func getWeeklyItems(locationInf: LocationInformation) {
-        if !isWeeklyWeatherInformationsLoaded && !isApiRequestProceeding {
+        if !isAllLoaded && !isApiRequestProceeding {
             DispatchQueue.main.async {
                 self.isApiRequestProceeding = true
             }
@@ -109,7 +108,7 @@ extension WeeklyWeatherVM {
     }
     
     func viewOnAppearAction(locationInf: LocationInformation) {
-        if !isWeeklyWeatherInformationsLoaded {
+        if !isAllLoaded {
             initializeTask()
             
             timerStart()
@@ -470,7 +469,7 @@ extension WeeklyWeatherVM {
     
     private func initializeStates() {
         initializeApiLoadedStates()
-        isWeeklyWeatherInformationsLoaded = false
+        isAllLoaded = false
     }
     
     private func initializeApiLoadedStates() {
@@ -522,7 +521,6 @@ extension WeeklyWeatherVM {
             .sink { [weak self] results in
                 guard let self = self else { return }
                 guard results.0 && results.1 && results.2 else { return }
-                isAllLoaded = true
                 weeklyItemAllLoadedAction()
             }
             .store(in: &bag)
@@ -531,7 +529,7 @@ extension WeeklyWeatherVM {
     private func weeklyItemAllLoadedAction() {
         setWeeklyChartInformationYList()
         initializeTaskAndTimer()
-        isWeeklyWeatherInformationsLoaded = true
+        isAllLoaded = true
         initializeApiLoadedStates()
         CustomHapticGenerator.impact(style: .soft)
     }
