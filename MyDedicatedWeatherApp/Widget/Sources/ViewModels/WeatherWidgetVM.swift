@@ -23,7 +23,7 @@ struct WeatherWidgetVM {
     private let midTermForecastService: MidtermForecastService
     private let dustForecastService: DustForecastService
     private let userDefaultsService: UserDefaultsService
-        
+    
     init(
         commonUtil: CommonUtil,
         commonForecastUtil: CommonForecastUtil,
@@ -51,10 +51,10 @@ struct WeatherWidgetVM {
         
         currentLocation = userDefaultsService.getCurrentLocation()
     }
-        
+    
     var sunriseAndSunsetHHmm: (String, String) {
         let currentDate: Date = Date()
-                
+        
         guard let sunriseDate = currentDate.sunrise(.init(latitude: Double(currentLocation.latitude) ?? 0, longitude: Double(currentLocation.longitude) ?? 0)) else { return ("", "") }
         guard let sunsetDate = currentDate.sunset(.init(latitude: Double(currentLocation.latitude) ?? 0, longitude: Double(currentLocation.longitude) ?? 0)) else { return ("", "") }
         
@@ -104,14 +104,14 @@ struct WeatherWidgetVM {
         
         await applyRealTimeFindDustAndUltraFindDustItems(realTimefindDustItems.value, to: &result)
         
-//        testCrashOccurrence(result: &result)
+        //        testCrashOccurrence(result: &result)
         
         return result
     }
     
     func performLargeWidgetEntrySetting() async -> SimpleEntry {
         var result: SimpleEntry = Dummy.simpleEntry()
-
+        
         let veryShortForecastItems = await getCurrentItems()
         
         let shortForecastItems = Task {
@@ -159,7 +159,7 @@ struct WeatherWidgetVM {
         
         await applyMidtermForecastTemperatureSkyStateItems(midForecastTemperatureItems.value, midForecastSkyStateItems.value, to: &result)
         
-//        testCrashOccurrence(result: &result)
+        //        testCrashOccurrence(result: &result)
         
         return result
     }
@@ -178,17 +178,11 @@ extension WeatherWidgetVM {
         switch result {
             
         case .success(let items):
-            commonUtil.printSuccess(
-                funcTitle: "requestVeryShortItems()",
-                value: "\(items)개의 초단기 예보 데이터 get"
-            )
+            CustomLogger.debug("\(items.count)개의 초단기 예보 데이터 get")
             return items
             
-        case .failure(_):
-            commonUtil.printError(
-                funcTitle: "requestVeryShortItems()",
-                description: "초단기예보 request 실패"
-            )
+        case .failure(let error):
+            CustomLogger.error("\(error)")
             return []
         }
     }
@@ -199,21 +193,15 @@ extension WeatherWidgetVM {
             xy: .init(lat: 0, lng: 0, x: currentLocation.x.toInt, y: currentLocation.y.toInt),
             reqRow: "1000"
         )
-                
+        
         switch result {
             
         case .success(let items):
-            commonUtil.printSuccess(
-                funcTitle: "requestShortItems()",
-                value: "\(items.count)개의 단기 예보 데이터 get"
-            )
+            CustomLogger.debug("\(items.count)개의 단기 예보 데이터 get")
             return items
             
-        case .failure(_):
-            commonUtil.printError(
-                funcTitle: "requestShortForecastItems()",
-                description: "단기예보 request 실패"
-            )
+        case .failure(let error):
+            CustomLogger.error("\(error)")
             return []
         }
     }
@@ -230,17 +218,11 @@ extension WeatherWidgetVM {
         switch result {
             
         case .success(let items):
-            commonUtil.printSuccess(
-                funcTitle: "requestTodayMinMaxTemp()",
-                value: "\(items.count)개의 단기예보(MinMax) 데이터 get"
-            )
+            CustomLogger.debug("\(items.count)개의 단기예보(MinMax) 데이터 get")
             return items
             
-        case .failure(_):
-            commonUtil.printError(
-                funcTitle: "requestTodayMinMaxTemp()",
-                description: "단기예보(MinMax) request 실패"
-            )
+        case .failure(let error):
+            CustomLogger.error("\(error)")
             return []
         }
     }
@@ -254,17 +236,11 @@ extension WeatherWidgetVM {
         switch result {
             
         case .success(let items):
-            commonUtil.printSuccess(
-                funcTitle: "getRealTimeDustItems()",
-                value: "\(items.count)개의 미세먼지, 초 미세먼지 데이터 get"
-            )
+            CustomLogger.debug("\(items.count)개의 미세먼지, 초 미세먼지 데이터 get")
             return items
             
-        case .failure(_):
-            commonUtil.printError(
-                funcTitle: "requestRealTimeFindDustAndUltraFindDustItems()",
-                description: "미세먼지 request 실패"
-            )
+        case .failure(let error):
+            CustomLogger.error("\(error)")
             return []
         }
     }
@@ -278,17 +254,11 @@ extension WeatherWidgetVM {
         switch result {
             
         case .success(let items):
-            commonUtil.printSuccess(
-                funcTitle: "requestMidTermForecastTempItems()",
-                value: "\(items.count)개의 중기예보의 temperature 데이터 get"
-            )
+            CustomLogger.debug("\(items.count)개의 중기예보의 temperature 데이터 get")
             return items
             
-        case .failure(_):
-            commonUtil.printError(
-                funcTitle: "requestMidTermForecastTempItems()",
-                description: "중기예보 온도 request 실패"
-            )
+        case .failure(let error):
+            CustomLogger.error("\(error)")
             return []
         }
     }
@@ -302,17 +272,11 @@ extension WeatherWidgetVM {
         switch result {
             
         case .success(let items):
-            commonUtil.printSuccess(
-                funcTitle: "rrequestMidTermForecastSkyStateItems()",
-                value: "\(items.count)개의 중기예보의 skyState 데이터 get"
-            )
+            CustomLogger.debug("\(items.count)개의 중기예보의 skyState 데이터 get")
             return items
             
-        case .failure(_):
-            commonUtil.printError(
-                funcTitle: "requestMidTermForecastSkyStateItems()",
-                description: "중기예보 하늘상태 request 실패"
-            )
+        case .failure(let error):
+            CustomLogger.error("\(error)")
             return []
         }
     }
@@ -361,23 +325,8 @@ extension WeatherWidgetVM {
                 sunsetHHmm: sunset
             ).isDayMode
             
-            commonUtil.printSuccess(
-                funcTitle: "applyVeryShortForecastData",
-                value: """
-            현재 온도: \(result.smallFamilyData.currentWeatherItem.currentTemperature),
-            현재 바람: \(result.smallFamilyData.currentWeatherItem.wind),
-            현재 습도: \(result.smallFamilyData.currentWeatherItem.wetPercent),
-            현재 강수량: \(result.smallFamilyData.currentWeatherItem.precipitation)
-            현재 날씨 image: \(result.smallFamilyData.currentWeatherItem.weatherImage)
-            현재 dayMode: \(result.isDayMode)
-            """
-            )
-            
         } else {
-            commonUtil.printError(
-                funcTitle: "applyVeryShortForecastData",
-                description: "초단기예보 데이터 세팅에 items의 55개의 데이터가 필요합니다. items의 개수가 55개를 넘지 못하므로, index 접근 불가"
-            )
+            CustomLogger.error("초단기예보 데이터 세팅에 items의 55개의 데이터가 필요합니다. items의 개수가 55개를 넘지 못하므로, index 접근 불가")
             return
         }
     }
@@ -405,7 +354,7 @@ extension WeatherWidgetVM {
         
         
         let skipValue = shortForecastUtil.todayWeatherIndexSkipValue
-
+        
         var tempIndex = 0 + skipValue
         var skyIndex = 5 + skipValue
         var ptyIndex = 6 + skipValue
@@ -418,7 +367,7 @@ extension WeatherWidgetVM {
             sunriseHHmm: sunrise,
             sunsetHHmm: sunset
         )
-
+        
         var tempResult: [MediumFamilyData.TodayWeatherItem] = []
         
         if items.count >= step * loopCount {
@@ -462,29 +411,12 @@ extension WeatherWidgetVM {
             }
             
             let minMaxTemperature: (String, String) = minMaxTemperature(itemsForMinMaxTemperature)
-            
             result.smallFamilyData.currentWeatherItem.minMaxTemperature = minMaxTemperature
             result.mediumFamilyData.todayWeatherItems = tempResult
-            
             result.largeFamilyData.weeklyWeatherItems = weeklyWeatherItemsByOneToThreeDays(items)
             
-            commonUtil.printSuccess(
-                funcTitle: "applyShortForecastData",
-                value: """
-            최저온도: \(minMaxTemperature.0),
-            최대온도: \(minMaxTemperature.1),
-            todayWeatherItems:
-            \(result.mediumFamilyData.todayWeatherItems)
-            set 완료
-            """
-            )
-            
         } else {
-            
-            commonUtil.printError(
-                funcTitle: "applyShortForecastData()",
-                description: "현재 날씨에서 +1 ~ 24시간까지의 데이터가 존재하지 않습니다."
-            )
+            CustomLogger.error("현재 날씨에서 +1 ~ 24시간까지의 데이터가 존재하지 않습니다.")
         }
     }
     
@@ -493,10 +425,7 @@ extension WeatherWidgetVM {
         to result: inout SimpleEntry
     ) {
         guard let item = items.first else {
-            commonUtil.printError(
-                funcTitle: "applyRealTimeFindDustAndUltraFindDustItems()",
-                description: "items가 존재하지 않습니다."
-            )
+            CustomLogger.error("items가 존재하지 않습니다.")
             return
             
         }
@@ -505,9 +434,8 @@ extension WeatherWidgetVM {
         let ultraFineDust: String = findDustLookUpUtil.convertUltraFineDust(rawValue: item.pm25Value).toDescription
         result.smallFamilyData.currentWeatherItem.findDust = (fineDust, ultraFineDust)
         
-        commonUtil.printSuccess(
-            funcTitle: "applyRealTimeFindDustAndUltraFindDustItems()",
-            value: """
+        CustomLogger.debug(
+        """
         미세먼지: \(fineDust),
         초미세먼지: \(ultraFineDust),
         """
@@ -520,29 +448,22 @@ extension WeatherWidgetVM {
         to result: inout SimpleEntry
     ) {
         guard let filteredTemperatureItem = temperatureItems.first else {
-            commonUtil.printError(
-                funcTitle: "applyMidtermForecastTemperatureSkyStateItems()",
-                description: "temperatureItems array의 first가 존재하지 않습니다."
-            )
+            CustomLogger.error("temperatureItems array의 first가 존재하지 않습니다.")
             return
         }
         
         var temperatureResult: [(String, String)] = []
         temperatureResult.append((filteredTemperatureItem.taMin4.toString, filteredTemperatureItem.taMax4.toString))
         temperatureResult.append((filteredTemperatureItem.taMin5.toString, filteredTemperatureItem.taMax5.toString))
-                
+        
         guard let filteredSkyStateItem = skyStateItems.first else {
-            commonUtil.printError(
-                funcTitle: "applyMidtermForecastTemperatureSkyStateItems()",
-                description: "skyStateItems array의 first가 존재하지 않습니다."
-            )
+            CustomLogger.error("skyStateItems array의 first가 존재하지 않습니다.")
             return
         }
         var skyStateResult: [String] = []
         skyStateResult.append(midForecastUtil.convertSkyState(rawValue: filteredSkyStateItem.wf4Am).image(isDayMode: false))
         skyStateResult.append(midForecastUtil.convertSkyState(rawValue: filteredSkyStateItem.wf5Am).image(isDayMode: false))
         
-
         var rainPercentResult: [String] = []
         rainPercentResult.append(filteredSkyStateItem.rnSt4Am.toString)
         rainPercentResult.append(filteredSkyStateItem.rnSt5Am.toString)
@@ -550,18 +471,12 @@ extension WeatherWidgetVM {
         var weatherImageResult: [String] = []
         weatherImageResult.append(midForecastUtil.convertSkyState(rawValue: filteredSkyStateItem.wf4Am).image(isDayMode: false))
         weatherImageResult.append(midForecastUtil.convertSkyState(rawValue: filteredSkyStateItem.wf5Am).image(isDayMode: false))
-                
-        let currentDate: Date = Date()
         
         guard temperatureResult.count >= 2 && skyStateResult.count >= 2 && rainPercentResult.count >= 2 else {
-            commonUtil.printError(
-                funcTitle: "applyMidtermForecastTemperatureSkyStateItems()",
-                description: "+4 ~ 5일에 해당되는 temperature or weather image or rainpercent items가 충분하지 않습니다."
-            )
-            
+            CustomLogger.error("+4 ~ 5일에 해당되는 temperature or weather image or rainpercent items가 충분하지 않습니다.")
             return
         }
-        
+        let currentDate: Date = Date()
         for i in 0..<temperatureResult.count {
             result.largeFamilyData.weeklyWeatherItems.append(
                 .init(
@@ -589,12 +504,7 @@ extension WeatherWidgetVM {
             let currentDate: Date = Date()
             
             guard midtermForcastMinMaxTemperatureItems(temperatureItems).count >= 2 && midtermForecastWeatherImageItems(skyStateItems).count >= 2 && midtermForecastRainPercentItems(skyStateItems).count >= 2 else {
-                
-                commonUtil.printError(
-                    funcTitle: "weeklyWeatherItemsByFourToFiveDays()",
-                    description: "+4 ~ 5일에 해당되는 temperature or weather image or rainpercent items가 충분하지 않습니다."
-                )
-                
+                CustomLogger.error("+4 ~ 5일에 해당되는 temperature or weather image or rainpercent items가 충분하지 않습니다.")
                 return []
             }
             
@@ -619,10 +529,7 @@ extension WeatherWidgetVM {
         _ items: [MidTermForecastTemperature]
     ) -> [(String, String)] {
         guard let item = items.first else {
-            commonUtil.printError(
-                funcTitle: "midtermForcastMinMaxTemperatureItems()",
-                description: "items array의 first가 존재하지 않습니다."
-            )
+            CustomLogger.error("items array의 first가 존재하지 않습니다.")
             return []
         }
         
@@ -638,10 +545,7 @@ extension WeatherWidgetVM {
         _ items: [MidTermForecastSkyState]
     ) -> [String] {
         guard let item = items.first else {
-            commonUtil.printError(
-                funcTitle: "midtermForecastWeatherImageItems()",
-                description: "items array의 first가 존재하지 않습니다."
-            )
+            CustomLogger.error("items array의 first가 존재하지 않습니다.")
             return []
         }
         
@@ -657,10 +561,7 @@ extension WeatherWidgetVM {
         _ items: [MidTermForecastSkyState]
     ) -> [String] {
         guard let item = items.first else {
-            commonUtil.printError(
-                funcTitle: "midtermForecastRainPercentItems()",
-                description: "items array의 first가 존재하지 않습니다."
-            )
+            CustomLogger.error("items array의 first가 존재하지 않습니다.")
             return []
         }
         var tempResult: [String] = []
@@ -681,17 +582,7 @@ extension WeatherWidgetVM {
             let currentDate: Date = Date()
             
             guard minMaxTemperatureItems.count >= 3 && weatherImageItems.count >= 3 && rainPercentItems.count >= 3 else {
-                
-                commonUtil.printError(
-                    funcTitle: "weeklyWeatherItemsByOneToThreeDays()",
-                    description: "+1 ~ 3일에 해당되는 temperature or weather image or rainpercent items가 충분하지 않습니다.",
-                    value: """
-                    temperatureItems: \(minMaxTemperatureItems)
-                    weatherImageItems: \(weatherImageItems)
-                    rainpercentItems: \(rainPercentItems)
-                    """
-                )
-                
+                CustomLogger.error("+1 ~ 3일에 해당되는 temperature or weather image or rainpercent items가 충분하지 않습니다.")
                 return []
             }
             
@@ -819,7 +710,7 @@ extension WeatherWidgetVM {
         let weatherImage = "weather_sunny"
         
         result.smallFamilyData.currentWeatherItem.weatherImage = weatherImage
-
+        
         let todayWeatherItem: [MediumFamilyData.TodayWeatherItem] = [
             .init(time: "3PM", image: weatherImage, precipitation: "30", temperature: "00"),
             .init(time: "3PM", image: weatherImage, precipitation: "30", temperature: "00"),
@@ -836,7 +727,7 @@ extension WeatherWidgetVM {
             .init(weekDay: "금요일", dateString: "00/00", image: weatherImage, rainPercent: "30", minMaxTemperature: ("-00", "00")),
             .init(weekDay: "금요일", dateString: "00/00", image: weatherImage, rainPercent: "30", minMaxTemperature: ("-00", "00"))
         ]
-                
+        
         result.mediumFamilyData.todayWeatherItems = todayWeatherItem
         result.largeFamilyData.weeklyWeatherItems = weeklyWeatherItem
     }

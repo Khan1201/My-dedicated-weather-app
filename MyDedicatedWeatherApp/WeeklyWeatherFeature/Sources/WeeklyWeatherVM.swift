@@ -243,11 +243,7 @@ extension WeeklyWeatherVM {
         minMaxTemperatures.append(threeDaysLaterMinMaxTemp)
 
         guard skyStateImageStrings.count >= 3 && precipitationPercentes.count >= 3 else {
-            CommonUtil.shared.printError(funcTitle: "setTommorowAndThreeDaysLaterInformations()", description: """
-                단기 예보 데이터 Response의 오늘 ~ 내일 데이터 filter가 제대로 되지 않았습니다.
-                skyState array count == \(skyStateImageStrings.count),
-                rainfallPercent array count = \(precipitationPercentes.count)
-                """)
+            CustomLogger.error("단기 예보 데이터 Response의 +0 ~ +2일 데이터 filter가 제대로 되지 않았습니다.")
             return
         }
         guard weeklyWeatherInformations.count >= 3 else { return }
@@ -397,10 +393,7 @@ extension WeeklyWeatherVM {
             case -19 ... -15:
                 return fiveUnitRange(maxOfRange: -15)
             default:
-                CommonUtil.shared.printError(
-                    funcTitle: "setTemperatureChartInformation()의 switch문",
-                    description: "yList 범위를 지정할 수 없습니다."
-                )
+                CustomLogger.error("yList 범위를 지정할 수 없습니다.")
                 return []
             }
             

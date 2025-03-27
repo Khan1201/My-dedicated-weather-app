@@ -153,16 +153,11 @@ public struct LineChartView: View {
             
             // Max line
             .overlay(alignment: .bottomLeading) {
-                                
                 Path { path in
                     path.move(to: CGPoint(x: 0, y: maxTempLineYValues[0]))
                     
                     guard weeklyChartInformation.maxTemps.count >= 6 else {
-                        CommonUtil.shared.printError(
-                            funcTitle: "LineChartView - Max line draw",
-                            description: "weeklyChartInformation.maxTemps.count >= 6이 아닙니다."
-                        )
-                        
+                        CustomLogger.error("weeklyChartInformation.maxTemps.count >= 6이 아닙니다.")
                         return
                     }
                     for i in 1...6 {
@@ -197,16 +192,11 @@ public struct LineChartView: View {
             
             // Min line
             .overlay(alignment: .bottomLeading) {
-                                
                 Path { path in
                     path.move(to: CGPoint(x: 0, y: minTempLineYValues[0]))
                     
                     guard weeklyChartInformation.minTemps.count >= 6 else {
-                        CommonUtil.shared.printError(
-                            funcTitle: "LineChartView - Min line draw",
-                            description: "weeklyChartInformation.minTemps.count >= 6이 아닙니다."
-                        )
-                        
+                        CustomLogger.error("weeklyChartInformation.minTemps.count >= 6이 아닙니다.")
                         return
                     }
                     

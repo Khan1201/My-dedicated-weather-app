@@ -156,37 +156,6 @@ public final class CommonUtil {
         }
     }
     
-    public func printError(funcTitle: String, description: String, value: Any? = nil, values: [Any]? = nil) {
-        print("""
-        ***********************************************************
-        ⚠️ Error
-        -----------------------------------------------------------
-        ●Function Name: \(funcTitle)
-        -----------------------------------------------------------
-        ●Description:
-        \(description)
-        -----------------------------------------------------------
-        ●Value(s):
-          → Value: \(value ?? "")
-          → Values: \(values ?? [])
-        ***********************************************************
-        """)
-    }
-    
-    public func printSuccess(funcTitle: String, value: Any? = nil, values: [Any]? = nil) {
-        print("""
-        ***********************************************************
-        👍 Success
-        -----------------------------------------------------------
-        ●Function Name: \(funcTitle)
-        -----------------------------------------------------------
-        ●Value(s):
-          → Value: \(value ?? "")
-          → Values: \(values ?? [])
-        ***********************************************************
-        """)
-    }
-    
     public func getDeviceIdentifier() -> String {
         var systemInfo = utsname()
         uname(&systemInfo)

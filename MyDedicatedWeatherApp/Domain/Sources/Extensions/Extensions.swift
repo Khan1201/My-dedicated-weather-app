@@ -73,11 +73,6 @@ extension String {
      */
     public func hhMMtoKRhhMM(isSunset: Bool) -> String {
         guard let _ = Int(self), self.count == 4 else {
-            CommonUtil.shared.printError(
-                funcTitle: "hhMMtoKRhhMM(isSunset:)",
-                description: "hhMM 형태가 아닙니다.",
-                value: self
-            )
             return self
         }
         var result = ""

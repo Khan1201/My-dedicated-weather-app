@@ -63,10 +63,7 @@ public struct MailView: UIViewControllerRepresentable {
             }
             
             guard error == nil else {
-                CommonUtil.shared.printError(
-                    funcTitle: "mailComposeController",
-                    description: error?.localizedDescription ?? ""
-                )
+                CustomLogger.error("\(String(describing: error))")
                 return
             }
         }

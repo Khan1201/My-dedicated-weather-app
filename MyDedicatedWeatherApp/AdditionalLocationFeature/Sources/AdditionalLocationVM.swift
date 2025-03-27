@@ -79,10 +79,6 @@ extension AdditionalLocationVM {
         
         switch result {
         case .success(let items):
-            CommonUtil.shared.printSuccess(
-                funcTitle: "requestCurrentWeatherImageAndTemp",
-                value: result
-            )
             guard items.count >= 25 else { return ("", "")}
             
             let firstPTYItem = items[6]
@@ -141,15 +137,7 @@ extension AdditionalLocationVM {
     @MainActor
     func setTempItems(currentWeatherImageAndTemp: (String, String), minMaxTemp: (String, String), index: Int) {
         guard currentWeatherImageAndTemp != ("", "") && minMaxTemp != ("", "") else {
-            CommonUtil.shared.printError(
-                funcTitle: "setTempItems()",
-                description: "currentWeatherImageAndTemp 또는 minMaxTemp 값이 없습니다.",
-                value: """
-                currentWeatherImageAndTemp = \(currentWeatherImageAndTemp)
-                minMaxTemp = \(minMaxTemp)
-                """
-            )
-            
+            CustomLogger.error("currentWeatherImageAndTemp 또는 minMaxTemp 값이 없습니다.")
             return
         }
         tempItems.append(
@@ -236,11 +224,8 @@ extension AdditionalLocationVM {
                         }
                     }
                     
-                case .failure(_):
-                    CommonUtil.shared.printError(
-                        funcTitle: "performRequestSavedLocationWeather()",
-                        description: "위치를 찾을 수 없습니다."
-                    )
+                case .failure(let error):
+                    CustomLogger.error("\(error)")
                 }
             }
         }
