@@ -20,8 +20,19 @@ final class WeeklyWeatherVM: ObservableObject {
     @Published private(set) var isMidtermForecastTempLoaded: Bool = false
     @Published var isWeeklyWeatherInformationsLoaded: Bool = false
     @Published private(set) var isAllLoaded: Bool = false
+    
     @Published var showNoticeFloater: Bool = false
-    @Published private(set) var noticeMessage: String = ""
+    @Published private(set) var noticeFloaterMessage: String = ""
+    private let waitNoticeFloaterMessage: String = """
+    조금만 기다려주세요.
+    기상청 서버 네트워크에 따라 속도가 느려질 수 있습니다 :)
+    """
+    private let retryNoticeFloaterMessage: String = """
+    조금만 기다려주세요.
+    기상청 서버 네트워크에 따라 속도가 느려질 수 있습니다 :)
+    """
+    private let waitNoticeFloaterTriggerTime: Int = 3
+    private let retryTriggerTime: Int = 8
 
     private var tommorowToThreeDaysLaterInformations: [Weather.WeeklyInformation] = []
     private var minMaxTemperaturesByThreeToTenDay: [(String, String)] = []
@@ -91,14 +102,9 @@ extension WeeklyWeatherVM {
     }
     
     func retryAndShowNoticeFloater(locationInf: LocationInformation) {
-        noticeMessage = """
-                재시도 합니다.
-                기상청 서버 네트워크에 따라 속도가 느려질 수 있습니다 :)
-                """
-        
+        noticeFloaterMessage = retryNoticeFloaterMessage
         showNoticeFloater = false
         showNoticeFloater = true
-        
         refreshButtonOnTapGesture(locationInf: locationInf)
     }
     
@@ -499,15 +505,12 @@ extension WeeklyWeatherVM {
         guard self.timer != nil else { return }
         self.timerNum += 1
         
-        if timerNum == 3 {
-            noticeMessage = """
-            조금만 기다려주세요.
-            기상청 서버 네트워크에 따라 속도가 느려질 수 있습니다 :)
-            """
+        if timerNum == waitNoticeFloaterTriggerTime {
+            noticeFloaterMessage = waitNoticeFloaterMessage
             showNoticeFloater = false
             showNoticeFloater = true
             
-        } else if timerNum == 8 {
+        } else if timerNum == retryTriggerTime {
             initializeTimer()
             guard let currentLocationEODelegate = currentLocationEODelegate else { return }
             retryAndShowNoticeFloater(locationInf: currentLocationEODelegate.locationInf)

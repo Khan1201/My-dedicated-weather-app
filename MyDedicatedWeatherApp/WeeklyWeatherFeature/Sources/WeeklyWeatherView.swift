@@ -81,7 +81,7 @@ public struct WeeklyWeatherView: View {
         .bottomNoticeFloater(
             isPresented: $viewModel.showNoticeFloater,
             view: BottomNoticeFloaterView(
-                title: viewModel.noticeMessage
+                title: viewModel.noticeFloaterMessage
             ),
             duration: 3
         )
