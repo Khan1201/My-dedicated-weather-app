@@ -85,16 +85,10 @@ public struct WeeklyWeatherView: View {
             ),
             duration: 3
         )
-//        .onChange(of: contentEO.isRefreshed) { newValue in
-//            viewModel.isRefreshedOnChangeAction(newValue)
-//        }
         .onChange(of: currentLocationEO.isLocationUpdated) { newValue in
             if newValue {
                 viewModel.isWeeklyWeatherInformationsLoaded = false
             }
-        }
-        .onChange(of: viewModel.isShortTermForecastLoaded && viewModel.isMidtermForecastTempLoaded && viewModel.isMidtermForecastSkyStateLoaded) { newValue in
-            viewModel.loadedVariablesOnChangeAction(newValue)
         }
         .task(priority: .userInitiated) {
             viewModel.currentLocationEODelegate = currentLocationEO

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 import Domain
 import Core
 
@@ -18,6 +19,7 @@ final class WeeklyWeatherVM: ObservableObject {
     @Published private(set) var isMidtermForecastSkyStateLoaded: Bool = false
     @Published private(set) var isMidtermForecastTempLoaded: Bool = false
     @Published var isWeeklyWeatherInformationsLoaded: Bool = false
+    @Published private(set) var isAllLoaded: Bool = false
     @Published var showNoticeFloater: Bool = false
     @Published private(set) var noticeMessage: String = ""
 
@@ -37,6 +39,7 @@ final class WeeklyWeatherVM: ObservableObject {
     private var timer: Timer?
     private var timerNum: Int = 0
     private var currentTask: Task<(), Never>?
+    private var bag: Set<AnyCancellable> = []
     
     deinit {
         timer = nil
@@ -57,6 +60,7 @@ final class WeeklyWeatherVM: ObservableObject {
         self.midtermForecastService = midtermForecastService
         initWeeklyWeatherInformation()
         initWeeklyChartInformation()
+        sinkIsAllLoaded()
     }
 }
 
@@ -96,17 +100,6 @@ extension WeeklyWeatherVM {
         showNoticeFloater = true
         
         refreshButtonOnTapGesture(locationInf: locationInf)
-    }
-    
-    /// loaded 변수 (단기, 중기온도, 중기날씨) 전체 완료 시
-    func loadedVariablesOnChangeAction(_ newValue: Bool) {
-        if newValue {
-            setWeeklyChartInformationYList()
-            initializeTaskAndTimer()
-            isWeeklyWeatherInformationsLoaded = true
-            initializeApiLoadedStates()
-            CustomHapticGenerator.impact(style: .soft)
-        }
     }
     
     func weeklyWeatherViewTaskAction(locationInf: LocationInformation) {
@@ -519,5 +512,24 @@ extension WeeklyWeatherVM {
             guard let currentLocationEODelegate = currentLocationEODelegate else { return }
             retryAndShowNoticeFloater(locationInf: currentLocationEODelegate.locationInf)
         }
+    }
+    
+    private func sinkIsAllLoaded() {
+        Publishers.Zip3($isShortTermForecastLoaded, $isMidtermForecastTempLoaded, $isMidtermForecastSkyStateLoaded)
+            .sink { [weak self] results in
+                guard let self = self else { return }
+                guard results.0 && results.1 && results.2 else { return }
+                isAllLoaded = true
+                weeklyItemAllLoadedAction()
+            }
+            .store(in: &bag)
+    }
+    
+    private func weeklyItemAllLoadedAction() {
+        setWeeklyChartInformationYList()
+        initializeTaskAndTimer()
+        isWeeklyWeatherInformationsLoaded = true
+        initializeApiLoadedStates()
+        CustomHapticGenerator.impact(style: .soft)
     }
 }
