@@ -18,33 +18,34 @@ struct TodaySunriseSunsetView: View {
         let isNotNocheDevice: Bool = CommonUtil.shared.isNotNocheDevice
 
         VStack(alignment: .leading, spacing: 0) {
-            
-            HStack(alignment: .center, spacing: 4) {
-                Image("sunrise")
-                    .resizable()
-                    .frame(width: 20, height: 20)
+            if let sunriseTime = CommonUtil.shared.hhMMtoKRHm(sunriseTime), let sunsetTime = CommonUtil.shared.hhMMtoKRHm(sunsetTime) {
+                HStack(alignment: .center, spacing: 4) {
+                    Image("sunrise")
+                        .resizable()
+                        .frame(width: 20, height: 20)
+                    
+                    Text("오전 \(sunriseTime)")
+                        .fontSpoqaHanSansNeo(size: isNotNocheDevice ? 9 : 10, weight: .medium)
+                        .foregroundStyle(Color.white)
+                }
+                .padding(.bottom, 5)
+                .overlay(alignment: .bottom) {
+                    Rectangle()
+                        .frame(height: 1)
+                        .foregroundColor(.white.opacity(0.3))  // Day
+                }
                 
-                Text("오전 \(sunriseTime.hhMMtoKRhhMM(isSunset: false))")
-                    .fontSpoqaHanSansNeo(size: isNotNocheDevice ? 9 : 10, weight: .medium)
-                    .foregroundStyle(Color.white)
+                HStack(alignment: .center, spacing: 4) {
+                    Image("sunset")
+                        .resizable()
+                        .frame(width: 20, height: 20)
+                    
+                    Text("오후 \(sunsetTime)")
+                        .fontSpoqaHanSansNeo(size: isNotNocheDevice ? 9 : 10, weight: .medium)
+                        .foregroundStyle(Color.white)
+                }
+                .padding(.top, 5)
             }
-            .padding(.bottom, 5)
-            .overlay(alignment: .bottom) {
-                Rectangle()
-                    .frame(height: 1)
-                    .foregroundColor(.white.opacity(0.3))  // Day
-            }
-            
-            HStack(alignment: .center, spacing: 4) {
-                Image("sunset")
-                    .resizable()
-                    .frame(width: 20, height: 20)
-                
-                Text("오후 \(sunsetTime.hhMMtoKRhhMM(isSunset: true))")
-                    .fontSpoqaHanSansNeo(size: isNotNocheDevice ? 9 : 10, weight: .medium)
-                    .foregroundStyle(Color.white)
-            }
-            .padding(.top, 5)
         }
         .padding(.vertical, 6)
         .padding(.horizontal, 12)

@@ -103,6 +103,35 @@ public final class CommonUtil {
         }
         return rs
     }
+    
+    /**
+     hhMM  -> h시 m분 으로 변환
+     */
+    public func hhMMtoKRHm(_ hhMM: String) -> String? {
+        guard hhMM.count == 4 else { return nil }
+        var result = ""
+        
+        let hhIndex = hhMM.index(hhMM.startIndex, offsetBy: 1)
+        let hh = hhMM[...hhIndex]
+        let mmIndex = hhMM.index(hhMM.startIndex, offsetBy: 2)
+        let mm = hhMM[mmIndex...]
+        guard let hhToInt = Int(hh) else { return nil }
+        
+        if hhToInt > 12 {
+            let hhMinus12 = String(hh).toInt - 12
+            result = "\(hhMinus12)시 \(String(mm))분"
+            return result
+        }
+        
+        if String(hh).count == 2 {
+            guard let hhToH = hh.last else { return nil }
+            result = "\(hhToH)시 \(String(mm))분"
+            return result
+        }
+        
+        result = "\(hh)시 \(String(mm))분"
+        return result
+    }
 
     /**
      ex) 현재시각 AM 10시
