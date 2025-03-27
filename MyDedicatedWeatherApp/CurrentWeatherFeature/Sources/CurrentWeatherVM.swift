@@ -31,8 +31,19 @@ final class CurrentWeatherVM: ObservableObject {
     
     @Published public var isNoticeFloaterViewPresented: Bool = false
     @Published public var isAdditionalLocationViewPresented: Bool = false
-
+    
+    private let waitNoticeFloaterMessage: String = """
+    조금만 기다려주세요.
+    기상청 서버 네트워크에 따라 속도가 느려질 수 있습니다 :)
+    """
+    private let retryNoticeFloaterMessage: String = """
+    조금만 기다려주세요.
+    기상청 서버 네트워크에 따라 속도가 느려질 수 있습니다 :)
+    """
     public var noticeFloaterMessage: String = ""
+    private let waitNoticeFloaterTriggerTime: Int = 3
+    private let retryTriggerTime: Int = 8
+    
     private var timer: Timer?
     private var timerNum: Int = 0
     private var currentTask: Task<(), Never>?
@@ -478,15 +489,12 @@ extension CurrentWeatherVM {
         guard self.timer != nil else { return }
         self.timerNum += 1
         
-        if timerNum == 3 {
-            noticeFloaterMessage = """
-            조금만 기다려주세요.
-            기상청 서버 네트워크에 따라 속도가 느려질 수 있습니다 :)
-            """
+        if timerNum == waitNoticeFloaterTriggerTime {
+            noticeFloaterMessage = waitNoticeFloaterMessage
             isNoticeFloaterViewPresented = false
             isNoticeFloaterViewPresented = true
             
-        } else if timerNum == 8 {
+        } else if timerNum == retryTriggerTime {
             initializeTimer()
             guard let currentLocationEODelegate = currentLocationEODelegate else { return }
             retryAndShowNoticeFloater(locationInf: currentLocationEODelegate.locationInf)
@@ -509,10 +517,7 @@ extension CurrentWeatherVM {
     }
     
     private func retryAndShowNoticeFloater(locationInf: LocationInformation) {
-        noticeFloaterMessage = """
-        재시도 합니다.
-        기상청 서버 네트워크에 따라 속도가 느려질 수 있습니다 :)
-        """
+        noticeFloaterMessage = retryNoticeFloaterMessage
         isNoticeFloaterViewPresented = false
         isNoticeFloaterViewPresented = true
         
