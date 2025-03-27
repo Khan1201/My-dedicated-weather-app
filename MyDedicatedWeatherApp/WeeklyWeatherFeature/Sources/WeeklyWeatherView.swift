@@ -48,7 +48,7 @@ public struct WeeklyWeatherView: View {
                     
                     if viewModel.isWeeklyWeatherInformationsLoaded {
                         VStack(alignment: .leading, spacing: 0) {
-                            LineChartView(weeklyChartInformation: $viewModel.weeklyChartInformation)
+                            LineChartView(weeklyChartInformation: viewModel.weeklyChartInformation)
                                 .frame(maxWidth: .infinity, alignment: .center)
                                 .padding(.leading, 30)
                                 .padding(.top, 16)

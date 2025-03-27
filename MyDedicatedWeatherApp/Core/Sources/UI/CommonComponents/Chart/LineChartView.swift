@@ -9,7 +9,7 @@ import SwiftUI
 import Domain
 
 public struct LineChartView: View {
-    @Binding var weeklyChartInformation: Weather.WeeklyChartInformation
+    let weeklyChartInformation: Weather.WeeklyChartInformation
 
     @State private var xTextSize: CGSize = CGSize()
     @State private var yTextSize: CGSize = CGSize()
@@ -21,8 +21,8 @@ public struct LineChartView: View {
     var maxLineColor: Color
     var lineWidth: CGFloat
     
-    public init(weeklyChartInformation: Binding<Weather.WeeklyChartInformation>, minLineColor: Color = Color.blue.opacity(0.6), maxLineColor: Color = Color.red.opacity(0.6), lineWidth: CGFloat = 2.5) {
-        self._weeklyChartInformation = weeklyChartInformation
+    public init(weeklyChartInformation: Weather.WeeklyChartInformation, minLineColor: Color = Color.blue.opacity(0.6), maxLineColor: Color = Color.red.opacity(0.6), lineWidth: CGFloat = 2.5) {
+        self.weeklyChartInformation = weeklyChartInformation
         self.minLineColor = minLineColor
         self.maxLineColor = maxLineColor
         self.lineWidth = lineWidth
