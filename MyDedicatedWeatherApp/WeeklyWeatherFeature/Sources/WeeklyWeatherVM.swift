@@ -60,8 +60,68 @@ final class WeeklyWeatherVM: ObservableObject {
     }
 }
 
-// MARK: - Request funcs..
+// MARK: - View Communication Funcs
+extension WeeklyWeatherVM {
+    func getWeeklyItems(locationInf: LocationInformation) {
+        if !isWeeklyWeatherInformationsLoaded && !isApiRequestProceeding {
+            DispatchQueue.main.async {
+                self.isApiRequestProceeding = true
+            }
+            
+            Task(priority: .high) {
+                await getTodayToThreeDaysLaterItems(xy: (locationInf.x, locationInf.y))
+                await getFourToTenDaysLaterTempItems(fullAddress: locationInf.fullAddress)
+                await getFourToTenDaysLaterSkyStateItems(fullAddress: locationInf.fullAddress)
+            }
+        }
+    }
+    
+    func refreshButtonOnTapGesture(locationInf: LocationInformation) {
+        initializeTaskAndTimer()
+        initializeStates()
+        
+        timerStart()
+        currentTask = Task(priority: .high) {
+            getWeeklyItems(locationInf: locationInf)
+        }
+    }
+    
+    func retryAndShowNoticeFloater(locationInf: LocationInformation) {
+        noticeMessage = """
+                재시도 합니다.
+                기상청 서버 네트워크에 따라 속도가 느려질 수 있습니다 :)
+                """
+        
+        showNoticeFloater = false
+        showNoticeFloater = true
+        
+        refreshButtonOnTapGesture(locationInf: locationInf)
+    }
+    
+    /// loaded 변수 (단기, 중기온도, 중기날씨) 전체 완료 시
+    func loadedVariablesOnChangeAction(_ newValue: Bool) {
+        if newValue {
+            setWeeklyChartInformationYList()
+            initializeTaskAndTimer()
+            isWeeklyWeatherInformationsLoaded = true
+            initializeApiLoadedStates()
+            CustomHapticGenerator.impact(style: .soft)
+        }
+    }
+    
+    func weeklyWeatherViewTaskAction(locationInf: LocationInformation) {
+        if !isWeeklyWeatherInformationsLoaded {
+            initializeTask()
+            
+            timerStart()
+            currentTask = Task(priority: .high) {
+                getWeeklyItems(locationInf: locationInf)
+            }
+        }
+    }
+}
 
+// MARK: - Get Funcs
 extension WeeklyWeatherVM {
     /// 단기예보  온도, 하늘 상태, 강수 확률 Items
     private func getTodayToThreeDaysLaterItems(xy: (String, String)) async {
@@ -136,23 +196,9 @@ extension WeeklyWeatherVM {
             CustomLogger.error("\(error)")
         }
     }
-    
-    func getWeeklyItems(locationInf: LocationInformation) {
-        if !isWeeklyWeatherInformationsLoaded && !isApiRequestProceeding {
-            DispatchQueue.main.async {
-                self.isApiRequestProceeding = true
-            }
-            
-            Task(priority: .high) {
-                await getTodayToThreeDaysLaterItems(xy: (locationInf.x, locationInf.y))
-                await getFourToTenDaysLaterTempItems(fullAddress: locationInf.fullAddress)
-                await getFourToTenDaysLaterSkyStateItems(fullAddress: locationInf.fullAddress)
-            }
-        }
-    }
 }
 
-// MARK: - Set funcs..
+// MARK: - Set Funcs
 extension WeeklyWeatherVM {
     /// 최저 및 최고 온도, 하늘정보 image, 강수확률 데이터 Set
     private func setWeeklyWeatherInformationsAndWeeklyChartInformation(one2threeDay items: [VeryShortOrShortTermForecast<ShortTermForecastCategory>]) {
@@ -389,33 +435,7 @@ extension WeeklyWeatherVM {
     }
 }
 
-// MARK: - On tap gestures..
-extension WeeklyWeatherVM {
-    func refreshButtonOnTapGesture(locationInf: LocationInformation) {
-        initializeTaskAndTimer()
-        initializeStates()
-        
-        timerStart()
-        currentTask = Task(priority: .high) {
-            getWeeklyItems(locationInf: locationInf)
-        }
-    }
-    
-    func retryAndShowNoticeFloater(locationInf: LocationInformation) {
-        noticeMessage = """
-                재시도 합니다.
-                기상청 서버 네트워크에 따라 속도가 느려질 수 있습니다 :)
-                """
-        
-        showNoticeFloater = false
-        showNoticeFloater = true
-        
-        refreshButtonOnTapGesture(locationInf: locationInf)
-    }
-}
-
-// MARK: - ETC funcs..
-
+// MARK: - ETC Funcs
 extension WeeklyWeatherVM {
     private func initWeeklyWeatherInformation() {
         let currentDate: Date = Date()
@@ -483,7 +503,6 @@ extension WeeklyWeatherVM {
     }
     
     @objc private func askRetryIf7SecondsAfterNotLoaded(timer: Timer) {
-        
         guard self.timer != nil else { return }
         self.timerNum += 1
         
@@ -499,48 +518,6 @@ extension WeeklyWeatherVM {
             initializeTimer()
             guard let currentLocationEODelegate = currentLocationEODelegate else { return }
             retryAndShowNoticeFloater(locationInf: currentLocationEODelegate.locationInf)
-        }
-    }
-}
-
-// MARK: - On change funcs..
-
-extension WeeklyWeatherVM {
-    
-    ///  ContentEO의 isRefreshed state 변수가 바뀔때
-    func isRefreshedOnChangeAction(_ value: Bool) {
-        
-        if value {
-            initializeStates()
-        }
-    }
-    
-    /// loaded 변수 (단기, 중기온도, 중기날씨) 전체 완료 시
-    func loadedVariablesOnChangeAction(_ newValue: Bool) {
-        
-        if newValue {
-            setWeeklyChartInformationYList()
-            initializeTaskAndTimer()
-            isWeeklyWeatherInformationsLoaded = true
-            initializeApiLoadedStates()
-            CustomHapticGenerator.impact(style: .soft)
-        }
-    }
-}
-
-// MARK: - Life cycle funcs..
-
-extension WeeklyWeatherVM {
-    
-    func weeklyWeatherViewTaskAction(locationInf: LocationInformation) {
-        
-        if !isWeeklyWeatherInformationsLoaded {
-            initializeTask()
-            
-            timerStart()
-            currentTask = Task(priority: .high) {
-                getWeeklyItems(locationInf: locationInf)
-            }
         }
     }
 }
