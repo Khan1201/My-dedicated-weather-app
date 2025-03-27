@@ -163,7 +163,7 @@ extension CurrentWeatherVM {
     }
 }
 
-// MARK: - Fetch..
+// MARK: - Fetch Funcs
 extension CurrentWeatherVM {
     private func fetchCurrentWeatherInformations(xy: Gps2XY.LatXLngY) async {
         let startTime = CFAbsoluteTimeGetCurrent()
@@ -314,7 +314,7 @@ extension CurrentWeatherVM {
     }
 }
 
-// MARK: - Set Variables..
+// MARK: - Set Funcs
 extension CurrentWeatherVM {
     @MainActor
     private func setCurrentWeatherInformation(items: [VeryShortOrShortTermForecast<VeryShortTermForecastCategory>]) {
@@ -453,7 +453,7 @@ extension CurrentWeatherVM {
     }
 }
 
-// MARK: - ETC funcs..
+// MARK: - ETC Funcs
 extension CurrentWeatherVM {
     private func initLoadCompletedVariables() {
         isCurrentWeatherInformationLoaded = false
@@ -485,7 +485,7 @@ extension CurrentWeatherVM {
         timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(askRetryIfFewSecondsAfterNotLoaded(timer:)), userInfo: nil, repeats: true)
     }
     
-    @objc func askRetryIfFewSecondsAfterNotLoaded(timer: Timer) {
+    @objc private func askRetryIfFewSecondsAfterNotLoaded(timer: Timer) {
         guard self.timer != nil else { return }
         self.timerNum += 1
         
