@@ -87,7 +87,7 @@ public struct WeeklyWeatherView: View {
         )
         .onChange(of: currentLocationEO.isLocationUpdated) { newValue in
             if newValue {
-                viewModel.isWeeklyWeatherInformationsLoaded = false
+                viewModel.refreshButtonOnTapGesture(locationInf: currentLocationEO.locationInf)
             }
         }
         .task(priority: .userInitiated) {
