@@ -68,7 +68,7 @@ extension WeeklyWeatherVM {
      
      - parameter xy: 공공데이터 값으로 변환된 X, Y
      */
-    func getTodayItems(xy: (String, String)) async {
+    func getTodayToThreeDaysLaterItems(xy: (String, String)) async {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
         
         let result = await shortForecastService.getTodayItems(
@@ -93,7 +93,7 @@ extension WeeklyWeatherVM {
     /**
      Request 중기예보 (3~ 10일) 최저, 최고 기온  Items
      */
-    func getWeeklyTempItems(fullAddress: String) async {
+    func getFourToTenDaysLaterTempItems(fullAddress: String) async {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
         
         let result = await midtermForecastService.getTempItems(
@@ -121,7 +121,7 @@ extension WeeklyWeatherVM {
     /**
      Request 중기예보 (3~ 10일) 하늘 상태, 강수 확률 items
      */
-    func getWeeklySkyStateItems(fullAddress: String) async {
+    func getFourToTenDaysLaterSkyStateItems(fullAddress: String) async {
         let reqStartTime = CFAbsoluteTimeGetCurrent()
         
         let result = await midtermForecastService.getSkyStateItems(
@@ -145,17 +145,16 @@ extension WeeklyWeatherVM {
         }
     }
     
-    func performWeekRequests(locationInf: LocationInformation) {
-        
+    func getWeeklyItems(locationInf: LocationInformation) {
         if !isWeeklyWeatherInformationsLoaded && !isApiRequestProceeding {
             DispatchQueue.main.async {
                 self.isApiRequestProceeding = true
             }
             
             Task(priority: .high) {
-                await getTodayItems(xy: (locationInf.x, locationInf.y))
-                await getWeeklyTempItems(fullAddress: locationInf.fullAddress)
-                await getWeeklySkyStateItems(fullAddress: locationInf.fullAddress)
+                await getTodayToThreeDaysLaterItems(xy: (locationInf.x, locationInf.y))
+                await getFourToTenDaysLaterTempItems(fullAddress: locationInf.fullAddress)
+                await getFourToTenDaysLaterSkyStateItems(fullAddress: locationInf.fullAddress)
             }
         }
     }
@@ -424,7 +423,7 @@ extension WeeklyWeatherVM {
         
         timerStart()
         currentTask = Task(priority: .high) {
-            performWeekRequests(locationInf: locationInf)
+            getWeeklyItems(locationInf: locationInf)
         }
     }
     
@@ -567,7 +566,7 @@ extension WeeklyWeatherVM {
             
             timerStart()
             currentTask = Task(priority: .high) {
-                performWeekRequests(locationInf: locationInf)
+                getWeeklyItems(locationInf: locationInf)
             }
         }
     }
