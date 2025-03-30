@@ -29,17 +29,22 @@ struct MainTabView: View {
                 }
                 
                 TabView(selection: $vm.currentTab) {
-                    CurrentWeatherView(disableTabBarTouch: $vm.isTabBarTouchDisabled)
-                        .tag(TabBarType.current)
+                    if vm.currentTab == .current {
+                        CurrentWeatherView(disableTabBarTouch: $vm.isTabBarTouchDisabled)
+                            .tag(TabBarType.current)
+                    }
                     
-                    WeeklyWeatherView()
-                        .tag(TabBarType.week)
+                    if vm.currentTab == .week {
+                        WeeklyWeatherView()
+                            .tag(TabBarType.week)
+                    }
                     
-                    RootNavigationView(
-                        view: SettingView()
-                    )
-                    .tag(TabBarType.setting)
-
+                    if vm.currentTab == .setting {
+                        RootNavigationView(
+                            view: SettingView()
+                        )
+                        .tag(TabBarType.setting)
+                    }
                 }
                 .overlay(alignment: .bottom) {
                     CustomBottomTabBarView(
