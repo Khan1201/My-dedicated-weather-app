@@ -51,10 +51,8 @@ public enum SkyState: String, WeatherAPIValue {
         switch self {
         case .sunny:
             return "background_weather_sunny"
-        case .cloudy, .blur, .rainy, .snow, .thunder:
-            return "background_weather_blur"
         default:
-            return ""
+            return "background_weather_blur"
         }
     }
     
