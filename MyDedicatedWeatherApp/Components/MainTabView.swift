@@ -29,10 +29,8 @@ struct MainTabView: View {
                 }
                 
                 TabView(selection: $vm.currentTab) {
-                    if vm.currentTab == .current {
-                        CurrentWeatherView(disableTabBarTouch: $vm.isTabBarTouchDisabled)
-                            .tag(TabBarType.current)
-                    }
+                    CurrentWeatherView(disableTabBarTouch: $vm.isTabBarTouchDisabled)
+                        .tag(TabBarType.current)
                     
                     if vm.currentTab == .week {
                         WeeklyWeatherView()
