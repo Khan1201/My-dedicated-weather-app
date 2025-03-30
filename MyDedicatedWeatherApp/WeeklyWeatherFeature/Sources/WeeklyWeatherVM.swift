@@ -104,7 +104,7 @@ extension WeeklyWeatherVM {
         noticeFloaterMessage = retryNoticeFloaterMessage
         showNoticeFloater = false
         showNoticeFloater = true
-        refreshButtonOnTapGesture(locationInf: locationInf)
+        getWeeklyItems(locationInf: locationInf)
     }
     
     func viewOnAppearAction(locationInf: LocationInformation) {
@@ -378,9 +378,7 @@ extension WeeklyWeatherVM {
     
     /// 차트 yList는 전체(+1 ~. +7) maxTemp가 필요하므로 전체 로드 된 후에 get
     private func setWeeklyChartInformationYList() {
-        guard isShortTermForecastLoaded && isMidtermForecastSkyStateLoaded && isMidtermForecastTempLoaded else { return }
-        // completed 체크
-        
+        guard isAllLoaded else { return }
         let maxTemps = weeklyChartInformation.maxTemps.max()
         weeklyChartInformation.yList = temperatureChartYList(maxTemp: Int(maxTemps ?? 0))
         
@@ -527,9 +525,9 @@ extension WeeklyWeatherVM {
     }
     
     private func weeklyItemAllLoadedAction() {
+        isAllLoaded = true
         setWeeklyChartInformationYList()
         initializeTaskAndTimer()
-        isAllLoaded = true
         initializeApiLoadedStates()
         CustomHapticGenerator.impact(style: .soft)
     }
