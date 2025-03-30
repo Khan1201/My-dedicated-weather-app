@@ -21,6 +21,7 @@ public struct CurrentWeatherView: View {
     @State private var pagerHeight: CGFloat = 0
     @State private var page: Page = .first()
     @State private var pageIndex: Int = 0
+    @State private var isOnceAppeared: Bool = false
     
     public init(disableTabBarTouch: Binding<Bool>) {
         self._disableTabBarTouch = disableTabBarTouch
@@ -93,8 +94,11 @@ public struct CurrentWeatherView: View {
                 )
             }
             .onAppear {
-                viewModel.currentLocationEODelegate = currentLocationEO
-                currentLocationEO.startUpdaitingLocation()
+                if !isOnceAppeared {
+                    viewModel.currentLocationEODelegate = currentLocationEO
+                    currentLocationEO.startUpdaitingLocation()
+                    isOnceAppeared = true
+                }
             }
             
         case .notAllow:
