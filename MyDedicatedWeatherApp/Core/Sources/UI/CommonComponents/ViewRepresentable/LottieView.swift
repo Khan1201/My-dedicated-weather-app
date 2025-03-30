@@ -23,7 +23,9 @@ public struct LottieView: UIViewRepresentable {
     }
     
     public func makeUIView(context: UIViewRepresentableContext<LottieView>) -> UIView {
-        
+        guard !jsonName.isEmpty else {
+            return UIView()
+        }
         let view = UIView(frame: .zero)
         
         let animationView = LottieAnimationView()
