@@ -145,6 +145,7 @@ extension CurrentWeatherVM {
                     }
                     await self.loadCurrentWeatherAllData(locationInf: locationInf)
                     await self.currentLocationEODelegate?.setCoordinateAndAllLocality(locationInf: locationInf)
+                    await self.currentLocationEODelegate?.setIsLocationUpdated()
                     
                     if isNewAdd {
                         self.userDefaultsService.setLocationInformation(locationInf)

@@ -12,14 +12,18 @@ public struct CurrentWeatherViewBackground: ViewModifier {
     let isDayMode: Bool
     let isSunriseSunsetLoadCompleted: Bool
     let isAllLoadCompleted: Bool
+    let isLocationUpdated: Bool
     let skyType: WeatherAPIValue?
     
-    public init(isDayMode: Bool, isSunriseSunsetLoadCompleted: Bool, isAllLoadCompleted: Bool, skyType: WeatherAPIValue?) {
+    public init(isDayMode: Bool, isSunriseSunsetLoadCompleted: Bool, isAllLoadCompleted: Bool, isLocationUpdated: Bool, skyType: WeatherAPIValue?) {
         self.isDayMode = isDayMode
         self.isSunriseSunsetLoadCompleted = isSunriseSunsetLoadCompleted
         self.isAllLoadCompleted = isAllLoadCompleted
+        self.isLocationUpdated = isLocationUpdated
         self.skyType = skyType
     }
+    
+    @State private var isRefreshed: Bool = true
     
     public func body(content: Content) -> some View {
         content
@@ -55,7 +59,7 @@ public struct CurrentWeatherViewBackground: ViewModifier {
                         Color.blue.opacity(0.3)
                     }
                 }
-                .if(isAllLoadCompleted) { view in
+                .if(isAllLoadCompleted && isRefreshed) { view in
                     view
                         .overlay(alignment: .top) {
                             LottieView(
@@ -67,6 +71,14 @@ public struct CurrentWeatherViewBackground: ViewModifier {
                         }
                 }
             }
+            .onChange(of: isLocationUpdated) { newValue in
+                if newValue {
+                    isRefreshed = false
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                        self.isRefreshed = true
+                    }
+                }
+            }
     }
 }
 
@@ -75,12 +87,14 @@ extension View {
         isDayMode: Bool,
         isSunriseSunsetLoadCompleted: Bool,
         isAllLoadCompleted: Bool,
+        isLocationUpdated: Bool,
         skyType: WeatherAPIValue?
     ) -> some View {
         modifier(CurrentWeatherViewBackground(
             isDayMode: isDayMode, 
             isSunriseSunsetLoadCompleted: isSunriseSunsetLoadCompleted,
-            isAllLoadCompleted: isAllLoadCompleted,
+            isAllLoadCompleted: isAllLoadCompleted, 
+            isLocationUpdated: isLocationUpdated,
             skyType: skyType)
         )
     }

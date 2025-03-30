@@ -65,6 +65,7 @@ public struct CurrentWeatherView: View {
                 isDayMode: currentLocationEO.isDayMode,
                 isSunriseSunsetLoadCompleted: viewModel.isSunriseSunsetLoaded,
                 isAllLoadCompleted: viewModel.isAllLoaded,
+                isLocationUpdated: currentLocationEO.isLocationUpdated,
                 skyType: viewModel.currentWeatherInformation?.skyType
             )
             .onChange(of: currentLocationEO.isLocationUpdated) { newValue in

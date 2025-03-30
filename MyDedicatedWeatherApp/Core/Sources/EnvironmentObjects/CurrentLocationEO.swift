@@ -20,7 +20,10 @@ public protocol CurrentLocationEODelegate: AnyObject {
     func setCoordinateAndAllLocality(locationInf: LocationInformation)
     @MainActor
     func setSkyType(_ value: WeatherAPIValue)
+    @MainActor
     func setIsDayMode(sunriseHHmm: String, sunsetHHmm: String)
+    @MainActor
+    func setIsLocationUpdated()
 
     var locationInf: LocationInformation { get }
 }
@@ -163,6 +166,7 @@ extension CurrentLocationEO {
         skyType = value
     }
     
+    @MainActor
     public func setIsDayMode(sunriseHHmm: String, sunsetHHmm: String) {
         let currentHHmm = Date().toString(format: "HHmm")
         let sunTime: SunTime = .init(
@@ -171,6 +175,14 @@ extension CurrentLocationEO {
             sunsetHHmm: sunsetHHmm
         )
         isDayMode = sunTime.isDayMode
+    }
+    
+    @MainActor
+    public func setIsLocationUpdated() {
+        isLocationUpdated = false
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            self.isLocationUpdated = true
+        }
     }
 }
 
@@ -187,13 +199,7 @@ extension CurrentLocationEO {
                         await self.setLongitudeAndLatitude(longitude: String(longitude), latitude: String(latitude))
                         await self.setLocalityWithWidget(success)
                         await self.setGPSLocality(success)
-                        DispatchQueue.main.async  {
-                            self.isLocationUpdated = true
-                        }
-                        
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                            self.isLocationUpdated = false
-                        }
+                        await self.setIsLocationUpdated()
                     }
                     
                 case .failure(_):
