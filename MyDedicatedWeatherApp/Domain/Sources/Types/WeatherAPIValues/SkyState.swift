@@ -102,11 +102,11 @@ public enum SkyState: String, WeatherAPIValue {
         switch self {
         case .sunny:
             return isDayMode ? "BackgroundSunnyDayLottie" : "BackgroundSunnyNightLottie"
-        case .cloudy:
+        case .cloudy, .blur:
             return "BackgroundCloudyLottie"
-        case .rainy:
+        case .shower, .rainDrop, .rainy, .thunder:
             return "BackgroundRainyLottie"
-        case .snow:
+        case .rainyAndSnow, .rainDropAndSnow, .snow:
             return "BackgroundSnowLottie"
         default:
             return ""
