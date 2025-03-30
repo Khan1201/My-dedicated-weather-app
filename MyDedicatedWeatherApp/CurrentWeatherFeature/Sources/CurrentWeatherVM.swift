@@ -95,7 +95,7 @@ final class CurrentWeatherVM: ObservableObject {
 
 // MARK: - View Communication Funcs
 extension CurrentWeatherVM {
-    public func loadCurrentWeatherAllData(locationInf: LocationInformation) {
+    @MainActor public func loadCurrentWeatherAllData(locationInf: LocationInformation) {
         let convertedXY: Gps2XY.LatXLngY = .init(lat: 0, lng: 0, x: locationInf.x.toInt, y: locationInf.y.toInt)
         
         initializeTask()
@@ -143,7 +143,7 @@ extension CurrentWeatherVM {
                         self.initLoadCompletedVariables()
                         self.isAdditionalLocationViewPresented = false
                     }
-                    self.loadCurrentWeatherAllData(locationInf: locationInf)
+                    await self.loadCurrentWeatherAllData(locationInf: locationInf)
                     await self.currentLocationEODelegate?.setCoordinateAndAllLocality(locationInf: locationInf)
                     
                     if isNewAdd {
@@ -157,7 +157,7 @@ extension CurrentWeatherVM {
         }
     }
     
-    public func performRefresh(locationInf: LocationInformation) {
+    @MainActor public func performRefresh(locationInf: LocationInformation) {
         initLoadCompletedVariables()
         loadCurrentWeatherAllData(locationInf: locationInf)
     }
@@ -237,7 +237,7 @@ extension CurrentWeatherVM {
         
         switch result {
         case .success(let items):
-            setDustStationXY(items: items, locality: locality)
+            await setDustStationXY(items: items, locality: locality)
             let reqEndTime = CFAbsoluteTimeGetCurrent() - reqStartTime
             print("미세먼지 측정소 xy좌표 get 호출 소요시간: \(reqEndTime)")
         case .failure(let error):
@@ -252,7 +252,7 @@ extension CurrentWeatherVM {
         
         switch result {
         case .success(let items):
-            setDustStationName(items)
+            await setDustStationName(items)
             guard let firstItem = items.first else { return }
             userDefaultsService.setCurrentDustStationName(firstItem.stationName)
             
@@ -436,17 +436,20 @@ extension CurrentWeatherVM {
         isKakaoAddressLoaded = true
     }
     
+    @MainActor
     private func setSunriseAndSunsetHHmm(sunrise: String, sunset: String) {
         sunriseAndSunsetHHmm = (sunrise, sunset)
         isSunriseSunsetLoaded = true
     }
     
+    @MainActor
     private func setDustStationXY(items: [DustForecastStationXY]?, locality: String) {
         guard let items = items else { return }
         guard let item = items.first( where: { $0.sidoName.contains(locality) } ) else { return }
         dustStationXY = (item.tmX, item.tmY)
     }
 
+    @MainActor
     private func setDustStationName(_ items: [DustForecastStation]?) {
         guard let items = items, let item = items.first else { return }
         dustStationName = item.stationName
@@ -485,7 +488,7 @@ extension CurrentWeatherVM {
         timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(askRetryIfFewSecondsAfterNotLoaded(timer:)), userInfo: nil, repeats: true)
     }
     
-    @objc private func askRetryIfFewSecondsAfterNotLoaded(timer: Timer) {
+    @MainActor @objc private func askRetryIfFewSecondsAfterNotLoaded(timer: Timer) {
         guard self.timer != nil else { return }
         self.timerNum += 1
         
@@ -501,7 +504,7 @@ extension CurrentWeatherVM {
         }
     }
     
-    private func calculateAndSetSunriseSunset(longLati: (String, String)) {
+    @MainActor private func calculateAndSetSunriseSunset(longLati: (String, String)) {
         let currentDate: Date = Date()
         let sunrise = currentDate.sunrise(.init(latitude: longLati.1.toDouble, longitude: longLati.0.toDouble))
         let sunset = currentDate.sunset(.init(latitude: longLati.1.toDouble, longitude: longLati.0.toDouble))
@@ -516,7 +519,7 @@ extension CurrentWeatherVM {
         }
     }
     
-    private func retryAndShowNoticeFloater(locationInf: LocationInformation) {
+    @MainActor private func retryAndShowNoticeFloater(locationInf: LocationInformation) {
         noticeFloaterMessage = retryNoticeFloaterMessage
         isNoticeFloaterViewPresented = false
         isNoticeFloaterViewPresented = true

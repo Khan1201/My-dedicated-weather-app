@@ -187,7 +187,9 @@ extension CurrentLocationEO {
                         await self.setLongitudeAndLatitude(longitude: String(longitude), latitude: String(latitude))
                         await self.setLocalityWithWidget(success)
                         await self.setGPSLocality(success)
-                        self.isLocationUpdated = true
+                        DispatchQueue.main.async  {
+                            self.isLocationUpdated = true
+                        }
                         
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                             self.isLocationUpdated = false
