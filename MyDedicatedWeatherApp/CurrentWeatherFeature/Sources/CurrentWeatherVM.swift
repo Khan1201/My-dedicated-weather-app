@@ -166,17 +166,12 @@ extension CurrentWeatherVM {
 
 // MARK: - Fetch Funcs
 extension CurrentWeatherVM {
-    private func fetchCurrentWeatherInformations(xy: Gps2XY.LatXLngY) async {
-        let startTime = CFAbsoluteTimeGetCurrent()
-        
+    private func fetchCurrentWeatherInformations(xy: Gps2XY.LatXLngY) async {        
         let result = await veryShortForecastService.getCurrentItems(xy: xy)
         
         switch result {
         case .success(let items):
             await self.setCurrentWeatherInformation(items: items)
-            
-            let durationTime = CFAbsoluteTimeGetCurrent() - startTime
-            print("초단기 req 소요시간: \(durationTime)")
         case .failure(let error):
             CustomLogger.error("\(error)")
         }
@@ -241,8 +236,6 @@ extension CurrentWeatherVM {
     }
     
     private func fetchSubLocalityByKakaoAddress(longitude: String, latitude: String, isCurrentLocationRequested: Bool) async {
-        let startTime = CFAbsoluteTimeGetCurrent()
-        
         let result = await kakaoAddressService.getKaKaoAddressBy(
             longitude: longitude,
             latitude: latitude
@@ -262,9 +255,6 @@ extension CurrentWeatherVM {
                 userDefaultsService.setCurrentSubLocality(self.subLocalityByKakaoAddress)
                 userDefaultsService.setCurrentFullAddress(item.documents[0].address.fullAddress)
             }
-            
-            let durationTime = CFAbsoluteTimeGetCurrent() - startTime
-            print("카카오 주소 req 소요시간: \(durationTime)")
         case .failure(let error):
             CustomLogger.error("\(error)")
         }
