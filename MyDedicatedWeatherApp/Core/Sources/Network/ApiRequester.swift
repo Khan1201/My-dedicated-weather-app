@@ -28,7 +28,8 @@ public struct ApiRequester: ApiRequestable {
         headers: HTTPHeaders?,
         resultType: T.Type
     ) async -> Result<T, APIError>{
-        let dataTask = AF.request(
+        let session = Session(eventMonitors: [APIMonitor()])
+        let dataTask = session.request(
             url,
             method: method,
             parameters: parameters,
