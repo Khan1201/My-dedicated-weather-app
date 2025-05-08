@@ -14,7 +14,6 @@ final class WeeklyWeatherVM: ObservableObject {
     @Published private(set) var weeklyWeatherInformations: [Weather.WeeklyInformation] = []
     @Published private(set) var weeklyChartInformation: Weather.WeeklyChartInformation = .init(minTemps: [], maxTemps: [], xList: [], yList: [], imageAndRainPercents: [])
     
-    @Published private(set) var isApiRequestProceeding: Bool = false
     @Published private(set) var isShortTermForecastLoaded: Bool = false
     @Published private(set) var isMidtermForecastSkyStateLoaded: Bool = false
     @Published private(set) var isMidtermForecastTempLoaded: Bool = false
@@ -77,11 +76,7 @@ final class WeeklyWeatherVM: ObservableObject {
 // MARK: - View Communication Funcs
 extension WeeklyWeatherVM {
     func getWeeklyItems(locationInf: LocationInformation) {
-        if !isAllLoaded && !isApiRequestProceeding {
-            DispatchQueue.main.async {
-                self.isApiRequestProceeding = true
-            }
-            
+        if !isAllLoaded {
             Task(priority: .high) {
                 await getTodayToThreeDaysLaterItems(xy: (locationInf.x, locationInf.y))
                 await getFourToTenDaysLaterTempItems(fullAddress: locationInf.fullAddress)
@@ -474,7 +469,6 @@ extension WeeklyWeatherVM {
         isShortTermForecastLoaded = false
         isMidtermForecastTempLoaded = false
         isMidtermForecastSkyStateLoaded = false
-        isApiRequestProceeding = false
     }
     
     private func initializeTaskAndTimer() {
