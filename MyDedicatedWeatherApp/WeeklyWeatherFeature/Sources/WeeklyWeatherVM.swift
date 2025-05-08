@@ -118,8 +118,6 @@ extension WeeklyWeatherVM {
 extension WeeklyWeatherVM {
     /// 단기예보  온도, 하늘 상태, 강수 확률 Items
     private func getTodayToThreeDaysLaterItems(xy: (String, String)) async {
-        let reqStartTime = CFAbsoluteTimeGetCurrent()
-        
         let result = await shortForecastService.getTodayItems(
             xy: .init(lat: 0, lng: 0, x: xy.0.toInt, y: xy.1.toInt),
             reqRow: "1000"
@@ -127,12 +125,9 @@ extension WeeklyWeatherVM {
         
         switch result {
         case .success(let items):
-            let reqEndTime = CFAbsoluteTimeGetCurrent() - reqStartTime
-            
             DispatchQueue.main.async {
                 self.setWeeklyWeatherInformationsAndWeeklyChartInformation(one2threeDay: items)
                 self.isShortTermForecastLoaded = true
-                print("주간예보 - 단기 req 호출 소요시간: \(reqEndTime)")
             }
         case .failure(let error):
             CustomLogger.error("\(error)")
@@ -141,22 +136,17 @@ extension WeeklyWeatherVM {
     
     /// 중기예보 온도 Items
     private func getFourToTenDaysLaterTempItems(fullAddress: String) async {
-        let reqStartTime = CFAbsoluteTimeGetCurrent()
-        
         let result = await midtermForecastService.getTempItems(
             fullAddress: fullAddress
         )
         
         switch result {
         case .success(let items):
-            let reqEndTime = CFAbsoluteTimeGetCurrent() - reqStartTime
-            
             DispatchQueue.main.async {
                 if let item = items.first {
                     self.setWeeklyWeatherInformationsMinMaxTemp(four2tenDay: item)
                     self.setWeeklyChartInformationMinMaxTemp(four2tenDay: item)
                     self.isMidtermForecastTempLoaded = true
-                    print("주간 예보 - 중기 예보(기온) req 호출 소요시간: \(reqEndTime)")
                 }
                 
             }
@@ -167,22 +157,17 @@ extension WeeklyWeatherVM {
     
     /// 중기예보 하늘 상태 및 강수 확률 Items
     private func getFourToTenDaysLaterSkyStateItems(fullAddress: String) async {
-        let reqStartTime = CFAbsoluteTimeGetCurrent()
-        
         let result = await midtermForecastService.getSkyStateItems(
             fullAddress: fullAddress
         )
         
         switch result {
         case .success(let items):
-            let reqEndTime = CFAbsoluteTimeGetCurrent() - reqStartTime
-            
             DispatchQueue.main.async {
                 if let item = items.first {
                     self.setWeeklyWeatherInformationsImageAndRainPercent(four2tenDay: item)
                     self.setWeeklyChartInformationImageAndRainPercent(four2tenDay: item)
                     self.isMidtermForecastSkyStateLoaded = true
-                    print("주간 예보 - 중기 예보(하늘상태) req 호출 소요시간: \(reqEndTime)")
                 }
             }
         case .failure(let error):

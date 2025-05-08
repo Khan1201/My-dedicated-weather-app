@@ -11,26 +11,23 @@ import Alamofire
 final class APIMonitor: EventMonitor {
     let queue = DispatchQueue(label: "com.example.api-monitor")
     
-    func requestDidResume(_ request: Request) {
-        if let url = request.request?.url?.absoluteString {
-            print("----------------------------------------------------------------------------------")
-            print("➡️ [REQUEST] \(request.description)")
-            print("📚 [DESCRIPTION] -> \(urlToDescription(url))")
-        }
-    }
+//    func requestDidResume(_ request: Request) {
+//        if let url = request.request?.url?.absoluteString {
+//            print("----------------------------------------------------------------------------------")
+//            print("➡️ [REQUEST] \(request.description)")
+//            print("📚 [DESCRIPTION] -> \(urlToDescription(url))")
+//        }
+//    }
     
     func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
             if let url = dataTask.response?.url?.absoluteString {
-                print("----------------------------------------------------------------------------------")
-                print("⬅️ [RESPONSE] -> \(url)")
-                print("📚 [DESCRIPTION] -> \(urlToDescription(url))")
-                
-                if let jsonString = dataToJsonString(data) {
-                    print("✅ [DATA] -> \(jsonString)")
-
-                } else {
-                    if let rawString = String(data: data, encoding: .utf8) {
-                        print("❌ [DATA] -> \(rawString)")
+                if let rawString = String(data: data, encoding: .utf8) {
+                    print("----------------------------------------------------------------------------------")
+                    print(isParsingSucceeded(rawString) ? "✅✅✅ [REQUEST SUCCESS] ✅✅✅" : "❌❌❌ [REQUEST FAIL] ❌❌❌")
+                    print("🌐 [URL] -> \(url)")
+                    print("📚 [DESCRIPTION] -> \(urlToDescription(url))")
+                    if !isParsingSucceeded(rawString) {
+                        print("📊 [DATA] -> \(rawString)")
                     }
                 }
             }
@@ -70,5 +67,12 @@ final class APIMonitor: EventMonitor {
         }
         
         return result
+    }
+    
+    private func isParsingSucceeded(_ rawString: String) -> Bool {
+        let kakaoAddressComponent: String = "address_name"
+        let publicWeatherDataComponent: String = "baseDate"
+        let publicDustDataComponent: String = "body"
+        return rawString.contains(kakaoAddressComponent) || rawString.contains(publicWeatherDataComponent) || rawString.contains(publicDustDataComponent)
     }
 }

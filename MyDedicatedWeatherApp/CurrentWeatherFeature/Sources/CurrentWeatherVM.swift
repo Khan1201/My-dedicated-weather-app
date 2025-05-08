@@ -183,72 +183,51 @@ extension CurrentWeatherVM {
     }
     
     private func fetchTodayWeatherInformations(xy: Gps2XY.LatXLngY) async {
-        let reqStartTime = CFAbsoluteTimeGetCurrent()
-        
         let result = await shortForecastService.getTodayItems(xy: xy, reqRow: "300")
         
         switch result {
         case .success(let items):
             await setTodayWeatherInformations(items: items)
-            
-            let reqEndTime = CFAbsoluteTimeGetCurrent() - reqStartTime
-            print("단기 req 호출 소요시간: \(reqEndTime)")
         case .failure(let error):
             CustomLogger.error("\(error)")
         }
     }
 
     private func fetchTodayMinMaxTemperature(xy: Gps2XY.LatXLngY) async {
-        let reqStartTime = CFAbsoluteTimeGetCurrent()
-        
         let result = await shortForecastService.getTodayMinMaxItems(xy: xy)
         
         switch result {
         case .success(let items):
             await setTodayMinMaxTemperature(items)
-            
-            let reqEndTime = CFAbsoluteTimeGetCurrent() - reqStartTime
-            print("단기 req(최소, 최대 온도 값) 호출 소요시간: \(reqEndTime)")
         case .failure(let error):
             CustomLogger.error("\(error)")
         }
     }
     
     private func fetchCurrentDust() async {
-        let reqStartTime = CFAbsoluteTimeGetCurrent()
-        
         let result = await dustForecastService.getRealTimeDustItems(stationName: dustStationName)
         
         switch result {
         case .success(let items):
             guard let item = items.first else { return }
             await setCurrentDust(item)
-            
-            let reqEndTime = CFAbsoluteTimeGetCurrent() - reqStartTime
-            print("미세먼지 item 호출 소요시간: \(reqEndTime)")
         case .failure(let error):
             CustomLogger.error("\(error)")
         }
     }
 
     private func fetchDustStationXY(subLocality: String, locality: String) async {
-        let reqStartTime = CFAbsoluteTimeGetCurrent()
-        
         let result = await dustForecastService.getXYOfStation(subLocality: subLocality)
         
         switch result {
         case .success(let items):
             await setDustStationXY(items: items, locality: locality)
-            let reqEndTime = CFAbsoluteTimeGetCurrent() - reqStartTime
-            print("미세먼지 측정소 xy좌표 get 호출 소요시간: \(reqEndTime)")
         case .failure(let error):
             CustomLogger.error("\(error)")
         }
     }
     
     private func fetchDustStationName(tmXAndtmY: (String, String)) async {
-        let reqStartTime = CFAbsoluteTimeGetCurrent()
-        
         let result = await dustForecastService.getStationInfo(tmXAndtmY: tmXAndtmY)
         
         switch result {
@@ -256,9 +235,6 @@ extension CurrentWeatherVM {
             await setDustStationName(items)
             guard let firstItem = items.first else { return }
             userDefaultsService.setCurrentDustStationName(firstItem.stationName)
-            
-            let reqEndTime = CFAbsoluteTimeGetCurrent() - reqStartTime
-            print("미세먼지 측정소 get 호출 소요시간: \(reqEndTime)")
         case .failure(let error):
             CustomLogger.error("\(error)")
         }
@@ -516,7 +492,6 @@ extension CurrentWeatherVM {
             
             currentLocationEODelegate?.setIsDayMode(sunriseHHmm: sunriseHHmm, sunsetHHmm: sunsetHHmm)
             setSunriseAndSunsetHHmm(sunrise: sunriseHHmm, sunset: sunsetHHmm)
-            print("일출: \(sunriseHHmm), 일몰: \(sunsetHHmm)")
         }
     }
     
