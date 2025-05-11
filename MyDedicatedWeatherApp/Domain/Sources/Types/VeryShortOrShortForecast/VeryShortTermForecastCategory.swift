@@ -9,8 +9,7 @@ import Foundation
 
 // MARK: - 초단기예보 값 types
 
-public enum VeryShortTermForecastCategory: String, Codable {
-    
+public enum VeryShortTermForecastCategory: String, Decodable {
     case T1H, // 기온
          RN1, // 1시간 강수량
          PTY, // 강수 형태

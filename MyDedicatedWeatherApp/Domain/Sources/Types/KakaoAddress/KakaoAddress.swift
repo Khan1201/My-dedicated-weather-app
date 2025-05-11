@@ -7,19 +7,13 @@
 
 import Foundation
 
-public struct KakaoAddress: Encodable {
+public struct KakaoAddress {
     public let fullAddress: String
     public let subLocality: String // 성수동 1가
     
     enum CodingKeys: String, CodingKey {
         case address_name
         case region_3depth_name
-    }
-    
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(fullAddress, forKey: .address_name)
-        try container.encode(subLocality, forKey: .region_3depth_name)
     }
     
     // Nested

@@ -9,8 +9,7 @@ import Foundation
 
 // MARK: - 단기예보 값 types
 
-public enum ShortTermForecastCategory: String, Codable {
-    
+public enum ShortTermForecastCategory: String, Decodable {
     case POP, // 강수 확률
          PTY, // 강수 형태
          PCP, // 1시간 강수량

@@ -8,15 +8,6 @@
 import Foundation
 
 public struct VeryShortOrShortTermForecastReq: Encodable {
-    public let serviceKey: String
-    public let pageNo: String = "1"
-    public let numOfRows: String
-    public let dataType: String = "JSON"
-    public let baseDate: String
-    public let baseTime: String
-    public let nx: String
-    public let ny: String
-    
     public init(serviceKey: String, numOfRows: String, baseDate: String, baseTime: String, nx: String, ny: String) {
         self.serviceKey = serviceKey
         self.numOfRows = numOfRows
@@ -25,6 +16,15 @@ public struct VeryShortOrShortTermForecastReq: Encodable {
         self.nx = nx
         self.ny = ny
     }
+    
+    public let serviceKey: String
+    public let pageNo: String = "1"
+    public let numOfRows: String
+    public let dataType: String = "JSON"
+    public let baseDate: String
+    public let baseTime: String
+    public let nx: String
+    public let ny: String
     
     enum CodingKeys: String, CodingKey {
         case serviceKey, pageNo,
