@@ -10,6 +10,7 @@ import Alamofire
 
 final class APIMonitor: EventMonitor {
     let queue = DispatchQueue(label: "com.example.api-monitor")
+    private var isRequestFailed: Bool = false
     
 //    func requestDidResume(_ request: Request) {
 //        if let url = request.request?.url?.absoluteString {
@@ -19,18 +20,32 @@ final class APIMonitor: EventMonitor {
 //        }
 //    }
     
+    /// 서버의 Response 데이터를 받아서 파싱이 불가능한경우 실패로 처리
+    /// 서버에서 Data를 조각으로 주기때문에, 한 API가 여러번 호출될수도 있음
     func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
             if let url = dataTask.response?.url?.absoluteString {
                 if let rawString = String(data: data, encoding: .utf8) {
-                    print("----------------------------------------------------------------------------------")
-                    print(isParsingSucceeded(rawString) ? "✅✅✅ [REQUEST SUCCESS] ✅✅✅" : "❌❌❌ [REQUEST FAIL] ❌❌❌")
-                    print("🌐 [URL] -> \(url)")
-                    print("📚 [DESCRIPTION] -> \(urlToDescription(url))")
                     if !isParsingSucceeded(rawString) {
+                        isRequestFailed = true
+                        print("----------------------------------------------------------------------------------")
+                        print("❌❌❌ [REQUEST FAIL] ❌❌❌")
+                        print("🌐 [URL] -> \(url)")
+                        print("📚 [DESCRIPTION] -> \(urlToDescription(url))")
                         print("📊 [DATA] -> \(rawString)")
                     }
                 }
             }
+    }
+    
+    func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse) {
+        if let url = dataTask.response?.url?.absoluteString {
+            if !isRequestFailed {
+                print("----------------------------------------------------------------------------------")
+                print("✅✅✅ [REQUEST SUCCESS] ✅✅✅")
+                print("🌐 [URL] -> \(url)")
+                print("📚 [DESCRIPTION] -> \(urlToDescription(url))")
+            }
+        }
     }
     
     private func urlToDescription(_ url: String) -> String {
