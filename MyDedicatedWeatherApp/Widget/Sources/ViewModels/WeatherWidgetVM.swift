@@ -453,7 +453,7 @@ extension WeatherWidgetVM {
         }
         
         var temperatureResult: [(String, String)] = []
-        temperatureResult.append((filteredTemperatureItem.taMin4.toString, filteredTemperatureItem.taMax4.toString))
+//        temperatureResult.append((filteredTemperatureItem.taMin4.toString, filteredTemperatureItem.taMax4.toString))
         temperatureResult.append((filteredTemperatureItem.taMin5.toString, filteredTemperatureItem.taMax5.toString))
         
         guard let filteredSkyStateItem = skyStateItems.first else {
@@ -461,15 +461,15 @@ extension WeatherWidgetVM {
             return
         }
         var skyStateResult: [String] = []
-        skyStateResult.append(midForecastUtil.convertSkyState(rawValue: filteredSkyStateItem.wf4Am).image(isDayMode: false))
+//        skyStateResult.append(midForecastUtil.convertSkyState(rawValue: filteredSkyStateItem.wf4Am).image(isDayMode: false))
         skyStateResult.append(midForecastUtil.convertSkyState(rawValue: filteredSkyStateItem.wf5Am).image(isDayMode: false))
         
         var rainPercentResult: [String] = []
-        rainPercentResult.append(filteredSkyStateItem.rnSt4Am.toString)
+//        rainPercentResult.append(filteredSkyStateItem.rnSt4Am.toString)
         rainPercentResult.append(filteredSkyStateItem.rnSt5Am.toString)
         
         var weatherImageResult: [String] = []
-        weatherImageResult.append(midForecastUtil.convertSkyState(rawValue: filteredSkyStateItem.wf4Am).image(isDayMode: false))
+//        weatherImageResult.append(midForecastUtil.convertSkyState(rawValue: filteredSkyStateItem.wf4Am).image(isDayMode: false))
         weatherImageResult.append(midForecastUtil.convertSkyState(rawValue: filteredSkyStateItem.wf5Am).image(isDayMode: false))
         
         guard temperatureResult.count >= 2 && skyStateResult.count >= 2 && rainPercentResult.count >= 2 else {
@@ -534,7 +534,7 @@ extension WeatherWidgetVM {
         }
         
         var tempResult: [(String, String)] = []
-        tempResult.append((item.taMin4.toString, item.taMax4.toString))
+//        tempResult.append((item.taMin4.toString, item.taMax4.toString))
         tempResult.append((item.taMin5.toString, item.taMax5.toString))
         
         return tempResult
@@ -550,7 +550,7 @@ extension WeatherWidgetVM {
         }
         
         var tempResult: [String] = []
-        tempResult.append(midForecastUtil.convertSkyState(rawValue: item.wf4Am).image(isDayMode: false))
+//        tempResult.append(midForecastUtil.convertSkyState(rawValue: item.wf4Am).image(isDayMode: false))
         tempResult.append(midForecastUtil.convertSkyState(rawValue: item.wf5Am).image(isDayMode: false))
         
         return tempResult
@@ -565,7 +565,7 @@ extension WeatherWidgetVM {
             return []
         }
         var tempResult: [String] = []
-        tempResult.append(item.rnSt4Am.toString)
+//        tempResult.append(item.rnSt4Am.toString)
         tempResult.append(item.rnSt5Am.toString)
         
         return tempResult
