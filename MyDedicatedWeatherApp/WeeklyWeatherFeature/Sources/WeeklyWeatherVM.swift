@@ -78,9 +78,9 @@ extension WeeklyWeatherVM {
     func getWeeklyItems(locationInf: LocationInformation) {
         if !isAllLoaded {
             Task(priority: .high) {
-                await getTodayToThreeDaysLaterItems(xy: (locationInf.x, locationInf.y))
-                await getFourToTenDaysLaterTempItems(fullAddress: locationInf.fullAddress)
-                await getFourToTenDaysLaterSkyStateItems(fullAddress: locationInf.fullAddress)
+                await getTomorrowToNDaysLaterItems(xy: (locationInf.x, locationInf.y))
+                await getNToTenDaysLaterTempItems(fullAddress: locationInf.fullAddress)
+                await getNToTenDaysLaterSkyStateItems(fullAddress: locationInf.fullAddress)
             }
         }
     }
@@ -117,7 +117,7 @@ extension WeeklyWeatherVM {
 // MARK: - Get Funcs
 extension WeeklyWeatherVM {
     /// 단기예보  온도, 하늘 상태, 강수 확률 Items
-    private func getTodayToThreeDaysLaterItems(xy: (String, String)) async {
+    private func getTomorrowToNDaysLaterItems(xy: (String, String)) async {
         let result = await shortForecastService.getTodayItems(
             xy: .init(lat: 0, lng: 0, x: xy.0.toInt, y: xy.1.toInt),
             reqRow: "1000"
@@ -135,7 +135,7 @@ extension WeeklyWeatherVM {
     }
     
     /// 중기예보 온도 Items
-    private func getFourToTenDaysLaterTempItems(fullAddress: String) async {
+    private func getNToTenDaysLaterTempItems(fullAddress: String) async {
         let result = await midtermForecastService.getTempItems(
             fullAddress: fullAddress
         )
@@ -156,7 +156,7 @@ extension WeeklyWeatherVM {
     }
     
     /// 중기예보 하늘 상태 및 강수 확률 Items
-    private func getFourToTenDaysLaterSkyStateItems(fullAddress: String) async {
+    private func getNToTenDaysLaterSkyStateItems(fullAddress: String) async {
         let result = await midtermForecastService.getSkyStateItems(
             fullAddress: fullAddress
         )
