@@ -195,10 +195,10 @@ extension WeeklyWeatherVM {
                     item.category == .TMP && item.fcstDate == targetDate
                 }
                 let skyStateFilteredItem = items.filter { item in
-                    item.category == .SKY && (item.fcstDate == targetDate) && item.fcstTime == "1200"
+                    item.category == .SKY && item.fcstDate == targetDate
                 }.first
                 let percentFilteredItem = items.filter { item in
-                    item.category == .POP && (item.fcstDate == targetDate) && item.fcstTime == "1200"
+                    item.category == .POP && item.fcstDate == targetDate
                 }.first
                 
                 guard let skyStateFilteredItem, let percentFilteredItem else { return }
