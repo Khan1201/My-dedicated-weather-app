@@ -184,11 +184,6 @@ extension WeeklyWeatherVM {
         setTomorrowTo(4)
         
         func setTomorrowTo(_ lastDay: Int) {
-            let sunTime: SunTime = .init(
-                currentHHmm: "1200",
-                sunriseHHmm: "0600",
-                sunsetHHmm: "2000"
-            )
             for i in 1...lastDay {
                 let targetDate: String = Date().toString(byAdding: i, format: "yyyyMMdd")
                 let filteredTempItems = items.filter { item in
@@ -204,7 +199,7 @@ extension WeeklyWeatherVM {
                 guard let skyStateFilteredItem, let percentFilteredItem else { return }
                 
                 weeklyWeatherInformations[i - 1] = .init(
-                    weatherImage: commonForecastUtil.convertSkyState(rawValue: skyStateFilteredItem.fcstValue).image(isDayMode: sunTime.isDayMode),
+                    weatherImage: commonForecastUtil.convertSkyState(rawValue: skyStateFilteredItem.fcstValue).image(isDayMode: true),
                     rainfallPercent: percentFilteredItem.fcstValue,
                     minTemperature: minMaxItem(by: filteredTempItems).0,
                     maxTemperature: minMaxItem(by: filteredTempItems).1,
@@ -214,7 +209,7 @@ extension WeeklyWeatherVM {
                 weeklyChartInformation.minTemps[i - 1] = CGFloat(minMaxItem(by: filteredTempItems).0.toInt)
                 weeklyChartInformation.maxTemps[i - 1] = CGFloat(minMaxItem(by: filteredTempItems).1.toInt)
                 weeklyChartInformation.imageAndRainPercents[i - 1] = (
-                    commonForecastUtil.convertSkyState(rawValue: skyStateFilteredItem.fcstValue).image(isDayMode: sunTime.isDayMode),
+                    commonForecastUtil.convertSkyState(rawValue: skyStateFilteredItem.fcstValue).image(isDayMode: true),
                     percentFilteredItem.fcstValue
                 )
             }
@@ -298,7 +293,7 @@ extension WeeklyWeatherVM {
         
         func weatherImage(wf: String) -> String {
             let wfToImageString = midForecastUtil.convertSkyState(rawValue: wf)
-            return wfToImageString.image(isDayMode: false)
+            return wfToImageString.image(isDayMode: true)
         }
     }
     
@@ -310,7 +305,7 @@ extension WeeklyWeatherVM {
         weeklyChartInformation.imageAndRainPercents[6] = weatherImageAndRainfallPercent(wf: item.wf7Am, rnSt: item.rnSt7Am)
         
         func weatherImageAndRainfallPercent(wf: String, rnSt: Int) -> (String, String) {
-            let wfToImageString = midForecastUtil.convertSkyState(rawValue: wf).image(isDayMode: false)
+            let wfToImageString = midForecastUtil.convertSkyState(rawValue: wf).image(isDayMode: true)
             return (wfToImageString, rnSt.toString)
         }
     }
