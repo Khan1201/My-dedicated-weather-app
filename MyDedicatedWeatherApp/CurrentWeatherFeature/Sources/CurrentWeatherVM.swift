@@ -11,6 +11,11 @@ import Domain
 import Core
 
 final class CurrentWeatherVM: ObservableObject {
+    
+    enum Loading: CaseIterable {
+        case currentWeatherInformationLoaded, fineDustLoaded, todayWeatherInformationsLoaded, kakaoAddressLoaded, minMaxTempLoaded, sunriseSunsetLoaded
+    }
+    
     @Published private(set) public var sunriseAndSunsetHHmm: (String, String) = ("", "")
     @Published private(set) public var currentWeatherInformation: Weather.CurrentInformation?
     @Published private(set) public var currentDust: Weather.CurrentDust?
@@ -20,17 +25,17 @@ final class CurrentWeatherVM: ObservableObject {
     @Published private(set) public var dustStationXY: (String, String) = ("", "")
     @Published private(set) public var dustStationName: String = ""
     
-    /// Load Completed Variables..(7 values)
-    @Published private(set) public var isCurrentWeatherInformationLoaded: Bool = false
-    @Published private(set) public var isFineDustLoaded: Bool = false
-    @Published private(set) public var isKakaoAddressLoaded: Bool = false
-    @Published private(set) public var isMinMaxTempLoaded: Bool = false
-    @Published private(set) public var isSunriseSunsetLoaded: Bool = false
-    @Published private(set) public var isTodayWeatherInformationLoaded: Bool = false
-    @Published private(set) public var isAllLoaded: Bool = false
-    
     @Published public var isNoticeFloaterViewPresented: Bool = false
     @Published public var isAdditionalLocationViewPresented: Bool = false
+    
+    @Published public private(set) var loadedVariables: [Loading : Bool] = {
+        var result: [Loading: Bool] = [:]
+        let _ = Loading.allCases.map { value in
+            result[value] = false
+        }
+        return result
+    }()
+    @Published private(set) public var isAllLoaded: Bool = false
     
     private let waitNoticeFloaterMessage: String = """
     조금만 기다려주세요.
@@ -139,8 +144,8 @@ extension CurrentWeatherVM {
                         fullAddress: locationInf.fullAddress
                     )
                     
-                    DispatchQueue.main.async {
-                        self.initLoadCompletedVariables()
+                    DispatchQueue.main.async { 
+                        self.initLoadedVariables()
                         self.isAdditionalLocationViewPresented = false
                     }
                     await self.loadCurrentWeatherAllData(locationInf: locationInf)
@@ -159,7 +164,7 @@ extension CurrentWeatherVM {
     }
     
     @MainActor public func performRefresh(locationInf: LocationInformation) {
-        initLoadCompletedVariables()
+        initLoadedVariables()
         loadCurrentWeatherAllData(locationInf: locationInf)
     }
 }
@@ -264,20 +269,11 @@ extension CurrentWeatherVM {
 // MARK: - Sink Funcs..
 extension CurrentWeatherVM {
     private func sinkIsAllLoaded() {
-        let zipFirst = Publishers.Zip3($isCurrentWeatherInformationLoaded, $isFineDustLoaded, $isKakaoAddressLoaded)
-        let zipSecond = Publishers.Zip3($isMinMaxTempLoaded, $isSunriseSunsetLoaded, $isTodayWeatherInformationLoaded)
-        
-        Publishers.Zip(zipFirst, zipSecond)
-            .sink { [weak self] results in
-                guard let self = self else { return }
-                let isZipFirstAllLoaded: Bool = results.0.0 && results.0.1 && results.0.2
-                let isZipSecondAllLoaded: Bool = results.1.0 && results.1.1 && results.1.2
-                guard isZipFirstAllLoaded && isZipSecondAllLoaded else { return }
-                isAllLoaded = true
-                CustomHapticGenerator.impact(style: .soft)
-                initializeTaskAndTimer()
-            }
-            .store(in: &bag)
+        $loadedVariables.sink { [weak self] dics in
+            guard let self = self else { return }
+            isAllLoaded = dics.values.allSatisfy { $0 }
+        }
+        .store(in: &bag)
     }
 }
 
@@ -317,7 +313,7 @@ extension CurrentWeatherVM {
             skyType: skyType
         )
         currentLocationEODelegate?.setSkyType(skyType)
-        isCurrentWeatherInformationLoaded = true
+        loadedVariables[.currentWeatherInformationLoaded] = true
     }
 
     @MainActor
@@ -367,7 +363,7 @@ extension CurrentWeatherVM {
             ptyIndex += step
             popIndex += step
         }
-        isTodayWeatherInformationLoaded = true
+        loadedVariables[.todayWeatherInformationsLoaded] = true
     }
 
     @MainActor
@@ -382,7 +378,7 @@ extension CurrentWeatherVM {
         let max = filteredTemps.max() ?? 0
         
         todayMinMaxTemperature = (min.toString, max.toString)
-        isMinMaxTempLoaded = true
+        loadedVariables[.minMaxTempLoaded] = true
     }
     
     @MainActor
@@ -393,20 +389,20 @@ extension CurrentWeatherVM {
             fineDust: FineDust(description: convertedFineDust.toDescription, backgroundColor: convertedFineDust.color),
             ultraFineDust: UltraFineDust(description: convertedUltraFineDust.toDescription, backgroundColor: convertedUltraFineDust.color)
         )
-        isFineDustLoaded = true
+        loadedVariables[.fineDustLoaded] = true
     }
     
     @MainActor
     private func setSubLocalityByKakaoAddress(_ items: [KakaoAddress.AddressBase]) {
         guard items.count > 0 else { return }
         subLocalityByKakaoAddress = items[0].address.subLocality
-        isKakaoAddressLoaded = true
+        loadedVariables[.kakaoAddressLoaded] = true
     }
     
     @MainActor
     private func setSunriseAndSunsetHHmm(sunrise: String, sunset: String) {
         sunriseAndSunsetHHmm = (sunrise, sunset)
-        isSunriseSunsetLoaded = true
+        loadedVariables[.sunriseSunsetLoaded] = true
     }
     
     @MainActor
@@ -425,13 +421,10 @@ extension CurrentWeatherVM {
 
 // MARK: - ETC Funcs
 extension CurrentWeatherVM {
-    private func initLoadCompletedVariables() {
-        isCurrentWeatherInformationLoaded = false
-        isFineDustLoaded = false
-        isKakaoAddressLoaded = false
-        isMinMaxTempLoaded = false
-        isSunriseSunsetLoaded = false
-        isTodayWeatherInformationLoaded = false
+    private func initLoadedVariables() {
+        let _ = Loading.allCases.map { value in
+            loadedVariables[value] = false
+        }
     }
     
     private func initializeTask() {

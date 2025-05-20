@@ -100,7 +100,7 @@ extension CurrentWeatherInfItemPagerView {
     var currentWeatherInfPagerSecondView: some View {
         VStack(alignment: .leading, spacing: 10) {
             CurrentWeatherInformationItemView(
-                loadCompleted: viewModel.isFineDustLoaded,
+                loadCompleted: viewModel.loadedVariables[.fineDustLoaded] ?? false,
                 imageString: "fine_dust",
                 imageColor: Color.black.opacity(0.7),
                 title: "미세먼지",
@@ -110,7 +110,7 @@ extension CurrentWeatherInfItemPagerView {
             )
             
             CurrentWeatherInformationItemView(
-                loadCompleted: viewModel.isFineDustLoaded,
+                loadCompleted: viewModel.loadedVariables[.fineDustLoaded] ?? false,
                 imageString: "fine_dust",
                 imageColor: Color.red.opacity(0.7),
                 title: "초미세먼지",

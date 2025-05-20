@@ -40,11 +40,11 @@ public struct CurrentWeatherView: View {
                         viewModel: viewModel,
                         pageIndex: $pageIndex,
                         page: page,
-                        isLoadCompleted: viewModel.isTodayWeatherInformationLoaded
+                        isLoadCompleted: viewModel.loadedVariables[.todayWeatherInformationsLoaded] ?? false
                     )
                     .overlay(alignment: isFirstPage ? .topTrailing : .topLeading) {
                         LeftOrRightAnimationView(page: $page, pageIndex: $pageIndex)
-                            .opacity(viewModel.isTodayWeatherInformationLoaded ? 1: 0)
+                            .opacity(viewModel.loadedVariables[.todayWeatherInformationsLoaded] ?? false ? 1 : 0)
                     }
                 }
                 
@@ -57,13 +57,13 @@ public struct CurrentWeatherView: View {
                     isDayMode: currentLocationEO.isDayMode
                 )
                 .padding(.horizontal, 26)
-                .loadingProgressLottie(isLoadingCompleted: viewModel.isTodayWeatherInformationLoaded)
+                .loadingProgressLottie(isLoadingCompleted: viewModel.loadedVariables[.todayWeatherInformationsLoaded] ?? false)
             }
             .padding(.top, 25)
             .frame(height: UIScreen.screenHeight, alignment: .center)
             .currentWeatherViewBackground(
                 isDayMode: currentLocationEO.isDayMode,
-                isSunriseSunsetLoadCompleted: viewModel.isSunriseSunsetLoaded,
+                isSunriseSunsetLoadCompleted: viewModel.loadedVariables[.sunriseSunsetLoaded] ?? false,
                 isAllLoadCompleted: viewModel.isAllLoaded,
                 isLocationUpdated: currentLocationEO.isLocationUpdated,
                 skyType: viewModel.currentWeatherInformation?.skyType
@@ -149,11 +149,11 @@ extension CurrentWeatherView {
                     refreshButtonOnTapGesture: viewModel.performRefresh(locationInf:)
                 )
                 .padding(.leading, 40)
-                .loadingProgressLottie(isLoadingCompleted: viewModel.isKakaoAddressLoaded)
+                .loadingProgressLottie(isLoadingCompleted: viewModel.loadedVariables[.kakaoAddressLoaded] ?? false)
                 
                 Spacer()
                 
-                if viewModel.isSunriseSunsetLoaded {
+                if viewModel.loadedVariables[.sunriseSunsetLoaded] ?? false {
                     TodaySunriseSunsetView(
                         sunriseTime: viewModel.sunriseAndSunsetHHmm.0,
                         sunsetTime: viewModel.sunriseAndSunsetHHmm.1,
@@ -169,7 +169,7 @@ extension CurrentWeatherView {
                     loopMode: .loop
                 )
                 .frame(width: animationWidth, height: animationHeight)
-                .loadingProgressLottie(isLoadingCompleted: viewModel.isCurrentWeatherInformationLoaded)
+                .loadingProgressLottie(isLoadingCompleted: viewModel.loadedVariables[.currentWeatherInformationLoaded] ?? false)
                 
                 CurrentTempAndMinMaxTempView(
                     temp: viewModel.currentWeatherInformation?.temperature,
@@ -177,7 +177,7 @@ extension CurrentWeatherView {
                     isDayMode: currentLocationEO.isDayMode
                 )
                 .loadingProgressLottie(
-                    isLoadingCompleted: viewModel.isCurrentWeatherInformationLoaded && viewModel.isMinMaxTempLoaded
+                    isLoadingCompleted: viewModel.loadedVariables[.currentWeatherInformationLoaded] ?? false && viewModel.loadedVariables[.minMaxTempLoaded] ?? false
                 )
             }
             .padding(.leading, 50)
