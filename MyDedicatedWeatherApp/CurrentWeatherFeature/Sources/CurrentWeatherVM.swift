@@ -36,6 +36,7 @@ final class CurrentWeatherVM: ObservableObject {
         return result
     }()
     @Published private(set) public var isAllLoaded: Bool = false
+    @Published private var reloadActions: [Loading : () -> Void] = [:]
     
     private let waitNoticeFloaterMessage: String = """
     조금만 기다려주세요.
@@ -106,6 +107,7 @@ extension CurrentWeatherVM {
         initializeTask()
         timerStart()
         calculateAndSetSunriseSunset(longLati: (locationInf.longitude, locationInf.latitude))
+        setReloadActions(locationInf: locationInf)
         currentTask = Task(priority: .high) {
             Task(priority: .high) {
                 await fetchCurrentWeatherInformations(xy: convertedXY)
@@ -272,6 +274,10 @@ extension CurrentWeatherVM {
         $loadedVariables.sink { [weak self] dics in
             guard let self = self else { return }
             isAllLoaded = dics.values.allSatisfy { $0 }
+            
+            if isAllLoaded {
+                initializeTaskAndTimer()
+            }
         }
         .store(in: &bag)
     }
@@ -448,6 +454,58 @@ extension CurrentWeatherVM {
         timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(askRetryIfFewSecondsAfterNotLoaded(timer:)), userInfo: nil, repeats: true)
     }
     
+    private func setReloadActions(locationInf: LocationInformation) {
+        let convertedXY: Gps2XY.LatXLngY = .init(lat: 0, lng: 0, x: locationInf.x.toInt, y: locationInf.y.toInt)
+        
+        reloadActions[.currentWeatherInformationLoaded] = {
+            Task {
+                await self.fetchCurrentWeatherInformations(xy: convertedXY)
+            }
+        }
+        
+        reloadActions[.fineDustLoaded] = {
+            Task {
+                await self.fetchDustStationXY(
+                    subLocality: locationInf.isGPSLocation ? self.subLocalityByKakaoAddress : locationInf.subLocality,
+                    locality: locationInf.locality
+                )
+                await self.fetchDustStationName(tmXAndtmY: self.dustStationXY)
+                await self.fetchCurrentDust()
+            }
+        }
+        
+        reloadActions[.kakaoAddressLoaded] = {
+            Task {
+                await self.fetchSubLocalityByKakaoAddress(longitude: locationInf.longitude, latitude: locationInf.latitude, isCurrentLocationRequested: locationInf.isGPSLocation)
+            }
+        }
+        
+        reloadActions[.minMaxTempLoaded] = {
+            Task {
+                await self.fetchTodayMinMaxTemperature(xy: convertedXY)
+            }
+        }
+        
+        reloadActions[.todayWeatherInformationsLoaded] = {
+            Task {
+                await self.fetchTodayWeatherInformations(xy: convertedXY)
+            }
+        }
+    }
+    
+    private func reload() {
+        initializeTask()
+        currentTask = Task(priority: .high) {
+            loadedVariables.keys.forEach {
+                guard let isLoaded = loadedVariables[$0] else { return }
+                
+                if !isLoaded {
+                    reloadActions[$0]?()
+                }
+            }
+        }
+    }
+    
     @MainActor @objc private func askRetryIfFewSecondsAfterNotLoaded(timer: Timer) {
         guard self.timer != nil else { return }
         self.timerNum += 1
@@ -483,6 +541,6 @@ extension CurrentWeatherVM {
         isNoticeFloaterViewPresented = false
         isNoticeFloaterViewPresented = true
         
-        performRefresh(locationInf: locationInf)
+        reload()
     }
 }
