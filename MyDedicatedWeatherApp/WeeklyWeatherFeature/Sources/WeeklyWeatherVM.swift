@@ -11,12 +11,21 @@ import Domain
 import Core
 
 final class WeeklyWeatherVM: ObservableObject {
+    
+    enum Loading: CaseIterable {
+        case shortTermForecastLoaded, midtermForecastSkyStateLoaded, midtermForecastTempLoaded
+    }
+    
     @Published private(set) var weeklyWeatherInformations: [Weather.WeeklyInformation] = []
     @Published private(set) var weeklyChartInformation: Weather.WeeklyChartInformation = .init(minTemps: [], maxTemps: [], xList: [], yList: [], imageAndRainPercents: [])
     
-    @Published private(set) var isShortTermForecastLoaded: Bool = false
-    @Published private(set) var isMidtermForecastSkyStateLoaded: Bool = false
-    @Published private(set) var isMidtermForecastTempLoaded: Bool = false
+    @Published public private(set) var loadedVariables: [Loading : Bool] = {
+        var result: [Loading: Bool] = [:]
+        let _ = Loading.allCases.map { value in
+            result[value] = false
+        }
+        return result
+    }()
     @Published private(set) var isAllLoaded: Bool = false
     
     @Published var showNoticeFloater: Bool = false
@@ -127,7 +136,7 @@ extension WeeklyWeatherVM {
         case .success(let items):
             DispatchQueue.main.async {
                 self.setWeeklyWeatherInformationsAndWeeklyChartInformation(tomorrowToNDay: items)
-                self.isShortTermForecastLoaded = true
+                self.loadedVariables[.shortTermForecastLoaded] = true
             }
         case .failure(let error):
             CustomLogger.error("\(error)")
@@ -146,7 +155,7 @@ extension WeeklyWeatherVM {
                 if let item = items.first {
                     self.setWeeklyWeatherInformationsMinMaxTemp(nToTenDay: item)
                     self.setWeeklyChartInformationMinMaxTemp(nToTenDay: item)
-                    self.isMidtermForecastTempLoaded = true
+                    self.loadedVariables[.midtermForecastTempLoaded] = true
                 }
                 
             }
@@ -167,7 +176,7 @@ extension WeeklyWeatherVM {
                 if let item = items.first {
                     self.setWeeklyWeatherInformationsImageAndRainPercent(nToTenDay: item)
                     self.setWeeklyChartInformationImageAndRainPercent(nToTenDay: item)
-                    self.isMidtermForecastSkyStateLoaded = true
+                    self.loadedVariables[.midtermForecastSkyStateLoaded] = true
                 }
             }
         case .failure(let error):
@@ -405,9 +414,9 @@ extension WeeklyWeatherVM {
     }
     
     private func initializeApiLoadedStates() {
-        isShortTermForecastLoaded = false
-        isMidtermForecastTempLoaded = false
-        isMidtermForecastSkyStateLoaded = false
+        Loading.allCases.forEach {
+            loadedVariables[$0] = false
+        }
     }
     
     private func initializeTaskAndTimer() {
@@ -448,11 +457,14 @@ extension WeeklyWeatherVM {
     }
     
     private func sinkIsAllLoaded() {
-        Publishers.Zip3($isShortTermForecastLoaded, $isMidtermForecastTempLoaded, $isMidtermForecastSkyStateLoaded)
-            .sink { [weak self] results in
+        $loadedVariables
+            .sink { [weak self] dics in
                 guard let self = self else { return }
-                guard results.0 && results.1 && results.2 else { return }
-                weeklyItemAllLoadedAction()
+                isAllLoaded = dics.values.allSatisfy { $0 }
+                
+                if isAllLoaded {
+                    weeklyItemAllLoadedAction()
+                }
             }
             .store(in: &bag)
     }
@@ -461,7 +473,6 @@ extension WeeklyWeatherVM {
         isAllLoaded = true
         setWeeklyChartInformationYList()
         initializeTaskAndTimer()
-        initializeApiLoadedStates()
         CustomHapticGenerator.impact(style: .soft)
     }
 }
