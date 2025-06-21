@@ -27,6 +27,7 @@ final class WeeklyWeatherVM: ObservableObject {
         return result
     }()
     @Published private(set) var isAllLoaded: Bool = false
+    @Published private var reloadActions: [Loading : () -> Void] = [:]
     
     @Published var showNoticeFloater: Bool = false
     @Published private(set) var noticeFloaterMessage: String = ""
@@ -108,7 +109,7 @@ extension WeeklyWeatherVM {
         noticeFloaterMessage = retryNoticeFloaterMessage
         showNoticeFloater = false
         showNoticeFloater = true
-        getWeeklyItems(locationInf: locationInf)
+        reload()
     }
     
     func viewOnAppearAction(locationInf: LocationInformation) {
@@ -372,6 +373,28 @@ extension WeeklyWeatherVM {
             }
         }
     }
+    
+    private func setReloadActions(locationInf: LocationInformation) {
+        let convertedXY: Gps2XY.LatXLngY = .init(lat: 0, lng: 0, x: locationInf.x.toInt, y: locationInf.y.toInt)
+        
+        reloadActions[.shortTermForecastLoaded] = {
+            Task {
+                await self.getTomorrowToNDaysLaterItems(xy: (locationInf.x, locationInf.y))
+            }
+        }
+        
+        reloadActions[.midtermForecastTempLoaded] = {
+            Task {
+                await self.getNToTenDaysLaterTempItems(fullAddress: locationInf.fullAddress)
+            }
+        }
+        
+        reloadActions[.midtermForecastSkyStateLoaded] = {
+            Task {
+                await self.getNToTenDaysLaterSkyStateItems(fullAddress: locationInf.fullAddress)
+            }
+        }
+    }
 }
 
 // MARK: - ETC Funcs
@@ -453,6 +476,19 @@ extension WeeklyWeatherVM {
             initializeTimer()
             guard let currentLocationEODelegate = currentLocationEODelegate else { return }
             retryAndShowNoticeFloater(locationInf: currentLocationEODelegate.locationInf)
+        }
+    }
+    
+    private func reload() {
+        initializeTask()
+        currentTask = Task(priority: .high) {
+            loadedVariables.keys.forEach {
+                guard let isLoaded = loadedVariables[$0] else { return }
+                
+                if !isLoaded {
+                    reloadActions[$0]?()
+                }
+            }
         }
     }
     
