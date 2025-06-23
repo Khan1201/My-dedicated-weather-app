@@ -50,8 +50,7 @@ final class CurrentWeatherVM: ObservableObject {
     private let waitNoticeFloaterTriggerTime: Int = 3
     private let retryTriggerTime: Int = 8
     
-    private var timer: Timer?
-    private var timerNum: Int = 0
+    private var noticeAndRetryTimer: NoticeAndRetryTimer = NoticeAndRetryTimer()
     private var currentTask: Task<(), Never>?
     
     private var bag: Set<AnyCancellable> = .init()
@@ -105,7 +104,7 @@ extension CurrentWeatherVM {
         let convertedXY: Gps2XY.LatXLngY = .init(lat: 0, lng: 0, x: locationInf.x.toInt, y: locationInf.y.toInt)
         
         initializeTask()
-        timerStart()
+        startNoticeAndRetryTimer()
         calculateAndSetSunriseSunset(longLati: (locationInf.longitude, locationInf.latitude))
         setReloadActions(locationInf: locationInf)
         currentTask = Task(priority: .high) {
@@ -438,20 +437,30 @@ extension CurrentWeatherVM {
         currentTask = nil
     }
     
-    private func initializeTimer() {
-        timer?.invalidate()
-        timer = nil
-        timerNum = 0
-    }
-    
     private func initializeTaskAndTimer() {
         initializeTask()
-        initializeTimer()
+        noticeAndRetryTimer.initTimer()
     }
     
-    private func timerStart() {
-        initializeTimer()
-        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(askRetryIfFewSecondsAfterNotLoaded(timer:)), userInfo: nil, repeats: true)
+    private func startNoticeAndRetryTimer() {
+        noticeAndRetryTimer.start(
+            showWaitNoticeFloaterAction: showWaitNoticeFloaterAction,
+            showRetryNoticeFloaterAndRetryAction: showRetryNoticeFloaterAndRetryAction
+        )
+    }
+    
+    private func showWaitNoticeFloaterAction() {
+        noticeFloaterMessage = waitNoticeFloaterMessage
+        isNoticeFloaterViewPresented = false
+        isNoticeFloaterViewPresented = true
+    }
+    
+    private func showRetryNoticeFloaterAndRetryAction() {
+        noticeFloaterMessage = retryNoticeFloaterMessage
+        isNoticeFloaterViewPresented = false
+        isNoticeFloaterViewPresented = true
+        
+        reload()
     }
     
     private func setReloadActions(locationInf: LocationInformation) {
@@ -506,22 +515,6 @@ extension CurrentWeatherVM {
         }
     }
     
-    @MainActor @objc private func askRetryIfFewSecondsAfterNotLoaded(timer: Timer) {
-        guard self.timer != nil else { return }
-        self.timerNum += 1
-        
-        if timerNum == waitNoticeFloaterTriggerTime {
-            noticeFloaterMessage = waitNoticeFloaterMessage
-            isNoticeFloaterViewPresented = false
-            isNoticeFloaterViewPresented = true
-            
-        } else if timerNum == retryTriggerTime {
-            initializeTimer()
-            guard let currentLocationEODelegate = currentLocationEODelegate else { return }
-            retryAndShowNoticeFloater(locationInf: currentLocationEODelegate.locationInf)
-        }
-    }
-    
     @MainActor private func calculateAndSetSunriseSunset(longLati: (String, String)) {
         let currentDate: Date = Date()
         let sunrise = currentDate.sunrise(.init(latitude: longLati.1.toDouble, longitude: longLati.0.toDouble))
@@ -534,13 +527,5 @@ extension CurrentWeatherVM {
             currentLocationEODelegate?.setIsDayMode(sunriseHHmm: sunriseHHmm, sunsetHHmm: sunsetHHmm)
             setSunriseAndSunsetHHmm(sunrise: sunriseHHmm, sunset: sunsetHHmm)
         }
-    }
-    
-    @MainActor private func retryAndShowNoticeFloater(locationInf: LocationInformation) {
-        noticeFloaterMessage = retryNoticeFloaterMessage
-        isNoticeFloaterViewPresented = false
-        isNoticeFloaterViewPresented = true
-        
-        reload()
     }
 }
