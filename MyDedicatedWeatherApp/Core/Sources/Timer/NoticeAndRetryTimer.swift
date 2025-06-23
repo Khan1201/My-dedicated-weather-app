@@ -42,7 +42,7 @@ public final class NoticeAndRetryTimer {
             showWaitNoticeFloaterAction?()
             
         } else if timerNum == NoticeAndRetryTimer.RETRY_TRIGGER_TIME {
-            initTimer()
+            timerNum = 0
             showRetryNoticeFloaterAndRetryAction?()
         }
     }
