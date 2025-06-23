@@ -79,7 +79,7 @@ public struct WeeklyWeatherView: View {
             skyType: currentLocationEO.skyType
         )
         .bottomNoticeFloater(
-            isPresented: $viewModel.showNoticeFloater,
+            isPresented: $viewModel.isNoticeFloaterPresented,
             view: BottomNoticeFloaterView(
                 title: viewModel.noticeFloaterMessage
             ),

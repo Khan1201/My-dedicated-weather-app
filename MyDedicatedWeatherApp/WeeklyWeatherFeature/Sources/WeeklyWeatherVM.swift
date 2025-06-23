@@ -29,7 +29,7 @@ final class WeeklyWeatherVM: ObservableObject {
     @Published private(set) var isAllLoaded: Bool = false
     @Published private var reloadActions: [Loading : () -> Void] = [:]
     
-    @Published var showNoticeFloater: Bool = false
+    @Published var isNoticeFloaterPresented: Bool = false
     @Published private(set) var noticeFloaterMessage: String = ""
     private let waitNoticeFloaterMessage: String = """
     조금만 기다려주세요.
@@ -39,8 +39,6 @@ final class WeeklyWeatherVM: ObservableObject {
     조금만 기다려주세요.
     기상청 서버 네트워크에 따라 속도가 느려질 수 있습니다 :)
     """
-    private let waitNoticeFloaterTriggerTime: Int = 3
-    private let retryTriggerTime: Int = 8
 
     private var tommorowToThreeDaysLaterInformations: [Weather.WeeklyInformation] = []
     private var minMaxTemperaturesByThreeToTenDay: [(String, String)] = []
@@ -54,14 +52,12 @@ final class WeeklyWeatherVM: ObservableObject {
     private let midtermForecastService: MidtermForecastService
     
     public var currentLocationEODelegate: CurrentLocationEODelegate?
-        
-    private var timer: Timer?
-    private var timerNum: Int = 0
+
+    private let noticeAndRetryTimer: NoticeAndRetryTimer = NoticeAndRetryTimer()
     private var currentTask: Task<(), Never>?
     private var bag: Set<AnyCancellable> = []
     
     deinit {
-        timer = nil
         currentTask = nil
     }
     
@@ -99,24 +95,17 @@ extension WeeklyWeatherVM {
         initializeTaskAndTimer()
         initializeStates()
         
-        timerStart()
+        noticeAndRetryTimerStart()
         currentTask = Task(priority: .high) {
             getWeeklyItems(locationInf: locationInf)
         }
-    }
-    
-    func retryAndShowNoticeFloater(locationInf: LocationInformation) {
-        noticeFloaterMessage = retryNoticeFloaterMessage
-        showNoticeFloater = false
-        showNoticeFloater = true
-        reload()
     }
     
     func viewOnAppearAction(locationInf: LocationInformation) {
         if !isAllLoaded {
             initializeTask()
             
-            timerStart()
+            noticeAndRetryTimerStart()
             currentTask = Task(priority: .high) {
                 getWeeklyItems(locationInf: locationInf)
             }
@@ -444,7 +433,7 @@ extension WeeklyWeatherVM {
     
     private func initializeTaskAndTimer() {
         initializeTask()
-        initializeTimer()
+        noticeAndRetryTimer.initTimer()
     }
     
     private func initializeTask() {
@@ -452,33 +441,26 @@ extension WeeklyWeatherVM {
         currentTask = nil
     }
     
-    private func initializeTimer() {
-        timer?.invalidate()
-        timer = nil
-        timerNum = 0
+    private func noticeAndRetryTimerStart() {
+        noticeAndRetryTimer.start(
+            showWaitNoticeFloaterAction: showWaitNoticeFloater,
+            showRetryNoticeFloaterAndRetryAction: showRetryNoticeFloaterAndRetry
+        )
+    }
+
+    private func showWaitNoticeFloater() {
+        noticeFloaterMessage = waitNoticeFloaterMessage
+        isNoticeFloaterPresented = false
+        isNoticeFloaterPresented = true
     }
     
-    private func timerStart() {
-        initializeTimer()
-        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(askRetryIf7SecondsAfterNotLoaded(timer:)), userInfo: nil, repeats: true)
+    private func showRetryNoticeFloaterAndRetry() {
+        noticeFloaterMessage = retryNoticeFloaterMessage
+        isNoticeFloaterPresented = false
+        isNoticeFloaterPresented = true
+        reload()
     }
-    
-    @objc private func askRetryIf7SecondsAfterNotLoaded(timer: Timer) {
-        guard self.timer != nil else { return }
-        self.timerNum += 1
         
-        if timerNum == waitNoticeFloaterTriggerTime {
-            noticeFloaterMessage = waitNoticeFloaterMessage
-            showNoticeFloater = false
-            showNoticeFloater = true
-            
-        } else if timerNum == retryTriggerTime {
-            initializeTimer()
-            guard let currentLocationEODelegate = currentLocationEODelegate else { return }
-            retryAndShowNoticeFloater(locationInf: currentLocationEODelegate.locationInf)
-        }
-    }
-    
     private func reload() {
         initializeTask()
         currentTask = Task(priority: .high) {
