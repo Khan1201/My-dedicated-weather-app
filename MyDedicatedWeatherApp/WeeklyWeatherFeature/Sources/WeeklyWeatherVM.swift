@@ -11,7 +11,6 @@ import Domain
 import Core
 
 final class WeeklyWeatherVM: ObservableObject {
-    
     enum Loading: CaseIterable {
         case shortTermForecastLoaded, midtermForecastSkyStateLoaded, midtermForecastTempLoaded
     }
@@ -28,17 +27,8 @@ final class WeeklyWeatherVM: ObservableObject {
     }()
     @Published private(set) var isAllLoaded: Bool = false
     @Published private var reloadActions: [Loading : () -> Void] = [:]
-    
-    @Published var isNoticeFloaterPresented: Bool = false
-    @Published private(set) var noticeFloaterMessage: String = ""
-    private let waitNoticeFloaterMessage: String = """
-    조금만 기다려주세요.
-    기상청 서버 네트워크에 따라 속도가 느려질 수 있습니다 :)
-    """
-    private let retryNoticeFloaterMessage: String = """
-    조금만 기다려주세요.
-    기상청 서버 네트워크에 따라 속도가 느려질 수 있습니다 :)
-    """
+    @Published public var isNetworkFloaterPresented: Bool = false
+    @Published public var networkFloaterMessage: String = ""
 
     private var tommorowToThreeDaysLaterInformations: [Weather.WeeklyInformation] = []
     private var minMaxTemperaturesByThreeToTenDay: [(String, String)] = []
@@ -51,6 +41,8 @@ final class WeeklyWeatherVM: ObservableObject {
     private let shortForecastService: ShortForecastService
     private let midtermForecastService: MidtermForecastService
     
+    private let networkFloaterStore: any NetworkFloaterStore
+
     public var currentLocationEODelegate: CurrentLocationEODelegate?
 
     private let noticeAndRetryTimer: NoticeAndRetryTimer = NoticeAndRetryTimer()
@@ -66,16 +58,24 @@ final class WeeklyWeatherVM: ObservableObject {
         commonForecastUtil: CommonForecastUtil,
         midForecastUtil: MidForecastUtil,
         shortForecastService: ShortForecastService,
-        midtermForecastService: MidtermForecastService
+        midtermForecastService: MidtermForecastService,
+        networkFloaterStore: any NetworkFloaterStore
     ) {
         self.shortForecastUtil = shortForecastUtil
         self.commonForecastUtil = commonForecastUtil
         self.midForecastUtil = midForecastUtil
         self.shortForecastService = shortForecastService
         self.midtermForecastService = midtermForecastService
+        self.networkFloaterStore = networkFloaterStore
         initWeeklyWeatherInformation()
         initWeeklyChartInformation()
         sinkIsAllLoaded()
+        
+        networkFloaterStore.state.presenter.$isPresented
+            .assign(to: &$isNetworkFloaterPresented)
+        
+        networkFloaterStore.state.presenter.$floaterMessage
+            .assign(to: &$networkFloaterMessage)
     }
 }
 
@@ -95,7 +95,7 @@ extension WeeklyWeatherVM {
         initializeTaskAndTimer()
         initializeStates()
         
-        noticeAndRetryTimerStart()
+        startNetworkFloaterTimer()
         currentTask = Task(priority: .high) {
             getWeeklyItems(locationInf: locationInf)
         }
@@ -105,7 +105,7 @@ extension WeeklyWeatherVM {
         if !isAllLoaded {
             initializeTask()
             
-            noticeAndRetryTimerStart()
+            startNetworkFloaterTimer()
             currentTask = Task(priority: .high) {
                 getWeeklyItems(locationInf: locationInf)
             }
@@ -433,7 +433,7 @@ extension WeeklyWeatherVM {
     
     private func initializeTaskAndTimer() {
         initializeTask()
-        noticeAndRetryTimer.initTimer()
+        networkFloaterStore.send(.stopTimer)
     }
     
     private func initializeTask() {
@@ -441,24 +441,12 @@ extension WeeklyWeatherVM {
         currentTask = nil
     }
     
-    private func noticeAndRetryTimerStart() {
-        noticeAndRetryTimer.start(
-            showWaitNoticeFloaterAction: showWaitNoticeFloater,
-            showRetryNoticeFloaterAndRetryAction: showRetryNoticeFloaterAndRetry
+    private func startNetworkFloaterTimer() {
+        networkFloaterStore.send(
+            .startTimerAndShowFloaterIfTimeOver(
+                retryAction: reload
+            )
         )
-    }
-
-    private func showWaitNoticeFloater() {
-        noticeFloaterMessage = waitNoticeFloaterMessage
-        isNoticeFloaterPresented = false
-        isNoticeFloaterPresented = true
-    }
-    
-    private func showRetryNoticeFloaterAndRetry() {
-        noticeFloaterMessage = retryNoticeFloaterMessage
-        isNoticeFloaterPresented = false
-        isNoticeFloaterPresented = true
-        reload()
     }
         
     private func reload() {

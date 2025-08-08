@@ -79,11 +79,10 @@ public struct WeeklyWeatherView: View {
             skyType: currentLocationEO.skyType
         )
         .bottomNoticeFloater(
-            isPresented: $viewModel.isNoticeFloaterPresented,
+            isPresented: $viewModel.isNetworkFloaterPresented,
             view: BottomNoticeFloaterView(
-                title: viewModel.noticeFloaterMessage
-            ),
-            duration: 3
+                title: viewModel.networkFloaterMessage
+            )
         )
         .onChange(of: currentLocationEO.isLocationUpdated) { newValue in
             if newValue {

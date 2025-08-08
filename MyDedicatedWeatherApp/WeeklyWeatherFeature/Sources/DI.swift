@@ -8,6 +8,7 @@
 import Foundation
 import Domain
 import Data
+import Core
 
 struct DI {
     static func weeklyWeatherVM() -> WeeklyWeatherVM {
@@ -16,7 +17,8 @@ struct DI {
             commonForecastUtil: .shared,
             midForecastUtil: .shared,
             shortForecastService: ShortForecastServiceImp(),
-            midtermForecastService: MidTermForecastServiceImp()
+            midtermForecastService: MidTermForecastServiceImp(),
+            networkFloaterStore: DefaultNetworkFloaterStore.shared
         )
     }
 }
