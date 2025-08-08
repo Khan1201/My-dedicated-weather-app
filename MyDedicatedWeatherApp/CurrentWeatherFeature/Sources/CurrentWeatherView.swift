@@ -79,10 +79,8 @@ public struct CurrentWeatherView: View {
                 disableTabBarTouch = false
             }
             .bottomNoticeFloater(
-//                isPresented: $viewModel.noticeFloaterPresenter.isPresented,
                 isPresented: $viewModel.isNetworkFloaterPresented,
                 view: BottomNoticeFloaterView(
-//                    title: viewModel.noticeFloaterPresenter.noticeFloaterMessage
                     title: viewModel.networkFloaterMessage
                 )
             )
