@@ -25,7 +25,6 @@ final class CurrentWeatherVM: ObservableObject {
     @Published private(set) public var dustStationXY: (String, String) = ("", "")
     @Published private(set) public var dustStationName: String = ""
     
-    @Published public var isNoticeFloaterViewPresented: Bool = false
     @Published public var isAdditionalLocationViewPresented: Bool = false
     
     @Published public private(set) var loadedVariables: [Loading : Bool] = {
@@ -37,18 +36,8 @@ final class CurrentWeatherVM: ObservableObject {
     }()
     @Published private(set) public var isAllLoaded: Bool = false
     @Published private var reloadActions: [Loading : () -> Void] = [:]
-    
-    private let waitNoticeFloaterMessage: String = """
-    조금만 기다려주세요.
-    기상청 서버 네트워크에 따라 속도가 느려질 수 있습니다 :)
-    """
-    private let retryNoticeFloaterMessage: String = """
-    조금만 기다려주세요.
-    기상청 서버 네트워크에 따라 속도가 느려질 수 있습니다 :)
-    """
-    public var noticeFloaterMessage: String = ""
-    private let waitNoticeFloaterTriggerTime: Int = 3
-    private let retryTriggerTime: Int = 8
+    @Published public var isNetworkFloaterPresented: Bool = false
+    @Published public var networkFloaterMessage: String = ""
     
     private var noticeAndRetryTimer: NoticeAndRetryTimer = NoticeAndRetryTimer()
     private var currentTask: Task<(), Never>?
@@ -69,7 +58,8 @@ final class CurrentWeatherVM: ObservableObject {
     private let dustForecastService: DustForecastService
     private let kakaoAddressService: KakaoAddressService
     private let userDefaultsService: UserDefaultsService
-    
+    private let networkFloaterStore: any NetworkFloaterStore
+
     init(
         commonUtil: CommonUtil,
         commonForecastUtil: CommonForecastUtil,
@@ -81,7 +71,9 @@ final class CurrentWeatherVM: ObservableObject {
         shortForecastService: ShortForecastService,
         dustForecastService: DustForecastService,
         kakaoAddressService: KakaoAddressService,
-        userDefaultsService: UserDefaultsService
+        userDefaultsService: UserDefaultsService,
+        networkFloaterStore: any NetworkFloaterStore
+
     ) {
         self.commonUtil = commonUtil
         self.commonForecastUtil = commonForecastUtil
@@ -94,7 +86,14 @@ final class CurrentWeatherVM: ObservableObject {
         self.dustForecastService = dustForecastService
         self.kakaoAddressService = kakaoAddressService
         self.userDefaultsService = userDefaultsService
+        self.networkFloaterStore = networkFloaterStore
         sinkIsAllLoaded()
+        
+        networkFloaterStore.state.presenter.$isPresented
+            .assign(to: &$isNetworkFloaterPresented)
+        
+        networkFloaterStore.state.presenter.$floaterMessage
+            .assign(to: &$networkFloaterMessage)
     }
 }
 
@@ -104,7 +103,7 @@ extension CurrentWeatherVM {
         let convertedXY: Gps2XY.LatXLngY = .init(lat: 0, lng: 0, x: locationInf.x.toInt, y: locationInf.y.toInt)
         
         initializeTask()
-        startNoticeAndRetryTimer()
+        startNetworkFloaterTimer()
         calculateAndSetSunriseSunset(longLati: (locationInf.longitude, locationInf.latitude))
         setReloadActions(locationInf: locationInf)
         currentTask = Task(priority: .high) {
@@ -439,28 +438,15 @@ extension CurrentWeatherVM {
     
     private func initializeTaskAndTimer() {
         initializeTask()
-        noticeAndRetryTimer.initTimer()
+        networkFloaterStore.send(.stopTimer)
     }
     
-    private func startNoticeAndRetryTimer() {
-        noticeAndRetryTimer.start(
-            showWaitNoticeFloaterAction: showWaitNoticeFloaterAction,
-            showRetryNoticeFloaterAndRetryAction: showRetryNoticeFloaterAndRetryAction
+    private func startNetworkFloaterTimer() {
+        networkFloaterStore.send(
+            .startTimerAndShowFloaterIfTimeOver(
+                retryAction: reload
+            )
         )
-    }
-    
-    private func showWaitNoticeFloaterAction() {
-        noticeFloaterMessage = waitNoticeFloaterMessage
-        isNoticeFloaterViewPresented = false
-        isNoticeFloaterViewPresented = true
-    }
-    
-    private func showRetryNoticeFloaterAndRetryAction() {
-        noticeFloaterMessage = retryNoticeFloaterMessage
-        isNoticeFloaterViewPresented = false
-        isNoticeFloaterViewPresented = true
-        
-        reload()
     }
     
     private func setReloadActions(locationInf: LocationInformation) {

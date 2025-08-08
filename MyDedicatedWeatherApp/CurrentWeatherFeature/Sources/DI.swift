@@ -8,6 +8,7 @@
 import Foundation
 import Domain
 import Data
+import Core
 
 struct DI {
     static func currentWeatherVM() -> CurrentWeatherVM {
@@ -22,7 +23,8 @@ struct DI {
             shortForecastService: ShortForecastServiceImp(),
             dustForecastService: DustForecastServiceImp(),
             kakaoAddressService: KakaoAddressServiceImp(),
-            userDefaultsService: UserDefaultsServiceImp()
+            userDefaultsService: UserDefaultsServiceImp(),
+            networkFloaterStore: DefaultNetworkFloaterStore.shared
         )
     }
 }

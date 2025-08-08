@@ -79,11 +79,12 @@ public struct CurrentWeatherView: View {
                 disableTabBarTouch = false
             }
             .bottomNoticeFloater(
-                isPresented: $viewModel.isNoticeFloaterViewPresented,
+//                isPresented: $viewModel.noticeFloaterPresenter.isPresented,
+                isPresented: $viewModel.isNetworkFloaterPresented,
                 view: BottomNoticeFloaterView(
-                    title: viewModel.noticeFloaterMessage
-                ),
-                duration: 3
+//                    title: viewModel.noticeFloaterPresenter.noticeFloaterMessage
+                    title: viewModel.networkFloaterMessage
+                )
             )
             .fullScreenCover(isPresented: $viewModel.isAdditionalLocationViewPresented) {
                 RootNavigationView(
