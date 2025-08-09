@@ -36,9 +36,9 @@ public struct AdditionalLocationView: View {
                 ScrollView(.vertical, showsIndicators: false) {
                     /// 현재 gps item
                     AdditionalLocationSavedGPSItemView(
-                        locationInf: currentLocationEO.gpsLocationInf,
+                        locationInf: currentLocationEO.currentLocationStore.state.gpsLocationInf,
                         tempItem: vm.gpsTempItem,
-                        currentLocation: currentLocationEO.fullAddress,
+                        currentLocation: currentLocationEO.currentLocationStore.state.fullAddress,
                         fetchNewLocation: fetchNewLocation
                     )
                     .padding(.top, 20)
@@ -46,7 +46,7 @@ public struct AdditionalLocationView: View {
                     
                     /// 추가 등록 items
                     AdditionalLocationSavedItemsView(
-                        currentFullAddress: currentLocationEO.fullAddress,
+                        currentFullAddress: currentLocationEO.currentLocationStore.state.fullAddress,
                         locationInfs: vm.locationInfs,
                         tempItems: vm.tempItems,
                         fetchNewLocation: fetchNewLocation,
@@ -76,7 +76,7 @@ public struct AdditionalLocationView: View {
         .preferredColorScheme(.dark)
         .background(Color.black)
         .task {
-            vm.additinalLocationViewTaskAction(gpsFullAddress: currentLocationEO.gpsFullAddress)
+            vm.additinalLocationViewTaskAction(gpsFullAddress: currentLocationEO.currentLocationStore.state.gpsFullAddress)
         }
         .navToNextView(
             isPresented: $navNextView,

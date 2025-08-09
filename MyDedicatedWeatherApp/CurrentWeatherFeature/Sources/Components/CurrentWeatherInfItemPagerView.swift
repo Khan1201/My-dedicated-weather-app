@@ -71,7 +71,7 @@ extension CurrentWeatherInfItemPagerView {
                 imageColor: Color.blue,
                 title: "강수량",
                 value: viewModel.currentWeatherInformation?.oneHourPrecipitation,
-                isDayMode: currentLocationEO.isDayMode
+                isDayMode: currentLocationEO.currentLocationStore.state.isDayMode
             )
             
             CurrentWeatherInformationItemView(
@@ -80,7 +80,7 @@ extension CurrentWeatherInfItemPagerView {
                 imageColor: Color.red.opacity(0.7),
                 title: "바람",
                 value: viewModel.currentWeatherInformation?.windSpeed,
-                isDayMode: currentLocationEO.isDayMode
+                isDayMode: currentLocationEO.currentLocationStore.state.isDayMode
             )
             
             CurrentWeatherInformationItemView(
@@ -89,7 +89,7 @@ extension CurrentWeatherInfItemPagerView {
                 imageColor: Color.blue.opacity(0.7),
                 title: "습도",
                 value: viewModel.currentWeatherInformation?.wetPercent,
-                isDayMode: currentLocationEO.isDayMode
+                isDayMode: currentLocationEO.currentLocationStore.state.isDayMode
             )
         }
         .padding(.horizontal, 26)
@@ -105,7 +105,7 @@ extension CurrentWeatherInfItemPagerView {
                 imageColor: Color.black.opacity(0.7),
                 title: "미세먼지",
                 value: (viewModel.currentDust?.fineDust.description ?? "", ""),
-                isDayMode: currentLocationEO.isDayMode,
+                isDayMode: currentLocationEO.currentLocationStore.state.isDayMode,
                 backgroundColor: viewModel.currentDust?.fineDust.backgroundColor
             )
             
@@ -115,7 +115,7 @@ extension CurrentWeatherInfItemPagerView {
                 imageColor: Color.red.opacity(0.7),
                 title: "초미세먼지",
                 value: (viewModel.currentDust?.ultraFineDust.description ?? "", ""),
-                isDayMode: currentLocationEO.isDayMode,
+                isDayMode: currentLocationEO.currentLocationStore.state.isDayMode,
                 backgroundColor: viewModel.currentDust?.ultraFineDust.backgroundColor
             )
         }

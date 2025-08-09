@@ -11,7 +11,6 @@ import Domain
 import Core
 
 final class CurrentWeatherVM: ObservableObject {
-    
     enum Loading: CaseIterable {
         case currentWeatherInformationLoaded, fineDustLoaded, todayWeatherInformationsLoaded, kakaoAddressLoaded, minMaxTempLoaded, sunriseSunsetLoaded
     }
@@ -42,9 +41,7 @@ final class CurrentWeatherVM: ObservableObject {
     private var currentTask: Task<(), Never>?
     
     private var bag: Set<AnyCancellable> = .init()
-    
-    weak var currentLocationEODelegate: CurrentLocationEODelegate?
-    
+        
     private let commonUtil: CommonUtil
     private let commonForecastUtil: CommonForecastUtil
     private let veryShortForecastUtil: VeryShortForecastUtil
@@ -58,6 +55,7 @@ final class CurrentWeatherVM: ObservableObject {
     private let kakaoAddressService: KakaoAddressService
     private let userDefaultsService: UserDefaultsService
     private let networkFloaterStore: any NetworkFloaterStore
+    private let currentLocationStore: any CurrentLocationStore
 
     init(
         commonUtil: CommonUtil,
@@ -71,8 +69,8 @@ final class CurrentWeatherVM: ObservableObject {
         dustForecastService: DustForecastService,
         kakaoAddressService: KakaoAddressService,
         userDefaultsService: UserDefaultsService,
-        networkFloaterStore: any NetworkFloaterStore
-
+        networkFloaterStore: any NetworkFloaterStore,
+        currentLocationStore: any CurrentLocationStore
     ) {
         self.commonUtil = commonUtil
         self.commonForecastUtil = commonForecastUtil
@@ -86,6 +84,7 @@ final class CurrentWeatherVM: ObservableObject {
         self.kakaoAddressService = kakaoAddressService
         self.userDefaultsService = userDefaultsService
         self.networkFloaterStore = networkFloaterStore
+        self.currentLocationStore = currentLocationStore
         sinkIsAllLoaded()
         assignStoreStates()
     }
@@ -143,8 +142,8 @@ extension CurrentWeatherVM {
                         self.isAdditionalLocationViewPresented = false
                     }
                     await self.loadCurrentWeatherAllData(locationInf: locationInf)
-                    await self.currentLocationEODelegate?.setCoordinateAndAllLocality(locationInf: locationInf)
-                    await self.currentLocationEODelegate?.setIsLocationUpdated()
+                    self.currentLocationStore.send(.setCoordinateAndAllLocality(locationInf: locationInf))
+                    self.currentLocationStore.send(.setIsLocationUpdate)
                     
                     if isNewAdd {
                         self.userDefaultsService.setLocationInformation(locationInf)
@@ -245,12 +244,12 @@ extension CurrentWeatherVM {
             await setSubLocalityByKakaoAddress(item.documents)
             
             guard item.documents.count > 0 else { return }
-            await currentLocationEODelegate?.setSubLocality(item.documents[0].address.subLocality)
+            currentLocationStore.send(.setSubLocality(item.documents[0].address.subLocality))
             
             /// For Widget
             if isCurrentLocationRequested {
-                await self.currentLocationEODelegate?.setGPSSubLocality(item.documents[0].address.subLocality)
-                await self.currentLocationEODelegate?.setFullAddressByGPS()
+                currentLocationStore.send(.setGPSSubLocality(item.documents[0].address.subLocality))
+                currentLocationStore.send(.setFullAddressByGPS)
                 userDefaultsService.setCurrentSubLocality(self.subLocalityByKakaoAddress)
                 userDefaultsService.setCurrentFullAddress(item.documents[0].address.fullAddress)
             }
@@ -318,7 +317,7 @@ extension CurrentWeatherVM {
             weatherAnimation: skyType.lottie(isDayMode: sunTime.isDayMode),
             skyType: skyType
         )
-        currentLocationEODelegate?.setSkyType(skyType)
+        currentLocationStore.send(.setSkyType(skyType))
         loadedVariables[.currentWeatherInformationLoaded] = true
     }
 
@@ -511,8 +510,7 @@ extension CurrentWeatherVM {
         if let sunrise = sunrise, let sunset = sunset {
             let sunriseHHmm = sunrise.toString(format: "HHmm", timeZone: TimeZone(identifier: "UTC"))
             let sunsetHHmm = sunset.toString(format: "HHmm", timeZone: TimeZone(identifier: "UTC"))
-            
-            currentLocationEODelegate?.setIsDayMode(sunriseHHmm: sunriseHHmm, sunsetHHmm: sunsetHHmm)
+            currentLocationStore.send(.setIsDayMode(sunriseHHmm: sunriseHHmm, sunsetHHmm: sunsetHHmm))
             setSunriseAndSunsetHHmm(sunrise: sunriseHHmm, sunset: sunsetHHmm)
         }
     }

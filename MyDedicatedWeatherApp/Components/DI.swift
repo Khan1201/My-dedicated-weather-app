@@ -11,6 +11,8 @@ import Core
 
 struct DI {
     static func currentLocationEO() -> CurrentLocationEO {
-        .init(userDefaultsService: UserDefaultsServiceImp())
+        .init(userDefaultsService: UserDefaultsServiceImp(),
+              currentLocationStore: DefaultCurrentLocationStore.shared
+        )
     }
 }

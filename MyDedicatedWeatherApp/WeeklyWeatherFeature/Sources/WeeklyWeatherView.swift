@@ -24,8 +24,8 @@ public struct WeeklyWeatherView: View {
         
         VStack(alignment: .leading, spacing: 0) {
             CurrentLocationAndDateView(
-                location: currentLocationEO.locality,
-                subLocation: currentLocationEO.subLocality,
+                location: currentLocationEO.currentLocationStore.state.locality,
+                subLocation: currentLocationEO.currentLocationStore.state.subLocality,
                 showRefreshButton: viewModel.isAllLoaded,
                 openAdditionalLocationView: .constant(false),
                 showLocationAddButton: false,
@@ -75,8 +75,8 @@ public struct WeeklyWeatherView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
         .weeklyWeatherViewBackground(
-            isDayMode: currentLocationEO.isDayMode,
-            skyType: currentLocationEO.skyType
+            isDayMode: currentLocationEO.currentLocationStore.state.isDayMode,
+            skyType: currentLocationEO.currentLocationStore.state.skyType
         )
         .bottomNoticeFloater(
             isPresented: $viewModel.isNetworkFloaterPresented,
@@ -84,15 +84,15 @@ public struct WeeklyWeatherView: View {
                 title: viewModel.networkFloaterMessage
             )
         )
-        .onChange(of: currentLocationEO.isLocationUpdated) { newValue in
+        .onChange(of: currentLocationEO.currentLocationStore.state.isLocationUpdated) { newValue in
             if newValue {
-                viewModel.refreshButtonOnTapGesture(locationInf: currentLocationEO.locationInf)
+                viewModel.refreshButtonOnTapGesture(locationInf: currentLocationEO.currentLocationStore.state.locationInf)
             }
         }
         .task(priority: .userInitiated) {
-            viewModel.currentLocationEODelegate = currentLocationEO
+//            viewModel.currentLocationEODelegate = currentLocationEO
             viewModel.viewOnAppearAction(
-                locationInf: currentLocationEO.locationInf
+                locationInf: currentLocationEO.currentLocationStore.state.locationInf
             )
         }
     }

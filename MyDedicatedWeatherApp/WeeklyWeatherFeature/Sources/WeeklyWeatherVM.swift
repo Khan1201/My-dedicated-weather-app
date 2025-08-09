@@ -43,8 +43,6 @@ final class WeeklyWeatherVM: ObservableObject {
     
     private let networkFloaterStore: any NetworkFloaterStore
 
-    public var currentLocationEODelegate: CurrentLocationEODelegate?
-
     private var currentTask: Task<(), Never>?
     private var bag: Set<AnyCancellable> = []
     
