@@ -39,7 +39,6 @@ final class CurrentWeatherVM: ObservableObject {
     @Published public var isNetworkFloaterPresented: Bool = false
     @Published public var networkFloaterMessage: String = ""
     
-    private var noticeAndRetryTimer: NoticeAndRetryTimer = NoticeAndRetryTimer()
     private var currentTask: Task<(), Never>?
     
     private var bag: Set<AnyCancellable> = .init()
@@ -88,12 +87,7 @@ final class CurrentWeatherVM: ObservableObject {
         self.userDefaultsService = userDefaultsService
         self.networkFloaterStore = networkFloaterStore
         sinkIsAllLoaded()
-        
-        networkFloaterStore.state.presenter.$isPresented
-            .assign(to: &$isNetworkFloaterPresented)
-        
-        networkFloaterStore.state.presenter.$floaterMessage
-            .assign(to: &$networkFloaterMessage)
+        assignStoreStates()
     }
 }
 
@@ -278,6 +272,14 @@ extension CurrentWeatherVM {
             }
         }
         .store(in: &bag)
+    }
+    
+    private func assignStoreStates() {
+        networkFloaterStore.state.presenter.$isPresented
+            .assign(to: &$isNetworkFloaterPresented)
+        
+        networkFloaterStore.state.presenter.$floaterMessage
+            .assign(to: &$networkFloaterMessage)
     }
 }
 

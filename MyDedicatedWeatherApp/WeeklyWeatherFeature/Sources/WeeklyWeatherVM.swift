@@ -45,7 +45,6 @@ final class WeeklyWeatherVM: ObservableObject {
 
     public var currentLocationEODelegate: CurrentLocationEODelegate?
 
-    private let noticeAndRetryTimer: NoticeAndRetryTimer = NoticeAndRetryTimer()
     private var currentTask: Task<(), Never>?
     private var bag: Set<AnyCancellable> = []
     
@@ -70,12 +69,7 @@ final class WeeklyWeatherVM: ObservableObject {
         initWeeklyWeatherInformation()
         initWeeklyChartInformation()
         sinkIsAllLoaded()
-        
-        networkFloaterStore.state.presenter.$isPresented
-            .assign(to: &$isNetworkFloaterPresented)
-        
-        networkFloaterStore.state.presenter.$floaterMessage
-            .assign(to: &$networkFloaterMessage)
+        assignStoreStates()
     }
 }
 
@@ -473,6 +467,14 @@ extension WeeklyWeatherVM {
                 }
             }
             .store(in: &bag)
+    }
+    
+    private func assignStoreStates() {
+        networkFloaterStore.state.presenter.$isPresented
+            .assign(to: &$isNetworkFloaterPresented)
+        
+        networkFloaterStore.state.presenter.$floaterMessage
+            .assign(to: &$networkFloaterMessage)
     }
     
     private func weeklyItemAllLoadedAction() {
