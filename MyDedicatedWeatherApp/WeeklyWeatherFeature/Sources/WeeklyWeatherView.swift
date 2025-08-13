@@ -12,7 +12,7 @@ import Core
 public struct WeeklyWeatherView: View {
     
     @StateObject var viewModel: WeeklyWeatherVM = DI.weeklyWeatherVM()
-    @EnvironmentObject var contentEO: ContentEO
+//    @EnvironmentObject var contentEO: ContentEO
     @EnvironmentObject var currentLocationEO: CurrentLocationEO
     
     @State private var graphOpacity: CGFloat = 0

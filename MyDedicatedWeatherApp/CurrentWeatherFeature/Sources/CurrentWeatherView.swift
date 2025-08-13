@@ -12,10 +12,8 @@ import Domain
 import AdditionalLocationFeature
 
 public struct CurrentWeatherView: View {
-    @Binding var disableTabBarTouch: Bool
-    
     @StateObject var viewModel: CurrentWeatherVM = DI.currentWeatherVM()
-    @EnvironmentObject var contentEO: ContentEO
+//    @EnvironmentObject var contentEO: ContentEO
     @EnvironmentObject var currentLocationEO: CurrentLocationEO
     
     @State private var pagerHeight: CGFloat = 0
@@ -23,9 +21,7 @@ public struct CurrentWeatherView: View {
     @State private var pageIndex: Int = 0
     @State private var isOnceAppeared: Bool = false
     
-    public init(disableTabBarTouch: Binding<Bool>) {
-        self._disableTabBarTouch = disableTabBarTouch
-    }
+    public init() {}
     
     public var body: some View {
         let isFirstPage: Bool = pageIndex == 0
@@ -75,9 +71,6 @@ public struct CurrentWeatherView: View {
                     )
                 }
             }
-            .onChange(of: viewModel.isAllLoaded) { newValue in
-                disableTabBarTouch = false
-            }
             .bottomNoticeFloater(
                 isPresented: $viewModel.isNetworkFloaterPresented,
                 view: BottomNoticeFloaterView(
@@ -122,12 +115,6 @@ public struct CurrentWeatherView: View {
                     }
             }
         }
-    }
-}
-
-struct CurrentWeatherView_Previews: PreviewProvider {
-    static var previews: some View {
-        CurrentWeatherView(disableTabBarTouch: .constant(false))
     }
 }
 

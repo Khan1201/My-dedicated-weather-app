@@ -25,7 +25,8 @@ struct DI {
             kakaoAddressService: KakaoAddressServiceImp(),
             userDefaultsService: UserDefaultsServiceImp(),
             networkFloaterStore: DefaultNetworkFloaterStore.shared,
-            currentLocationStore: DefaultCurrentLocationStore.shared
+            currentLocationStore: DefaultCurrentLocationStore.shared,
+            viewStore: DefaultViewStore.shared
         )
     }
 }

@@ -9,16 +9,13 @@ import SwiftUI
 import Domain
 
 public struct CustomBottomTabBarView: View {
-    
-    @Binding var currentTab: TabBarType
-    @Binding var disableTabBarTouch: Bool
+    let currentTab: TabBarType
     let itemOnTapGesture: ((TabBarType) -> Void)
     
     @State private var tabBarItemSize: CGSize = CGSize()
     
-    public init(currentTab: Binding<TabBarType>, disableTabBarTouch: Binding<Bool>, itemOnTapGesture: @escaping (TabBarType) -> Void) {
-        self._currentTab = currentTab
-        self._disableTabBarTouch = disableTabBarTouch
+    public init(currentTab: TabBarType, itemOnTapGesture: @escaping (TabBarType) -> Void) {
+        self.currentTab = currentTab
         self.itemOnTapGesture = itemOnTapGesture
     }
     
@@ -27,7 +24,7 @@ public struct CustomBottomTabBarView: View {
             tabBarItemView(
                 imageString: "calender_today",
                 title: "현재 날씨",
-                currentTab: $currentTab,
+                currentTab: currentTab,
                 tabValue: .current, 
                 onTapGesture: itemOnTapGesture
             )
@@ -38,7 +35,7 @@ public struct CustomBottomTabBarView: View {
             tabBarItemView(
                 imageString: "calender_forecast",
                 title: "주간 예보",
-                currentTab: $currentTab,
+                currentTab: currentTab,
                 tabValue: .week,
                 onTapGesture: itemOnTapGesture
             )
@@ -49,7 +46,7 @@ public struct CustomBottomTabBarView: View {
             tabBarItemView(
                 imageString: "gear",
                 title: "설정",
-                currentTab: $currentTab,
+                currentTab: currentTab,
                 tabValue: .setting, 
                 onTapGesture: itemOnTapGesture
             )
@@ -63,12 +60,6 @@ public struct CustomBottomTabBarView: View {
     }
 }
 
-struct CustomBottomTabBarView_Previews: PreviewProvider {
-    static var previews: some View {
-        CustomBottomTabBarView(currentTab: .constant(.current), disableTabBarTouch: .constant(false), itemOnTapGesture: { _ in })
-    }
-}
-
 // MARK: - Supporting View
 
 extension CustomBottomTabBarView {
@@ -76,7 +67,7 @@ extension CustomBottomTabBarView {
     func tabBarItemView(
         imageString: String,
         title: String,
-        currentTab: Binding<TabBarType>,
+        currentTab: TabBarType,
         tabValue: TabBarType,
         onTapGesture: @escaping ((TabBarType) -> Void)
     ) -> some View{
@@ -96,7 +87,7 @@ extension CustomBottomTabBarView {
             Image("check_blue")
                 .resizable()
                 .frame(width: isNotNocheDevice ? 18 : 20, height: isNotNocheDevice ? 18 : 20)
-                .opacity(currentTab.wrappedValue == tabValue ? 1 : 0)
+                .opacity(currentTab == tabValue ? 1 : 0)
                 .offset(y: -5)
         }
         .onTapGesture {

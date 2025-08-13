@@ -29,7 +29,7 @@ struct MainTabView: View {
                 }
                 
                 TabView(selection: $vm.currentTab) {
-                    CurrentWeatherView(disableTabBarTouch: $vm.isTabBarTouchDisabled)
+                    CurrentWeatherView()
                         .tag(TabBarType.current)
                     
                     if vm.currentTab == .week {
@@ -46,8 +46,7 @@ struct MainTabView: View {
                 }
                 .overlay(alignment: .bottom) {
                     CustomBottomTabBarView(
-                        currentTab: $vm.currentTab,
-                        disableTabBarTouch: $vm.isTabBarTouchDisabled,
+                        currentTab: vm.currentTab,
                         itemOnTapGesture: vm.tabBarItemOnTapGesture(_:)
                     )
                 }

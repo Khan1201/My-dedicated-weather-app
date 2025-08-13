@@ -15,6 +15,7 @@ final class CurrentWeatherVM: ObservableObject {
         case currentWeatherInformationLoaded, fineDustLoaded, todayWeatherInformationsLoaded, kakaoAddressLoaded, minMaxTempLoaded, sunriseSunsetLoaded
     }
     
+    @Published private(set) public var isTabBarTouchDisabled: Bool = true
     @Published private(set) public var sunriseAndSunsetHHmm: (String, String) = ("", "")
     @Published private(set) public var currentWeatherInformation: Weather.CurrentInformation?
     @Published private(set) public var currentDust: Weather.CurrentDust?
@@ -56,6 +57,7 @@ final class CurrentWeatherVM: ObservableObject {
     private let userDefaultsService: UserDefaultsService
     private let networkFloaterStore: any NetworkFloaterStore
     private let currentLocationStore: any CurrentLocationStore
+    private let viewStore: any ViewStore
 
     init(
         commonUtil: CommonUtil,
@@ -70,7 +72,8 @@ final class CurrentWeatherVM: ObservableObject {
         kakaoAddressService: KakaoAddressService,
         userDefaultsService: UserDefaultsService,
         networkFloaterStore: any NetworkFloaterStore,
-        currentLocationStore: any CurrentLocationStore
+        currentLocationStore: any CurrentLocationStore,
+        viewStore: any ViewStore
     ) {
         self.commonUtil = commonUtil
         self.commonForecastUtil = commonForecastUtil
@@ -85,6 +88,7 @@ final class CurrentWeatherVM: ObservableObject {
         self.userDefaultsService = userDefaultsService
         self.networkFloaterStore = networkFloaterStore
         self.currentLocationStore = currentLocationStore
+        self.viewStore = viewStore
         sinkIsAllLoaded()
         assignStoreStates()
     }
@@ -268,6 +272,7 @@ extension CurrentWeatherVM {
             
             if isAllLoaded {
                 initializeTaskAndTimer()
+                viewStore.send(.setIsTabBarTouchDisabled(false))
             }
         }
         .store(in: &bag)
@@ -279,6 +284,9 @@ extension CurrentWeatherVM {
         
         networkFloaterStore.state.presenter.$floaterMessage
             .assign(to: &$networkFloaterMessage)
+        
+        viewStore.state.$isTabBarTouchDisabled
+            .assign(to: &$isTabBarTouchDisabled)
     }
 }
 

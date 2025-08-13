@@ -15,4 +15,8 @@ struct DI {
               currentLocationStore: DefaultCurrentLocationStore.shared
         )
     }
+    
+    static func contentEO() -> ContentEO {
+        .init(viewStore: DefaultViewStore.shared)
+    }
 }
