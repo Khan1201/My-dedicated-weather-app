@@ -88,7 +88,6 @@ public struct CurrentWeatherView: View {
             }
             .onAppear {
                 if !isOnceAppeared {
-//                    viewModel.currentLocationEODelegate = currentLocationEO
                     currentLocationEO.startUpdaitingLocation()
                     isOnceAppeared = true
                 }
