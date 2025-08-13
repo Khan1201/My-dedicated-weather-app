@@ -24,8 +24,8 @@ public struct WeeklyWeatherView: View {
         
         VStack(alignment: .leading, spacing: 0) {
             CurrentLocationAndDateView(
-                location: currentLocationEO.currentLocationStore.state.locality,
-                subLocation: currentLocationEO.currentLocationStore.state.subLocality,
+                location: currentLocationEO.currentLocationStoreState.locality,
+                subLocation: currentLocationEO.currentLocationStoreState.subLocality,
                 showRefreshButton: viewModel.isAllLoaded,
                 openAdditionalLocationView: .constant(false),
                 showLocationAddButton: false,
@@ -75,8 +75,8 @@ public struct WeeklyWeatherView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
         .weeklyWeatherViewBackground(
-            isDayMode: currentLocationEO.currentLocationStore.state.isDayMode,
-            skyType: currentLocationEO.currentLocationStore.state.skyType
+            isDayMode: currentLocationEO.currentLocationStoreState.isDayMode,
+            skyType: currentLocationEO.currentLocationStoreState.skyType
         )
         .bottomNoticeFloater(
             isPresented: $viewModel.isNetworkFloaterPresented,
@@ -84,15 +84,15 @@ public struct WeeklyWeatherView: View {
                 title: viewModel.networkFloaterMessage
             )
         )
-        .onChange(of: currentLocationEO.currentLocationStore.state.isLocationUpdated) { newValue in
+        .onChange(of: currentLocationEO.currentLocationStoreState.isLocationUpdated) { newValue in
             if newValue {
-                viewModel.refreshButtonOnTapGesture(locationInf: currentLocationEO.currentLocationStore.state.locationInf)
+                viewModel.refreshButtonOnTapGesture(locationInf: currentLocationEO.currentLocationStoreState.locationInf)
             }
         }
         .task(priority: .userInitiated) {
 //            viewModel.currentLocationEODelegate = currentLocationEO
             viewModel.viewOnAppearAction(
-                locationInf: currentLocationEO.currentLocationStore.state.locationInf
+                locationInf: currentLocationEO.currentLocationStoreState.locationInf
             )
         }
     }

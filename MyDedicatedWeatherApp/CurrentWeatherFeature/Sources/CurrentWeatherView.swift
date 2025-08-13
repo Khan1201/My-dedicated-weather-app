@@ -50,7 +50,7 @@ public struct CurrentWeatherView: View {
                 
                 TodayWeatherItemScrollView(
                     todayWeatherInformations: viewModel.todayWeatherInformations,
-                    isDayMode: currentLocationEO.currentLocationStore.state.isDayMode
+                    isDayMode: currentLocationEO.currentLocationStoreState.isDayMode
                 )
                 .padding(.horizontal, 26)
                 .loadingProgressLottie(isLoadingCompleted: viewModel.loadedVariables[.todayWeatherInformationsLoaded] ?? false)
@@ -58,16 +58,16 @@ public struct CurrentWeatherView: View {
             .padding(.top, 25)
             .frame(height: UIScreen.screenHeight, alignment: .center)
             .currentWeatherViewBackground(
-                isDayMode: currentLocationEO.currentLocationStore.state.isDayMode,
+                isDayMode: currentLocationEO.currentLocationStoreState.isDayMode,
                 isSunriseSunsetLoadCompleted: viewModel.loadedVariables[.sunriseSunsetLoaded] ?? false,
                 isAllLoadCompleted: viewModel.isAllLoaded,
-                isLocationUpdated: currentLocationEO.currentLocationStore.state.isLocationUpdated,
+                isLocationUpdated: currentLocationEO.currentLocationStoreState.isLocationUpdated,
                 skyType: viewModel.currentWeatherInformation?.skyType
             )
-            .onChange(of: currentLocationEO.currentLocationStore.state.isLocationUpdated) { newValue in
+            .onChange(of: currentLocationEO.currentLocationStoreState.isLocationUpdated) { newValue in
                 if newValue {
                     viewModel.loadCurrentWeatherAllData(
-                        locationInf: currentLocationEO.currentLocationStore.state.initialLocationInf
+                        locationInf: currentLocationEO.currentLocationStoreState.initialLocationInf
                     )
                 }
             }
@@ -128,8 +128,8 @@ extension CurrentWeatherView {
         return VStack(alignment: .leading, spacing: 8) {
             HStack(alignment: .center, spacing: 0) {
                 CurrentLocationAndDateView(
-                    location: currentLocationEO.currentLocationStore.state.locality,
-                    subLocation: currentLocationEO.currentLocationStore.state.subLocality,
+                    location: currentLocationEO.currentLocationStoreState.locality,
+                    subLocation: currentLocationEO.currentLocationStoreState.subLocality,
                     showRefreshButton: viewModel.isAllLoaded,
                     openAdditionalLocationView: $viewModel.isAdditionalLocationViewPresented,
                     refreshButtonOnTapGesture: viewModel.performRefresh(locationInf:)
@@ -143,7 +143,7 @@ extension CurrentWeatherView {
                     TodaySunriseSunsetView(
                         sunriseTime: viewModel.sunriseAndSunsetHHmm.0,
                         sunsetTime: viewModel.sunriseAndSunsetHHmm.1,
-                        isDayMode: currentLocationEO.currentLocationStore.state.isDayMode
+                        isDayMode: currentLocationEO.currentLocationStoreState.isDayMode
                     )
                     .padding(.trailing, 40)
                 }
@@ -160,7 +160,7 @@ extension CurrentWeatherView {
                 CurrentTempAndMinMaxTempView(
                     temp: viewModel.currentWeatherInformation?.temperature,
                     minMaxTemp: viewModel.todayMinMaxTemperature,
-                    isDayMode: currentLocationEO.currentLocationStore.state.isDayMode
+                    isDayMode: currentLocationEO.currentLocationStoreState.isDayMode
                 )
                 .loadingProgressLottie(
                     isLoadingCompleted: viewModel.loadedVariables[.currentWeatherInformationLoaded] ?? false && viewModel.loadedVariables[.minMaxTempLoaded] ?? false

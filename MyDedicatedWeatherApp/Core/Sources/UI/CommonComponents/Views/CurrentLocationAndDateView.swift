@@ -75,7 +75,7 @@ public struct CurrentLocationAndDateView: View {
                     .frame(width: isNotNocheDevice ? 22 : 25, height: isNotNocheDevice ? 22 : 25)
                     .offset(x: 13)
                     .onTapGesture {
-                        refreshButtonOnTapGesture(currentLocationEO.currentLocationStore.state.initialLocationInf)
+                        refreshButtonOnTapGesture(currentLocationEO.currentLocationStoreState.initialLocationInf)
                     }
                     .opacity(showRefreshButton ? 1 : 0)
             }

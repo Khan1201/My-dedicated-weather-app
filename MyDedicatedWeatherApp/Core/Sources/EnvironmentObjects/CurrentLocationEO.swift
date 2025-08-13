@@ -7,21 +7,30 @@
 
 import Foundation
 import CoreLocation
+import Combine
 import Domain
 
 public final class CurrentLocationEO: NSObject, ObservableObject {
-    @Published public private(set) var locationPermissonType: PermissionType = .notAllow    
-    @Published public var currentLocationStore: any CurrentLocationStore
+    @Published public private(set) var locationPermissonType: PermissionType = .notAllow
+    @Published public private(set) var currentLocationStoreState: CurrentLocationStoreState = .init()
+    private let currentLocationStore: any CurrentLocationStore
     
     private var locationManager = CLLocationManager()
     private let commonUtil: CommonUtil = .shared
     private let userDefaultsService: UserDefaultsService
+    private var bag: Set<AnyCancellable> = []
     
     public init(userDefaultsService: UserDefaultsService, currentLocationStore: any CurrentLocationStore) {
         self.userDefaultsService = userDefaultsService
         self.currentLocationStore = currentLocationStore
         super.init()
         locationManager.delegate = self
+        currentLocationStore.state.objectWillChange
+            .sink { [weak self] _ in
+                guard let self = self else { return }
+                currentLocationStoreState = currentLocationStore.state
+            }
+            .store(in: &bag)
     }
 }
 
