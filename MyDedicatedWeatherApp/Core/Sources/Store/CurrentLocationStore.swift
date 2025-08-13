@@ -24,18 +24,18 @@ public enum CurrentLocationStoreAction {
 }
 
 public class CurrentLocationStoreState: ObservableObject {
-    @Published public var isLocationUpdated: Bool = false
+    @Published public fileprivate(set) var isLocationUpdated: Bool = false
     
-    @Published public var latitude: String = ""
-    @Published public var longitude: String = ""
-    @Published public var xy: (String, String) = ("", "")
-    @Published public var locality: String = "" /// 서울특별시
-    @Published public var subLocality: String = "" /// 성수동 1가
-    @Published public var fullAddress: String = ""
-    @Published public var gpsLocality: String = ""
-    @Published public var gpsSubLocality: String = ""
-    @Published public var skyType: WeatherAPIValue?
-    @Published public var isDayMode: Bool = false
+    @Published public fileprivate(set) var latitude: String = ""
+    @Published public fileprivate(set) var longitude: String = ""
+    @Published public fileprivate(set) var xy: (String, String) = ("", "")
+    @Published public fileprivate(set) var locality: String = "" /// 서울특별시
+    @Published public fileprivate(set) var subLocality: String = "" /// 성수동 1가
+    @Published public fileprivate(set) var fullAddress: String = ""
+    @Published public fileprivate(set) var gpsLocality: String = ""
+    @Published public fileprivate(set) var gpsSubLocality: String = ""
+    @Published public fileprivate(set) var skyType: WeatherAPIValue?
+    @Published public fileprivate(set) var isDayMode: Bool = false
     
     public var gpsFullAddress: String {
         return gpsLocality + " " + gpsSubLocality
