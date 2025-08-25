@@ -71,12 +71,6 @@ public struct CurrentWeatherView: View {
                     )
                 }
             }
-            .bottomNoticeFloater(
-                isPresented: $viewModel.isNetworkFloaterPresented,
-                view: BottomNoticeFloaterView(
-                    title: viewModel.networkFloaterMessage
-                )
-            )
             .fullScreenCover(isPresented: $viewModel.isAdditionalLocationViewPresented) {
                 RootNavigationView(
                     view: AdditionalLocationView(

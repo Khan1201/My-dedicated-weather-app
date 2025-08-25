@@ -37,11 +37,12 @@ final class WeeklyWeatherVM: ObservableObject {
     private let shortForecastUtil: ShortForecastUtil
     private let commonForecastUtil: CommonForecastUtil
     private let midForecastUtil: MidForecastUtil
+    private let networkWaitAndReloadTimer: NoticeAndRetryTimer = .init()
     
     private let shortForecastService: ShortForecastService
     private let midtermForecastService: MidtermForecastService
     
-    private let networkFloaterStore: any NetworkFloaterStore
+    private let noticeFloaterStore: any NoticeFloaterStore
 
     private var currentTask: Task<(), Never>?
     private var bag: Set<AnyCancellable> = []
@@ -56,18 +57,17 @@ final class WeeklyWeatherVM: ObservableObject {
         midForecastUtil: MidForecastUtil,
         shortForecastService: ShortForecastService,
         midtermForecastService: MidtermForecastService,
-        networkFloaterStore: any NetworkFloaterStore
+        noticeFloaterStore: any NoticeFloaterStore
     ) {
         self.shortForecastUtil = shortForecastUtil
         self.commonForecastUtil = commonForecastUtil
         self.midForecastUtil = midForecastUtil
         self.shortForecastService = shortForecastService
         self.midtermForecastService = midtermForecastService
-        self.networkFloaterStore = networkFloaterStore
+        self.noticeFloaterStore = noticeFloaterStore
         initWeeklyWeatherInformation()
         initWeeklyChartInformation()
         sinkIsAllLoaded()
-        assignStoreStates()
     }
 }
 
@@ -425,7 +425,7 @@ extension WeeklyWeatherVM {
     
     private func initializeTaskAndTimer() {
         initializeTask()
-        networkFloaterStore.send(.stopTimer)
+        networkWaitAndReloadTimer.initTimer()
     }
     
     private func initializeTask() {
@@ -434,10 +434,15 @@ extension WeeklyWeatherVM {
     }
     
     private func startNetworkFloaterTimer() {
-        networkFloaterStore.send(
-            .startTimerAndShowFloaterIfTimeOver(
-                retryAction: reload
-            )
+        networkWaitAndReloadTimer.start(
+            showWaitNoticeFloaterAction: { [weak self] in
+                guard let self = self else { return }
+                noticeFloaterStore.send(.showNetworkWaitFloater)
+            },
+            showRetryNoticeFloaterAndRetryAction: { [weak self] in
+                guard let self = self else { return }
+                noticeFloaterStore.send(.showNetworkReloadFloater)
+            }
         )
     }
         
@@ -465,14 +470,6 @@ extension WeeklyWeatherVM {
                 }
             }
             .store(in: &bag)
-    }
-    
-    private func assignStoreStates() {
-        networkFloaterStore.state.presenter.$isPresented
-            .assign(to: &$isNetworkFloaterPresented)
-        
-        networkFloaterStore.state.presenter.$floaterMessage
-            .assign(to: &$networkFloaterMessage)
     }
     
     private func weeklyItemAllLoadedAction() {

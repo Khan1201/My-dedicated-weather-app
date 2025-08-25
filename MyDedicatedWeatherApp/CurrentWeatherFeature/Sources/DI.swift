@@ -24,7 +24,7 @@ struct DI {
             dustForecastService: DustForecastServiceImp(),
             kakaoAddressService: KakaoAddressServiceImp(),
             userDefaultsService: UserDefaultsServiceImp(),
-            networkFloaterStore: DefaultNetworkFloaterStore.shared,
+            noticeFloaterStore: DefaultNoticeFloaterStore.shared,
             currentLocationStore: DefaultCurrentLocationStore.shared,
             viewStore: DefaultViewStore.shared
         )

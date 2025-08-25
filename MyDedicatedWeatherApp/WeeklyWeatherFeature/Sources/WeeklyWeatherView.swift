@@ -78,12 +78,6 @@ public struct WeeklyWeatherView: View {
             isDayMode: currentLocationEO.currentLocationStoreState.isDayMode,
             skyType: currentLocationEO.currentLocationStoreState.skyType
         )
-        .bottomNoticeFloater(
-            isPresented: $viewModel.isNetworkFloaterPresented,
-            view: BottomNoticeFloaterView(
-                title: viewModel.networkFloaterMessage
-            )
-        )
         .onChange(of: currentLocationEO.currentLocationStoreState.isLocationUpdated) { newValue in
             if newValue {
                 viewModel.refreshButtonOnTapGesture(locationInf: currentLocationEO.currentLocationStoreState.locationInf)

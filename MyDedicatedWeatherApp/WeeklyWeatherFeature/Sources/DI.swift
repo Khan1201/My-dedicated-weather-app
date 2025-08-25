@@ -18,7 +18,7 @@ struct DI {
             midForecastUtil: .shared,
             shortForecastService: ShortForecastServiceImp(),
             midtermForecastService: MidTermForecastServiceImp(),
-            networkFloaterStore: DefaultNetworkFloaterStore.shared
+            noticeFloaterStore: DefaultNoticeFloaterStore.shared
         )
     }
 }

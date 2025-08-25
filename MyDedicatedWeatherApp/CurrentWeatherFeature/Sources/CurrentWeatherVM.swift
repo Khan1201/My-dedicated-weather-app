@@ -36,8 +36,6 @@ final class CurrentWeatherVM: ObservableObject {
     }()
     @Published private(set) public var isAllLoaded: Bool = false
     @Published private var reloadActions: [Loading : () -> Void] = [:]
-    @Published public var isNetworkFloaterPresented: Bool = false
-    @Published public var networkFloaterMessage: String = ""
     
     private var currentTask: Task<(), Never>?
     
@@ -49,13 +47,14 @@ final class CurrentWeatherVM: ObservableObject {
     private let shortForecastUtil: ShortForecastUtil
     private let midForecastUtil: MidForecastUtil
     private let fineDustLookUpUtil: FineDustLookUpUtil
+    private let networkWaitAndRetryTimer: NoticeAndRetryTimer = .init()
     
     private let veryShortForecastService: VeryShortForecastService
     private let shortForecastService: ShortForecastService
     private let dustForecastService: DustForecastService
     private let kakaoAddressService: KakaoAddressService
     private let userDefaultsService: UserDefaultsService
-    private let networkFloaterStore: any NetworkFloaterStore
+    private let noticeFloaterStore: any NoticeFloaterStore
     private let currentLocationStore: any CurrentLocationStore
     private let viewStore: any ViewStore
 
@@ -71,7 +70,7 @@ final class CurrentWeatherVM: ObservableObject {
         dustForecastService: DustForecastService,
         kakaoAddressService: KakaoAddressService,
         userDefaultsService: UserDefaultsService,
-        networkFloaterStore: any NetworkFloaterStore,
+        noticeFloaterStore: any NoticeFloaterStore,
         currentLocationStore: any CurrentLocationStore,
         viewStore: any ViewStore
     ) {
@@ -86,7 +85,7 @@ final class CurrentWeatherVM: ObservableObject {
         self.dustForecastService = dustForecastService
         self.kakaoAddressService = kakaoAddressService
         self.userDefaultsService = userDefaultsService
-        self.networkFloaterStore = networkFloaterStore
+        self.noticeFloaterStore = noticeFloaterStore
         self.currentLocationStore = currentLocationStore
         self.viewStore = viewStore
         sinkIsAllLoaded()
@@ -155,7 +154,7 @@ extension CurrentWeatherVM {
                 }
                 
             case .failure(_):
-                return
+                noticeFloaterStore.send(.showAdditionalLocationNotExistFloater)
             }
         }
     }
@@ -279,12 +278,6 @@ extension CurrentWeatherVM {
     }
     
     private func assignStoreStates() {
-        networkFloaterStore.state.presenter.$isPresented
-            .assign(to: &$isNetworkFloaterPresented)
-        
-        networkFloaterStore.state.presenter.$floaterMessage
-            .assign(to: &$networkFloaterMessage)
-        
         viewStore.state.$isTabBarTouchDisabled
             .assign(to: &$isTabBarTouchDisabled)
     }
@@ -447,14 +440,19 @@ extension CurrentWeatherVM {
     
     private func initializeTaskAndTimer() {
         initializeTask()
-        networkFloaterStore.send(.stopTimer)
+        networkWaitAndRetryTimer.initTimer()
     }
     
     private func startNetworkFloaterTimer() {
-        networkFloaterStore.send(
-            .startTimerAndShowFloaterIfTimeOver(
-                retryAction: reload
-            )
+        networkWaitAndRetryTimer.start(
+            showWaitNoticeFloaterAction: { [weak self] in
+                guard let self = self else { return }
+                noticeFloaterStore.send(.showNetworkWaitFloater)
+            },
+            showRetryNoticeFloaterAndRetryAction: { [weak self] in
+                guard let self = self else { return }
+                noticeFloaterStore.send(.showNetworkReloadFloater)
+            }
         )
     }
     
