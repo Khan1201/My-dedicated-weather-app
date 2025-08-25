@@ -11,7 +11,7 @@ import Domain
 
 public struct SettingView: View {
     
-    @StateObject var vm: SettingVM = SettingVM()
+    @StateObject var vm: SettingVM = DI.settingVM()
     
     public init() {}
     

@@ -15,6 +15,7 @@ struct MyDedicatedWeatherAppApp: App {
             MainTabView()
                 .environmentObject(DI.currentLocationEO())
                 .environmentObject(DI.contentEO())
+                .environmentObject(DI.globalNoticeFloaterEO())
         }
     }
 }

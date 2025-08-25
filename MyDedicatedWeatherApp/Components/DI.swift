@@ -17,6 +17,12 @@ struct DI {
     }
     
     static func contentEO() -> ContentEO {
-        .init(viewStore: DefaultViewStore.shared)
+        .init(viewStore: DefaultViewStore.shared,
+              noticeFloaterStore: DefaultNoticeFloaterStore.shared
+        )
+    }
+    
+    static func globalNoticeFloaterEO() -> GlobalNoticeFloaterEO {
+        .init(noticeFloaterStore: DefaultNoticeFloaterStore.shared)
     }
 }

@@ -8,6 +8,7 @@
 import Foundation
 import MessageUI
 import Domain
+import Core
 
 final class SettingVM: ObservableObject {
     
@@ -37,6 +38,12 @@ final class SettingVM: ObservableObject {
         "https://github.com/fermoya/SwiftUIPager"
     ]
     let openSourceTapAvailableIndexes: [Int] = [2, 3, 4, 5]
+    
+    private let noticeFloaterStore: any NoticeFloaterStore
+    
+    public init(noticeFloaterStore: any NoticeFloaterStore) {
+        self.noticeFloaterStore = noticeFloaterStore
+    }
 }
 
 // MARK: - On tap geture funs..
@@ -79,7 +86,7 @@ extension SettingVM {
                 openMailView = true
                 
             } else {
-                showMailOpenFailAlert = true
+                noticeFloaterStore.send(.showMailAppNotExistFloater)
             }
             
         case 2: // 오픈소스 라이센스

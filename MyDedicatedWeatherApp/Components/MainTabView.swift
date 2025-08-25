@@ -15,6 +15,7 @@ import SettingFeature
 struct MainTabView: View {
     
     @EnvironmentObject var vm: ContentEO
+    @EnvironmentObject var globalNoticeFloaterEO: GlobalNoticeFloaterEO
     
     var body: some View {
         
@@ -52,9 +53,9 @@ struct MainTabView: View {
                 }
                 .opacity(vm.isLaunchScreenPresented ? 0 : 1)
                 .bottomNoticeFloater(
-                    isPresented: $vm.isTabBarTouchNoticeFloaterPresented,
+                    isPresented: $globalNoticeFloaterEO.isPresented,
                     view: BottomNoticeFloaterView(
-                        title: "현재 날씨 로딩후에 접근 가능합니다."
+                        title: globalNoticeFloaterEO.message
                     )
                 )
                 .onAppear {

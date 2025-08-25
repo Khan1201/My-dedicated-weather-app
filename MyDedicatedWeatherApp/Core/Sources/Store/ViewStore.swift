@@ -18,7 +18,6 @@ public final class ViewStoreState: ObservableObject {
     @Published public fileprivate(set) var currentTab: TabBarType = .current
     @Published public fileprivate(set) var isLaunchScreenPresented: Bool = true
     @Published public fileprivate(set) var isTabBarTouchDisabled: Bool = true
-    @Published public fileprivate(set) var isTabBarTouchNoticeFloaterPresented: Bool = false
 }
 
 public final class DefaultViewStore: ViewStore {
@@ -43,12 +42,7 @@ public final class DefaultViewStore: ViewStore {
             state.isLaunchScreenPresented = false
             
         case .changeTab(let to):
-            if state.isTabBarTouchDisabled {
-                state.isTabBarTouchNoticeFloaterPresented = true
-                
-            } else {
-                state.currentTab = to
-            }
+            state.currentTab = to
             
         case .setIsTabBarTouchDisabled(let value):
             state.isTabBarTouchDisabled = value

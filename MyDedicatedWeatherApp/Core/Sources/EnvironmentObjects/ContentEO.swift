@@ -13,17 +13,23 @@ public final class ContentEO: ObservableObject {
     @Published public var currentTab: TabBarType = .current
     @Published public private(set) var isLaunchScreenPresented: Bool = true
     @Published public private(set) var isTabBarTouchDisabled: Bool = true
-    @Published public var isTabBarTouchNoticeFloaterPresented: Bool = false
     
-    public let viewStore: any ViewStore
+    private let viewStore: any ViewStore
+    private let noticeFloaterStore: any NoticeFloaterStore
     private var bag: Set<AnyCancellable> = []
           
-    public init(viewStore: any ViewStore) {
+    public init(viewStore: any ViewStore, noticeFloaterStore: any NoticeFloaterStore) {
         self.viewStore = viewStore
+        self.noticeFloaterStore = noticeFloaterStore
         assignStoreValues()
     }
     
     public func tabBarItemOnTapGesture(_ type: TabBarType) {
+        if viewStore.state.isTabBarTouchDisabled {
+            noticeFloaterStore.send(.showTabBarDisabledFloater)
+            return
+        }
+        
         viewStore.send(.changeTab(to: type))
     }
     
@@ -40,8 +46,5 @@ public final class ContentEO: ObservableObject {
         
         viewStore.state.$isTabBarTouchDisabled
             .assign(to: &$isTabBarTouchDisabled)
-        
-        viewStore.state.$isTabBarTouchNoticeFloaterPresented
-            .assign(to: &$isTabBarTouchNoticeFloaterPresented)
     }
 }
