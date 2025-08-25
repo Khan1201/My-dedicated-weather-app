@@ -14,7 +14,6 @@ public protocol Store {
     func send(_ action: Action)
 }
 
-public protocol NetworkFloaterStore: Store where State == NetworkFloaterStoreState, Action == NetworkFloaterStoreAction {}
 public protocol CurrentLocationStore: Store where State == CurrentLocationStoreState, Action == CurrentLocationStoreAction {}
 public protocol ViewStore: Store where State == ViewStoreState, Action == ViewStoreAction {}
 public protocol NoticeFloaterStore: Store where State == NoticeFloaterStoreState, Action == NoticeFloaterStoreAction {}
