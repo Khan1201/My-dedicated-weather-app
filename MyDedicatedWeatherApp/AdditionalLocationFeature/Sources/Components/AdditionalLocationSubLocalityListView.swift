@@ -14,9 +14,7 @@ struct AdditionalLocationSubLocalityListView: View {
     let selectedLocality: String
     let selectedLocalityAndGu: String
     let finalLocationOnTapGesture: (LocationInformation, Bool) -> Void
-    
-    @State private var showFailFloater: Bool = false
-    
+        
     var body: some View {
         let filtedData: [String] = KoreaLocationList.allDatas.filter { $0.contains(selectedLocalityAndGu) }.sorted()
         
@@ -49,10 +47,6 @@ struct AdditionalLocationSubLocalityListView: View {
             }
         }
         .preferredColorScheme(.dark)
-        .bottomNoticeFloater(
-            isPresented: $showFailFloater,
-            view: BottomNoticeFloaterView(title: "해당 위치에 대한 정보가 없습니다.")
-        )
     }
 }
 
