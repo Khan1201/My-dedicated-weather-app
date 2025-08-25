@@ -47,7 +47,7 @@ final class CurrentWeatherVM: ObservableObject {
     private let shortForecastUtil: ShortForecastUtil
     private let midForecastUtil: MidForecastUtil
     private let fineDustLookUpUtil: FineDustLookUpUtil
-    private let networkWaitAndRetryTimer: NoticeAndRetryTimer = .init()
+    private let networkWaitAndRetryTimer: NetworkWaitAndRetryTimer = .init()
     
     private let veryShortForecastService: VeryShortForecastService
     private let shortForecastService: ShortForecastService

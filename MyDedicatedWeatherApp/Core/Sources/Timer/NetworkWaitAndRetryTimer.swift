@@ -1,5 +1,5 @@
 //
-//  NoticeAndRetryTimer.swift
+//  NetworkWaitAndRetryTimer.swift
 //  Core
 //
 //  Created by 윤형석 on 6/23/25.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public final class NoticeAndRetryTimer {
+public final class NetworkWaitAndRetryTimer {
     public static let WAIT_NOTICE_FLOATER_TRIGGER_TIME: Int = 3
     public static let RETRY_TRIGGER_TIME: Int = 8
     
@@ -38,10 +38,10 @@ public final class NoticeAndRetryTimer {
         guard self.timer != nil else { return }
         self.timerNum += 1
         
-        if timerNum == NoticeAndRetryTimer.WAIT_NOTICE_FLOATER_TRIGGER_TIME {
+        if timerNum == NetworkWaitAndRetryTimer.WAIT_NOTICE_FLOATER_TRIGGER_TIME {
             showWaitNoticeFloaterAction?()
             
-        } else if timerNum == NoticeAndRetryTimer.RETRY_TRIGGER_TIME {
+        } else if timerNum == NetworkWaitAndRetryTimer.RETRY_TRIGGER_TIME {
             timerNum = 0
             showRetryNoticeFloaterAndRetryAction?()
         }

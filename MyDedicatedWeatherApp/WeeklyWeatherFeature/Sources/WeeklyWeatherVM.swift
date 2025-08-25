@@ -37,7 +37,7 @@ final class WeeklyWeatherVM: ObservableObject {
     private let shortForecastUtil: ShortForecastUtil
     private let commonForecastUtil: CommonForecastUtil
     private let midForecastUtil: MidForecastUtil
-    private let networkWaitAndReloadTimer: NoticeAndRetryTimer = .init()
+    private let networkWaitAndReloadTimer: NetworkWaitAndRetryTimer = .init()
     
     private let shortForecastService: ShortForecastService
     private let midtermForecastService: MidtermForecastService
